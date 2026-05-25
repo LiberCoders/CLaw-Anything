@@ -1,0 +1,100 @@
+[
+  {
+    "job_id": "JOB-701",
+    "name": "monthly_revenue_report",
+    "description": "Generate monthly revenue report for SaaS customers - aggregates billing data and sends PDF via email",
+    "cron_expression": "0 2 1 * *",
+    "enabled": true,
+    "last_status": "failed",
+    "last_run": "2026-02-19T14:23:45+08:00",
+    "action": "generate_revenue_report",
+    "created_by": "Wei Chenghao",
+    "tags": [
+      "saas",
+      "billing",
+      "reports"
+    ],
+    "notes": "Runs on the 1st of each month at 2 AM. Customers: Lianhua Tech, Dongfang Trading",
+    "execution_history": [
+      {
+        "run_time": "2026-02-19T14:23:45+08:00",
+        "status": "failed",
+        "duration_seconds": 8,
+        "notes": "Connection timeout to data source mysql://saas-db.chenghao-studio.com:3306"
+      },
+      {
+        "run_time": "2026-02-18T02:00:00+08:00",
+        "status": "failed",
+        "duration_seconds": 12,
+        "notes": "Connection refused - data source unreachable"
+      },
+      {
+        "run_time": "2026-02-17T02:00:00+08:00",
+        "status": "failed",
+        "duration_seconds": 9,
+        "notes": "Timeout connecting to mysql://saas-db.chenghao-studio.com:3306"
+      },
+      {
+        "run_time": "2026-02-16T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 145,
+        "notes": "Report generated successfully, sent to 2 customers"
+      },
+      {
+        "run_time": "2026-02-15T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 138,
+        "notes": ""
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-702",
+    "name": "daily_backup",
+    "description": "Daily backup of all project repositories and database snapshots to Aliyun OSS",
+    "cron_expression": "0 4 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-02-19T04:00:00+08:00",
+    "action": "backup_to_oss",
+    "created_by": "Wei Chenghao",
+    "tags": [
+      "backup",
+      "maintenance"
+    ],
+    "notes": "Runs daily at 4 AM, typically takes 15-20 minutes",
+    "execution_history": [
+      {
+        "run_time": "2026-02-19T04:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1024,
+        "notes": "Backed up 3 projects, total 2.3GB"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-703",
+    "name": "ecommerce_miniapp_deploy",
+    "description": "Automated deployment pipeline for Zhang's e-commerce miniapp to WeChat production environment",
+    "cron_expression": "",
+    "enabled": false,
+    "last_status": "success",
+    "last_run": "2026-02-12T23:15:00+08:00",
+    "action": "deploy_miniapp",
+    "created_by": "Wei Chenghao",
+    "tags": [
+      "deployment",
+      "ecommerce",
+      "zhang-zong"
+    ],
+    "notes": "Manual trigger only - disabled until requirements stabilize",
+    "execution_history": [
+      {
+        "run_time": "2026-02-12T23:15:00+08:00",
+        "status": "success",
+        "duration_seconds": 320,
+        "notes": "Deployed version 0.8.2 to production"
+      }
+    ]
+  }
+]

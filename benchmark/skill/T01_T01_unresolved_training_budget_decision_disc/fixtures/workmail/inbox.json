@@ -1,0 +1,43 @@
+[
+  {
+    "message_id": "WMSG-5001",
+    "from": "li.ming@bytedance.com",
+    "to": "wang.jian@bytedance.com",
+    "subject": "Port configuration resolved for sprint demo experiments",
+    "date": "2026-02-05T16:30:00+08:00",
+    "body": "Hi Dr. Wang,\n\nQuick update on the training experiments for our Feb 17 sprint demo:\n\nI ran into a port conflict issue when trying to launch all three experiments simultaneously (hyperparameter tuning with TensorBoard, baseline with Jupyter, and distributed coordinator). Both TensorBoard and the coordinator wanted port 6006 by default.\n\nResolved it by:\n1. Killing an abandoned TensorBoard process from Feb 3 (my own zombie process)\n2. Moving TensorBoard to port 6007 (easier than reconfiguring the coordinator)\n3. Keeping Jupyter on 8888 and coordinator on 6006\n\nAll experiments are now running. Final port mapping documented in my notes:\n- TensorBoard (hyperparameter viz): localhost:6007\n- Jupyter (baseline analysis): localhost:8888  \n- Distributed coordinator: localhost:6006\n\nI'll have preliminary hyperparameter results ready for our 1-on-1 on Friday.\n\nBest,\nLi Ming",
+    "labels": [
+      "sent",
+      "mentor"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5002",
+    "from": "li.ming@bytedance.com",
+    "to": "wang.jian@bytedance.com",
+    "subject": "Request: Team-Pooled GPU Quota for Sprint Demo Training (200 GPU-hours)",
+    "date": "2026-02-26T09:30:00+08:00",
+    "body": "Hi Dr. Wang,\n\nI'm writing to request approval for 200 GPU-hours from our team's pooled quota for my Q1 sprint demo training job.\n\n**Background:**\nMy demo requires a 72-hour distributed training run (4×V100 GPUs = 288 GPU-hours total). I've analyzed the GPU cluster pricing policy (KB-410) and designed a cost-optimization plan that splits the job across multiple discount tiers to minimize expenses while meeting the March 7 deadline.\n\n**Why Team-Pooled Quota:**\n- Most cost-effective tier: 25% flat discount (7.5 credits/GPU-hour)\n- Saves 100 credits compared to base intern discount alone\n- Our team has 200 GPU-hours remaining in Q1 allocation (you confirmed this on Slack yesterday)\n- This would cover 200/288 GPU-hours, with remaining 88 hours using long-job + base tiers\n\n**Full Allocation Plan:**\n1. Team-pooled: 200 GPU-hours × 7.5 credits = 1,500 credits\n2. Long-job tier: 30 GPU-hours × 7.2 credits = 216 credits (using my remaining cycle quota)\n3. Base intern: 58 GPU-hours × 8 credits = 464 credits\n**Total cost: 2,180 credits** (vs 2,304 if all base-tier)\n\n**Timeline:**\n- Submit team-pooled job: Feb 27 (50 hours runtime)\n- Submit long-job tier: March 1 (7.5 hours)\n- Submit base tier: March 2 (14.5 hours)\n- Complete by: March 5 (2-day buffer before demo)\n\n**Alternative Considered:**\nI evaluated using off-peak hours discount (32% total, higher savings) but ruled it out because the 2am-8am monitoring requirement conflicts with my time management challenges. The team-pooled + long-job approach is operationally safer for me.\n\nCould you approve the 200 GPU-hour allocation? I've documented the full cost analysis in NOTE-121 if you'd like to review the reasoning.\n\nThank you for considering this request!\n\nBest regards,\nLi Ming\nAlgorithm Intern",
+    "labels": [
+      "sent",
+      "gpu",
+      "approval-request"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5003",
+    "from": "wang.jian@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Re: Request: Team-Pooled GPU Quota for Sprint Demo Training (200 GPU-hours)",
+    "date": "2026-02-26T14:20:00+08:00",
+    "body": "Hi Li Ming,\n\nApproved. I've updated the team quota allocation system to reserve 200 GPU-hours for your sprint demo job.\n\nGood work on the cost optimization analysis - your decision to avoid off-peak hours given your monitoring constraints shows mature self-awareness. The splitting strategy is sound.\n\nA few notes:\n1. Make sure to tag the team-pooled job with project code \"Q1-SPRINT-DEMO\" when submitting\n2. The 200-hour allocation is locked for 7 days (expires March 5), so submit by Feb 28 to be safe\n3. Monitor the long-job tier submission carefully on March 1 - the quota reset happens at midnight, and there's usually a rush of submissions in the morning\n\nLet me know if you hit any issues during execution. Looking forward to seeing the demo results!\n\nBest,\nDr. Wang Jian\nAlgorithm Team Lead",
+    "labels": [
+      "inbox",
+      "gpu",
+      "approval"
+    ],
+    "is_read": false
+  }
+]

@@ -1,0 +1,473 @@
+[
+  {
+    "message_id": "WMSG-5001",
+    "from": "lin.zhenkai@lingxi-ai.com",
+    "to": "team@lingxi-ai.com",
+    "subject": "本周工作习惯与业绩关联分析 (3/10-3/16)",
+    "date": "2026-03-16T17:30:00+08:00",
+    "body": "团队好，\n\n这是我本周的工作习惯执行情况和业务成果总结：\n\n## 习惯执行情况\n\n1. **Code review before merge** (每日目标)\n   - 完成率: 6/7 天 (85.7%)\n   - 3/12 因处理线上故障未完成\n   - 本周 review 了 7 个 PR，包括 API 重构、认证模块、数据库迁移等\n\n2. **Weekly customer follow-up call** (每周 2 次目标)\n   - 完成率: 3/4 预期通话 (75%)\n   - 已完成：灵犀智能（反馈积极）、数据云科技（功能讨论）、智汇网络（解决 API 问题）\n   - 待完成：创新软件（试用期即将结束，需本周跟进转化）\n\n3. **Document system changes** (每日目标)\n   - 完成率: 4/7 天 (57.1%)\n   - 已记录：API 限流调整、连接池修复、监控规则、部署手册\n   - 缺口：3/10, 3/12, 3/14 未及时记录，需补充\n\n4. **Exercise 30min** (个人健康)\n   - 完成率: 1/7 天 (14.3%)\n   - 明显不足，影响精力和状态\n\n## 业务成果\n\n本周收入：$15,500\n- 灵犀智能: $8,000 (Premium tier)\n- 数据云科技: $3,500 (Standard tier)\n- 智汇网络: $2,800 (Standard tier)\n- 云端科技: $1,200 (Basic tier)\n\n客户状态：\n- 3 个 active 客户保持良好关系\n- 1 个 trial 客户（创新软件）需本周跟进转化\n- 数据云科技有 upsell 机会到 Premium tier\n\n## 关联分析\n\n**强相关发现：**\n- 客户跟进通话习惯与客户满意度/续约率高度相关。本周 3 次通话都产生了积极成果（反馈收集、问题解决、需求挖掘）\n- Code review 习惯保证了代码质量，间接支撑了服务稳定性（智汇网络的 API 问题快速定位得益于规范的代码）\n\n**需要改进：**\n- 文档习惯完成率偏低（57%），导致知识沉淀不足。3/12 故障复盘就因为缺少实时记录而事后花了更多时间回忆\n- 个人健康习惯严重不足（14%），长期会影响工作效率和决策质量\n- 创新软件的跟进被拖延，可能错失转化窗口（试用期 3/31 到期）\n\n## 下周行动\n\n1. 周一上午优先完成创新软件的转化沟通\n2. 每天设置 18:00 提醒，强制完成文档记录后再下班\n3. 尝试早起 30 分钟做运动，提升整体状态\n4. 跟进数据云科技的 Premium tier upsell 机会\n\n以上。\n\n林振凯\n2026-03-16",
+    "labels": [
+      "team",
+      "weekly-report"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5002",
+    "from": "cto@lingxi-ai.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Re: 本周工作习惯与业绩关联分析 (3/10-3/16)",
+    "date": "2026-03-16T18:15:00+08:00",
+    "body": "振凯，\n\n很好的自我分析。几点反馈：\n\n1. 客户跟进习惯的执行和效果都很好，继续保持\n2. 文档习惯确实需要加强，尤其是故障场景。建议在处理完问题后立即记录，不要拖到晚上\n3. 个人健康不能忽视，早起运动的想法很好\n4. 创新软件的转化务必本周完成，别让 trial 白白流失\n\n另外，数据云科技的 upsell 机会可以让商务同事一起跟进，你侧重技术方案支持。\n\n周报格式不错，以后可以固定下来。\n\nCTO 李明\n2026-03-16",
+    "labels": [
+      "internal",
+      "feedback"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5003",
+    "from": "wang.ming@lingxi-ai.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "API 调用量统计问题",
+    "date": "2026-03-15T14:20:00+08:00",
+    "body": "振凯你好，\n\n我们这边在统计 3 月的 API 调用量时发现数据和我们自己的日志有些出入。能否帮忙核实一下是不是统计口径的问题？\n\n我们的数据：约 850K 次调用\n你们平台显示：约 820K 次\n\n差异不大但想确认一下原因。\n\n谢谢！\n\n王明\n灵犀智能科技",
+    "labels": [
+      "customer",
+      "support"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5004",
+    "from": "li.na@datacloud.cn",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Custom reporting feature 需求讨论",
+    "date": "2026-03-13T10:45:00+08:00",
+    "body": "林工你好，\n\n上周通话提到的自定义报表功能，我们内部讨论后确定了几个核心需求：\n\n1. 支持自定义时间范围（不限于预设的日/周/月）\n2. 支持多维度交叉分析（地域 × 产品类型 × 时间段）\n3. 报表可以导出为 Excel/CSV\n4. 可以保存报表模板供后续复用\n\n这些功能在 Premium tier 里有吗？如果需要定制开发，大概什么周期和成本？\n\n我们计划 4 月做一次大的数据分析项目，希望能提前准备好工具。\n\n李娜\n数据云科技",
+    "labels": [
+      "customer",
+      "feature-request"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5005",
+    "from": "lin.zhenkai@lingxi-ai.com",
+    "to": "cto@lingxi-ai.com",
+    "subject": "Incident Report: Production Server Disk Failure - 2026-03-15",
+    "date": "2026-03-15T18:30:00+08:00",
+    "body": "Hi Wang Ming,\n\nIncident summary for today's production server disk failure:\n\n**Timeline:**\n- 13:45 - Disk failure detected on primary DB server\n- 14:15 - Failover to standby completed, service restored\n- 14:30 - CLI inventory check completed\n- 14:42 - Departed for vendor office (3km away)\n- 15:45 - Replacement disk installed\n- 16:30 - Validation complete, primary server back online\n- 17:00 - Standby resynced, redundancy restored\n\n**Procurement Decision:**\nCLI inventory system showed vendor office had 2 units in stock (3km away, open until 16:00), while online delivery was 3+ days. Given the P1 severity and standby being single point of failure, I chose immediate office pickup over online ordering.\n\nTravel time: 30min round trip\nTotal resolution time: 2h 45min from failure to full redundancy restored\n\n**Cost:** 3,200 CNY (same as online, no rush fee)\n\n**Lessons Learned:**\n1. CLI inventory sync (JOB-701) was critical for real-time stock visibility\n2. Maps GUI verified office hours and distance before decision\n3. Office pickup saved 2-3 days vs online delivery\n4. Should maintain 1 spare NVMe in our own inventory for future incidents\n\nFull incident log in Obsidian: OBSN-3\nPost-incident review scheduled: 2026-03-18 14:00\n\nBest,\nLin Zhenkai",
+    "labels": [
+      "incident",
+      "production",
+      "sent"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5006",
+    "from": "chen.wei@techsource-hw.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Re: Emergency Hardware Pickup - Thank You",
+    "date": "2026-03-15T19:00:00+08:00",
+    "body": "Hi Lin,\n\nThank you for your business today. I'm glad we could help with your emergency server disk replacement.\n\nAs discussed, I've updated your corporate account to include priority access to our office inventory system. You can now check real-time office stock via our API (already integrated with your JOB-701 scheduler).\n\nFor future urgent needs:\n- Office stock is updated every 15 minutes\n- Saturday hours: 10:00-16:00 (as you experienced today)\n- We can also arrange after-hours pickup for P0/P1 incidents with 1-hour notice\n\nInvoice INV-20260315-0847 has been sent to your finance team.\n\nPlease don't hesitate to reach out for any hardware needs.\n\nBest regards,\nChen Wei\nAccount Manager, TechSource Hardware Solutions\n+86 139-1234-5678",
+    "labels": [
+      "vendor",
+      "inbox"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5007",
+    "from": "sla-notifications@cloudinfra-vendor.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Important: Scheduled Maintenance & SLA Changes - Zone AP-East-1 - February 1-2, 2026",
+    "date": "2026-01-24T09:15:00+08:00",
+    "body": "Dear Valued Customer,\n\nWe are writing to inform you of scheduled maintenance and upcoming SLA changes for our AP-East-1 availability zone.\n\n**Maintenance Window:**\n- Start: February 1, 2026, 02:00 UTC (10:00 CST)\n- End: February 2, 2026, 06:00 UTC (14:00 CST)\n- Affected Services: Block Storage API, Load Balancer Control Plane\n- Expected Impact: API calls may experience 5-10 second delays; existing resources will continue operating normally\n\n**SLA Changes (Effective February 15, 2026):**\n- Block Storage API uptime: 99.95% → 99.9%\n- Load Balancer API uptime: 99.99% → 99.95%\n- New monthly credit calculation method for multi-zone deployments\n\n**Action Required:**\n- Review your architecture for dependencies on affected services\n- Update monitoring thresholds if needed\n- Plan for potential API timeout adjustments\n\nFor technical details, see: https://cloudinfra-vendor.com/maintenance/2026-02-ap-east\n\nBest regards,\nCloudInfra Operations Team",
+    "labels": [
+      "vendor",
+      "maintenance",
+      "urgent"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5008",
+    "from": "billing@cloudinfra-vendor.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "January 2026 Invoice - Account #LX-AI-8834",
+    "date": "2026-01-25T14:30:00+08:00",
+    "body": "Dear Customer,\n\nYour January 2026 invoice is now available.\n\nAccount: LX-AI-8834\nAmount Due: $2,847.63 USD\nDue Date: February 10, 2026\n\nView invoice: https://cloudinfra-vendor.com/billing/invoice/2026-01\n\nThank you for your business.\n\nCloudInfra Billing",
+    "labels": [
+      "billing",
+      "vendor"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5009",
+    "from": "lin.zhenkai@lingxi-ai.com",
+    "to": "cto@lingxi-ai.com",
+    "subject": "CloudInfra Maintenance Impact Assessment - Feb 1-2",
+    "date": "2026-01-26T18:45:00+08:00",
+    "body": "Hi Wang Ming,\n\nI've completed the impact assessment for the CloudInfra maintenance window (Feb 1-2) and created a runbook in Obsidian.\n\n**Summary:**\n- Primary API service depends on their Block Storage API\n- Customer data export job uses their Load Balancer\n- Estimated blast radius: ~30% of API calls during maintenance window\n- Mitigation: Implemented retry logic with exponential backoff\n\n**Runbook Location:** Operations/Runbooks/CloudInfra-Maintenance-2026-02\n\n**Pre-maintenance checklist:**\n1. Verify all services have timeout configs ≥15s (currently 10s)\n2. Enable enhanced monitoring 24h before window\n3. Notify Premium tier customers via email\n4. Prepare rollback script for timeout config changes\n\n**Proposed timeline:**\n- Jan 28: Update timeout configs in staging\n- Jan 29: Deploy to production (low-traffic window)\n- Jan 31: Send customer notifications\n- Feb 1-2: Monitor during maintenance\n- Feb 3: Post-maintenance verification\n\nLet me know if you want me to proceed with the timeline or if we should discuss further.\n\nBest,\nZhenkai",
+    "labels": [
+      "sent",
+      "internal"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5010",
+    "from": "marketing@saas-newsletter.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Top 10 DevOps Tools for 2026",
+    "date": "2026-01-26T11:20:00+08:00",
+    "body": "Hi there,\n\nCheck out our latest roundup of the best DevOps tools that are transforming the industry in 2026!\n\n1. KubeFlow 2.0 - ML pipeline orchestration\n2. ObservIQ - Next-gen monitoring\n3. ...\n\nRead more: https://saas-newsletter.com/devops-2026\n\nUnsubscribe | Manage preferences",
+    "labels": [
+      "newsletter",
+      "spam"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5011",
+    "from": "cdn-ops@cloudinfra-vendor.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Scheduled CDN Infrastructure Upgrade - Zone AP-East-1 - February 15-16, 2026",
+    "date": "2026-02-09T09:15:00+08:00",
+    "body": "Dear Valued Customer,\n\nThis is to notify you of an upcoming scheduled maintenance for our CDN infrastructure in Zone AP-East-1.\n\n**Maintenance Window:**\n- Start: February 15, 2026, 02:00 UTC (10:00 Beijing Time)\n- End: February 16, 2026, 06:00 UTC (14:00 Beijing Time)\n- Duration: Approximately 28 hours\n\n**Affected Services:**\n- CDN Edge nodes in AP-East-1 (Shanghai, Hong Kong, Tokyo)\n- Origin shield servers\n- Real-time log streaming\n\n**Expected Impact:**\n- Intermittent 503 errors during edge node rotation (estimated 2-5% error rate)\n- Increased origin server load as cache is rebuilt\n- Potential latency increase of 50-100ms during failover periods\n\n**Recommended Actions:**\n1. Increase origin server timeout configurations from 30s to 60s\n2. Enable fallback CDN provider if available\n3. Monitor origin server capacity during maintenance window\n4. Prepare rollback procedures for recent CDN-dependent deployments\n\n**Technical Details:**\n- Upgrade includes TLS 1.3 optimization and HTTP/3 support\n- Cache invalidation API will be temporarily unavailable\n- WebSocket connections may experience disconnections\n\nPlease acknowledge receipt and confirm your preparation status by February 12, 2026.\n\nFor questions, contact cdn-ops@cloudinfra-vendor.com or reference ticket #CDN-MAINT-2026-02.\n\nBest regards,\nCloudInfra CDN Operations Team",
+    "labels": [
+      "vendor",
+      "maintenance",
+      "urgent"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5012",
+    "from": "security-alerts@cloudinfra-vendor.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Security Advisory: CVE-2026-1234 - CDN Edge Certificate Validation",
+    "date": "2026-02-08T14:30:00+08:00",
+    "body": "Dear Customer,\n\nA security advisory has been issued for CloudInfra CDN edge certificate validation logic.\n\n**CVE-2026-1234 Summary:**\nA vulnerability in certificate chain validation may allow man-in-the-middle attacks under specific network conditions.\n\n**Severity:** Medium (CVSS 5.9)\n**Affected Versions:** CDN Edge 4.2.x - 4.5.x\n**Fixed in:** 4.6.0 (scheduled deployment Feb 15-16)\n\n**Customer Action Required:** None - patch will be applied during scheduled maintenance.\n\nFor details, see https://security.cloudinfra-vendor.com/CVE-2026-1234\n\nCloudInfra Security Team",
+    "labels": [
+      "vendor",
+      "security"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5013",
+    "from": "newsletter@devops-weekly.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "DevOps Weekly #482 - CDN Best Practices & Kubernetes 1.29",
+    "date": "2026-02-07T08:00:00+08:00",
+    "body": "Hi there,\n\nWelcome to DevOps Weekly #482!\n\n**This week's highlights:**\n\n1. **CDN Architecture Patterns for Modern Applications**\n   - Multi-CDN strategies for high availability\n   - Origin shielding and cache hierarchy design\n   - Real-world case studies from Netflix and Cloudflare\n\n2. **Kubernetes 1.29 Released**\n   - New features in kube-proxy\n   - Enhanced security policies\n\n3. **Incident Response Automation Tools**\n   - Comparison of PagerDuty, Opsgenie, and custom solutions\n\nRead more at https://devops-weekly.com/482\n\nCheers,\nDevOps Weekly Team",
+    "labels": [
+      "newsletter",
+      "devops"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5014",
+    "from": "db-ops@cloudinfra-vendor.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Scheduled Database Cluster Upgrade - Zone AP-East-1 - April 8-9, 2026",
+    "date": "2026-03-30T14:22:00+08:00",
+    "body": "Dear CloudInfra Customer,\n\nThis is to notify you of a scheduled maintenance window for our PostgreSQL managed database cluster service in Zone AP-East-1.\n\n**Maintenance Window:**\n- Start: April 8, 2026 02:00 UTC (10:00 CST)\n- End: April 9, 2026 06:00 UTC (14:00 CST)\n- Duration: Up to 28 hours\n\n**Affected Services:**\n- PostgreSQL clusters in AP-East-1 zone\n- Connection endpoints will remain stable\n- Expected downtime: 15-20 minutes during failover\n\n**Changes:**\n- PostgreSQL engine upgrade from 14.7 to 14.10 (security patches)\n- Storage backend migration to NVMe-based infrastructure\n- Connection pool optimization (max_connections increased from 200 to 500)\n\n**Vendor-Provided Procedures:**\n1. Pre-maintenance: Verify application connection retry logic\n2. During maintenance: Monitor connection pool metrics\n3. Post-maintenance: Validate query performance and connection stability\n\n**Expected Impact:**\n- Brief connection interruptions during primary failover\n- Temporary read replica lag during storage migration\n- Performance improvement post-upgrade\n\nPlease ensure your applications have proper retry logic configured. Contact our support team if you need to reschedule.\n\nBest regards,\nCloudInfra Database Operations Team\nSupport: db-support@cloudinfra-vendor.com",
+    "labels": [
+      "inbox",
+      "vendor",
+      "maintenance"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5015",
+    "from": "newsletter@devops-weekly.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "DevOps Weekly #247: Database Migration Best Practices",
+    "date": "2026-04-01T09:15:00+08:00",
+    "body": "Hi there,\n\nWelcome to DevOps Weekly #247!\n\nThis week's highlights:\n\n- Database migration strategies for zero-downtime deployments\n- Kubernetes 1.29 release notes and upgrade guide\n- Monitoring connection pool saturation in production\n- Case study: How Stripe handles database failovers\n\nRead more at: https://devops-weekly.com/issue-247\n\nCheers,\nDevOps Weekly Team",
+    "labels": [
+      "inbox",
+      "newsletter"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5016",
+    "from": "cto@lingxi-ai.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Re: CloudInfra Database Maintenance - Need Impact Assessment",
+    "date": "2026-04-02T16:45:00+08:00",
+    "body": "振凯，\n\nSaw the CloudInfra database maintenance notice. We need a full runbook before approving this window.\n\nPlease prepare:\n1. Which production services depend on this cluster?\n2. Pre-flight checks and rollback criteria\n3. Monitoring plan during the window\n4. Customer notification timeline\n\nLet's sync tomorrow morning if you need clarification.\n\n王明",
+    "labels": [
+      "inbox",
+      "urgent",
+      "cto"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5017",
+    "from": "lin.zhenkai@lingxi-ai.com",
+    "to": "cto@lingxi-ai.com",
+    "subject": "Procurement Request: Production DB Server NVMe SSD Replacement",
+    "date": "2026-04-02T15:45:00+08:00",
+    "body": "Hi Wang Ming,\n\nI'm requesting approval for an urgent hardware procurement to replace the aging NVMe SSD on our primary production database server (db-prod-01).\n\n**Background:**\nWhile investigating recent disk I/O latency spikes (P99 read latency increased from 8ms to 24ms over past 2 weeks), I discovered our production DB server is still running the Samsung 970 EVO 1TB purchased in Q2 2023 - approaching 3-year warranty end and showing early performance degradation signs.\n\n**Proposed Solution:**\nWD Black SN850X NVMe SSD 2TB PCIe 4.0 M.2 (TestMall PROD-5005)\n- Price: $289.99 USD\n- Specs: 7300 MB/s read, 2TB capacity, Dell PowerEdge R740 compatible\n- Delivery: 2-day shipping via TestMall (arrives ~April 4)\n\n**Inventory Gap Analysis:**\n- CLI inventory check confirms zero spare NVMe drives in stock (SKU-2086 out_of_stock)\n- Last procurement (4x Samsung 980 PRO, March 28) allocated to staging environment\n- Existing spare (SKU-2087) is 1TB legacy model, incompatible with production requirements\n\n**Budget Status:**\nQ1 hardware procurement budget (TXN-6012): $5000 allocated\nQ1 utilization to date: $1159.96 (staging upgrade)\nRemaining headroom: $3840.04\nThis purchase: $289.99 (7.3% of remaining budget)\n\n**Installation Timeline:**\n- Delivery: April 4 (Thu)\n- Proposed maintenance window: April 5 (Sat) 02:00-04:00 CST (low-traffic period)\n- Estimated downtime: 90 minutes (includes backup verification, physical swap, boot validation)\n- Rollback plan: Keep existing drive as hot-spare for 48h post-install\n\n**Risk Assessment:**\n- Current drive failure risk: Medium (age + performance degradation)\n- Maintenance window impact: Low (Saturday early morning, <100 active users expected)\n- Budget impact: Low (well within Q1 allocation)\n\nPlease approve at your earliest convenience. I can proceed with TestMall order immediately upon approval to meet April 4 delivery target.\n\nBest regards,\nLin Zhenkai\nBackend Engineer & DevOps",
+    "labels": [
+      "sent",
+      "procurement",
+      "urgent"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5018",
+    "from": "billing@testmall.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Your TestMall Cart - WD Black SN850X NVMe SSD 2TB",
+    "date": "2026-04-02T15:20:00+08:00",
+    "body": "Hi Lin Zhenkai,\n\nYou have 1 item in your TestMall shopping cart:\n\n- WD Black SN850X NVMe SSD 2TB PCIe 4.0 M.2 (PROD-5005)\n  Price: $289.99 USD\n  Stock: 18 units available\n  Estimated delivery: 2-3 business days\n\nComplete your purchase now to secure this item!\n\nBest regards,\nTestMall Team",
+    "labels": [
+      "inbox",
+      "shopping"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5019",
+    "from": "cto@lingxi-ai.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Re: Procurement Request: Production DB Server NVMe SSD Replacement",
+    "date": "2026-04-02T16:30:00+08:00",
+    "body": "Zhenkai,\n\nApproved. Good analysis on the inventory gap and budget headroom.\n\nPlease proceed with the TestMall order. Confirm the April 5 maintenance window with the team and send customer notification 48h in advance (by April 3 EOD).\n\nAlso document the installation procedure in Obsidian runbook for future reference.\n\nWang Ming\nCTO",
+    "labels": [
+      "inbox",
+      "procurement",
+      "approved"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5020",
+    "from": "cto@lingxi-ai.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "URGENT: Deploy rate limiter tonight - customer escalation",
+    "date": "2026-04-01T23:45:00+08:00",
+    "body": "Zhenkai,\n\nJust got off a call with our largest customer (CloudInfra Technologies). They're experiencing API abuse from one of their downstream clients and need the new rate limiting feature deployed ASAP. Can we push tonight's deployment window up or at minimum confirm it's still on track for 22:00?\n\nPlease confirm status by 8 AM tomorrow. If there are any blockers, I need to know immediately so I can manage customer expectations.\n\n- Wang Ming\nCTO, 灵犀智能科技",
+    "labels": [
+      "urgent",
+      "deployment",
+      "customer"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5021",
+    "from": "monitoring@lingxi-ai.com",
+    "to": "oncall@lingxi-ai.com",
+    "subject": "ALERT: JOB-716 overnight_db_connection_pool_stress_test FAILED",
+    "date": "2026-04-02T03:17:32+08:00",
+    "body": "Alert Time: 2026-04-02 03:17:32 CST\nJob: JOB-716 (overnight_db_connection_pool_stress_test)\nStatus: FAILED\nDuration: 1020 seconds\n\nError Summary:\nConnection pool exhausted at 450 concurrent connections.\nMySQL Error: 'Too many connections' (Error 1040)\n\nLast Successful Run: 2026-04-01 03:00:00 (380 connections)\n\nAction Required:\n- Investigate connection pool configuration\n- Review recent code changes that may increase connection usage\n- Assess impact on scheduled deployment (2026-04-02 22:00)\n\nRunbook: https://wiki.lingxi-ai.com/runbooks/db-connection-pool-troubleshooting\n\n---\nThis is an automated message from the scheduling system.",
+    "labels": [
+      "alert",
+      "monitoring",
+      "critical"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5022",
+    "from": "cdn-ops@cloudinfra-vendor.com",
+    "to": "customers@lingxi-ai.com",
+    "subject": "Reminder: Scheduled maintenance window - April 5-6, 2026",
+    "date": "2026-04-01T14:20:00+08:00",
+    "body": "Dear CloudInfra Customer,\n\nThis is a reminder that our previously announced maintenance window for Zone AP-East-1 is scheduled for:\n\nStart: April 5, 2026 02:00 CST\nEnd: April 6, 2026 06:00 CST\n\nDuring this window, you may experience:\n- Intermittent CDN cache misses (up to 15% increase in origin traffic)\n- Elevated latency for edge requests (up to 50ms P99)\n\nNo action is required on your part. Our SLA credits will apply for any downtime exceeding 5 minutes.\n\nFor questions, contact support@cloudinfra-vendor.com.\n\nBest regards,\nCloudInfra Operations Team",
+    "labels": [
+      "vendor",
+      "maintenance",
+      "info"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5023",
+    "from": "wang.ming@lingxi-ai.com",
+    "to": "team@lingxi-ai.com",
+    "subject": "Team lunch - Friday 12:30",
+    "date": "2026-04-01T17:30:00+08:00",
+    "body": "Hey team,\n\nLet's do a team lunch this Friday at 12:30 to celebrate closing Q1 strong. I'm thinking the hot pot place near the office.\n\nReply if you can make it!\n\n- Wang Ming",
+    "labels": [
+      "team",
+      "social"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5024",
+    "from": "maintenance@cloudinfra-vendor.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Scheduled Database Maintenance - Zone AP-East-1 - April 8-9, 2026",
+    "date": "2026-03-25T10:30:00+08:00",
+    "body": "Dear CloudInfra Customer,\n\nThis is to notify you of scheduled maintenance for your PostgreSQL database cluster in Zone AP-East-1.\n\n**Maintenance Window:**\n- Start: April 8, 2026, 22:00 CST\n- End: April 9, 2026, 02:00 CST\n- Duration: 4 hours\n- Expected service interruption: 15-20 minutes\n\n**Maintenance Activities:**\n- PostgreSQL version patch application\n- Schema optimization and index rebuilding\n- Connection pool reconfiguration for improved performance\n- Vacuum and analyze operations on large tables\n\n**Impact:**\nDuring the maintenance window, you may experience brief connection interruptions. We recommend:\n1. Implementing connection retry logic in your applications\n2. Notifying your end users of potential brief service disruptions\n3. Avoiding critical deployments during this window\n\n**Rescheduling:**\nIf you need to reschedule this maintenance, please contact support within 48 hours. Note: Rescheduling fee of $2,500 applies per contract terms.\n\n**Contract Reference:** CI-DB-2026-LX\n**Support:** support@cloudinfra-vendor.com | +86 400-888-9999\n\nThank you for your business.\n\nCloudInfra Operations Team",
+    "labels": [
+      "vendor",
+      "maintenance",
+      "critical"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5025",
+    "from": "cto@lingxi-ai.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "URGENT: Rate-Limiting Deployment - Customer Requirement",
+    "date": "2026-04-02T18:50:00+08:00",
+    "body": "Zhenkai,\n\nJust got off the phone with sales. We have a major prospect (Enterprise Solutions Group - potential $500K ARR) ready to sign tomorrow, but they need guaranteed rate-limiting in place first.\n\nCan we deploy the rate-limiting feature tonight? I know we've been testing it in staging, but this is business-critical.\n\nLet me know ASAP if there are any technical blockers. If we can't deploy tonight, we risk losing this deal.\n\nThanks,\nWang Ming\nCTO, 灵犀智能科技",
+    "labels": [
+      "urgent",
+      "deployment",
+      "business-critical"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5026",
+    "from": "billing@cloudinfra-vendor.com",
+    "to": "finance@lingxi-ai.com",
+    "subject": "Payment Confirmation - Annual Database Contract Renewal",
+    "date": "2026-03-16T14:20:00+08:00",
+    "body": "Dear Customer,\n\nThank you for your payment of CNY 48,000.00 for your CloudInfra Premium Database Hosting annual contract renewal.\n\n**Contract Details:**\n- Contract ID: CI-DB-2026-LX\n- Service Period: April 1, 2026 - March 31, 2027\n- Service Level: Premium (99.95% uptime SLA)\n- Payment Date: March 15, 2026\n- Invoice Number: INV-2026-03-0847\n\n**Included Services:**\n- 24/7 technical support\n- Quarterly maintenance windows\n- Schema optimization services\n- Performance monitoring and alerts\n\n**Important Contract Terms:**\n- Maintenance window rescheduling fee: $2,500 per occurrence\n- SLA credit calculation: Automated monthly reconciliation\n- Support response time: <15 minutes for critical issues\n\nYour receipt and detailed invoice are attached.\n\nBest regards,\nCloudInfra Billing Team",
+    "labels": [
+      "finance",
+      "receipt"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5027",
+    "from": "monitoring@lingxi-ai.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "ALERT: Scheduler Job Failure - nightly_cache_warmup - 3 consecutive failures",
+    "date": "2026-04-02T08:15:00+08:00",
+    "body": "Alert Details:\n\nJob Name: nightly_cache_warmup\nJob ID: JOB-725\nAlert Type: repeated_failure\nFailure Count: 3 consecutive runs\nLast Successful Run: 2026-03-30T03:00:00+08:00\nLast Failed Run: 2026-04-02T03:00:00+08:00\n\nError Summary:\nConnection pool exhausted - unable to acquire database connection within timeout period (30s)\n\nRecommended Action:\nInvestigate job execution history and resource contention. Check database connection pool configuration.\n\nAlert ID: ALT-2026-04-02-0815\nSeverity: HIGH\nGenerated: 2026-04-02T08:15:00+08:00",
+    "labels": [
+      "alert",
+      "scheduler",
+      "urgent"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5028",
+    "from": "cto@lingxi-ai.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Re: Weekly infrastructure review - Q2 planning",
+    "date": "2026-04-01T16:30:00+08:00",
+    "body": "Zhenkai,\n\nThanks for the infrastructure capacity report. Let's schedule a follow-up next week to discuss the Redis scaling plan.\n\nAlso, I noticed some scheduler job alerts over the weekend - have you had a chance to review those? Let me know if we need to prioritize any fixes before the Friday deployment window.\n\nBest,\nWang Ming",
+    "labels": [
+      "internal",
+      "team",
+      "planning"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5029",
+    "from": "billing@cloud-services.com",
+    "to": "finance@lingxi-ai.com",
+    "subject": "March 2026 Invoice - Database Services",
+    "date": "2026-04-01T09:00:00+08:00",
+    "body": "Dear Customer,\n\nPlease find attached your March 2026 invoice for database services.\n\nAccount ID: LX-DB-2024\nInvoice Amount: $2,847.50 USD\nDue Date: 2026-04-15\n\nThank you for your business.\n\nCloud Services Billing Team",
+    "labels": [
+      "billing",
+      "finance"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5030",
+    "from": "lin.zhenkai@lingxi-ai.com",
+    "to": "cto@lingxi-ai.com",
+    "subject": "On-Call Expense Justification - INC-2026-04-01-003 (API Outage)",
+    "date": "2026-04-02T14:35:00+08:00",
+    "body": "Hi Wang Ming,\n\nI'm submitting an expense justification for the on-call meal during last night's production incident INC-2026-04-01-003.\n\n**Incident Summary:**\n- Incident ID: INC-2026-04-01-003\n- Date/Time: April 1, 2026, 22:15 - 23:15 (60 minutes)\n- Severity: P1 (API error rate 87%, revenue impact ~¥8,500)\n- Root Cause: Analytics job JOB-728 exhausted database connection pool\n- Resolution: Killed problematic job, restarted connection pool, API restored to baseline\n\n**Expense Details:**\n- Merchant: Haidilao Hotpot\n- Amount: ¥128.50\n- Time: April 1, 23:45 (after incident resolution)\n- Category: On-call incident response meal\n\n**Timeline Verification:**\n- On-call duty window: March 31 18:00 - April 7 09:00 (confirmed in calendar FCAL-136)\n- Incident occurred: April 1, 22:15 - 23:15 (documented in Obsidian OBSN-46)\n- Meal timestamp: April 1, 23:45 (within eligible window per policy)\n- Expense logged: My Expenses MYACC-103\n\n**Budget Impact:**\n- Q1 2026 on-call expenses: ¥856.50 (7 incidents)\n- This expense: ¥128.50\n- Q1 budget: ¥1,500\n- Utilization: 57% (well within budget)\n- Average per incident: ¥122.36\n\n**Policy Compliance:**\nThis expense meets all criteria in our on-call expense policy (Obsidian OBSN-47):\n✓ Incident occurred after 22:00\n✓ Amount within ¥150 meal limit\n✓ Incident documented with timeline\n✓ On-call duty confirmed\n✓ Submitted within 2 business days\n\nReceipt attached. Please approve for reimbursement processing.\n\nBest regards,\nLin Zhenkai\n\n---\nAttachment: haidilao_20260401_2345.jpg",
+    "labels": [
+      "sent",
+      "expense",
+      "incident"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5031",
+    "from": "cto@lingxi-ai.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Re: On-Call Expense Justification - INC-2026-04-01-003 (API Outage)",
+    "date": "2026-04-02T15:12:00+08:00",
+    "body": "Zhenkai,\n\nExpense approved. Thanks for the detailed justification and quick incident response last night.\n\nGood work on the root cause analysis. Let's discuss the prevention measures (connection pool monitoring, query timeouts) in tomorrow's standup.\n\nForwarding to finance for reimbursement.\n\nWang Ming",
+    "labels": [
+      "inbox",
+      "expense",
+      "approved"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5032",
+    "from": "finance@lingxi-ai.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Expense Reimbursement Processed - TXN-6019",
+    "date": "2026-04-03T10:20:00+08:00",
+    "body": "Dear Lin Zhenkai,\n\nYour on-call expense reimbursement has been processed:\n\n- Transaction ID: TXN-6019\n- Amount: ¥128.50\n- Incident: INC-2026-04-01-003\n- Approved by: Wang Ming (CTO)\n- Payment method: Direct deposit to salary account\n- Expected credit date: April 5, 2026\n\nThank you for your service during the incident.\n\nBest regards,\nFinance Team\n灵犀智能科技",
+    "labels": [
+      "inbox",
+      "finance"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5033",
+    "from": "billing@cloudinfra-vendor.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "March 2026 Invoice - Account #LX-AI-8834",
+    "date": "2026-04-01T09:15:00+08:00",
+    "body": "Dear Lin Zhenkai,\n\nYour CloudInfra Technologies monthly invoice for March 2026 is now available.\n\nAccount ID: LX-AI-8834\nBilling Period: March 1-31, 2026\nTotal Amount Due: $4,287.50 USD\n\nService Breakdown:\n- Compute Instances (AP-East-1): $2,450.00\n- Object Storage: $890.00\n- Data Transfer: $647.50\n- CDN Services: $300.00\n\nPayment Due: April 15, 2026\n\nView detailed invoice: https://portal.cloudinfra-vendor.com/billing/inv-202603-LX-AI-8834\n\nThank you for your business.\n\nCloudInfra Billing Team\nbilling@cloudinfra-vendor.com",
+    "labels": [
+      "inbox",
+      "billing"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5034",
+    "from": "marketing@saas-newsletter.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Cloud Cost Optimization Strategies for Q2 2026",
+    "date": "2026-04-02T08:30:00+08:00",
+    "body": "Hi there,\n\nAre you spending too much on cloud infrastructure? Our latest whitepaper reveals 7 proven strategies to reduce your cloud bills by up to 40%.\n\nDownload now: https://saas-newsletter.com/cloud-cost-optimization\n\nBest regards,\nSaaS Insights Team",
+    "labels": [
+      "inbox",
+      "marketing"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5035",
+    "from": "cto@lingxi-ai.com",
+    "to": "lin.zhenkai@lingxi-ai.com",
+    "subject": "Re: Q1 Infrastructure Spending Review",
+    "date": "2026-04-02T14:20:00+08:00",
+    "body": "Zhenkai,\n\nCan you confirm the CloudInfra charges for March? I saw the invoice notification but want to make sure it matches our expected usage before we approve payment.\n\nAlso, please update the finance tracking sheet with Q1 totals when you get a chance.\n\nThanks,\nWang Ming",
+    "labels": [
+      "inbox",
+      "urgent"
+    ],
+    "is_read": false
+  }
+]

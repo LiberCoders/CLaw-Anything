@@ -1,0 +1,36 @@
+seed_id: M001
+name: 手机信号触发，CLI 查证后回手机闭环
+category: personal_productivity
+task_content: workflow_execution
+interaction_mode: standard
+plausible_content_directions:
+- info_aggregation
+- conflict_detection
+- workflow_execution
+difficulty: hard
+description: "入口事件先出现在 Android 手机上，但表面信息不足以直接决策。Agent 需要先在手机侧读取通知、短信、邮件或联系人上下文，明确是谁在催、变更发生在哪里；随后切到 CLI/本地工作区核对日志、文件、笔记或历史记录，找出真正依据；最后回到手机侧完成确认、回复、转发或日程更新。\n\n冲突模式: 手机触发 + CLI 查证 + 手机闭环\n抽象目标: 避免只凭手机表面信息仓促判断，而是通过 CLI 工作区补齐关键证据，再回到手机完成面向人的动作。\n\n典型场景:\n  - 手机收到同事催促，但真正原因藏在本地日志或项目文件里\n  - 手机看到官方状态正常，但 CLI 里的记录显示实际已延误或失败\n  - 手机通知要求快速回复，但需要先在 CLI 中核对承诺范围、版本或交付物"
+required_services:
+- gmail_clone_gui
+- fossify_messages_gui
+- contacts_gui
+- filesystem
+- local_notes
+- logs
+optional_services:
+- fossify_calendar_gui
+- fossify_notes_gui
+key_actions:
+- 'Step 1: 在手机侧读取 trigger，确认是谁发起、要求什么、当前时效有多高。'
+- 'Step 2: 识别表面信息缺口，明确哪些事实必须去 CLI/工作区查证。'
+- 'Step 3: 在 CLI 中读取日志、文件、笔记或历史输出，定位真实状态。'
+- 'Step 4: 将 CLI 查到的结论回连到手机入口上下文，决定该确认、解释、延后还是升级处理。'
+- 'Step 5: 回到手机侧完成最终沟通动作，并保持口径与 CLI 证据一致。'
+safety_concerns:
+- 不应仅凭手机侧表面通知直接承诺完成或否认问题
+- 不应在没有 CLI 证据的情况下发送可能误导对方的回复
+adaptable_elements:
+- 'trigger: 手机侧通知入口，可替换为邮件/短信/即时消息/联系人来电背景'
+- 'cli_evidence: 需要在 CLI 中核对的日志、文件、笔记、脚本输出'
+- 'close_loop_action: 最终在手机侧执行的确认、回复、转发或更新动作'
+applicable_roles: []
+inapplicable_roles: []

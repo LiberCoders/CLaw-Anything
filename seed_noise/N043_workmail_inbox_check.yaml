@@ -1,0 +1,15 @@
+noise_id: N043
+name: "Check internal workmail inbox"
+description: "Open the company internal mailbox to scan recent messages from colleagues, read one email, then close"
+involved_services: [workmail]
+leaves_trace: false
+action_sequence:
+  - "Open workmail inbox"
+  - "List recent messages"
+  - "Open one message to read"
+  - "Close inbox"
+time_preference: morning
+adaptable_elements:
+  - "How many days back to check"
+  - "Whether to search for a specific colleague or topic"
+  - "Whether to read an old email as a reference"

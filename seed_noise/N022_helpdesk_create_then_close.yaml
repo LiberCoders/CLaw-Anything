@@ -1,0 +1,16 @@
+noise_id: N022
+name: "Start a ticket then self-resolve"
+description: "Encounter a small issue and start creating a ticket, figure out the answer halfway through, abandon it"
+involved_services: [helpdesk]
+leaves_trace: true
+trace_type: "abandoned_ticket_draft"
+action_sequence:
+  - "Open ticket system"
+  - "Start creating a new ticket"
+  - "Fill in problem description"
+  - "Figure out the root cause mid-way"
+  - "Abandon creation, close ticket system"
+time_preference: any
+adaptable_elements:
+  - "Type of issue encountered"
+  - "How the issue was self-resolved"

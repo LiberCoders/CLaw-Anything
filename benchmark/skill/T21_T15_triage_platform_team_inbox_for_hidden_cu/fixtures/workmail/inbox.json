@@ -1,0 +1,662 @@
+[
+  {
+    "message_id": "WMSG-5001",
+    "from": "priya.sharma@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Polaris rollout - SRE capacity constraints updated",
+    "date": "2026-02-19T10:15:00-08:00",
+    "body": "Hi Jorge,\n\nFollowing up on yesterday's platform sync. The SRE team has finalized their capacity assessment for Polaris rollout monitoring.\n\nKey updates:\n- We can handle max 4 concurrent rollout waves (this is firm - any more and we risk missing critical alerts)\n- Fast rollback (<15 min) only guaranteed for waves under 150 customers\n- We strongly recommend sequencing at least one feature completely before starting the next to reduce operational load\n\nAlso flagging that the three mid-market accounts showing churn signals are all in Professional tier. If we can get them stable features early in the rollout, it might help retention.\n\nThe ops constraints doc in Notion (linked from Monday's meeting notes) has all the details. Let me know if you need any clarification as you finalize the rollout plan.\n\nBest,\nPriya\n\n--\nPriya Sharma\nVP Engineering, Crucible",
+    "labels": [
+      "polaris",
+      "engineering",
+      "important"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5002",
+    "from": "marcus.chen@crucible.com",
+    "to": "jorge.alvarez@crucible.com, priya.sharma@crucible.com",
+    "subject": "Infrastructure capacity - final numbers for Polaris",
+    "date": "2026-02-17T14:30:00-08:00",
+    "body": "Jorge, Priya,\n\nInfrastructure team has locked in the capacity allocation for Polaris GA rollout:\n\n**Hard caps (cannot be exceeded):**\n- Compute: 8,000 vCPU-hours/day\n- DB connections: 1,200 total\n- CDN edge slots: 320 global\n\n**Critical shared resource constraints:**\n- Unified Auth + Analytics API share primary DB pool → combined cannot exceed 850 connections during any rollout phase\n- Analytics API + Webhook Consolidation share compute cluster → combined cannot exceed 5,500 vCPU-hours during rollout\n\nI've updated the Polaris infrastructure requirements page in Notion with full details and the dependency matrix.\n\nThese numbers are firm through end of Q1. If the rollout plan violates any of these caps, we'll need to push GA date or reduce scope.\n\nLet me know if questions.\n\nMarcus\n\n--\nMarcus Chen\nDirector of Infrastructure, Crucible",
+    "labels": [
+      "polaris",
+      "infrastructure",
+      "important"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5003",
+    "from": "jorge.alvarez@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "Polaris rollout strategy - need final plan by EOW",
+    "date": "2026-02-21T11:30:00-08:00",
+    "body": "Team,\n\nI'm finalizing the Polaris rollout strategy today and tomorrow. We need to lock this down by end of week so engineering can prep the deployment configs.\n\nI'm working through all the constraint combinations (infrastructure caps, tier separation rules, monitoring limits, shared resources) to find the optimal path that gets us to 100% GA by March 31 with minimum risk.\n\nOnce I have the analysis complete, I'll document the full strategy with constraint-satisfaction proof in Notion and send it out for review. If we need any ops policy exceptions, I'll schedule an alignment meeting with Priya and Marcus.\n\nThanks for all the great work getting these features ready.\n\nJorge\n\n--\nJorge Alvarez\nSenior Product Manager, Platform Team\nCrucible",
+    "labels": [
+      "polaris",
+      "team",
+      "planning"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5004",
+    "from": "sarah.kim@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Quick question on Q2 OKR proposal",
+    "date": "2026-02-20T15:45:00-08:00",
+    "body": "Hey Jorge,\n\nSaw the data team's Q2 OKR proposal that came through yesterday. Do you have thoughts on their request for dedicated analytics infrastructure? Seems like it might conflict with our Polaris capacity planning.\n\nWanted to get your take before the OKR review meeting next week.\n\nThanks,\nSarah\n\n--\nSarah Kim\nProduct Manager, Data Team\nCrucible",
+    "labels": [
+      "okr",
+      "q2-planning"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5005",
+    "from": "priya.sharma@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Auth endpoint migration - analytics-worker refactor taking longer than expected",
+    "date": "2026-04-04T11:20:00-07:00",
+    "body": "Jorge,\n\nQuick update on the legacy auth endpoint migration. We hit a snag with analytics-worker - turns out there are 14 hard-coded endpoint references scattered across the codebase, not the 5-6 we initially scoped. My team has refactored 8 so far, but the remaining 6 are in some gnarly async batch processing logic.\n\nRevised estimate: we'll need until EOD April 11 to complete analytics-worker + reporting-batch (which depends on it). That's +3 days from our original April 8 target.\n\nThe good news: legacy-webhook-proxy only handles 0.3% of auth traffic (mostly old integrations from 2023). I propose we deprioritize it and migrate those last few customers manually if needed. That would let us hit the April 11 completion date with higher confidence.\n\nHealth checks for the already-migrated services (user-service, api-gateway, mobile-backend) are all green - no regressions.\n\nLet me know if the +3 day slip creates issues for your customer notification timeline. I can pull in another engineer if we absolutely need to hit April 8, but it'll cost us velocity on Polaris.\n\nPriya",
+    "labels": [
+      "platform-team",
+      "migration",
+      "urgent"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5006",
+    "from": "jorge.alvarez@crucible.com",
+    "to": "priya.sharma@crucible.com, marcus.chen@crucible.com",
+    "subject": "Re: Auth endpoint migration - checkpoint decision needed",
+    "date": "2026-04-04T14:45:00-07:00",
+    "body": "Priya,\n\nThanks for the heads-up. The +3 day slip is manageable - it pushes our Go/No-Go checkpoint from April 10 to April 11, which still gives us a 30-day customer grace period if we send notification on April 14 (accounting for legal review).\n\nI agree with deprioritizing legacy-webhook-proxy. Let's document which customers are affected and have a manual migration plan ready.\n\nMarcus - can you confirm SRE capacity for health checks and monitoring on April 11? We need sign-off that all migrated services are stable before we commit to customer notification.\n\nI'm drafting the customer communication in parallel (migration guide, FAQ, support scripts) so we're ready to move fast once engineering gives the green light. If we slip beyond April 11, we'll need to either compress the grace period to 21 days (contractual minimum) or push the kill-switch date to late May, which conflicts with Q2 planning.\n\nLet's sync Monday morning to finalize the checkpoint criteria.\n\nJorge",
+    "labels": [
+      "platform-team",
+      "migration",
+      "decision"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5007",
+    "from": "sarah.kim@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Customer notification draft - need timeline confirmation",
+    "date": "2026-04-05T10:15:00-07:00",
+    "body": "Jorge,\n\nI've drafted the customer notification email and migration guide for the auth endpoint deprecation. Legal is standing by for review (they need 2-3 business days).\n\nThe draft currently references:\n- Notification date: April 14\n- Migration deadline: May 15\n- Grace period: 31 days\n\nBefore I send to legal, I need confirmation that these dates are locked. If engineering slips and we have to revise after legal review, it'll add another 2-3 days to the process.\n\nAlso flagging: CUS-102 (Meridian Health), CUS-103 (GlobalRetail), and CUS-104 (StartupHub) are the three accounts with recent churn signals. I recommend we do personalized outreach to their technical contacts before the general announcement. Can we schedule a quick sync to discuss the sequencing?\n\nI've also prepared:\n- Support team training deck (ready to go)\n- KB article drafts for common migration scenarios (ready for review)\n- FAQ document (needs engineering input on a few edge cases)\n\nLet me know when you want to review.\n\nSarah",
+    "labels": [
+      "customer-success",
+      "migration",
+      "review-needed"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5008",
+    "from": "marcus.chen@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "SRE capacity for auth migration health checks - confirmed",
+    "date": "2026-04-04T16:00:00-07:00",
+    "body": "Jorge,\n\nConfirming SRE capacity for the auth endpoint migration health checks:\n\n✅ April 11-12: Full monitoring coverage, on-call rotation adjusted\n✅ Runbook updated with rollback procedures\n✅ Alerting thresholds configured for /v2/auth endpoint (latency, error rate, throughput)\n\nWe'll run a full integration test suite on April 11 morning and provide sign-off by EOD if all services pass. Criteria:\n- Zero P0/P1 bugs in migrated services\n- <5ms latency increase vs. baseline\n- Error rate <0.1%\n- All downstream dependencies healthy\n\nIf anything fails, we'll have a war room ready to triage.\n\nOne note: I'm seeing some flakiness in our staging environment's analytics-worker integration tests (intermittent timeouts). Priya's team is investigating, but we should make sure that's resolved before we sign off on production readiness.\n\nMarcus",
+    "labels": [
+      "sre",
+      "migration",
+      "confirmation"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5009",
+    "from": "david.torres@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "Q2 OKR dependency - data pipeline capacity for Polaris analytics",
+    "date": "2026-04-02T10:15:00-07:00",
+    "body": "Hi Platform team,\n\nData team here. We're finalizing our Q2 OKRs and need clarity on Polaris analytics pipeline capacity.\n\nOur proposal includes:\n- Real-time event streaming for all Polaris features (est. 2M events/day)\n- New dimensional model for cross-feature analytics\n- Self-service dashboard framework\n\nSarah mentioned in last week's cross-team sync that Polaris GA might impact shared Kafka cluster capacity. Can someone confirm:\n1. What's the reserved capacity allocation for Polaris post-GA?\n2. Are we still on track for the April 19 GA date, or has the two-week slip pushed it to May 3?\n3. If May 3, does that change our Q2 capacity planning assumptions?\n\nThis is blocking our OKR finalization - leadership wants final numbers by Friday EOD.\n\nThanks,\nDavid\n\n--\nDavid Torres\nSenior Data Engineer, Analytics Platform\nCrucible",
+    "labels": [
+      "platform-team",
+      "q2-planning"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5010",
+    "from": "rachel.kim@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "URGENT: TechFlow escalation - API rate limits blocking integration",
+    "date": "2026-04-03T14:22:00-07:00",
+    "body": "Platform team -\n\nTechFlow Industries (one of our top 5 accounts, $850K ARR) just escalated through their CSM. Their engineering team is hitting 429 rate limit errors on the /v2/analytics/export endpoint.\n\nThey're trying to build a real-time sync to their internal data warehouse and need either:\na) Rate limit increase from 100 req/min to 500 req/min, OR\nb) Batch export API with higher throughput\n\nTheir VP Engineering is threatening to pause their Q2 expansion (additional $200K) if we can't solve this by next Tuesday. Amanda Rodriguez (their main contact) has been trying to reach someone since yesterday.\n\nCan someone from platform jump on this today? I know you're swamped with Polaris, but this is a churn risk.\n\nRachel\n\n--\nRachel Kim\nCustomer Success Manager\nCrucible",
+    "labels": [
+      "urgent",
+      "customer-escalation",
+      "platform-team"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5011",
+    "from": "sarah.kim@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "Re: Q2 OKR proposal - data team capacity conflicts",
+    "date": "2026-04-03T16:45:00-07:00",
+    "body": "Jorge + Platform team,\n\nFollowing up on David's email about Q2 data pipeline capacity.\n\nI reviewed the data team's OKR proposal and there's a direct conflict with our documented Polaris rollout plan (see NPAG-3). The proposal assumes:\n- Polaris GA on April 19 (original date)\n- 40% Kafka cluster headroom post-launch\n\nBut our current plan shows:\n- Polaris GA now May 3 (two-week slip)\n- Only 25% Kafka headroom due to the compressed rollout schedule\n\nThe data team's real-time streaming OKR would consume ~30% of available capacity, which violates our infrastructure reserve policy (min 20% buffer for incidents).\n\nWe need to either:\n1. Push back on the data team's Q2 scope, OR\n2. Accelerate Kafka cluster expansion (adds $45K infra cost + 3 weeks eng time), OR\n3. Renegotiate the Polaris rollout to preserve more headroom\n\nThis needs a decision before Friday's OKR lock. Can we sync tomorrow morning?\n\nSarah\n\n--\nSarah Kim\nEngineering Manager, Data Platform\nCrucible",
+    "labels": [
+      "q2-planning",
+      "platform-team",
+      "blocking"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5012",
+    "from": "priya.sharma@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "Polaris feature clarification - SSO integration scope for GA",
+    "date": "2026-04-04T09:30:00-07:00",
+    "body": "Platform team,\n\nGot a question from the sales engineering team about Polaris GA scope.\n\nThey're in late-stage negotiations with two Enterprise prospects (combined $1.2M potential ARR) who are asking whether Polaris will support SAML 2.0 SSO at GA launch.\n\nI checked NPAG-1 (Polaris Platform Features doc) and it lists \"Enterprise SSO\" as a feature but doesn't specify SAML vs OIDC vs both. The original PRD from January mentioned SAML as \"stretch goal.\"\n\nCan someone clarify:\n- Is SAML 2.0 included in May 3 GA scope?\n- If not, what's the ETA? Q2? Q3?\n- Should sales be positioning this as \"coming soon\" or \"available at launch\"?\n\nNot urgent but would help close these deals if we have clarity by early next week.\n\nThanks,\nPriya\n\n--\nPriya Sharma\nDirector of Engineering, Platform\nCrucible",
+    "labels": [
+      "platform-team",
+      "polaris"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5013",
+    "from": "marcus.chen@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "Ad-hoc request - log retention policy exception for compliance audit",
+    "date": "2026-04-04T11:05:00-07:00",
+    "body": "Hey platform team,\n\nSecurity & Compliance is asking for a one-time log retention extension for our SOC 2 Type II audit.\n\nThey need:\n- All platform API logs from Jan 1 - Mar 31, 2026 retained until June 30\n- Current policy auto-deletes after 90 days (so Jan logs would purge around April 1)\n\nThis is ~850 GB of additional S3 storage (~$20/month extra cost). Audit starts April 21 and they need the full Q1 dataset available.\n\nCan someone approve this exception and update the retention policy in our logging config? Compliance needs confirmation by Monday.\n\nLet me know if you need more details.\n\nMarcus\n\n--\nMarcus Chen\nSRE Lead, Infrastructure\nCrucible",
+    "labels": [
+      "platform-team",
+      "compliance"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5014",
+    "from": "david.torres@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "Re: Q2 OKR dependency - CORRECTION on event volume estimate",
+    "date": "2026-04-04T15:20:00-07:00",
+    "body": "Platform team,\n\nQuick correction to my earlier email (April 2) about Polaris analytics pipeline capacity.\n\nI said we estimated 2M events/day for real-time streaming. That number is WRONG - it was based on outdated assumptions.\n\nUpdated estimate after talking to product:\n- 5M events/day (2.5x higher due to new feature instrumentation requirements)\n- Peak load could hit 8M events/day during business hours\n\nThis significantly changes the Kafka capacity picture. We'd need closer to 50% of available cluster capacity, not 30%.\n\nSorry for the confusion - this makes the conflict with Sarah's email even more urgent. We definitely need to sync before Friday.\n\nDavid\n\n--\nDavid Torres\nSenior Data Engineer, Analytics Platform\nCrucible",
+    "labels": [
+      "platform-team",
+      "q2-planning",
+      "urgent"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5015",
+    "from": "priya.sharma@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Polaris v1 GA - Three Candidate Go-Live Windows for Review",
+    "date": "2026-04-02T10:15:00-07:00",
+    "body": "Hi Jorge,\n\nEngineering has finalized three candidate go-live windows for Polaris v1 GA launch. Each has different infrastructure allocations and support requirements:\n\n**Window A: April 14-15 (Mon-Tue)**\n- Infrastructure: 85% compute allocation, 12 SRE on-call hours\n- Requires rollback readiness through April 17 EOD\n- Notes: Overlaps with your locked Q2 Leadership Review on April 15 at 14:00\n\n**Window B: April 21-22 (Mon-Tue)**\n- Infrastructure: 90% compute allocation, 16 SRE on-call hours\n- Requires rollback readiness through April 24 EOD\n- Notes: Auth migration checkpoint 2 is scheduled for April 23; only 48-hour buffer\n\n**Window C: April 28-29 (Mon-Tue)**\n- Infrastructure: 95% compute allocation, 20 SRE on-call hours\n- Requires rollback readiness through May 1 EOD\n- Notes: Clean calendar, 96-hour buffer before next platform milestone (May 2 monitoring review)\n\nWe need your confirmation by EOD Friday (April 4) so we can lock infrastructure reservations. Please cross-check against your calendar, the SRE capacity doc in Notion (NPAG-9), and the mandatory 72-hour rollback buffer policy.\n\nLet me know if you need any clarification on the technical requirements.\n\nBest,\nPriya\n\n--\nPriya Sharma\nDirector of Engineering, Platform\nCrucible",
+    "labels": [
+      "urgent",
+      "polaris",
+      "decision-required"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5016",
+    "from": "marcus.chen@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "SRE Capacity Update - April Go-Live Windows",
+    "date": "2026-04-02T14:30:00-07:00",
+    "body": "Jorge,\n\nQuick update on SRE capacity for the three Polaris windows Priya sent over:\n\n- Window A (Apr 14-15): We can cover 12 hours but I'm concerned about the tight timeline before the leadership review. If something goes wrong during rollout, you won't have bandwidth to manage the incident and prep for the exec meeting.\n\n- Window B (Apr 21-22): This one worries me. The auth migration checkpoint on Apr 23 is a hard gate - if Polaris needs a rollback on Apr 23 or 24, we won't have enough SRE coverage to handle both. Our on-call rotation shows Sarah's team is primary for auth and my team is primary for Polaris that week. We'd need to pull in weekend coverage, which violates the 72-hour buffer policy in the runbook (see Notion page NPAG-9, section 3.2).\n\n- Window C (Apr 28-29): This is the cleanest option from an ops perspective. Full SRE coverage, no conflicts with other platform milestones, and we have a 96-hour buffer before the May 2 monitoring review. The team rotation also works better - we'll have both primary and secondary coverage available.\n\nMy strong recommendation is Window C. Let me know if you want to sync before you confirm with Priya.\n\n--Marcus\n\nMarcus Chen\nSRE Lead, Platform Infrastructure\nCrucible",
+    "labels": [
+      "polaris",
+      "sre",
+      "capacity"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5017",
+    "from": "jorge.alvarez@crucible.com",
+    "to": "priya.sharma@crucible.com",
+    "cc": "marcus.chen@crucible.com",
+    "subject": "Re: Polaris v1 GA - Window C Confirmed (April 28-29)",
+    "date": "2026-04-04T16:45:00-07:00",
+    "body": "Priya and Marcus,\n\nAfter cross-checking all three windows against calendar commitments, SRE capacity constraints (Notion NPAG-9), and rollback buffer requirements, I'm confirming **Window C: April 28-29** as the only feasible go-live window.\n\n**Constraint Analysis:**\n\n**Window A (April 14-15) - REJECTED**\n- Hard conflict: Q2 Leadership Review locked on my calendar April 15, 14:00-16:00 (EVT-312)\n- This is a mandatory exec meeting with VP Eng and CEO; cannot be rescheduled\n- Violates availability requirement for PM oversight during critical launch window\n\n**Window B (April 21-22) - REJECTED**\n- Insufficient rollback buffer: Only 48 hours before Auth Migration Checkpoint 2 (April 23, EVT-313)\n- Violates mandatory 72-hour rollback buffer policy (Notion NPAG-9, section 3.2)\n- SRE capacity conflict: Marcus's team primary for Polaris, Sarah's team primary for auth - no overlap coverage available per on-call rotation schedule\n- Risk: If Polaris rollback extends into April 23-24, auth checkpoint will be blocked\n\n**Window C (April 28-29) - CONFIRMED ✓**\n- Clean calendar: No hard conflicts, no locked leadership events\n- Adequate rollback buffer: 96 hours before next platform milestone (May 2 monitoring review)\n- Exceeds mandatory 72-hour buffer requirement by 24 hours\n- SRE capacity: 20 on-call hours available, both primary and secondary coverage confirmed\n- On-call rotation: Optimal team alignment per Notion NPAG-9 schedule\n- Infrastructure: 95% compute allocation secured\n\nPlease proceed with infrastructure reservations for Window C. I'll be available for launch oversight and have blocked April 28-29 on my calendar (deep work blocks suspended for launch support).\n\nLet me know if you need any additional documentation for the engineering leadership sign-off.\n\nBest,\nJorge\n\n--\nJorge Alvarez\nSenior Product Manager, Platform Team\nCrucible",
+    "labels": [
+      "polaris",
+      "decision",
+      "confirmed"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5018",
+    "from": "sarah.kim@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Quick sync on Q2 platform roadmap dependencies?",
+    "date": "2026-04-03T11:20:00-07:00",
+    "body": "Hey Jorge,\n\nI saw the Polaris go-live windows thread. Before you lock in the date, can we do a quick 15-min sync on how this impacts the Q2 platform roadmap dependencies?\n\nSpecifically, I want to make sure the Polaris launch doesn't create any bottlenecks for the data pipeline capacity work we discussed in the OKR planning session. The data team is counting on having stable Polaris analytics endpoints by mid-May for their Q2 deliverables.\n\nAlso, have you had a chance to review the Q2 OKR conflict I flagged last week? Still need your input on the prioritization between platform observability improvements and the customer-facing API rate limit enhancements.\n\nLet me know when you have 15 minutes - happy to work around your deep work blocks.\n\nThanks,\nSarah\n\n--\nSarah Kim\nEngineering Manager, Data Platform\nCrucible",
+    "labels": [
+      "q2-planning",
+      "roadmap"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5019",
+    "from": "jorge.alvarez@crucible.com",
+    "to": "sarah.kim@crucible.com",
+    "subject": "Weekly Decision Digest - Week 14 (March 31 - April 4)",
+    "date": "2026-04-05T10:30:00-07:00",
+    "body": "Hi Sarah,\n\nAttached is this week's platform team decision digest. Summary:\n\n**Decision velocity**: 4 finalized, 2 deferred (vs. 3 finalized, 1 deferred last week)\n\n**Key decisions this week**:\n1. Polaris analytics pipeline capacity allocation (40% with auto-scaling) - resolves Q2 OKR dependency blocker\n2. TechFlow rate limit exception (3x increase, 45 days, mandatory 30-day review) - churn risk mitigation\n3. Auth migration checkpoint structure (3-phase Go/No-Go) - de-risks customer-facing migration\n4. Customer notification timeline for auth deprecation (April 14 send, May 5 shutdown, 21-day notice)\n\n**Deferred decisions**:\n- Q2 OKR final prioritization (needs you + CTO, pushed to April 8)\n- Polaris Enterprise comms strategy (waiting on final GA date)\n\n**Patterns in deferred decisions**: 2 of 3 deferrals in past 2 weeks are due to exec availability conflicts. Recommend we block recurring decision review slot on your calendar for Q2.\n\n**Missing documentation**: None this week - all decisions have written rationale and confirmed approvers.\n\nFull digest in Notion: NPAG-11\n\nLet me know if you need any clarification before Monday's leadership sync.\n\nJorge",
+    "labels": [
+      "decision",
+      "weekly-digest",
+      "leadership"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5020",
+    "from": "david.torres@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Re: Decision confirmation - Polaris analytics capacity",
+    "date": "2026-04-02T14:15:00-07:00",
+    "body": "Jorge,\n\nConfirmed - data team approves the 40% allocation with auto-scaling trigger at 75%. This resolves the Q2 OKR dependency we flagged last week.\n\nOne note for the decision log: we'll need to revisit this allocation if Polaris user adoption exceeds 150% of projection in first 30 days. That would push us past our scaling headroom. Can you add that as a review trigger?\n\nAlso documenting here: Sarah signed off on this via our 1:1 yesterday (April 1). She asked that we include quarterly capacity review as part of standard operating procedure going forward.\n\nThanks for driving this to closure.\n\nDavid\n\n---\nDavid Torres\nData Team Lead, Crucible",
+    "labels": [
+      "decision",
+      "confirmed",
+      "data-team"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5021",
+    "from": "priya.sharma@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Auth migration checkpoint criteria - final approval",
+    "date": "2026-04-01T16:45:00-07:00",
+    "body": "Jorge,\n\nEngineering approves the 3-checkpoint structure you proposed:\n\nCheckpoint 1: Internal services migration complete (all 8 services off legacy endpoint)\nCheckpoint 2: Customer notification sent + 14 days elapsed + < 10 support tickets related to auth\nCheckpoint 3: Legacy endpoint traffic < 5% for 48 consecutive hours\n\nThis gives us the safety margin we need. The 14-day customer notification window is longer than standard but justified given auth criticality.\n\nOne addition: at each checkpoint, we need explicit Go/No-Go from both Platform PM (you) and SRE lead (Marcus). No automatic progression.\n\nDocumenting this decision in the auth migration Notion page (NPAG-5). Please add to your weekly decision digest.\n\nPriya\n\n---\nPriya Sharma\nVP Engineering, Crucible",
+    "labels": [
+      "decision",
+      "confirmed",
+      "auth-migration"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5022",
+    "from": "marcus.chen@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "SRE capacity update - week of April 7",
+    "date": "2026-04-04T09:30:00-07:00",
+    "body": "Team,\n\nSRE capacity for next week:\n\n- Polaris health monitoring: 20 hours allocated (Marcus, Jen)\n- Auth migration checkpoint prep: 15 hours (Marcus, Alex)\n- On-call rotation: Standard (no changes)\n- Available for ad-hoc requests: ~10 hours\n\nNote: If auth migration checkpoint 1 slips past April 11, we'll need to re-allocate the 15 hours. Please keep me posted on timeline.\n\nAlso, reminder that we're still holding 25% capacity buffer for rollback scenarios per the policy Jorge documented in NPAG-9.\n\nMarcus",
+    "labels": [
+      "internal",
+      "sre",
+      "capacity-planning"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5023",
+    "from": "jorge.alvarez@crucible.com",
+    "to": "sarah.kim@crucible.com",
+    "subject": "Q1 customer interview synthesis - need roadmap alignment review",
+    "date": "2026-04-02T14:30:00-07:00",
+    "body": "Hi Sarah,\n\nI'm wrapping up the Q1 customer interview analysis (40 interviews total) and need your eyes on the roadmap alignment section before I finalize the deck.\n\nKey findings so far:\n\n1. **Top pain point (mentioned in 28/40 interviews)**: API rate limits blocking integrations, especially for mid-market tier. TechFlow, GlobalRetail, and Apex Manufacturing all flagged this as critical.\n\n2. **Feature request frequency**:\n   - Batch API endpoints: 18 mentions\n   - Increased rate limits: 22 mentions\n   - GraphQL API: 12 mentions\n   - Multi-language UI: 9 mentions\n   - Advanced RBAC: 14 mentions\n\n3. **Churn risk signals**: 3 mid-market accounts (TechFlow, GlobalRetail, Apex) mentioned evaluating alternatives if integration issues not resolved by Q2/Q3.\n\n4. **Conflict with Q2 OKR proposal**: Data team's real-time analytics dashboard requires infrastructure capacity that overlaps with what we'd need for rate limit increases. We can't do both in Q2.\n\nCan we sync tomorrow (April 3) afternoon to review the roadmap alignment matrix? I want to make sure the deck clearly calls out where customer requests conflict with current Q2 plans.\n\nThanks,\nJorge",
+    "labels": [
+      "customer-research",
+      "roadmap",
+      "important"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5024",
+    "from": "sarah.kim@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Re: Q1 customer interview synthesis - need roadmap alignment review",
+    "date": "2026-04-02T15:45:00-07:00",
+    "body": "Jorge,\n\nThis is really valuable - especially the churn risk correlation with rate limit issues. Let's definitely sync tomorrow.\n\nQuick question: Do the interviews break down the rate limit pain by customer tier? I'm wondering if we can scope a mid-market-only rate limit increase that wouldn't require as much infrastructure investment as a universal increase.\n\nAlso, have you cross-referenced the churn risk accounts against the customer success team's health scores? Would be good to validate the signal.\n\nLet's do 2pm tomorrow (April 3) - I'll send a calendar invite.\n\nSarah",
+    "labels": [
+      "customer-research",
+      "roadmap"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5025",
+    "from": "priya.sharma@crucible.com",
+    "to": "jorge.alvarez@crucible.com, marcus.chen@crucible.com",
+    "subject": "Infrastructure capacity for Q2 - customer feedback vs data team OKR",
+    "date": "2026-04-03T10:15:00-07:00",
+    "body": "Jorge, Marcus,\n\nI understand Jorge is finalizing the Q1 customer interview synthesis and there's a conflict between customer-requested rate limit increases and the data team's Q2 OKR proposal for real-time analytics.\n\nFrom an engineering perspective, we need to make a clear priority call here. Both initiatives require significant database connection pool expansion and SRE monitoring capacity, and we can't support both in Q2.\n\nMy initial take: Customer churn risk should trump internal analytics improvements, especially if we have 3 mid-market accounts explicitly flagging this as a renewal blocker. But I want to see the full analysis before we make the call.\n\nJorge - when will the synthesis deck be ready for review? Can we schedule a decision meeting for next week (week of April 7)?\n\nPriya",
+    "labels": [
+      "engineering",
+      "planning",
+      "important"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5026",
+    "from": "david.torres@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Data team perspective on Q2 OKR conflict",
+    "date": "2026-04-03T16:20:00-07:00",
+    "body": "Jorge,\n\nI heard through the grapevine that the Q1 customer interviews are surfacing a conflict with our Q2 analytics OKR proposal. I want to make sure we have a chance to discuss this before any decisions are made.\n\nA few points for context:\n\n1. The real-time analytics dashboard was a commitment we made to 5 Enterprise customers in Q4 2025 as part of their contract renewals. Delaying this could also create churn risk.\n\n2. We've already done 6 weeks of preliminary architecture work on this, and the team is expecting to start implementation in mid-April.\n\n3. If we defer this to Q3, we'll miss the window for the annual Enterprise customer conference in June where we planned to showcase it.\n\nI'm not saying customer feedback isn't important - it absolutely is. But I want to make sure we're weighing all the trade-offs, including commitments we've already made to other customer segments.\n\nCan we include the data team in the roadmap alignment discussion?\n\nDavid",
+    "labels": [
+      "data-team",
+      "planning"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5027",
+    "from": "sarah.kim@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Q2 OKR Conflict - Data Team Capacity Constraints",
+    "date": "2026-04-01T10:15:00-07:00",
+    "body": "Hi Jorge,\n\nFollowing up on our brief conversation last week. The data team has serious concerns about the platform team's Q2 OKR proposal, specifically the Polaris analytics pipeline integration timeline.\n\nOur team is already at 95% capacity with the customer segmentation ML model refresh (committed to Marketing for Q2) and the data warehouse migration (infrastructure dependency). Adding the Polaris analytics integration in Q2 would require either:\n\n1. Delaying the ML model refresh by 4-6 weeks (Marketing VP won't accept this)\n2. Adding 2 FTE to data engineering (hiring freeze makes this impossible)\n3. Descoping the Polaris analytics features to basic event logging only\n\nDavid and I have documented our position in the Notion page. We need to align on this before the cross-team meeting next week - this is blocking both teams' OKR finalization.\n\nCan we discuss options? The data pipeline capacity is a hard constraint we can't work around without trade-offs.\n\nBest,\nSarah\n\nSarah Kim\nDirector of Data Engineering\nCrucible",
+    "labels": [
+      "urgent",
+      "okr",
+      "q2-planning"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5028",
+    "from": "david.torres@crucible.com",
+    "to": "jorge.alvarez@crucible.com, sarah.kim@crucible.com",
+    "subject": "Re: Q2 OKR Conflict - Data Team Capacity Constraints",
+    "date": "2026-04-02T14:30:00-07:00",
+    "body": "Jorge, Sarah,\n\nI've reviewed both team proposals and the capacity models. Here's my read on the situation:\n\n**Platform Team Position:**\n- Polaris analytics integration is critical for customer adoption metrics\n- Without real-time usage data, we can't validate product-market fit\n- Proposed timeline: Start week 1 of Q2, ship by week 8\n\n**Data Team Position:**\n- Already committed to Marketing ML refresh (executive commitment)\n- Warehouse migration is infrastructure-critical (can't be delayed)\n- Current capacity: 2 senior engineers available for new work in Q2\n\n**Conflict Analysis:**\nThe Polaris analytics work requires 3 engineers for 8 weeks (estimated 24 engineer-weeks). Data team has 2 engineers × 13 weeks = 26 engineer-weeks available, but that assumes zero buffer and no other interrupts.\n\n**Possible Resolutions:**\n1. **Descope Polaris analytics** to phase 1 (basic events only) - reduces to ~12 engineer-weeks\n2. **Delay Polaris analytics** to Q3 - platform team uses proxy metrics in Q2\n3. **Negotiate Marketing ML delay** - requires VP approval, politically difficult\n4. **Outsource warehouse migration** - expensive, adds vendor risk\n\nI'm leaning toward option 1 (descope to phase 1) with a clear Q3 roadmap for full analytics. This unblocks both teams and keeps executive commitments intact.\n\nThoughts? We should align before Monday's meeting.\n\nDavid\n\n--\nDavid Torres\nVP of Engineering\nCrucible",
+    "labels": [
+      "urgent",
+      "okr",
+      "q2-planning",
+      "leadership"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5029",
+    "from": "jorge.alvarez@crucible.com",
+    "to": "sarah.kim@crucible.com, david.torres@crucible.com",
+    "subject": "Re: Q2 OKR Conflict - Proposed Compromise",
+    "date": "2026-04-03T11:45:00-07:00",
+    "body": "Sarah, David,\n\nThanks for the detailed breakdown. I've been thinking through the trade-offs and I believe we can find a middle path.\n\n**Proposed Compromise:**\n\nPhase 1 (Q2): Basic event logging + core adoption metrics\n- User login/session tracking\n- Feature flag activation events\n- Basic funnel metrics (signup → activation → weekly active)\n- Estimated effort: 10-12 engineer-weeks\n\nPhase 2 (Q3): Advanced analytics\n- Behavioral cohort analysis\n- Revenue attribution modeling\n- Predictive churn signals\n\n**Why this works:**\n1. Platform team gets the critical adoption signals we need for product decisions\n2. Data team stays within capacity constraints (12 weeks vs 24)\n3. We can validate Polaris PMF with phase 1 metrics\n4. Marketing ML refresh stays on track\n5. Warehouse migration proceeds as planned\n\n**Trade-offs:**\n- We won't have advanced segmentation in Q2 (acceptable - we can use basic cohorts)\n- Revenue attribution delayed to Q3 (Finance is okay with this per my conversation with Rachel)\n\n**Next Steps:**\n1. I'll update the platform team OKR proposal in Notion with the phased approach\n2. Sarah - can you confirm the 10-12 week estimate works for your team?\n3. Let's align on the final language before Monday's cross-team meeting\n\nI think this gets us to a win-win. Thoughts?\n\nJorge\n\n--\nJorge Alvarez\nSenior Product Manager, Platform Team\nCrucible",
+    "labels": [
+      "okr",
+      "q2-planning",
+      "proposal"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5030",
+    "from": "priya.sharma@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "FYI: Platform team capacity update for Q2",
+    "date": "2026-04-04T09:20:00-07:00",
+    "body": "Jorge,\n\nQuick heads-up before the OKR alignment meeting on Monday.\n\nMarcus and I reviewed the Q2 roadmap assuming the phased analytics approach you proposed. We're good on engineering capacity for the platform team commitments:\n\n- Polaris GA stabilization: 4 engineers\n- Auth migration completion: 2 engineers\n- Analytics phase 1 integration: 1 engineer (with data team support)\n\nOne note: if the data team needs more than 2 weeks of pairing time for the analytics integration, we might need to push the auth migration customer comms by 1 week. Not a blocker, just flagging the dependency.\n\nSee you Monday.\n\nPriya\n\n--\nPriya Sharma\nDirector of Engineering, Platform\nCrucible",
+    "labels": [
+      "internal",
+      "capacity-planning"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5031",
+    "from": "amanda.rodriguez@techflow.com",
+    "to": "rachel.kim@crucible.com",
+    "subject": "URGENT: TechFlow API rate limit emergency - production integration blocked",
+    "date": "2026-04-04T14:22:00-07:00",
+    "body": "Hi Rachel,\n\nI'm escalating an urgent issue that's blocking TechFlow's critical production integration. Our engineering team deployed a new real-time analytics pipeline last night that syncs employee data from our HRIS to Crucible's platform API every 15 minutes. However, we're hitting rate limit errors (429 responses) consistently since 6 AM this morning.\n\nCurrent situation:\n- Our integration requires ~8,500 API calls per hour during business hours (9 AM - 6 PM ET)\n- Current rate limit: 5,000 calls/hour\n- We're seeing 40%+ request failures, causing data sync delays of 2-4 hours\n- This is blocking our VP of People Ops dashboard launch scheduled for Monday April 7\n\nBusiness impact:\n- CEO committed this dashboard to our board for Q2 planning next week\n- We have 12,000 employees across 8 regions depending on real-time data\n- Contract renewal discussion (worth $480K ARR) is scheduled for April 15\n\nRequest:\nCan we get an emergency rate limit increase to 12,000 calls/hour? We need this by EOD Monday April 7 to avoid major escalation to our C-suite.\n\nI know this is last-minute, but we didn't anticipate the API load from the new pipeline architecture. Happy to jump on a call today or Monday morning if that helps.\n\nThanks,\nAmanda Rodriguez\nVP of Engineering, TechFlow Industries\n+1 (415) 555-0847",
+    "labels": [
+      "urgent",
+      "customer-escalation",
+      "api"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5032",
+    "from": "rachel.kim@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "FWD: URGENT: TechFlow API rate limit emergency - production integration blocked",
+    "date": "2026-04-04T15:18:00-07:00",
+    "body": "Jorge,\n\nForwarding this escalation from TechFlow (see below). This is one of our three at-risk mid-market accounts I flagged in last week's churn review.\n\nContext:\n- TechFlow is currently Enterprise tier ($480K ARR, contract up for renewal April 15)\n- They've been flagged as at-risk since mid-February due to integration complexity complaints\n- Amanda (their VP Eng) has been increasingly frustrated with platform limitations\n- Losing them would put us 18% behind our Q2 retention target\n\nThey're asking for a rate limit bump from 5K to 12K calls/hour by Monday EOD. I know we have hard infrastructure caps for Q2, but wanted to get your take on what's feasible.\n\nCan we chat about this today or first thing Monday? I'm worried that a flat \"no\" could be the final straw for this account.\n\nRachel\n\n------- Forwarded Message -------\nFrom: amanda.rodriguez@techflow.com\nDate: April 4, 2026 2:22 PM\n[original message content]\n",
+    "labels": [
+      "urgent",
+      "customer-escalation",
+      "forwarded"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5033",
+    "from": "marcus.chen@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Q2 Platform API Rate Limit Budget - Hard Cap Confirmation",
+    "date": "2026-04-03T10:45:00-07:00",
+    "body": "Jorge,\n\nFollowing up on our infrastructure capacity planning from last week. Here are the confirmed Q2 rate limit constraints for the platform API:\n\n**Q2 Total Capacity (April 1 - June 30):**\n- Hard cap: 285,000 calls/hour across all customers\n- Current allocated: 267,500 calls/hour (93.9% utilization)\n- Available headroom: 17,500 calls/hour\n\n**Why this is a hard cap:**\n- API gateway cluster sized for 300K calls/hour peak (15K buffer for burst)\n- Database connection pool: 2,400 connections (already at 88% steady-state)\n- Exceeding 285K sustained would trigger cascading timeouts and SLA violations for existing customers\n- Next capacity release: Polaris GA (late April, adds ~35K calls/hour capacity)\n- Auth migration completion (mid-May, frees up ~22K calls/hour from legacy endpoint retirement)\n\n**Allocation by tier (current):**\n- Enterprise (8 accounts): 182,000 calls/hour (68%)\n- Mid-Market (23 accounts): 71,500 calls/hour (27%)\n- Growth (47 accounts): 14,000 calls/hour (5%)\n\n**Safety constraint:**\nAny allocation change must maintain at least 5% unallocated buffer (14,250 calls/hour minimum) to handle organic growth and prevent SLA breaches.\n\nLet me know if you need the per-customer breakdown or want to discuss capacity release timing.\n\nMarcus\nSRE Lead, Platform Infrastructure",
+    "labels": [
+      "infrastructure",
+      "capacity-planning"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5034",
+    "from": "jorge.alvarez@crucible.com",
+    "to": "priya.sharma@crucible.com",
+    "subject": "Platform team capacity review - Q2 planning follow-up",
+    "date": "2026-04-02T16:30:00-07:00",
+    "body": "Priya,\n\nQuick follow-up from our Q2 planning session last week. I'm working through the platform API capacity model and want to confirm a few engineering timeline assumptions:\n\n1. Polaris GA launch: You mentioned \"late April\" - are we still tracking for the April 28-30 window, or has the 2-week slip pushed this into early May?\n\n2. Auth migration completion: The Notion page shows \"mid-May target\" for final cutover. Does that mean legacy endpoint retirement by May 15, or is that when we start the deprecation window?\n\n3. If either of these slip further, what's the next realistic capacity release milestone?\n\nContext: I'm evaluating some customer rate limit requests and need to understand when we can safely free up quota from infrastructure improvements vs. having to reallocate from existing customers.\n\nLet me know when you have a chance - no huge rush, but would help to have clarity by early next week.\n\nJorge",
+    "labels": [
+      "internal",
+      "planning"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5035",
+    "from": "priya.sharma@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Polaris Go/No-Go prep - CDN slot confirmation update",
+    "date": "2026-04-05T15:30:00-07:00",
+    "body": "Jorge,\n\nQuick update on the CDN slot allocation blocker for the Go/No-Go decision:\n\nOur vendor (Fastly) confirmed they can allocate the remaining 2 slots by EOD Monday April 6. Their ops team is finalizing capacity rebalancing across their West Coast edge nodes.\n\nThis means we'll have full infrastructure readiness confirmed in time for the Tuesday decision meeting. I've updated the tracking sheet and will send formal confirmation once I receive their ticket closure notice.\n\nLet me know if you need anything else for the readiness doc.\n\n- Priya\n\nPriya Sharma\nDirector of Engineering, Platform\nCrucible",
+    "labels": [
+      "polaris",
+      "launch"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5036",
+    "from": "rachel.kim@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Customer health data ready for Tuesday review",
+    "date": "2026-04-05T13:45:00-07:00",
+    "body": "Hi Jorge,\n\nI've pulled the latest metrics for TechFlow and Meridian Health ahead of our meeting on Tuesday (April 8):\n\n**TechFlow Industries:**\n- API call volume: Down 18% over past 6 weeks (from 2.4M/week to 1.97M/week)\n- Support tickets: 3 in Q1 (all resolved), latest was the rate limit escalation\n- NPS: 7/10 (stable)\n- Contract renewal: September 2026\n- Risk level: MEDIUM (integration friction + volume decline)\n\n**Meridian Health Systems:**\n- API call volume: Stable at ~850K/week\n- Support tickets: 12 in Q1 (up from 8 in Q4), avg resolution time 18 hours\n- NPS: 6/10 (down from 8/10 in Q4)\n- Executive engagement: James Park last active in platform 3 weeks ago (previously weekly)\n- Contract renewal: July 2026\n- Risk level: HIGH (engagement drop + ticket volume spike)\n\nI've also drafted talking points for the retention strategy discussion. Let me know if you want me to send those over before the meeting.\n\nThanks,\nRachel\n\nRachel Kim\nVP Customer Success\nCrucible",
+    "labels": [
+      "customer-success",
+      "churn-risk"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5037",
+    "from": "marcus.chen@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Re: SRE capacity for Q2 roadmap - quick sync needed",
+    "date": "2026-04-04T16:20:00-07:00",
+    "body": "Jorge,\n\nYeah, we should definitely talk about Q2 capacity before the all-hands kickoff. Here's the short version:\n\nPost-Polaris launch, the SRE team will have ~60% capacity available for new roadmap work in Q2. The remaining 40% is committed to:\n- Polaris monitoring & optimization (first 4 weeks post-launch)\n- Auth migration health checks & rollback support (ongoing through May)\n- Infrastructure cost optimization initiative (company-wide priority)\n\nIf the platform team's Q2 roadmap includes more than 2-3 medium-sized infrastructure projects, we'll need to either:\n1. Push some items to Q3, or\n2. Bring in contractor support (would need VP approval + 3-week ramp time)\n\nLet's chat Monday or Tuesday? I can walk through the capacity model in more detail.\n\n- Marcus\n\nMarcus Chen\nSRE Lead, Platform Infrastructure\nCrucible",
+    "labels": [
+      "sre",
+      "capacity-planning"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5038",
+    "from": "sarah.kim@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Q2 OKR alignment - data team feedback incorporated",
+    "date": "2026-04-05T11:00:00-07:00",
+    "body": "Hi Jorge,\n\nFollowing up on our conflict resolution session from last week - I've reviewed the updated platform team OKR proposal and the dependency concerns are mostly addressed.\n\nTwo remaining items for your final draft:\n\n1. **Data pipeline capacity for Polaris analytics:** We can commit to 500K events/day processing capacity starting Week 3 of Q2 (April 21). If you need higher throughput earlier, we'd need to defer the customer segmentation model work to Q3.\n\n2. **Cross-team milestone alignment:** The \"Real-time dashboard launch\" milestone in your draft (May 15) depends on our data warehouse migration completing by May 10. That's tight but doable if no major blockers emerge. Suggest adding a checkpoint on April 25 to reassess.\n\nOverall the proposal looks solid. Let me know if you want to discuss these points before you finalize.\n\nBest,\nSarah\n\nSarah Kim\nDirector of Data Engineering\nCrucible",
+    "labels": [
+      "okr",
+      "q2-planning"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5039",
+    "from": "amanda.rodriguez@techflow.com",
+    "to": "platform-team@crucible.com",
+    "subject": "Re: API rate limit increase request - production deployment blocked",
+    "date": "2026-04-03T14:22:00-07:00",
+    "body": "Hi Crucible Platform Team,\n\nI'm following up on our escalation from last week regarding API rate limits. Our production deployment is still blocked and we're now 5 days behind our Q2 launch schedule.\n\nCurrent situation:\n- TechFlow account (CUS-101) hitting 429 errors on /api/v2/analytics/batch endpoint\n- Current limit: 100 req/min, we need 250 req/min for our new real-time dashboard\n- This is blocking our April 10 customer launch (contractually committed)\n\nWe've already optimized our batching logic and reduced payload sizes by 30%, but we're still over the limit during peak hours (2-4 PM PST).\n\nCan someone from your team review our tier upgrade request or provide a temporary limit increase? We're willing to move to Enterprise tier if needed, but need this resolved by EOD April 7 to avoid contract penalties.\n\nThanks,\nAmanda Rodriguez\nVP Engineering, TechFlow Industries\n+1 (415) 555-0198",
+    "labels": [
+      "customer-escalation",
+      "urgent",
+      "rate-limit"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5040",
+    "from": "priya.sharma@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "FYI: Polaris analytics module - data retention policy question from Legal",
+    "date": "2026-04-03T16:45:00-07:00",
+    "body": "Team,\n\nHeads up - Legal reached out about data retention requirements for the new Polaris analytics module. They want to confirm our 90-day default retention aligns with GDPR requirements for EU customers.\n\nThis isn't urgent (Legal's timeline is end of April), but flagging in case it impacts any Polaris rollout documentation or customer-facing materials.\n\nI'll handle the Legal coordination unless someone thinks this needs product/compliance review?\n\nPriya",
+    "labels": [
+      "internal",
+      "fyi",
+      "compliance"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5041",
+    "from": "robert.chen@apexmfg.com",
+    "to": "platform-team@crucible.com",
+    "subject": "URGENT: Dashboard loading times degraded - impacting executive reporting",
+    "date": "2026-04-04T09:15:00-07:00",
+    "body": "Crucible Platform Team,\n\nWe're experiencing severe performance degradation on our executive dashboards since yesterday afternoon (April 3, ~2 PM PST).\n\nImpact:\n- Dashboard load times increased from 3-4 seconds to 45-60 seconds\n- Timeouts occurring on reports with >50K employee records\n- Our CFO's weekly board report is due Monday (April 7) and currently unusable\n\nApex Manufacturing (CUS-107) - Mid-Market tier\nAffected dashboards: Executive Summary, Turnover Analytics, Compensation Benchmarking\n\nOur IT team checked our network and browser performance - issue appears to be on Crucible's backend. No recent changes on our end.\n\nCan you investigate ASAP? We have a board meeting Monday morning and this is critical.\n\nRobert Chen\nIT Director, Apex Manufacturing Group\nrobert.chen@apexmfg.com\n+1 (312) 555-0176",
+    "labels": [
+      "customer-escalation",
+      "urgent",
+      "performance"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5042",
+    "from": "marcus.chen@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "Platform team inbox - dependency mapping for Q2 roadmap items",
+    "date": "2026-04-04T11:30:00-07:00",
+    "body": "Hey team,\n\nSRE needs to map infrastructure dependencies for Q2 platform roadmap items (for capacity planning). Can someone send me:\n\n1. Which roadmap features require new database schemas?\n2. Expected API call volume increases per feature\n3. Any features requiring new third-party integrations\n\nNot super urgent - need this by April 15 for our Q2 capacity model.\n\nThanks,\nMarcus",
+    "labels": [
+      "internal",
+      "roadmap",
+      "engineering-dependency"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5043",
+    "from": "sarah.kim@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "Customer comms timeline - Polaris GA announcement draft needs review",
+    "date": "2026-04-04T13:50:00-07:00",
+    "body": "Platform team,\n\nI've drafted the customer announcement for Polaris GA launch (targeting late April per the rollout plan). Need someone to review technical accuracy and confirm:\n\n- Feature availability by tier (Enterprise gets all features, Mid-Market gets core analytics only?)\n- Migration requirements for customers on legacy reporting module\n- Timeline for deprecating old dashboard endpoints (if applicable)\n\nDraft is in Notion under \"Customer Communications > Q2 Product Launches\". Would love feedback by EOD April 7 so we can schedule sends for April 14-15.\n\nAlso - should we coordinate this with the auth endpoint migration comms, or keep them separate?\n\nSarah",
+    "labels": [
+      "internal",
+      "roadmap-clarification",
+      "customer-comms"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5044",
+    "from": "david.torres@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "Re: Q2 OKR proposal - data pipeline capacity concerns",
+    "date": "2026-04-04T15:20:00-07:00",
+    "body": "Jorge / Platform team,\n\nFollowing up on the Q2 OKR conflict we discussed last week. Data team is concerned that Platform's proposed \"Real-time Analytics v2\" OKR will overload our ETL pipeline capacity.\n\nSpecific concerns:\n- Platform OKR assumes 3x increase in event ingestion volume\n- Our current Kafka cluster can handle ~2x max (per SRE capacity audit)\n- Data team's Q2 OKR includes ML model training that requires 60% of cluster capacity during off-peak hours\n\nProposal: Can we phase Platform's real-time analytics rollout (50% in Q2, 50% in Q3) to avoid pipeline saturation?\n\nThis needs resolution before the April 9 OKR finalization meeting. Let me know if you want to sync before then.\n\nDavid Torres\nDirector, Data Engineering",
+    "labels": [
+      "internal",
+      "okr-conflict",
+      "engineering-dependency"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5045",
+    "from": "elena.martinez@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "URGENT: DataSync Solutions - Production API Rate Limit Issues - Churn Risk",
+    "date": "2026-04-03T14:22:00-07:00",
+    "body": "Hi Platform Team,\n\nI need to escalate a critical issue with DataSync Solutions (CUS-105). Their engineering team is experiencing production-blocking API rate limit errors starting this morning around 9 AM PT.\n\nDetails:\n- Customer: DataSync Solutions\n- Issue: HTTP 429 responses on /api/v2/analytics/batch endpoint\n- Impact: Their nightly ETL pipeline is failing, blocking customer reporting dashboards\n- Business impact: They've explicitly mentioned evaluating alternatives if this isn't resolved within 48 hours\n\nTheir CTO (Michael Foster) called me directly at 1 PM today expressing frustration. This is our second incident with them in Q1 - the previous database timeout issue in February took 5 days to resolve.\n\nCan someone from platform team please review their API usage patterns and rate limit configuration ASAP? They're at $180k ARR and up for renewal in June.\n\nThanks,\nElena Martinez\nCustomer Success Manager\nelena.martinez@crucible.com",
+    "labels": [
+      "urgent",
+      "customer-escalation",
+      "platform"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5046",
+    "from": "elena.martinez@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "Re: URGENT: DataSync Solutions - Production API Rate Limit Issues - Churn Risk",
+    "date": "2026-04-04T09:15:00-07:00",
+    "body": "Platform Team,\n\nFollowing up on yesterday's email - DataSync's CTO just sent me a formal notice that they're evaluating Competitor X and need resolution by EOD Friday (April 5) or they'll begin migration planning.\n\nTheir VP of Engineering mentioned in our call this morning that this is the \"third strike\" from their perspective:\n1. Feb database timeouts (5 day resolution)\n2. March data export formatting bug (3 day resolution)\n3. Now this rate limit issue\n\nI've checked the customer health dashboard and it still shows them as \"stable\" which doesn't reflect reality. Can we get eyes on this today?\n\nI'm available for a war room call anytime.\n\nElena",
+    "labels": [
+      "urgent",
+      "customer-escalation",
+      "platform",
+      "follow-up"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5047",
+    "from": "marcus.chen@crucible.com",
+    "to": "platform-team@crucible.com",
+    "subject": "Platform Team Digest - Week of April 1",
+    "date": "2026-04-04T16:30:00-07:00",
+    "body": "Hi team,\n\nWeekly platform digest:\n\n**Infrastructure Updates:**\n- Polaris monitoring dashboards now live in production\n- CDN cache hit ratio improved to 94.2% (up from 91.8%)\n- Database connection pool optimization deployed to prod-db-03\n\n**Upcoming Maintenance:**\n- Scheduled Redis cluster upgrade: April 12, 2-4 AM PT\n- Load balancer firmware update: April 15, 1-3 AM PT\n\n**Metrics:**\n- API p95 latency: 245ms (target: <300ms) ✓\n- Error rate: 0.12% (target: <0.5%) ✓\n- Uptime: 99.97%\n\nHave a great weekend!\nMarcus",
+    "labels": [
+      "internal",
+      "team",
+      "digest"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5048",
+    "from": "priya.sharma@crucible.com",
+    "to": "jorge.alvarez@crucible.com",
+    "subject": "Q2 Platform Roadmap - Engineering Capacity Review",
+    "date": "2026-04-04T11:45:00-07:00",
+    "body": "Jorge,\n\nCan we schedule 30 minutes next week to review Q2 platform roadmap priorities? I want to align on:\n\n1. Polaris phase 2 feature scope\n2. Auth migration timeline buffer\n3. Technical debt allocation (we're at 18% vs 20% target)\n\nI'm flexible Monday-Wednesday afternoons.\n\nThanks,\nPriya",
+    "labels": [
+      "internal",
+      "planning"
+    ],
+    "is_read": true
+  }
+]

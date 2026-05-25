@@ -1,0 +1,993 @@
+[
+  {
+    "job_id": "JOB-701",
+    "name": "user_retention_funnel_analysis",
+    "description": "Q1 user retention funnel analysis - calculates D1/D7/D30 retention rates by channel and cohort",
+    "cron_expression": "0 2 * * 1",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-01-06T02:00:00+08:00",
+    "action": "run_retention_analysis",
+    "created_by": "chen.xiaoyu@kuaigou.com",
+    "tags": [
+      "analytics",
+      "retention",
+      "weekly"
+    ],
+    "notes": "Output directory: /data/analytics/retention/2026-Q1/; Results split across raw/, aggregated/, and visualization/ subdirectories",
+    "execution_history": [
+      {
+        "run_time": "2026-01-06T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1847,
+        "notes": "Processed 2.3M user events, output files: retention_raw_20260106.csv (raw/), retention_summary_20260106.json (aggregated/), funnel_chart_20260106.png (visualization/)"
+      },
+      {
+        "run_time": "2025-12-30T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1623,
+        "notes": "Year-end batch completed"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-702",
+    "name": "ab_experiment_config_validator",
+    "description": "Validates A/B experiment configurations before deployment",
+    "cron_expression": "0 */4 * * *",
+    "enabled": true,
+    "last_status": "failed",
+    "last_run": "2026-01-09T16:00:00+08:00",
+    "action": "validate_ab_configs",
+    "created_by": "tech-ops@kuaigou.com",
+    "tags": [
+      "ab-test",
+      "validation",
+      "monitoring"
+    ],
+    "notes": "Last run failed with config parse error - see execution history for details",
+    "execution_history": [
+      {
+        "run_time": "2026-01-09T16:00:00+08:00",
+        "status": "failed",
+        "duration_seconds": 12,
+        "notes": "ERROR: experiment_social_share_v2 - invalid traffic allocation: sum=105% exceeds 100%. Config file: /config/ab_experiments/social_share_v2.yaml line 23"
+      },
+      {
+        "run_time": "2026-01-09T12:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 8,
+        "notes": "All experiments validated"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-703",
+    "name": "daily_kpi_dashboard_sync",
+    "description": "Syncs daily KPI metrics to executive dashboard",
+    "cron_expression": "30 8 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-01-09T08:30:00+08:00",
+    "action": "sync_kpi_dashboard",
+    "created_by": "product-ops@kuaigou.com",
+    "tags": [
+      "kpi",
+      "dashboard",
+      "daily"
+    ],
+    "notes": "Pulls from multiple sources and aggregates for leadership view",
+    "execution_history": [
+      {
+        "run_time": "2026-01-09T08:30:00+08:00",
+        "status": "success",
+        "duration_seconds": 145,
+        "notes": "Synced DAU, retention, GMV metrics"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-704",
+    "name": "ab_experiment_social_share_export",
+    "description": "Export retention metrics for social sharing A/B experiment to data warehouse",
+    "cron_expression": "0 3 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-02-01T03:00:00+08:00",
+    "action": "export_ab_experiment_metrics",
+    "created_by": "Data Platform Team",
+    "tags": [
+      "ab_test",
+      "retention",
+      "social_share",
+      "export"
+    ],
+    "notes": "Exports daily aggregated retention metrics for social sharing experiment v2.3. Output path: /data/experiments/social_share/v2.3_prod/",
+    "execution_history": [
+      {
+        "run_time": "2026-02-01T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 187,
+        "notes": "Successfully exported 156,800 user records. Day-1 retention: 38.6%, Day-7 retention: 21.4%"
+      },
+      {
+        "run_time": "2026-01-31T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 192,
+        "notes": "Exported 151,200 user records"
+      },
+      {
+        "run_time": "2026-01-30T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 178,
+        "notes": "Exported 147,600 user records"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-705",
+    "name": "daily_user_engagement_sync",
+    "description": "Sync daily active user metrics to BI dashboard",
+    "cron_expression": "0 7 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-02-01T07:00:00+08:00",
+    "action": "sync_dau_metrics",
+    "created_by": "Data Platform Team",
+    "tags": [
+      "engagement",
+      "dau",
+      "daily"
+    ],
+    "notes": "Syncs DAU, MAU, and engagement metrics to BI dashboard. Runs daily at 7 AM.",
+    "execution_history": [
+      {
+        "run_time": "2026-02-01T07:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 145,
+        "notes": "DAU: 2.3M, MAU: 8.7M"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-706",
+    "name": "sprint_capacity_report",
+    "description": "Weekly sprint capacity utilization report for product team planning",
+    "cron_expression": "0 9 * * 1",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-17T09:00:00+08:00",
+    "action": "generate_capacity_report",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "sprint-planning",
+      "capacity",
+      "reporting"
+    ],
+    "notes": "Generates capacity analysis for current sprint, outputs to /data/sprint_reports/. Used for prioritization decisions.",
+    "execution_history": [
+      {
+        "run_time": "2026-03-17T09:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 45,
+        "notes": "Week 11 report generated: 92% capacity utilization, 1 person-day buffer remaining"
+      },
+      {
+        "run_time": "2026-03-10T09:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 42,
+        "notes": "Week 10 report generated: 88% capacity utilization"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-706",
+    "name": "user_retention_funnel_analysis",
+    "description": "Overnight batch job for user retention funnel analysis - outputs to /data/retention/daily/",
+    "cron_expression": "0 2 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T02:00:00+08:00",
+    "action": "run_retention_analysis",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "retention",
+      "analytics",
+      "daily"
+    ],
+    "notes": "Runs at 2 AM daily, outputs scattered across three directories: /data/retention/daily/, /data/retention/archive/, /data/retention/temp/",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 3840,
+        "notes": "Completed successfully, output files in /data/retention/daily/2026-04-02/, /data/retention/archive/2026-04-02/, /data/retention/temp/2026-04-02/"
+      },
+      {
+        "run_time": "2026-04-01T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 3720,
+        "notes": "Normal execution"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-707",
+    "name": "ab_experiment_config_validator",
+    "description": "Validates A/B experiment configurations before daily sync",
+    "cron_expression": "0 3 * * *",
+    "enabled": true,
+    "last_status": "failed",
+    "last_run": "2026-04-02T03:00:00+08:00",
+    "action": "validate_ab_configs",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "ab-test",
+      "validation",
+      "daily"
+    ],
+    "notes": "Runs at 3 AM daily, validates experiment configs before export",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T03:00:00+08:00",
+        "status": "failed",
+        "duration_seconds": 45,
+        "notes": "ConfigValidationError: social_sharing_viral_v1 - missing required field 'control_group_ratio'. Expected float between 0.0-1.0, got null. Config file: /configs/experiments/social_sharing_viral_v1.json line 23"
+      },
+      {
+        "run_time": "2026-04-01T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 180,
+        "notes": "All configs validated successfully"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-708",
+    "name": "daily_kpi_dashboard_sync",
+    "description": "Syncs KPI metrics to dashboard for Q1 tracking",
+    "cron_expression": "0 4 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T04:00:00+08:00",
+    "action": "sync_kpi_dashboard",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "kpi",
+      "dashboard",
+      "daily"
+    ],
+    "notes": "Runs at 4 AM daily, Q1 KPI tracking period",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T04:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 240,
+        "notes": "KPI dashboard updated successfully"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-709",
+    "name": "prd_draft_backup_sync",
+    "description": "Hourly backup of PRD drafts from Obsidian to cloud storage during critical review periods",
+    "cron_expression": "0 * * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T21:00:00+08:00",
+    "action": "sync_obsidian_prd_to_backup",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "backup",
+      "prd",
+      "obsidian"
+    ],
+    "notes": "Temporary job enabled during Q1 final sprint to prevent PRD draft loss",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T21:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 12,
+        "notes": "Backed up 2 PRD files including OBSN-7 and OBSN-13"
+      },
+      {
+        "run_time": "2026-04-02T20:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 10,
+        "notes": "Backed up 2 PRD files"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-710",
+    "name": "user_growth_weekly_report",
+    "description": "Weekly aggregation of user growth metrics including new registrations, activation rate, and social sharing conversion for stakeholder dashboard",
+    "cron_expression": "0 2 * * 1",
+    "enabled": false,
+    "last_status": "failed",
+    "last_run": "2026-04-01T02:00:00+08:00",
+    "action": "aggregate_growth_metrics",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "growth",
+      "weekly",
+      "reporting",
+      "critical"
+    ],
+    "notes": "Critical job for Monday morning stakeholder review. Failure on 2026-04-01 means no fresh data for sprint planning.",
+    "execution_history": [
+      {
+        "run_time": "2026-03-25T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 342,
+        "notes": "Processed 2.3M user records"
+      },
+      {
+        "run_time": "2026-04-01T02:00:00+08:00",
+        "status": "failed",
+        "duration_seconds": 18,
+        "notes": "ERROR: Database connection timeout after 15s. Upstream dependency 'user_retention_funnel_analysis' output missing. Check /data/retention/weekly/ directory permissions."
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-711",
+    "name": "social_share_event_tracker",
+    "description": "Hourly collection of social sharing events for new viral feature A/B test tracking",
+    "cron_expression": "0 * * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T09:00:00+08:00",
+    "action": "collect_share_events",
+    "created_by": "Wang Lei",
+    "tags": [
+      "social",
+      "tracking",
+      "hourly"
+    ],
+    "notes": "Supporting data pipeline for social sharing feature PRD. Low priority, informational only.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T08:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 23,
+        "notes": "Collected 1,247 share events"
+      },
+      {
+        "run_time": "2026-04-02T09:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 19,
+        "notes": "Collected 1,089 share events"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-712",
+    "name": "sprint_capacity_validator",
+    "description": "Validates current sprint capacity against committed features and available person-hours",
+    "cron_expression": "0 9 * * 1",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-31T09:00:00+08:00",
+    "action": "validate_sprint_capacity",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "sprint",
+      "capacity",
+      "planning"
+    ],
+    "notes": "Runs every Monday morning to check sprint health. Output used for scope decision validation.",
+    "execution_history": [
+      {
+        "run_time": "2026-03-31T09:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 45,
+        "notes": "Current sprint: 12 features committed, 85% capacity utilized, 2 person-week buffer available"
+      },
+      {
+        "run_time": "2026-03-24T09:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 42,
+        "notes": "Sprint capacity healthy, 15% buffer remaining"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-713",
+    "name": "competitor_retention_analysis",
+    "description": "Weekly competitive intelligence tracking - retention metrics from public data sources and internal benchmarks",
+    "cron_expression": "0 2 * * 1",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-31T02:00:00+08:00",
+    "action": "analyze_competitor_retention_metrics",
+    "created_by": "Product Analytics Team",
+    "tags": [
+      "competitive-intelligence",
+      "retention",
+      "weekly"
+    ],
+    "notes": "Aggregates competitor app retention data from third-party analytics platforms and cross-references with internal A/B test benchmarks. Output stored in /data/competitive_analysis/retention/",
+    "execution_history": [
+      {
+        "run_time": "2026-03-31T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1847,
+        "notes": "Processed 12 competitor apps, Day-7 retention range: 9.2%-13.8%, median 11.5%. Social-sharing feature subset (n=4): 10.8%-13.2%, median 12.1%. Output: /data/competitive_analysis/retention/2026_Q1_week13.json"
+      },
+      {
+        "run_time": "2026-03-24T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1923,
+        "notes": "Processed 12 competitor apps, Day-7 retention range: 9.1%-13.5%"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-714",
+    "name": "internal_social_share_benchmark",
+    "description": "Internal A/B experiment benchmark for social-sharing mechanics - retention and engagement metrics",
+    "cron_expression": "0 3 * * 2",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-01T03:00:00+08:00",
+    "action": "export_ab_experiment_social_share_metrics",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "ab-experiment",
+      "social-share",
+      "benchmark"
+    ],
+    "notes": "Exports retention metrics from internal social-sharing A/B experiments (JOB-707 outputs). Provides baseline for competitive comparison. Output: /data/experiments/social_share_benchmark/",
+    "execution_history": [
+      {
+        "run_time": "2026-04-01T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 542,
+        "notes": "Experiment ID: EXP-2026-Q1-SOCIAL-V2. Sample: 180K users (90K treatment, 90K control). Treatment group Day-7 retention: 12.3% (vs control 10.1%, +2.2pp lift, p<0.001). Output: /data/experiments/social_share_benchmark/2026_Q1_final.json"
+      },
+      {
+        "run_time": "2026-03-25T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 518,
+        "notes": "Mid-experiment checkpoint: Day-7 retention 11.8% (treatment) vs 10.2% (control)"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-715",
+    "name": "user_retention_funnel_analysis",
+    "description": "Overnight batch analysis of user retention cohorts - Day-1, Day-7, Day-30 metrics with funnel drop-off points",
+    "cron_expression": "0 2 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T02:00:00+08:00",
+    "action": "analyze_retention_cohorts",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "retention",
+      "analytics",
+      "overnight"
+    ],
+    "notes": "Output directories: /data/retention/2026-04-02/day1/, /data/retention/2026-04-02/day7/, /data/retention/2026-04-02/day30/. Sample size: 2.3M users. Day-1: 43.2%, Day-7: 19.1%, Day-30: 8.4%",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 4820,
+        "notes": "Completed successfully. Results in /data/retention/2026-04-02/ subdirectories"
+      },
+      {
+        "run_time": "2026-04-01T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 4650,
+        "notes": "Normal completion"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-716",
+    "name": "competitor_benchmark_scraper",
+    "description": "Weekly scrape of competitor retention metrics from public sources",
+    "cron_expression": "0 3 * * 1",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-31T03:00:00+08:00",
+    "action": "scrape_competitor_data",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "competitor",
+      "benchmark",
+      "weekly"
+    ],
+    "notes": "Scrapes retention benchmarks from industry reports and competitor public disclosures",
+    "execution_history": [
+      {
+        "run_time": "2026-03-31T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1820,
+        "notes": "Collected benchmarks from 5 competitors"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-717",
+    "name": "user_growth_weekly_report",
+    "description": "Weekly aggregation of user growth and retention metrics for operations team reporting",
+    "cron_expression": "0 2 * * 2",
+    "enabled": true,
+    "last_status": "failed",
+    "last_run": "2026-04-02T02:00:00+08:00",
+    "action": "aggregate_growth_metrics",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "growth",
+      "retention",
+      "weekly",
+      "operations"
+    ],
+    "notes": "Runs every Tuesday at 2 AM, aggregates data from multiple sources including user_retention_funnel_analysis and ab_experiment outputs",
+    "execution_history": [
+      {
+        "run_time": "2026-03-26T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1840,
+        "notes": "Processed 2.4M user records, output to /data/reports/growth/weekly/2026-W12/"
+      },
+      {
+        "run_time": "2026-04-02T02:00:00+08:00",
+        "status": "failed",
+        "duration_seconds": 45,
+        "notes": "ERROR: Dependency job JOB-701 (user_retention_funnel_analysis) output file missing. Expected path /data/analytics/retention/2026-Q1/funnel_summary.parquet not found. Possible cause: upstream job failed or output path changed. Stack trace: FileNotFoundError at line 142 in aggregate_growth_metrics.py"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-718",
+    "name": "daily_operations_dashboard_sync",
+    "description": "Daily sync of operations KPIs to dashboard database",
+    "cron_expression": "0 7 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T07:00:00+08:00",
+    "action": "sync_operations_kpis",
+    "created_by": "Operations Team",
+    "tags": [
+      "operations",
+      "dashboard",
+      "daily"
+    ],
+    "notes": "Runs daily at 7 AM, typically takes 3-5 minutes",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T07:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 210,
+        "notes": "Synced 48 KPI metrics to dashboard"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-719",
+    "name": "sprint_capacity_validator",
+    "description": "Validates current sprint capacity allocation against team availability and committed work. Flags scheduling conflicts and overallocation risks.",
+    "cron_expression": "0 9 * * 1",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-31T09:00:00+08:00",
+    "action": "validate_sprint_capacity",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "sprint",
+      "capacity",
+      "validation"
+    ],
+    "notes": "Runs every Monday morning to validate sprint capacity. Outputs capacity utilization report and conflict warnings to /data/sprints/capacity/",
+    "execution_history": [
+      {
+        "run_time": "2026-03-31T09:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 45,
+        "notes": "Week 14 capacity analysis complete. Warning: Product team at 95% utilization. Scheduling conflict detected: Chen Xiaoyu has overlapping meetings on Apr 3 14:00-16:00."
+      },
+      {
+        "run_time": "2026-03-24T09:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 42,
+        "notes": "Week 13 capacity analysis complete. All teams within normal utilization."
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-720",
+    "name": "prd_completion_tracker",
+    "description": "Tracks PRD document completion status by analyzing Obsidian note structure and chapter markers. Alerts on review deadlines vs completion gaps.",
+    "cron_expression": "0 */6 * * *",
+    "enabled": true,
+    "last_status": "warning",
+    "last_run": "2026-04-02T18:00:00+08:00",
+    "action": "track_prd_completion",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "prd",
+      "tracking",
+      "documentation"
+    ],
+    "notes": "Runs every 6 hours to monitor PRD completion status. Checks chapter completion markers and estimates remaining work.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T18:00:00+08:00",
+        "status": "warning",
+        "duration_seconds": 12,
+        "notes": "PRD 'Social Sharing Feature v1.0' completion: 5/7 chapters (71%). Estimated 5h remaining work. Review scheduled in 20h. Risk: insufficient time for completion."
+      },
+      {
+        "run_time": "2026-04-02T12:00:00+08:00",
+        "status": "warning",
+        "duration_seconds": 11,
+        "notes": "PRD 'Social Sharing Feature v1.0' completion: 4/7 chapters (57%). Chapter 5 in progress."
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-721",
+    "name": "decision_record_backup_sync",
+    "description": "Daily backup of Product/Decisions folder from Obsidian to shared team drive for audit trail and disaster recovery",
+    "cron_expression": "0 23 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-01T23:00:00+08:00",
+    "action": "sync_obsidian_decisions_to_backup",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "backup",
+      "obsidian",
+      "decision-records"
+    ],
+    "notes": "Runs nightly at 11 PM, backs up all decision records for compliance and mid-year review preparation",
+    "execution_history": [
+      {
+        "run_time": "2026-04-01T23:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 45,
+        "notes": "Backed up OBSN-30 (social sharing MVP decision) and 12 other decision records"
+      },
+      {
+        "run_time": "2026-03-31T23:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 38,
+        "notes": "Routine backup, no new decision records"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-722",
+    "name": "ab_experiment_social_share_export",
+    "description": "A/B experiment data export for social sharing feature - extended run for Q1 KPI analysis",
+    "cron_expression": "0 2 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-01T02:00:00+08:00",
+    "action": "export_ab_experiment_metrics",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "ab-test",
+      "social-sharing",
+      "analytics"
+    ],
+    "notes": "Extended from 7-day to 14-day run per boss request in WeChat. Resource consumption higher than planned due to 2.8M user sample (vs 1.5M planned). Cloud compute cost: ¥18,500 actual vs ¥12,000 budgeted.",
+    "execution_history": [
+      {
+        "run_time": "2026-03-25T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 3420,
+        "notes": "Initial run - 1.5M users, ¥1,200 compute cost"
+      },
+      {
+        "run_time": "2026-03-28T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 4850,
+        "notes": "Expanded sample to 2.1M users, ¥2,800 compute cost"
+      },
+      {
+        "run_time": "2026-04-01T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 7230,
+        "notes": "Final run - 2.8M users, real-time analytics enabled. Total cumulative cost: ¥18,500. Overage vs budget: +¥6,500 (+54.2%)"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-723",
+    "name": "daily_expense_aggregator",
+    "description": "Daily aggregation of project expenses from cloud providers and third-party services",
+    "cron_expression": "0 8 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T08:00:00+08:00",
+    "action": "aggregate_daily_expenses",
+    "created_by": "Finance Team",
+    "tags": [
+      "finance",
+      "expense",
+      "daily"
+    ],
+    "notes": "Runs daily at 8 AM, aggregates expenses from AWS, Aliyun, and third-party API providers",
+    "execution_history": [
+      {
+        "run_time": "2026-04-01T08:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 180,
+        "notes": "Detected A/B test expense spike: ¥18,500 vs ¥12,000 budget"
+      },
+      {
+        "run_time": "2026-04-02T08:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 165,
+        "notes": "Standard daily aggregation"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-724",
+    "name": "ab_experiment_social_share_export",
+    "description": "Export A/B test results for social sharing feature - control vs treatment group metrics with 14-day observation window",
+    "cron_expression": "0 2 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-01T02:00:00+08:00",
+    "action": "export_ab_test_results",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "ab_test",
+      "social_sharing",
+      "analytics"
+    ],
+    "notes": "Exports complete dataset including Day-1 and Day-7 retention metrics, conversion funnels, and sample demographics. Output to /data/experiments/social_sharing_v2/results/",
+    "execution_history": [
+      {
+        "run_time": "2026-04-01T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1847,
+        "notes": "Processed 2.8M users, 14-day experiment window completed. Control group: 1.4M users, Treatment group: 1.4M users. Output files: metrics_summary.csv, funnel_analysis.json, cohort_retention.xlsx"
+      },
+      {
+        "run_time": "2026-03-31T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1823,
+        "notes": "Day-13 data collection"
+      },
+      {
+        "run_time": "2026-03-30T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1795,
+        "notes": "Day-12 data collection"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-725",
+    "name": "weekly_competitor_monitoring",
+    "description": "Scrape and analyze competitor social sharing features",
+    "cron_expression": "0 8 * * 1",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-31T08:00:00+08:00",
+    "action": "scrape_competitor_features",
+    "created_by": "Product Research Team",
+    "tags": [
+      "competitor",
+      "monitoring",
+      "research"
+    ],
+    "notes": "Weekly monitoring of top 5 e-commerce platforms for social sharing feature updates",
+    "execution_history": [
+      {
+        "run_time": "2026-03-31T08:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 542,
+        "notes": "Monitored 5 platforms, no major feature updates detected"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-726",
+    "name": "sprint_retrospective_metrics_aggregator",
+    "description": "Aggregates sprint performance metrics including retention funnel, A/B test results, and KPI dashboard data for retrospective analysis",
+    "cron_expression": "0 9 * * 1",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-01T09:00:00+08:00",
+    "action": "aggregate_sprint_metrics",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "sprint",
+      "retrospective",
+      "metrics"
+    ],
+    "notes": "Runs every Monday at 9 AM to prepare data for weekly retrospective meetings. Consolidates outputs from JOB-701, JOB-710, JOB-703.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-01T09:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1847,
+        "notes": "Sprint 13 metrics aggregated successfully. Output: /data/retrospectives/2026_Q1_Sprint13/consolidated_metrics.json. Key findings: Day-1 retention 41.8% (+2.3% vs Sprint 12), A/B test social_share_v3 showed 22% conversion lift, funnel drop-off at onboarding step 3 increased to 18.2%."
+      },
+      {
+        "run_time": "2026-03-25T09:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1623,
+        "notes": "Sprint 12 metrics aggregated. Output: /data/retrospectives/2026_Q1_Sprint12/consolidated_metrics.json"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-727",
+    "name": "decision_record_template_sync",
+    "description": "Syncs decision record templates from product strategy repository to Obsidian vault",
+    "cron_expression": "0 8 1 * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-01T08:00:00+08:00",
+    "action": "sync_decision_templates",
+    "created_by": "Product Team",
+    "tags": [
+      "templates",
+      "documentation",
+      "sync"
+    ],
+    "notes": "Monthly sync of decision record templates to ensure consistency across product documentation",
+    "execution_history": [
+      {
+        "run_time": "2026-04-01T08:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 142,
+        "notes": "Templates synced to Product/Templates/Decisions/"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-728",
+    "name": "stakeholder_feedback_aggregator",
+    "description": "Aggregates stakeholder feedback from multiple sources for retrospective analysis",
+    "cron_expression": "0 18 * * 5",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-28T18:00:00+08:00",
+    "action": "aggregate_feedback",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "feedback",
+      "retrospective",
+      "stakeholder"
+    ],
+    "notes": "Weekly Friday evening run to compile feedback before Monday retrospectives",
+    "execution_history": [
+      {
+        "run_time": "2026-03-28T18:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 892,
+        "notes": "Compiled 47 feedback items from WeChat groups, 12 from meeting notes"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-729",
+    "name": "q1_retention_report_consolidator",
+    "description": "Consolidates Q1 retention metrics from multiple analytics jobs into executive summary format",
+    "cron_expression": "0 8 1 4 *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-01T08:00:00+08:00",
+    "action": "consolidate_retention_metrics",
+    "created_by": "Chen Xiaoyu",
+    "tags": [
+      "retention",
+      "reporting",
+      "q1",
+      "executive"
+    ],
+    "notes": "Aggregates outputs from JOB-715 (retention funnel), JOB-717 (weekly growth), JOB-722 (A/B test export). Output directory: /data/analytics/q1_reports/consolidated/",
+    "execution_history": [
+      {
+        "run_time": "2026-04-01T08:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 142,
+        "notes": "Successfully consolidated Day-1 retention: 42.3% (baseline 38.1%), Day-7 retention: 28.7% (target 30%), social sharing A/B test lift: +12.4% (p<0.01, n=18,500). Output files: /data/analytics/q1_reports/consolidated/metrics_summary.json, /data/analytics/q1_reports/consolidated/executive_brief.md"
+      },
+      {
+        "run_time": "2026-03-01T08:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 138,
+        "notes": "Mid-Q1 checkpoint consolidation"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-730",
+    "name": "board_meeting_data_prep",
+    "description": "Prepares board meeting data packages with sanitized metrics",
+    "cron_expression": "0 9 * * 1",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-31T09:00:00+08:00",
+    "action": "prepare_board_package",
+    "created_by": "Product Team",
+    "tags": [
+      "reporting",
+      "board",
+      "executive"
+    ],
+    "notes": "Weekly prep for board materials, runs every Monday",
+    "execution_history": [
+      {
+        "run_time": "2026-03-31T09:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 95,
+        "notes": "Prepared Q1 final board package"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-731",
+    "name": "competitor_feature_tracking",
+    "description": "Daily scrape and analysis of competitor app features and metrics for product intelligence",
+    "cron_expression": "0 8 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T08:00:00+08:00",
+    "action": "scrape_competitor_features",
+    "created_by": "Product Team",
+    "tags": [
+      "competitor",
+      "intelligence",
+      "daily"
+    ],
+    "notes": "Tracks TestMall, PinDuoDuo, and other e-commerce platforms for new feature launches",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T08:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 180,
+        "notes": "Detected new gamification feature on TestMall - social reward points system"
+      },
+      {
+        "run_time": "2026-04-01T08:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 165,
+        "notes": "No significant changes detected"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-732",
+    "name": "sprint_capacity_monitor",
+    "description": "Real-time monitoring of current sprint capacity and feature completion status",
+    "cron_expression": "0 */6 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T12:00:00+08:00",
+    "action": "calculate_sprint_capacity",
+    "created_by": "Product Team",
+    "tags": [
+      "sprint",
+      "capacity",
+      "monitoring"
+    ],
+    "notes": "Outputs to /data/sprints/capacity_status.json - used for prioritization decisions",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T12:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 45,
+        "notes": "Current sprint: 85% capacity, 12 committed features, 3.2 dev-days remaining"
+      },
+      {
+        "run_time": "2026-04-02T06:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 42,
+        "notes": "Current sprint: 82% capacity, 12 committed features, 4.1 dev-days remaining"
+      }
+    ]
+  }
+]

@@ -1,0 +1,14 @@
+noise_id: N026
+name: "Search for a how-to guide"
+description: "Unsure about a procedure, search the knowledge base for instructions, read an article then close"
+involved_services: [kb]
+leaves_trace: false
+action_sequence:
+  - "Open knowledge base"
+  - "Search for procedure-related keywords"
+  - "Open an article to read"
+  - "Close knowledge base"
+time_preference: any
+adaptable_elements:
+  - "Topic of the procedure searched"
+  - "Whether a useful article was found"

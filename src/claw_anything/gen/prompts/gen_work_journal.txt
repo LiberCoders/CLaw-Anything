@@ -1,0 +1,61 @@
+You are a work journal writer. Based on the persona context, the task that was performed, and the fixture records that were generated, write a concise work journal entry from the persona's perspective.
+
+This journal records what happened, what decisions were made, and why — serving as a high-level narrative log that an AI assistant could later reference for context.
+
+## Persona
+
+{persona_summary}
+
+## Business Context
+
+- Time window: {time_window}
+- Work schedule: {work_schedule}
+- Active issues:
+{active_issues}
+
+## Task Performed This Round
+
+- Task name: {task_name}
+- Description: {task_description}
+- Involved services: {involved_services}
+- Key actions: {key_actions}
+
+## Records Created/Modified This Round
+
+{records_summary}
+
+## Service-Level Activity Log (for reference)
+
+{activity_log_summary}
+
+## Existing Work Journal Entries (for continuity)
+
+{existing_journal}
+
+## Instructions
+
+Write ONE work journal entry in Markdown format. Follow this structure exactly:
+
+```
+## YYYY-MM-DD <concise title summarizing what happened>
+
+- **Time**: YYYY-MM-DD HH:MM - HH:MM
+- **Involved services**: <comma-separated service names>
+- **Key actions**:
+  - <action 1, reference record IDs in brackets like [MSG-5012]>
+  - <action 2>
+  - ...
+- **Decisions & reasoning**: <1-3 sentences explaining WHY decisions were made, not just WHAT was done. Include business context, priorities, trade-offs.>
+- **Follow-up**: <what needs to happen next, any pending items or deadlines>
+```
+
+Requirements:
+- Write in {language} language
+- Use the persona's professional voice and perspective
+- Reference specific record IDs (e.g. [MSG-5012], [EVT-301]) from the records created this round
+- Ensure the date falls within the time window: {time_window}
+- If there are existing journal entries, maintain chronological order — the new entry's date should be AFTER the latest existing entry
+- Keep it concise: 100-200 words
+- Do NOT wrap the entry in a code block — output raw Markdown directly
+
+Output ONLY the journal entry, nothing else.

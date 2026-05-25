@@ -1,0 +1,1109 @@
+# =============================================================================
+# Claw-Anything Combined CLI + GUI Task Template
+# =============================================================================
+# This template extends the standard CLI template with Android GUI tools.
+# Use this template for tasks that cross CLI mock-services and GUI phone apps.
+#
+# GUI apps (suffix _gui) are served by the GUI harness at port 9120.
+# Their tool_endpoints route through http://localhost:9120/gui/<app>/<action>.
+# GUI apps are NOT evaluated via mock services — they appear as tool calls in
+# the trace and can be counted with tool_called scoring components.
+#
+# CLI services (no _gui suffix) work identically to task_template.yaml and
+# ARE evaluated against fixture data.
+#
+# Instructions:
+#   1. Copy this file to gen_tasks/GXXX_task_name/task.yaml
+#   2. Global-replace GXXX_task_name with your task directory name
+#   3. Edit all sections marked <<<CUSTOMIZE>>>
+#   4. The services / tools / tool_endpoints sections are fixed — do not modify
+# =============================================================================
+
+# <<<CUSTOMIZE: task metadata>>>
+task_id: GXXX_task_name
+task_name: <<<CUSTOMIZE: task name>>>
+version: "1.0"
+category: <<<CUSTOMIZE: android_gui | productivity | cross_device | communication>>>
+difficulty: <<<CUSTOMIZE: simple | medium | hard>>>
+
+# =============================================================================
+# Android environment metadata (documentation only — not processed by runner)
+# =============================================================================
+android_environment:
+  execution_mode: avd_snapshot
+  device_profile: pixel_6
+  gui_harness_base_url: http://localhost:9120
+  installed_apps:
+    - { app: gmail_clone_gui,       package: "com.gmailclone" }
+    - { app: fossify_calendar_gui,  package: "org.fossify.calendar" }
+    - { app: fossify_messages_gui,  package: "org.fossify.messages" }
+    - { app: fossify_notes_gui,     package: "org.fossify.notes" }
+    - { app: mastodon_gui,          package: "org.joinmastodon.android.mastodon" }
+    - { app: mattermost_gui,        package: "com.mattermost.rnbeta" }
+    - { app: testmall_gui,          package: "com.testmall.app" }
+    - { app: odf_reader_gui,        package: "at.tomtasche.reader" }
+    - { app: photo_gallery_gui,     package: "gallery.photomanager.picturegalleryapp.imagegallery" }
+    - { app: opentracks_gui,        package: "de.dennisguse.opentracks.playstore" }
+    - { app: loop_habit_gui,        package: "org.isoron.uhabits" }
+    - { app: my_expenses_gui,       package: "org.totschnig.myexpenses" }
+    - { app: markor_gui,            package: "net.gsantner.markor" }
+    - { app: contacts_gui,          package: "com.google.android.contacts" }
+    - { app: dialer_gui,            package: "com.google.android.dialer" }
+    - { app: clock_gui,             package: "com.google.android.deskclock" }
+    - { app: maps_gui,              package: "com.google.android.apps.maps" }
+    - { app: camera_gui,            package: "com.android.camera2" }
+    - { app: settings_gui,          package: "com.android.settings" }
+
+# =============================================================================
+# Fixed section: All CLI Services (fixture-driven mock services)
+# Only replace fixture paths in env (global-replace GXXX_task_name)
+# =============================================================================
+services:
+  - name: todo
+    command: python mock_services/todo/server.py
+    port: 9102
+    health_check: http://localhost:9102/todo/tasks
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9102/todo/reset
+    env:
+      TODO_FIXTURES: gen_tasks/GXXX_task_name/fixtures/todo/tasks.json
+
+  - name: finance
+    command: python mock_services/finance/server.py
+    port: 9104
+    health_check: http://localhost:9104/finance/transactions
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9104/finance/reset
+    env:
+      FINANCE_FIXTURES: gen_tasks/GXXX_task_name/fixtures/finance/transactions.json
+
+  - name: kb
+    command: python mock_services/kb/server.py
+    port: 9106
+    health_check: http://localhost:9106/kb/search
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9106/kb/reset
+    env:
+      KB_FIXTURES: gen_tasks/GXXX_task_name/fixtures/kb/articles.json
+
+  - name: helpdesk
+    command: python mock_services/helpdesk/server.py
+    port: 9107
+    health_check: http://localhost:9107/helpdesk/tickets
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9107/helpdesk/reset
+    env:
+      HELPDESK_FIXTURES: gen_tasks/GXXX_task_name/fixtures/helpdesk/tickets.json
+
+  - name: inventory
+    command: python mock_services/inventory/server.py
+    port: 9108
+    health_check: http://localhost:9108/inventory/products
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9108/inventory/reset
+    env:
+      INVENTORY_FIXTURES: gen_tasks/GXXX_task_name/fixtures/inventory/products.json
+
+  - name: rss
+    command: python mock_services/rss/server.py
+    port: 9109
+    health_check: http://localhost:9109/rss/articles
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9109/rss/reset
+    env:
+      RSS_FIXTURES: gen_tasks/GXXX_task_name/fixtures/rss/articles.json
+
+  - name: crm
+    command: python mock_services/crm/server.py
+    port: 9110
+    health_check: http://localhost:9110/crm/customers
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9110/crm/reset
+    env:
+      CRM_FIXTURES: gen_tasks/GXXX_task_name/fixtures/crm/customers.json
+
+  - name: config
+    command: python mock_services/config/server.py
+    port: 9111
+    health_check: http://localhost:9111/config/integrations
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9111/config/reset
+    env:
+      CONFIG_FIXTURES: gen_tasks/GXXX_task_name/fixtures/config/integrations.json
+
+  - name: scheduler
+    command: python mock_services/scheduler/server.py
+    port: 9112
+    health_check: http://localhost:9112/scheduler/jobs
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9112/scheduler/reset
+    env:
+      SCHEDULER_FIXTURES: gen_tasks/GXXX_task_name/fixtures/scheduler/jobs.json
+
+  - name: workmail
+    command: python mock_services/workmail/server.py
+    port: 9113
+    health_check: http://localhost:9113/workmail/messages
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9113/workmail/reset
+    env:
+      WORKMAIL_FIXTURES: gen_tasks/GXXX_task_name/fixtures/workmail/inbox.json
+
+  - name: claw_notion
+    command: python mock_services/claw_notion/server.py
+    port: 9114
+    health_check: http://localhost:9114/claw_notion/pages
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9114/claw_notion/reset
+    env:
+      CLAW_NOTION_FIXTURES: gen_tasks/GXXX_task_name/fixtures/claw_notion/pages.json
+
+  - name: claw_obsidian
+    command: python mock_services/claw_obsidian/server.py
+    port: 9115
+    health_check: http://localhost:9115/claw_obsidian/notes
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9115/claw_obsidian/reset
+    env:
+      CLAW_OBSIDIAN_FIXTURES: gen_tasks/GXXX_task_name/fixtures/claw_obsidian/vault.json
+
+  - name: meeting
+    command: python mock_services/meeting/server.py
+    port: 9116
+    health_check: http://localhost:9116/meeting/list
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9116/meeting/reset
+    env:
+      MEETING_FIXTURES: gen_tasks/GXXX_task_name/fixtures/meeting/meetings.json
+
+  - name: claw_zotero
+    command: python mock_services/claw_zotero/server.py
+    port: 9117
+    health_check: http://localhost:9117/claw_zotero/items
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9117/claw_zotero/reset
+    env:
+      CLAW_ZOTERO_FIXTURES: gen_tasks/GXXX_task_name/fixtures/claw_zotero/library.json
+
+  - name: stumail
+    command: python mock_services/stumail/server.py
+    port: 9125
+    health_check: http://localhost:9125/stumail/messages
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9125/stumail/reset
+    env:
+      STUMAIL_FIXTURES: gen_tasks/GXXX_task_name/fixtures/stumail/inbox.json
+
+  - name: claw_feishu
+    command: python mock_services/claw_feishu/server.py
+    port: 9126
+    health_check: http://localhost:9126/claw_feishu/groups
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9126/claw_feishu/reset
+    env:
+      CLAW_FEISHU_FIXTURES: gen_tasks/GXXX_task_name/fixtures/claw_feishu/workspace.json
+
+  - name: claw_slack
+    command: python mock_services/claw_slack/server.py
+    port: 9127
+    health_check: http://localhost:9127/claw_slack/channels
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9127/claw_slack/reset
+    env:
+      CLAW_SLACK_FIXTURES: gen_tasks/GXXX_task_name/fixtures/claw_slack/workspace.json
+
+  - name: claw_facebook
+    command: python mock_services/claw_facebook/server.py
+    port: 9128
+    health_check: http://localhost:9128/claw_facebook/browse
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9128/claw_facebook/reset
+    env:
+      CLAW_FACEBOOK_FIXTURES: gen_tasks/GXXX_task_name/fixtures/claw_facebook/posts.json
+
+  - name: claw_zhihu
+    command: python mock_services/claw_zhihu/server.py
+    port: 9129
+    health_check: http://localhost:9129/claw_zhihu/search_questions
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9129/claw_zhihu/reset
+    env:
+      CLAW_ZHIHU_FIXTURES: gen_tasks/GXXX_task_name/fixtures/claw_zhihu/questions.json
+
+  - name: claw_wechat
+    command: python mock_services/claw_wechat/server.py
+    port: 9130
+    health_check: http://localhost:9130/claw_wechat/chats/list
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9130/claw_wechat/reset
+    env:
+      CLAW_WECHAT_CHAT_FIXTURES: gen_tasks/GXXX_task_name/fixtures/claw_wechat/chats.json
+      CLAW_WECHAT_MOMENTS_FIXTURES: gen_tasks/GXXX_task_name/fixtures/claw_wechat/moments.json
+
+  - name: claw_qq
+    command: python mock_services/claw_qq/server.py
+    port: 9131
+    health_check: http://localhost:9131/claw_qq/chats/list
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9131/claw_qq/reset
+    env:
+      CLAW_QQ_CHAT_FIXTURES: gen_tasks/GXXX_task_name/fixtures/claw_qq/chats.json
+      CLAW_QQ_ZONE_FIXTURES: gen_tasks/GXXX_task_name/fixtures/claw_qq/zone.json
+
+  - name: claw_linkedin
+    command: python mock_services/claw_linkedin/server.py
+    port: 9132
+    health_check: http://localhost:9132/claw_linkedin/browse
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9132/claw_linkedin/reset
+    env:
+      CLAW_LINKEDIN_FIXTURES: gen_tasks/GXXX_task_name/fixtures/claw_linkedin/jobs.json
+
+  - name: sheet
+    command: python mock_services/sheet/server.py
+    port: 9133
+    health_check: http://localhost:9133/sheet/workbooks
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9133/sheet/reset
+    env:
+      SHEET_FIXTURES: gen_tasks/GXXX_task_name/fixtures/sheet/workbooks.json
+
+  - name: slide
+    command: python mock_services/slide/server.py
+    port: 9134
+    health_check: http://localhost:9134/slide/decks
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9134/slide/reset
+    env:
+      SLIDE_FIXTURES: gen_tasks/GXXX_task_name/fixtures/slide/decks.json
+
+  - name: claw_news
+    command: python mock_services/claw_news/server.py
+    port: 9135
+    health_check: http://localhost:9135/claw_news/browse
+    health_check_method: POST
+    ready_timeout: 10
+    reset_endpoint: http://localhost:9135/claw_news/reset
+    env:
+      CLAW_NEWS_FIXTURES: gen_tasks/GXXX_task_name/fixtures/claw_news/posts.json
+
+  # ---------------------------------------------------------------------------
+  # Android GUI apps — served by the GUI harness (external process / AVD).
+  # command is empty so ServiceManager skips spawning; the harness is expected
+  # to already be running when a GUI task executes.
+  # All apps share port 9120; tool_endpoint URLs use /<service_name>/ so the
+  # assembler regex correctly extracts the service name.
+  # ---------------------------------------------------------------------------
+  - { name: gmail_clone_gui,      command: "", port: 9120, health_check: "http://localhost:9120/gmail_clone_gui/list_messages",      health_check_method: POST, ready_timeout: 5 }
+  - { name: fossify_calendar_gui, command: "", port: 9120, health_check: "http://localhost:9120/fossify_calendar_gui/list_events",    health_check_method: POST, ready_timeout: 5 }
+  - { name: fossify_messages_gui, command: "", port: 9120, health_check: "http://localhost:9120/fossify_messages_gui/list_threads",   health_check_method: POST, ready_timeout: 5 }
+  - { name: fossify_notes_gui,    command: "", port: 9120, health_check: "http://localhost:9120/fossify_notes_gui/list_notes",        health_check_method: POST, ready_timeout: 5 }
+  - { name: contacts_gui,         command: "", port: 9120, health_check: "http://localhost:9120/contacts_gui/list",                   health_check_method: POST, ready_timeout: 5 }
+  - { name: mastodon_gui,         command: "", port: 9120, health_check: "http://localhost:9120/mastodon_gui/browse",                 health_check_method: POST, ready_timeout: 5 }
+  - { name: mattermost_gui,       command: "", port: 9120, health_check: "http://localhost:9120/mattermost_gui/list_channels",        health_check_method: POST, ready_timeout: 5 }
+  - { name: testmall_gui,         command: "", port: 9120, health_check: "http://localhost:9120/testmall_gui/list_products",          health_check_method: POST, ready_timeout: 5 }
+  - { name: odf_reader_gui,       command: "", port: 9120, health_check: "http://localhost:9120/odf_reader_gui/list_documents",       health_check_method: POST, ready_timeout: 5 }
+  - { name: photo_gallery_gui,    command: "", port: 9120, health_check: "http://localhost:9120/photo_gallery_gui/list_media",        health_check_method: POST, ready_timeout: 5 }
+  - { name: opentracks_gui,       command: "", port: 9120, health_check: "http://localhost:9120/opentracks_gui/list_tracks",          health_check_method: POST, ready_timeout: 5 }
+  - { name: loop_habit_gui,       command: "", port: 9120, health_check: "http://localhost:9120/loop_habit_gui/list_habits",          health_check_method: POST, ready_timeout: 5 }
+  - { name: my_expenses_gui,      command: "", port: 9120, health_check: "http://localhost:9120/my_expenses_gui/list_accounts",       health_check_method: POST, ready_timeout: 5 }
+  - { name: markor_gui,           command: "", port: 9120, health_check: "http://localhost:9120/markor_gui/list_notes",              health_check_method: POST, ready_timeout: 5 }
+  - { name: dialer_gui,           command: "", port: 9120, health_check: "http://localhost:9120/dialer_gui/list_calls",               health_check_method: POST, ready_timeout: 5 }
+  - { name: clock_gui,            command: "", port: 9120, health_check: "http://localhost:9120/clock_gui/list_alarms",               health_check_method: POST, ready_timeout: 5 }
+  - { name: maps_gui,             command: "", port: 9120, health_check: "http://localhost:9120/maps_gui/search",                     health_check_method: POST, ready_timeout: 5 }
+  - { name: camera_gui,           command: "", port: 9120, health_check: "http://localhost:9120/camera_gui/list_captures",            health_check_method: POST, ready_timeout: 5 }
+  - { name: settings_gui,         command: "", port: 9120, health_check: "http://localhost:9120/settings_gui/list",                   health_check_method: POST, ready_timeout: 5 }
+
+# =============================================================================
+# Fixed section: Full tool set — CLI tools (evaluatable) + GUI tools
+# =============================================================================
+tools:
+  # ---- Todo (port 9102) ----
+  - { name: todo_list_tasks, description: "List TODO tasks. Returns full task details. Default returns all tasks. Use status filter to narrow results.", input_schema: { type: object, properties: { status: { type: string, description: "Filter by status: 'pending', 'in_progress', 'completed', or 'all' (default 'all')" } } } }
+  - { name: todo_create_task, description: "Create a new TODO task", input_schema: { type: object, properties: { title: { type: string }, description: { type: string, description: "Task description (optional)" }, priority: { type: string, description: "Priority level, default 'medium'" }, due_date: { type: string, description: "Due date in ISO format (optional)" } }, required: [title] } }
+  - { name: todo_update_task, description: "Update an existing TODO task. Only provided fields will be changed.", input_schema: { type: object, properties: { task_id: { type: string }, title: { type: string, description: "New title (optional)" }, priority: { type: string, description: "New priority (optional)" }, status: { type: string, description: "New status: 'pending', 'in_progress', 'completed' (optional)" }, tags: { type: array, items: { type: string }, description: "New tags list (optional)" } }, required: [task_id] } }
+  - { name: todo_delete_task, description: "Delete a TODO task by task_id", input_schema: { type: object, properties: { task_id: { type: string } }, required: [task_id] } }
+
+  # ---- Finance (port 9104) ----
+  - { name: finance_list_transactions, description: "List financial transactions. Returns all transactions by default. Use start_date and end_date to filter by date range.", input_schema: { type: object, properties: { start_date: { type: string, description: "Filter from this date (YYYY-MM-DD, inclusive, optional)" }, end_date: { type: string, description: "Filter until this date (YYYY-MM-DD, inclusive, optional)" } } } }
+  - { name: finance_get_transaction, description: "Get full transaction details by transaction_id", input_schema: { type: object, properties: { transaction_id: { type: string } }, required: [transaction_id] } }
+  - { name: finance_report_submit, description: "Submit a finance report with transaction references", input_schema: { type: object, properties: { title: { type: string }, transactions: { type: array, items: { type: string } }, total_amount: { type: number } }, required: [title, transactions, total_amount] } }
+
+  # ---- KB (port 9106) ----
+  - { name: kb_search, description: "Search KB articles by keyword. Returns title/snippet (first 150 chars) only. Default max 5 results. Response includes 'total' (all matching) and 'returned' (this page) counts. Use offset for pagination. Use kb_get_article for full content.", input_schema: { type: object, properties: { query: { type: string }, category: { type: string, description: "Filter by category (optional)" }, max_results: { type: integer, description: "Max results to return, default 5" }, offset: { type: integer, description: "Skip first N results for pagination, default 0" } }, required: [query] } }
+  - { name: kb_get_article, description: "Get full KB article content by article_id", input_schema: { type: object, properties: { article_id: { type: string } }, required: [article_id] } }
+  - { name: kb_update_article, description: "Update a KB article's content", input_schema: { type: object, properties: { article_id: { type: string }, content: { type: string, description: "New article content" } }, required: [article_id, content] } }
+
+  # ---- Helpdesk (port 9107) ----
+  - { name: helpdesk_list_tickets, description: "List helpdesk tickets. Default shows only 'open' tickets. Use status='all' to see all tickets.", input_schema: { type: object, properties: { status: { type: string, description: "Filter by status: 'open', 'closed', 'all', etc. Default 'open'" } } } }
+  - { name: helpdesk_get_ticket, description: "Get full ticket details by ticket_id", input_schema: { type: object, properties: { ticket_id: { type: string } }, required: [ticket_id] } }
+  - { name: helpdesk_update_ticket, description: "Update a helpdesk ticket. Only provided fields will be changed.", input_schema: { type: object, properties: { ticket_id: { type: string }, priority: { type: string, description: "New priority (optional)" }, tags: { type: array, items: { type: string }, description: "New tags (optional)" }, category: { type: string, description: "New category (optional)" } }, required: [ticket_id] } }
+  - { name: helpdesk_close_ticket, description: "Close a helpdesk ticket with a resolution note", input_schema: { type: object, properties: { ticket_id: { type: string }, resolution: { type: string, description: "Resolution description" } }, required: [ticket_id, resolution] } }
+
+  # ---- Inventory (port 9108) ----
+  - { name: inventory_list_products, description: "List inventory products. Returns full product details. Optionally filter by category.", input_schema: { type: object, properties: { category: { type: string, description: "Filter by product category (optional)" } } } }
+  - { name: inventory_get_product, description: "Get full product details by product_id", input_schema: { type: object, properties: { product_id: { type: string } }, required: [product_id] } }
+  - { name: inventory_create_order, description: "Create a purchase order for a product", input_schema: { type: object, properties: { product_id: { type: string }, quantity: { type: integer }, supplier: { type: string, description: "Supplier name (optional)" } }, required: [product_id, quantity] } }
+
+  # ---- RSS (port 9109) ----
+  - { name: rss_list_feeds, description: "List available RSS feed sources and their categories. Optionally filter by category.", input_schema: { type: object, properties: { category: { type: string, description: "Filter by category (optional)" } } } }
+  - { name: rss_list_articles, description: "List RSS articles (summary only, no full content). Default max 20 results. Filter by source or category.", input_schema: { type: object, properties: { source: { type: string, description: "Filter by source/feed name (optional)" }, category: { type: string, description: "Filter by category (optional)" }, max_results: { type: integer, description: "Max articles to return, default 20" } } } }
+  - { name: rss_get_article, description: "Get full RSS article content by article_id", input_schema: { type: object, properties: { article_id: { type: string } }, required: [article_id] } }
+  - { name: rss_publish, description: "Publish a newsletter", input_schema: { type: object, properties: { title: { type: string }, content: { type: string }, recipients: { type: array, items: { type: string }, description: "List of recipients (optional)" } }, required: [title, content] } }
+
+  # ---- CRM (port 9110) ----
+  - { name: crm_list_customers, description: "List CRM customers (summary only, no detailed notes/contracts). Filter by status, tier, or industry.", input_schema: { type: object, properties: { status: { type: string, description: "Filter by customer status (optional)" }, tier: { type: string, description: "Filter by customer tier (optional)" }, industry: { type: string, description: "Filter by industry (optional)" } } } }
+  - { name: crm_get_customer, description: "Get full customer details including notes and contracts by customer_id", input_schema: { type: object, properties: { customer_id: { type: string } }, required: [customer_id] } }
+
+  # ---- Config (port 9111) ----
+  - { name: config_list_integrations, description: "List integrations (summary only, no secrets/credentials). Optionally filter by status.", input_schema: { type: object, properties: { status: { type: string, description: "Filter by status, e.g. 'active', 'inactive' (optional)" } } } }
+  - { name: config_get_integration, description: "Get full integration details by integration_id", input_schema: { type: object, properties: { integration_id: { type: string } }, required: [integration_id] } }
+
+  # ---- Scheduler (port 9112) ----
+  - { name: scheduler_list_jobs, description: "List scheduled jobs (summary, no action/history). Filter by status, enabled state, or tag.", input_schema: { type: object, properties: { status: { type: string, description: "Filter by last run status (optional)" }, enabled: { type: boolean, description: "Filter by enabled state (optional)" }, tag: { type: string, description: "Filter by tag (optional)" } } } }
+  - { name: scheduler_get_job, description: "Get full job details including action and execution history by job_id", input_schema: { type: object, properties: { job_id: { type: string } }, required: [job_id] } }
+  - { name: scheduler_create_job, description: "Create a new scheduled job", input_schema: { type: object, properties: { name: { type: string }, cron_expression: { type: string }, action: { type: string }, enabled: { type: boolean, description: "Whether the job is enabled, default true" }, tags: { type: array, items: { type: string }, description: "Job tags (optional)" }, created_by: { type: string, description: "Creator name (optional)" } }, required: [name, cron_expression, action] } }
+  - { name: scheduler_update_job, description: "Update a scheduled job. Only provided fields will be changed.", input_schema: { type: object, properties: { job_id: { type: string }, enabled: { type: boolean, description: "Enable/disable the job (optional)" }, cron_expression: { type: string, description: "New cron expression (optional)" }, name: { type: string, description: "New name (optional)" }, action: { type: string, description: "New action (optional)" }, tags: { type: array, items: { type: string }, description: "New tags (optional)" } }, required: [job_id] } }
+  - { name: scheduler_delete_job, description: "Delete a scheduled job by job_id", input_schema: { type: object, properties: { job_id: { type: string } }, required: [job_id] } }
+  - { name: scheduler_job_history, description: "Get execution history for a job. Default returns last 10 entries.", input_schema: { type: object, properties: { job_id: { type: string }, limit: { type: integer, description: "Max history entries to return, default 10" } }, required: [job_id] } }
+
+  # ---- Workmail (port 9113) ----
+  - { name: workmail_list_messages, description: "List company-internal mail inbox. Returns subject/from/date (no body). Default: last 7 days, max 20 results.", input_schema: { type: object, properties: { days_back: { type: integer, description: "How many days back to search, default 7" }, max_results: { type: integer, description: "Max messages to return, default 20" }, offset: { type: integer, description: "Skip first N results for pagination, default 0" }, query: { type: string, description: "Search keyword in subject and sender (optional)" } } } }
+  - { name: workmail_get_message, description: "Get full company-internal message details including body by message_id", input_schema: { type: object, properties: { message_id: { type: string } }, required: [message_id] } }
+  - { name: workmail_send_message, description: "Send a company-internal email to the specified recipient", input_schema: { type: object, properties: { to: { type: string }, subject: { type: string }, body: { type: string } }, required: [to, subject, body] } }
+  - { name: workmail_save_draft, description: "Save a company-internal email as draft (not sent).", input_schema: { type: object, properties: { to: { type: string }, subject: { type: string }, body: { type: string }, reply_to_message_id: { type: string, description: "Original message ID if this is a reply (optional)" } }, required: [to, subject, body] } }
+
+  # ---- Claw-Notion (port 9114) ----
+  - { name: claw_notion_list_pages, description: "List claw_notion pages (summary only, no blocks). Optionally filter by parent_page_id or database_id. By default archived pages are excluded.", input_schema: { type: object, properties: { parent_page_id: { type: string, description: "Filter by parent page id (optional)" }, database_id: { type: string, description: "Filter by database id (optional)" }, include_archived: { type: boolean, description: "Whether to include archived pages, default false" }, max_results: { type: integer, description: "Max pages to return, default 20" }, offset: { type: integer, description: "Skip first N results for pagination, default 0" } } } }
+  - { name: claw_notion_get_page, description: "Get full page details (title + properties + blocks) by page_id", input_schema: { type: object, properties: { page_id: { type: string } }, required: [page_id] } }
+  - { name: claw_notion_create_page, description: "Create a new claw_notion page.", input_schema: { type: object, properties: { title: { type: string }, parent_page_id: { type: string, description: "Parent page id (optional)" }, database_id: { type: string, description: "Database id if this page belongs to a database (optional)" }, properties: { type: object, description: "Structured key-value properties (optional)" }, blocks: { type: array, items: { type: object }, description: "Initial blocks, each {type, text} (optional)" } }, required: [title] } }
+  - { name: claw_notion_update_page_properties, description: "Update a page's structured properties (merge into existing).", input_schema: { type: object, properties: { page_id: { type: string }, properties: { type: object, description: "Property keys to set/override" } }, required: [page_id, properties] } }
+  - { name: claw_notion_append_blocks, description: "Append blocks to the end of a page's block list.", input_schema: { type: object, properties: { page_id: { type: string }, blocks: { type: array, items: { type: object }, description: "Blocks to append" } }, required: [page_id, blocks] } }
+  - { name: claw_notion_archive_page, description: "Archive a page (soft delete).", input_schema: { type: object, properties: { page_id: { type: string } }, required: [page_id] } }
+  - { name: claw_notion_search, description: "Full-text search pages by query.", input_schema: { type: object, properties: { query: { type: string }, max_results: { type: integer, description: "Max pages to return, default 10" }, offset: { type: integer, description: "Skip first N results for pagination, default 0" } }, required: [query] } }
+  - { name: claw_notion_query_database, description: "Query pages in a database by equality filter on properties.", input_schema: { type: object, properties: { database_id: { type: string }, property_filter: { type: object, description: "Key-value pairs; page matches if all pairs equal page.properties[key]" }, max_results: { type: integer, description: "Max pages to return, default 20" }, offset: { type: integer, description: "Skip first N results for pagination, default 0" } }, required: [database_id] } }
+
+  # ---- Claw-Obsidian (port 9115) ----
+  - { name: claw_obsidian_list_notes, description: "List claw_obsidian notes (summary only, no content). Optionally filter by folder or tag.", input_schema: { type: object, properties: { folder: { type: string, description: "Filter by folder path (optional)" }, tag: { type: string, description: "Filter by a single tag (optional)" }, max_results: { type: integer, description: "Max notes to return, default 20" }, offset: { type: integer, description: "Skip first N results for pagination, default 0" } } } }
+  - { name: claw_obsidian_get_note, description: "Get full note (title + content + tags + outlinks + inlinks) by note_id", input_schema: { type: object, properties: { note_id: { type: string } }, required: [note_id] } }
+  - { name: claw_obsidian_create_note, description: "Create a new claw_obsidian markdown note.", input_schema: { type: object, properties: { title: { type: string }, folder: { type: string, description: "Folder path (optional)" }, tags: { type: array, items: { type: string }, description: "Tag list (optional)" }, content: { type: string, description: "Initial markdown content (optional)" } }, required: [title] } }
+  - { name: claw_obsidian_update_note, description: "Replace a note's content wholesale.", input_schema: { type: object, properties: { note_id: { type: string }, content: { type: string, description: "New full markdown content" } }, required: [note_id, content] } }
+  - { name: claw_obsidian_append_to_note, description: "Append markdown text to the end of a note's content.", input_schema: { type: object, properties: { note_id: { type: string }, text: { type: string, description: "Markdown text to append" } }, required: [note_id, text] } }
+  - { name: claw_obsidian_delete_note, description: "Delete a note permanently.", input_schema: { type: object, properties: { note_id: { type: string } }, required: [note_id] } }
+  - { name: claw_obsidian_search, description: "Search notes by text query and/or by required tags.", input_schema: { type: object, properties: { query: { type: string, description: "Text query (optional; empty = no text filter)" }, tags: { type: array, items: { type: string }, description: "Required tags (optional)" }, max_results: { type: integer, description: "Max notes to return, default 10" }, offset: { type: integer, description: "Skip first N results for pagination, default 0" } } } }
+  - { name: claw_obsidian_add_link, description: "Create a directed link from_note_id → to_note_id.", input_schema: { type: object, properties: { from_note_id: { type: string }, to_note_id: { type: string } }, required: [from_note_id, to_note_id] } }
+  - { name: claw_obsidian_remove_link, description: "Remove a directed link from_note_id → to_note_id.", input_schema: { type: object, properties: { from_note_id: { type: string }, to_note_id: { type: string } }, required: [from_note_id, to_note_id] } }
+  - { name: claw_obsidian_get_backlinks, description: "Get the list of note_ids that link TO this note.", input_schema: { type: object, properties: { note_id: { type: string } }, required: [note_id] } }
+
+  # ---- Meeting (port 9116) ----
+  - { name: meeting_list, description: "List meetings. Filter by status, host, or date range.", input_schema: { type: object, properties: { status: { type: string, description: "scheduled | started | ended | cancelled | all (default all)" }, host: { type: string, description: "Filter by host email substring (optional)" }, start_date: { type: string, description: "YYYY-MM-DD inclusive (optional)" }, end_date: { type: string, description: "YYYY-MM-DD inclusive (optional)" } } } }
+  - { name: meeting_get, description: "Get full meeting details (participants + recordings) by meeting_id", input_schema: { type: object, properties: { meeting_id: { type: string } }, required: [meeting_id] } }
+  - { name: meeting_create, description: "Schedule a new meeting.", input_schema: { type: object, properties: { topic: { type: string }, host: { type: string, description: "Host email" }, start_time: { type: string, description: "ISO 8601" }, duration_minutes: { type: integer, description: "Default 60" }, participants: { type: array, items: { type: object }, description: "Initial participant list (optional)" } }, required: [topic, host, start_time] } }
+  - { name: meeting_update, description: "Update topic/start_time/duration of a scheduled or started meeting.", input_schema: { type: object, properties: { meeting_id: { type: string }, topic: { type: string }, start_time: { type: string }, duration_minutes: { type: integer } }, required: [meeting_id] } }
+  - { name: meeting_cancel, description: "Cancel a scheduled/started meeting.", input_schema: { type: object, properties: { meeting_id: { type: string } }, required: [meeting_id] } }
+  - { name: meeting_start, description: "Start a scheduled meeting.", input_schema: { type: object, properties: { meeting_id: { type: string } }, required: [meeting_id] } }
+  - { name: meeting_end, description: "End a meeting.", input_schema: { type: object, properties: { meeting_id: { type: string } }, required: [meeting_id] } }
+  - { name: meeting_add_participant, description: "Register a participant on a meeting.", input_schema: { type: object, properties: { meeting_id: { type: string }, email: { type: string }, role: { type: string, description: "host | panelist | attendee (default attendee)" } }, required: [meeting_id, email] } }
+  - { name: meeting_remove_participant, description: "Remove a participant from a meeting by email.", input_schema: { type: object, properties: { meeting_id: { type: string }, email: { type: string } }, required: [meeting_id, email] } }
+  - { name: meeting_list_recordings, description: "List recordings across meetings.", input_schema: { type: object, properties: { meeting_id: { type: string, description: "Filter to one meeting (optional)" }, host: { type: string, description: "Filter by host email substring (optional)" }, start_date: { type: string, description: "YYYY-MM-DD inclusive on recording date (optional)" }, end_date: { type: string, description: "YYYY-MM-DD inclusive on recording date (optional)" } } } }
+
+  # ---- Claw-Zotero (port 9117) ----
+  - { name: claw_zotero_list_items, description: "List literature items.", input_schema: { type: object, properties: { collection_id: { type: string }, tag: { type: string }, item_type: { type: string }, year_min: { type: integer }, year_max: { type: integer }, max_results: { type: integer, description: "default 20" }, offset: { type: integer, description: "default 0" } } } }
+  - { name: claw_zotero_get_item, description: "Get full metadata of one literature item by item_id.", input_schema: { type: object, properties: { item_id: { type: string } }, required: [item_id] } }
+  - { name: claw_zotero_search, description: "Search literature items by keyword.", input_schema: { type: object, properties: { query: { type: string }, tags: { type: array, items: { type: string } }, max_results: { type: integer }, offset: { type: integer } } } }
+  - { name: claw_zotero_list_collections, description: "List all collections with item_count.", input_schema: { type: object, properties: {} } }
+  - { name: claw_zotero_add_item, description: "Add a new literature item.", input_schema: { type: object, properties: { title: { type: string }, item_type: { type: string }, authors: { type: array, items: { type: string } }, year: { type: integer }, venue: { type: string }, doi: { type: string }, abstract: { type: string }, tags: { type: array, items: { type: string } }, citation_key: { type: string } }, required: [title] } }
+  - { name: claw_zotero_update_item, description: "Update metadata of an existing item.", input_schema: { type: object, properties: { item_id: { type: string }, fields: { type: object } }, required: [item_id, fields] } }
+  - { name: claw_zotero_add_note, description: "Append a text note to an item.", input_schema: { type: object, properties: { item_id: { type: string }, text: { type: string } }, required: [item_id, text] } }
+  - { name: claw_zotero_add_to_collection, description: "Add an item to a collection.", input_schema: { type: object, properties: { item_id: { type: string }, collection_id: { type: string } }, required: [item_id, collection_id] } }
+  - { name: claw_zotero_delete_item, description: "Permanently delete a literature item.", input_schema: { type: object, properties: { item_id: { type: string } }, required: [item_id] } }
+  - { name: claw_zotero_remove_from_collection, description: "Remove an item from a collection.", input_schema: { type: object, properties: { item_id: { type: string }, collection_id: { type: string } }, required: [item_id, collection_id] } }
+
+  # ---- Stumail (port 9125) ----
+  - { name: stumail_list_messages, description: "List emails from the campus mailbox.", input_schema: { type: object, properties: { days_back: { type: integer }, max_results: { type: integer }, offset: { type: integer }, query: { type: string } } } }
+  - { name: stumail_get_message, description: "Get full content of a campus email by message_id.", input_schema: { type: object, properties: { message_id: { type: string } }, required: [message_id] } }
+  - { name: stumail_send_message, description: "Send a campus email.", input_schema: { type: object, properties: { to: { type: string }, subject: { type: string }, body: { type: string } }, required: [to, subject, body] } }
+  - { name: stumail_save_draft, description: "Save a campus email as draft.", input_schema: { type: object, properties: { to: { type: string }, subject: { type: string }, body: { type: string }, reply_to_message_id: { type: string } }, required: [to, subject, body] } }
+
+  # ---- Claw-Feishu (port 9126) ----
+  - { name: claw_feishu_list_groups, description: "List Feishu groups.", input_schema: { type: object, properties: { member: { type: string }, include_archived: { type: boolean }, max_results: { type: integer }, offset: { type: integer } } } }
+  - { name: claw_feishu_get_group, description: "Get details of a Feishu group by group_id.", input_schema: { type: object, properties: { group_id: { type: string }, include_messages: { type: boolean } }, required: [group_id] } }
+  - { name: claw_feishu_send_message, description: "Send a message to a Feishu group.", input_schema: { type: object, properties: { group_id: { type: string }, sender: { type: string }, text: { type: string }, mentions: { type: array, items: { type: string } }, pinned: { type: boolean } }, required: [group_id, sender, text] } }
+  - { name: claw_feishu_search_messages, description: "Search Feishu messages by keyword.", input_schema: { type: object, properties: { query: { type: string }, max_results: { type: integer }, offset: { type: integer } }, required: [query] } }
+  - { name: claw_feishu_schedule_meeting, description: "Schedule a Feishu meeting inside a group.", input_schema: { type: object, properties: { group_id: { type: string }, title: { type: string }, start_time: { type: string }, duration_minutes: { type: integer }, attendees: { type: array, items: { type: string } } }, required: [group_id, title, start_time] } }
+  - { name: claw_feishu_end_meeting, description: "End a Feishu meeting by meeting_id.", input_schema: { type: object, properties: { meeting_id: { type: string } }, required: [meeting_id] } }
+  - { name: claw_feishu_list_docs, description: "List Feishu docs.", input_schema: { type: object, properties: { group_id: { type: string }, max_results: { type: integer }, offset: { type: integer } } } }
+  - { name: claw_feishu_create_doc, description: "Create a new Feishu doc inside a group.", input_schema: { type: object, properties: { group_id: { type: string }, title: { type: string }, content: { type: string }, author: { type: string } }, required: [group_id, title, author] } }
+  - { name: claw_feishu_update_doc, description: "Update the content of an existing Feishu doc.", input_schema: { type: object, properties: { doc_id: { type: string }, content: { type: string } }, required: [doc_id, content] } }
+
+  # ---- Claw-Slack (port 9127) ----
+  - { name: claw_slack_list_channels, description: "List Slack channels.", input_schema: { type: object, properties: { member: { type: string }, is_private: { type: boolean }, include_archived: { type: boolean }, max_results: { type: integer }, offset: { type: integer } } } }
+  - { name: claw_slack_get_channel, description: "Get details of a Slack channel by channel_id.", input_schema: { type: object, properties: { channel_id: { type: string } }, required: [channel_id] } }
+  - { name: claw_slack_list_messages, description: "List top-level messages in a Slack channel.", input_schema: { type: object, properties: { channel_id: { type: string }, max_results: { type: integer }, offset: { type: integer } }, required: [channel_id] } }
+  - { name: claw_slack_get_thread, description: "Get the root message and all thread replies.", input_schema: { type: object, properties: { parent_message_id: { type: string } }, required: [parent_message_id] } }
+  - { name: claw_slack_post_message, description: "Post a message to a Slack channel.", input_schema: { type: object, properties: { channel_id: { type: string }, sender: { type: string }, text: { type: string }, parent_message_id: { type: string } }, required: [channel_id, sender, text] } }
+  - { name: claw_slack_search_messages, description: "Search Slack messages by keyword.", input_schema: { type: object, properties: { query: { type: string }, by_user: { type: string }, after: { type: string }, before: { type: string }, max_results: { type: integer }, offset: { type: integer } }, required: [query] } }
+  - { name: claw_slack_add_reaction, description: "Add an emoji reaction to a Slack message.", input_schema: { type: object, properties: { message_id: { type: string }, emoji: { type: string }, user: { type: string } }, required: [message_id, emoji, user] } }
+  - { name: claw_slack_remove_reaction, description: "Remove an emoji reaction from a Slack message.", input_schema: { type: object, properties: { message_id: { type: string }, emoji: { type: string }, user: { type: string } }, required: [message_id, emoji, user] } }
+  - { name: claw_slack_pin_message, description: "Pin a message in a Slack channel.", input_schema: { type: object, properties: { channel_id: { type: string }, message_id: { type: string } }, required: [channel_id, message_id] } }
+  - { name: claw_slack_unpin_message, description: "Unpin a message from a Slack channel.", input_schema: { type: object, properties: { channel_id: { type: string }, message_id: { type: string } }, required: [channel_id, message_id] } }
+
+  # ---- Claw-Facebook (port 9128) ----
+  - { name: claw_facebook_browse, description: "Browse Facebook posts.", input_schema: { type: object, properties: { tag: { type: string }, author: { type: string }, liked: { type: boolean }, saved: { type: boolean }, sort_by: { type: string }, max_results: { type: integer }, offset: { type: integer } } } }
+  - { name: claw_facebook_get_post, description: "Get full details of a Facebook post by post_id.", input_schema: { type: object, properties: { post_id: { type: string } }, required: [post_id] } }
+  - { name: claw_facebook_search, description: "Keyword search across Facebook posts.", input_schema: { type: object, properties: { query: { type: string }, max_results: { type: integer }, offset: { type: integer } }, required: [query] } }
+  - { name: claw_facebook_like, description: "Like a Facebook post.", input_schema: { type: object, properties: { post_id: { type: string } }, required: [post_id] } }
+  - { name: claw_facebook_save, description: "Save a Facebook post to bookmarks.", input_schema: { type: object, properties: { post_id: { type: string } }, required: [post_id] } }
+  - { name: claw_facebook_repost, description: "Repost a Facebook post with optional comment.", input_schema: { type: object, properties: { post_id: { type: string }, repost_comment: { type: string } }, required: [post_id] } }
+
+  # ---- Claw-Zhihu (port 9129) ----
+  - { name: claw_zhihu_search_questions, description: "Search Zhihu questions by query keyword.", input_schema: { type: object, properties: { query: { type: string }, topic: { type: string }, sort_by: { type: string }, max_results: { type: integer }, offset: { type: integer } } } }
+  - { name: claw_zhihu_get_question, description: "Get a Zhihu question with all its answers.", input_schema: { type: object, properties: { question_id: { type: string } }, required: [question_id] } }
+  - { name: claw_zhihu_upvote_answer, description: "Upvote a Zhihu answer.", input_schema: { type: object, properties: { answer_id: { type: string } }, required: [answer_id] } }
+  - { name: claw_zhihu_collect_answer, description: "Collect a Zhihu answer.", input_schema: { type: object, properties: { answer_id: { type: string } }, required: [answer_id] } }
+  - { name: claw_zhihu_follow_question, description: "Follow a Zhihu question.", input_schema: { type: object, properties: { question_id: { type: string } }, required: [question_id] } }
+  - { name: claw_zhihu_post_answer, description: "Post an answer to a Zhihu question.", input_schema: { type: object, properties: { question_id: { type: string }, author: { type: string }, content: { type: string } }, required: [question_id, author, content] } }
+
+  # ---- Claw-WeChat (port 9130) ----
+  - { name: claw_wechat_list_chats, description: "List WeChat chats.", input_schema: { type: object, properties: { type: { type: string }, max_results: { type: integer }, offset: { type: integer } } } }
+  - { name: claw_wechat_get_chat, description: "Get a WeChat chat with recent messages.", input_schema: { type: object, properties: { chat_id: { type: string }, max_messages: { type: integer } }, required: [chat_id] } }
+  - { name: claw_wechat_search_messages, description: "Search WeChat messages.", input_schema: { type: object, properties: { query: { type: string }, chat_id: { type: string }, max_results: { type: integer } }, required: [query] } }
+  - { name: claw_wechat_send_message, description: "Send a WeChat message.", input_schema: { type: object, properties: { chat_id: { type: string }, content: { type: string } }, required: [chat_id, content] } }
+  - { name: claw_wechat_recall_message, description: "Recall a WeChat message.", input_schema: { type: object, properties: { chat_id: { type: string }, message_id: { type: string } }, required: [chat_id, message_id] } }
+  - { name: claw_wechat_mute_chat, description: "Mute or unmute a WeChat chat.", input_schema: { type: object, properties: { chat_id: { type: string }, mute: { type: boolean } }, required: [chat_id] } }
+  - { name: claw_wechat_browse_moments, description: "Browse WeChat Moments.", input_schema: { type: object, properties: { author: { type: string }, max_results: { type: integer }, offset: { type: integer } } } }
+  - { name: claw_wechat_search_moments, description: "Search WeChat Moments.", input_schema: { type: object, properties: { query: { type: string }, max_results: { type: integer } }, required: [query] } }
+  - { name: claw_wechat_like_moment, description: "Like or unlike a Moments post.", input_schema: { type: object, properties: { post_id: { type: string }, like: { type: boolean } }, required: [post_id] } }
+  - { name: claw_wechat_comment_moment, description: "Comment on a Moments post.", input_schema: { type: object, properties: { post_id: { type: string }, content: { type: string } }, required: [post_id, content] } }
+  - { name: claw_wechat_post_moment, description: "Post a new Moments entry.", input_schema: { type: object, properties: { content: { type: string }, images: { type: array, items: { type: string } }, visibility: { type: string } }, required: [content] } }
+
+  # ---- Claw-QQ (port 9131) ----
+  - { name: claw_qq_list_chats, description: "List QQ chats.", input_schema: { type: object, properties: { type: { type: string }, max_results: { type: integer }, offset: { type: integer } } } }
+  - { name: claw_qq_get_chat, description: "Get a QQ chat with recent messages.", input_schema: { type: object, properties: { chat_id: { type: string }, max_messages: { type: integer } }, required: [chat_id] } }
+  - { name: claw_qq_search_messages, description: "Search QQ messages.", input_schema: { type: object, properties: { query: { type: string }, chat_id: { type: string }, max_results: { type: integer } }, required: [query] } }
+  - { name: claw_qq_send_message, description: "Send a QQ message.", input_schema: { type: object, properties: { chat_id: { type: string }, content: { type: string } }, required: [chat_id, content] } }
+  - { name: claw_qq_recall_message, description: "Recall a QQ message.", input_schema: { type: object, properties: { chat_id: { type: string }, message_id: { type: string } }, required: [chat_id, message_id] } }
+  - { name: claw_qq_mute_chat, description: "Mute or unmute a QQ chat.", input_schema: { type: object, properties: { chat_id: { type: string }, mute: { type: boolean } }, required: [chat_id] } }
+  - { name: claw_qq_browse_zone, description: "Browse QZone posts.", input_schema: { type: object, properties: { author: { type: string }, max_results: { type: integer }, offset: { type: integer } } } }
+  - { name: claw_qq_search_zone, description: "Search QZone posts.", input_schema: { type: object, properties: { query: { type: string }, max_results: { type: integer } }, required: [query] } }
+  - { name: claw_qq_like_zone_post, description: "Like or unlike a QZone post.", input_schema: { type: object, properties: { post_id: { type: string }, like: { type: boolean } }, required: [post_id] } }
+  - { name: claw_qq_comment_zone_post, description: "Comment on a QZone post.", input_schema: { type: object, properties: { post_id: { type: string }, content: { type: string } }, required: [post_id, content] } }
+  - { name: claw_qq_post_zone, description: "Post a new QZone entry.", input_schema: { type: object, properties: { content: { type: string }, images: { type: array, items: { type: string } }, mood: { type: string }, visibility: { type: string } }, required: [content] } }
+
+  # ---- Claw-LinkedIn (port 9132) ----
+  - { name: claw_linkedin_browse, description: "Browse LinkedIn jobs.", input_schema: { type: object, properties: { company: { type: string }, skills: { type: array, items: { type: string } }, location: { type: string }, experience_level: { type: string }, job_type: { type: string }, saved: { type: boolean }, applied: { type: boolean }, sort_by: { type: string }, max_results: { type: integer }, offset: { type: integer } } } }
+  - { name: claw_linkedin_get_job, description: "Get full details of a LinkedIn job posting.", input_schema: { type: object, properties: { job_id: { type: string } }, required: [job_id] } }
+  - { name: claw_linkedin_search, description: "Keyword search across LinkedIn jobs.", input_schema: { type: object, properties: { query: { type: string }, max_results: { type: integer }, offset: { type: integer } }, required: [query] } }
+  - { name: claw_linkedin_save, description: "Save a LinkedIn job.", input_schema: { type: object, properties: { job_id: { type: string } }, required: [job_id] } }
+  - { name: claw_linkedin_apply, description: "Submit an application to a LinkedIn job.", input_schema: { type: object, properties: { job_id: { type: string }, cover_letter: { type: string } }, required: [job_id] } }
+  - { name: claw_linkedin_follow_company, description: "Follow a company on LinkedIn.", input_schema: { type: object, properties: { company: { type: string } }, required: [company] } }
+
+  # ---- Sheet (port 9133) ----
+  - { name: sheet_list_workbooks, description: "List all workbooks.", input_schema: { type: object, properties: { owner: { type: string } } } }
+  - { name: sheet_open, description: "Open a workbook by workbook_id.", input_schema: { type: object, properties: { workbook_id: { type: string } }, required: [workbook_id] } }
+  - { name: sheet_get_range, description: "Read a cell range from a sheet.", input_schema: { type: object, properties: { workbook_id: { type: string }, sheet: { type: string }, range: { type: string } }, required: [workbook_id, sheet, range] } }
+  - { name: sheet_set_cell, description: "Set the value of a single cell.", input_schema: { type: object, properties: { workbook_id: { type: string }, sheet: { type: string }, cell: { type: string }, value: {} }, required: [workbook_id, sheet, cell, value] } }
+  - { name: sheet_set_range, description: "Set a 2D range of values.", input_schema: { type: object, properties: { workbook_id: { type: string }, sheet: { type: string }, start_cell: { type: string }, values: { type: array, items: { type: array } } }, required: [workbook_id, sheet, start_cell, values] } }
+  - { name: sheet_insert_row, description: "Insert a new row.", input_schema: { type: object, properties: { workbook_id: { type: string }, sheet: { type: string }, after_row: { type: integer }, values: { type: array } }, required: [workbook_id, sheet, after_row] } }
+  - { name: sheet_create_workbook, description: "Create a new empty workbook.", input_schema: { type: object, properties: { name: { type: string }, owner: { type: string }, initial_sheets: { type: array, items: { type: object } } }, required: [name, owner] } }
+  - { name: sheet_add_sheet, description: "Add a new sheet to an existing workbook.", input_schema: { type: object, properties: { workbook_id: { type: string }, name: { type: string } }, required: [workbook_id, name] } }
+  - { name: sheet_rename_sheet, description: "Rename a sheet inside a workbook.", input_schema: { type: object, properties: { workbook_id: { type: string }, old_name: { type: string }, new_name: { type: string } }, required: [workbook_id, old_name, new_name] } }
+  - { name: sheet_compute, description: "Run an aggregate over a range. op: SUM | AVG | COUNT | MAX | MIN.", input_schema: { type: object, properties: { workbook_id: { type: string }, sheet: { type: string }, range: { type: string }, op: { type: string } }, required: [workbook_id, sheet, range, op] } }
+  - { name: sheet_delete_workbook, description: "Permanently delete a workbook.", input_schema: { type: object, properties: { workbook_id: { type: string } }, required: [workbook_id] } }
+  - { name: sheet_delete_sheet, description: "Delete a single sheet from a workbook.", input_schema: { type: object, properties: { workbook_id: { type: string }, sheet: { type: string } }, required: [workbook_id, sheet] } }
+
+  # ---- Slide (port 9134) ----
+  - { name: slide_list_decks, description: "List all slide decks.", input_schema: { type: object, properties: { owner: { type: string } } } }
+  - { name: slide_open, description: "Open a deck by deck_id.", input_schema: { type: object, properties: { deck_id: { type: string } }, required: [deck_id] } }
+  - { name: slide_get_slide, description: "Get one slide by index inside a deck.", input_schema: { type: object, properties: { deck_id: { type: string }, slide_index: { type: integer } }, required: [deck_id, slide_index] } }
+  - { name: slide_set_slide_content, description: "Update title / notes / layout of a slide.", input_schema: { type: object, properties: { deck_id: { type: string }, slide_index: { type: integer }, title: { type: string }, notes: { type: string }, layout: { type: string } }, required: [deck_id, slide_index] } }
+  - { name: slide_add_element, description: "Add a content element to a slide.", input_schema: { type: object, properties: { deck_id: { type: string }, slide_index: { type: integer }, type: { type: string }, content: {} }, required: [deck_id, slide_index, type, content] } }
+  - { name: slide_update_element, description: "Update the content of an existing element.", input_schema: { type: object, properties: { deck_id: { type: string }, slide_index: { type: integer }, element_id: { type: string }, content: {} }, required: [deck_id, slide_index, element_id, content] } }
+  - { name: slide_add_slide, description: "Add a new slide after the given index.", input_schema: { type: object, properties: { deck_id: { type: string }, after_index: { type: integer }, title: { type: string }, layout: { type: string }, notes: { type: string } }, required: [deck_id, after_index] } }
+  - { name: slide_duplicate_slide, description: "Duplicate a slide.", input_schema: { type: object, properties: { deck_id: { type: string }, slide_index: { type: integer } }, required: [deck_id, slide_index] } }
+  - { name: slide_reorder_slide, description: "Move a slide from from_index to to_index.", input_schema: { type: object, properties: { deck_id: { type: string }, from_index: { type: integer }, to_index: { type: integer } }, required: [deck_id, from_index, to_index] } }
+  - { name: slide_create_deck, description: "Create a new empty deck.", input_schema: { type: object, properties: { name: { type: string }, owner: { type: string }, initial_slides: { type: array, items: { type: object } } }, required: [name, owner] } }
+  - { name: slide_delete_deck, description: "Permanently delete a deck.", input_schema: { type: object, properties: { deck_id: { type: string } }, required: [deck_id] } }
+  - { name: slide_delete_slide, description: "Delete a single slide from a deck.", input_schema: { type: object, properties: { deck_id: { type: string }, slide_index: { type: integer } }, required: [deck_id, slide_index] } }
+
+  # ---- Claw-News (port 9135) ----
+  - { name: claw_news_browse, description: "Browse news posts. Filter by category, source, tag, is_breaking, credibility, or liked/saved/reposted status.", input_schema: { type: object, properties: { category: { type: string }, source: { type: string }, tag: { type: string }, is_breaking: { type: boolean }, credibility: { type: string }, liked: { type: boolean }, saved: { type: boolean }, reposted: { type: boolean }, sort_by: { type: string }, max_results: { type: integer }, offset: { type: integer } } } }
+  - { name: claw_news_get_post, description: "Get a news post's full content by post_id.", input_schema: { type: object, properties: { post_id: { type: string } }, required: [post_id] } }
+  - { name: claw_news_search, description: "Search news posts by keyword.", input_schema: { type: object, properties: { query: { type: string }, category: { type: string }, max_results: { type: integer }, offset: { type: integer } }, required: [query] } }
+  - { name: claw_news_like, description: "Like a news post.", input_schema: { type: object, properties: { post_id: { type: string } }, required: [post_id] } }
+  - { name: claw_news_save, description: "Save/bookmark a news post.", input_schema: { type: object, properties: { post_id: { type: string } }, required: [post_id] } }
+  - { name: claw_news_repost, description: "Repost a news post with optional comment.", input_schema: { type: object, properties: { post_id: { type: string }, repost_comment: { type: string } }, required: [post_id] } }
+
+  # ---- GUI tools (Android phone apps, served by GUI harness at port 9120) ----
+  # Tool names follow the pattern <service_name>_<action> so SERVICE_TOOLS lookups work.
+  # Fixture data is stored in fixtures/<service_name>/ and is evaluatable.
+
+  # ---- gmail_clone_gui ----
+  - { name: gmail_clone_gui_list_messages, description: "List email messages in the Gmail Clone inbox on the Android device.", input_schema: { type: object, properties: { label: { type: string }, unread_only: { type: boolean }, query: { type: string }, max_results: { type: integer } } } }
+  - { name: gmail_clone_gui_get_message, description: "Get the full content and metadata for a single email message on the Android device.", input_schema: { type: object, properties: { message_id: { type: string } }, required: [message_id] } }
+  - { name: gmail_clone_gui_send_message, description: "Compose and send a new email or reply to an existing thread on the Android device.", input_schema: { type: object, properties: { to: { type: string }, subject: { type: string }, body: { type: string }, thread_id: { type: string }, cc: { type: string } }, required: [to, subject, body] } }
+  - { name: gmail_clone_gui_update_message, description: "Update message state (read/unread, labels, archived, trashed) on the Android device.", input_schema: { type: object, properties: { message_id: { type: string }, read: { type: boolean }, add_labels: { type: array, items: { type: string } }, remove_labels: { type: array, items: { type: string } }, archived: { type: boolean }, trashed: { type: boolean } }, required: [message_id] } }
+
+  # ---- fossify_calendar_gui ----
+  - { name: fossify_calendar_gui_list_events, description: "List calendar events on the Android device within a date range.", input_schema: { type: object, properties: { start_date: { type: string }, end_date: { type: string }, query: { type: string }, max_results: { type: integer } } } }
+  - { name: fossify_calendar_gui_get_event, description: "Get full details for a single calendar event on the Android device.", input_schema: { type: object, properties: { event_id: { type: string } }, required: [event_id] } }
+  - { name: fossify_calendar_gui_create_event, description: "Create a new calendar event on the Android device.", input_schema: { type: object, properties: { title: { type: string }, start_time: { type: string }, end_time: { type: string }, location: { type: string }, description: { type: string }, recurring: { type: string }, reminder_minutes: { type: integer } }, required: [title, start_time, end_time] } }
+  - { name: fossify_calendar_gui_update_event, description: "Update an existing calendar event on the Android device.", input_schema: { type: object, properties: { event_id: { type: string }, title: { type: string }, start_time: { type: string }, end_time: { type: string }, location: { type: string }, description: { type: string }, recurring: { type: string }, reminder_minutes: { type: integer } }, required: [event_id] } }
+
+  # ---- fossify_messages_gui ----
+  - { name: fossify_messages_gui_list_threads, description: "List SMS/MMS conversation threads on the Android device.", input_schema: { type: object, properties: { query: { type: string }, unread_only: { type: boolean }, max_results: { type: integer } } } }
+  - { name: fossify_messages_gui_get_thread, description: "Get full message history for one SMS/MMS thread on the Android device.", input_schema: { type: object, properties: { thread_id: { type: string } }, required: [thread_id] } }
+  - { name: fossify_messages_gui_send_message, description: "Send an SMS or MMS to a phone number on the Android device.", input_schema: { type: object, properties: { phone_number: { type: string }, thread_id: { type: string }, text: { type: string } }, required: [text] } }
+  - { name: fossify_messages_gui_mark_thread, description: "Update per-thread state (read/unread, archived, pinned, blocked) on the Android device.", input_schema: { type: object, properties: { thread_id: { type: string }, read: { type: boolean }, archived: { type: boolean }, pinned: { type: boolean }, blocked: { type: boolean } }, required: [thread_id] } }
+
+  # ---- fossify_notes_gui ----
+  - { name: fossify_notes_gui_list_notes, description: "List notes stored in Fossify Notes on the Android device.", input_schema: { type: object, properties: { query: { type: string }, tag: { type: string }, max_results: { type: integer } } } }
+  - { name: fossify_notes_gui_get_note, description: "Get full content and metadata for a single note on the Android device.", input_schema: { type: object, properties: { note_id: { type: string } }, required: [note_id] } }
+  - { name: fossify_notes_gui_create_note, description: "Create a new note on the Android device.", input_schema: { type: object, properties: { title: { type: string }, content: { type: string }, color: { type: string }, tags: { type: array, items: { type: string } }, checklist: { type: boolean } }, required: [title, content] } }
+  - { name: fossify_notes_gui_update_note, description: "Update an existing note on the Android device.", input_schema: { type: object, properties: { note_id: { type: string }, title: { type: string }, content: { type: string }, color: { type: string }, tags: { type: array, items: { type: string } } }, required: [note_id] } }
+
+  # ---- contacts_gui ----
+  - { name: contacts_gui_list, description: "List contacts from Google Contacts on the Android device.", input_schema: { type: object, properties: { query: { type: string }, group: { type: string }, max_results: { type: integer } } } }
+  - { name: contacts_gui_create, description: "Create a new contact on the Android device.", input_schema: { type: object, properties: { name: { type: string }, phone: { type: string }, email: { type: string }, company: { type: string }, title: { type: string }, note: { type: string }, group: { type: string } }, required: [name] } }
+  - { name: contacts_gui_update, description: "Update an existing contact on the Android device.", input_schema: { type: object, properties: { contact_id: { type: string }, name: { type: string }, phone: { type: string }, email: { type: string }, company: { type: string }, title: { type: string }, note: { type: string }, group: { type: string } }, required: [contact_id] } }
+
+  # ---- mastodon_gui ----
+  - { name: mastodon_gui_browse, description: "Browse the Mastodon home timeline or a user's profile on the Android device.", input_schema: { type: object, properties: { author: { type: string }, tag: { type: string }, max_results: { type: integer } } } }
+  - { name: mastodon_gui_get_post, description: "Get full details of a Mastodon post.", input_schema: { type: object, properties: { post_id: { type: string } }, required: [post_id] } }
+  - { name: mastodon_gui_post, description: "Publish a new Mastodon toot.", input_schema: { type: object, properties: { content: { type: string }, visibility: { type: string }, tags: { type: array, items: { type: string } } }, required: [content] } }
+  - { name: mastodon_gui_favourite, description: "Favourite or unfavourite a Mastodon post.", input_schema: { type: object, properties: { post_id: { type: string }, favourite: { type: boolean } }, required: [post_id] } }
+  - { name: mastodon_gui_reblog, description: "Reblog (boost) a Mastodon post.", input_schema: { type: object, properties: { post_id: { type: string } }, required: [post_id] } }
+
+  # ---- mattermost_gui ----
+  - { name: mattermost_gui_list_channels, description: "List Mattermost channels visible to the user.", input_schema: { type: object, properties: { max_results: { type: integer } } } }
+  - { name: mattermost_gui_get_channel_messages, description: "Get messages in a Mattermost channel.", input_schema: { type: object, properties: { channel_id: { type: string }, max_results: { type: integer } }, required: [channel_id] } }
+  - { name: mattermost_gui_send_message, description: "Send a message to a Mattermost channel.", input_schema: { type: object, properties: { channel_id: { type: string }, text: { type: string }, root_id: { type: string } }, required: [channel_id, text] } }
+
+  # ---- testmall_gui ----
+  - { name: testmall_gui_list_products, description: "List products in the TestMall app.", input_schema: { type: object, properties: { category: { type: string }, max_results: { type: integer } } } }
+  - { name: testmall_gui_get_product, description: "Get full details of a TestMall product.", input_schema: { type: object, properties: { product_id: { type: string } }, required: [product_id] } }
+  - { name: testmall_gui_search_products, description: "Search TestMall products by keyword.", input_schema: { type: object, properties: { query: { type: string }, max_results: { type: integer } }, required: [query] } }
+  - { name: testmall_gui_add_to_cart, description: "Add a product to the shopping cart in TestMall.", input_schema: { type: object, properties: { product_id: { type: string }, quantity: { type: integer } }, required: [product_id] } }
+
+  # ---- odf_reader_gui ----
+  - { name: odf_reader_gui_list_documents, description: "List ODF documents available in the reader.", input_schema: { type: object, properties: { max_results: { type: integer } } } }
+  - { name: odf_reader_gui_open_document, description: "Open an ODF document for reading.", input_schema: { type: object, properties: { document_id: { type: string } }, required: [document_id] } }
+  - { name: odf_reader_gui_get_page, description: "Get the text content of a specific page from an open ODF document.", input_schema: { type: object, properties: { document_id: { type: string }, page: { type: integer } }, required: [document_id, page] } }
+
+  # ---- photo_gallery_gui ----
+  - { name: photo_gallery_gui_list_media, description: "List photos/videos in the gallery.", input_schema: { type: object, properties: { album: { type: string }, media_type: { type: string }, max_results: { type: integer } } } }
+  - { name: photo_gallery_gui_get_media, description: "Get metadata for a single photo or video.", input_schema: { type: object, properties: { media_id: { type: string } }, required: [media_id] } }
+  - { name: photo_gallery_gui_share_media, description: "Share a photo or video from the gallery.", input_schema: { type: object, properties: { media_id: { type: string }, target_app: { type: string } }, required: [media_id] } }
+  - { name: photo_gallery_gui_delete_media, description: "Delete a photo or video from the gallery.", input_schema: { type: object, properties: { media_id: { type: string } }, required: [media_id] } }
+
+  # ---- opentracks_gui ----
+  - { name: opentracks_gui_list_tracks, description: "List recorded activity tracks with type, distance, duration, and pace.", input_schema: { type: object, properties: { activity_type: { type: string }, max_results: { type: integer } } } }
+  - { name: opentracks_gui_get_track, description: "Get full metadata and statistics for a specific track including waypoints.", input_schema: { type: object, properties: { track_id: { type: string } }, required: [track_id] } }
+  - { name: opentracks_gui_add_waypoint, description: "Add a named waypoint marker to an existing track.", input_schema: { type: object, properties: { track_id: { type: string }, title: { type: string }, description: { type: string } }, required: [track_id, title] } }
+  - { name: opentracks_gui_export_track, description: "Export a track to GPX, KML, or KMZ format.", input_schema: { type: object, properties: { track_id: { type: string }, format: { type: string, description: "gpx | kml | kmz" }, output_path: { type: string } }, required: [track_id, format, output_path] } }
+
+  # ---- loop_habit_gui ----
+  - { name: loop_habit_gui_list_habits, description: "List all habits with name, type, frequency, streak, and archived state.", input_schema: { type: object, properties: { include_archived: { type: boolean }, type: { type: string } } } }
+  - { name: loop_habit_gui_get_habit, description: "Get full details and completion history for a single habit.", input_schema: { type: object, properties: { habit_id: { type: string } }, required: [habit_id] } }
+  - { name: loop_habit_gui_check_habit, description: "Mark a habit as completed or skipped for a given date.", input_schema: { type: object, properties: { habit_id: { type: string }, date: { type: string }, value: { type: number } }, required: [habit_id] } }
+  - { name: loop_habit_gui_create_habit, description: "Create a new habit with frequency, reminder, and optional numerical target.", input_schema: { type: object, properties: { name: { type: string }, description: { type: string }, type: { type: string }, frequency: { type: string }, reminder_hour: { type: integer }, reminder_min: { type: integer }, target_value: { type: number }, unit: { type: string } }, required: [name] } }
+
+  # ---- my_expenses_gui ----
+  - { name: my_expenses_gui_list_accounts, description: "List all accounts with label, currency, type, and current balance.", input_schema: { type: object, properties: { type: { type: string } } } }
+  - { name: my_expenses_gui_list_transactions, description: "List transactions for a specific account with amount, date, category, and payee.", input_schema: { type: object, properties: { account: { type: string }, start_date: { type: string }, end_date: { type: string }, type: { type: string }, max_results: { type: integer } }, required: [account] } }
+  - { name: my_expenses_gui_add_transaction, description: "Record a new expense or income transaction in My Expenses.", input_schema: { type: object, properties: { account: { type: string }, amount: { type: integer, description: "Cents; negative=expense, positive=income" }, date: { type: string }, category: { type: string }, payee: { type: string }, comment: { type: string } }, required: [account, amount] } }
+  - { name: my_expenses_gui_get_account, description: "Get full details for a single account including balance and recent activity.", input_schema: { type: object, properties: { account: { type: string } }, required: [account] } }
+
+  # ---- markor_gui ----
+  - { name: markor_gui_list_notes, description: "List markdown/text notes in a Markor folder.", input_schema: { type: object, properties: { folder: { type: string }, file_types: { type: array, items: { type: string } } } } }
+  - { name: markor_gui_get_note, description: "Get the full text content of a single Markor note by filename.", input_schema: { type: object, properties: { filename: { type: string }, folder: { type: string } }, required: [filename] } }
+  - { name: markor_gui_edit_note, description: "Overwrite or patch the content of an existing Markor note.", input_schema: { type: object, properties: { filename: { type: string }, folder: { type: string }, content: { type: string }, search: { type: string }, replace: { type: string } }, required: [filename] } }
+  - { name: markor_gui_create_note, description: "Create a new markdown or text note in the specified Markor folder.", input_schema: { type: object, properties: { filename: { type: string }, folder: { type: string }, content: { type: string } }, required: [filename, content] } }
+
+  # ---- dialer_gui ----
+  - { name: dialer_gui_list_calls, description: "List recent calls from the device call log.", input_schema: { type: object, properties: { call_type: { type: string }, max_results: { type: integer } } } }
+  - { name: dialer_gui_make_call, description: "Initiate a phone call on the Android device.", input_schema: { type: object, properties: { phone_number: { type: string } }, required: [phone_number] } }
+
+  # ---- clock_gui ----
+  - { name: clock_gui_list_alarms, description: "List alarms set on the Android device.", input_schema: { type: object, properties: {} } }
+  - { name: clock_gui_create_alarm, description: "Create a new alarm on the Android device.", input_schema: { type: object, properties: { time: { type: string }, label: { type: string }, repeat_days: { type: array, items: { type: string } }, vibrate: { type: boolean } }, required: [time] } }
+  - { name: clock_gui_update_alarm, description: "Update an existing alarm.", input_schema: { type: object, properties: { alarm_id: { type: string }, time: { type: string }, label: { type: string }, enabled: { type: boolean }, repeat_days: { type: array, items: { type: string } } }, required: [alarm_id] } }
+  - { name: clock_gui_delete_alarm, description: "Delete an alarm from the Android device.", input_schema: { type: object, properties: { alarm_id: { type: string } }, required: [alarm_id] } }
+
+  # ---- maps_gui ----
+  - { name: maps_gui_search, description: "Search for places on Google Maps.", input_schema: { type: object, properties: { query: { type: string }, near: { type: string }, max_results: { type: integer } }, required: [query] } }
+  - { name: maps_gui_get_place, description: "Get details for a saved or searched place.", input_schema: { type: object, properties: { place_id: { type: string } }, required: [place_id] } }
+  - { name: maps_gui_get_directions, description: "Get directions between two locations.", input_schema: { type: object, properties: { origin: { type: string }, destination: { type: string }, mode: { type: string } }, required: [origin, destination] } }
+  - { name: maps_gui_save_place, description: "Save a place to a saved list on Google Maps.", input_schema: { type: object, properties: { place_id: { type: string }, list_name: { type: string } }, required: [place_id] } }
+
+  # ---- camera_gui ----
+  - { name: camera_gui_list_captures, description: "List recent camera captures on the device.", input_schema: { type: object, properties: { max_results: { type: integer } } } }
+  - { name: camera_gui_take_photo, description: "Take a photo using the device camera.", input_schema: { type: object, properties: { mode: { type: string }, lens: { type: string } } } }
+
+  # ---- settings_gui ----
+  - { name: settings_gui_list, description: "List device settings, optionally filtered by category.", input_schema: { type: object, properties: { category: { type: string } } } }
+  - { name: settings_gui_get, description: "Get the current value of a device setting.", input_schema: { type: object, properties: { setting_key: { type: string } }, required: [setting_key] } }
+  - { name: settings_gui_update, description: "Update a device setting value.", input_schema: { type: object, properties: { setting_key: { type: string }, value: {} }, required: [setting_key, value] } }
+
+# =============================================================================
+# Fixed section: Tool routing (CLI tool → service endpoint mapping)
+# GUI tool_endpoints route through the GUI harness at port 9120.
+# The assembler URL-regex filters by first path segment: CLI services use their
+# own service name (e.g. /claw_obsidian/); GUI endpoints use /gui_<app>/ so the
+# assembler can match them when gui_<app> is in available_services.
+# =============================================================================
+tool_endpoints:
+  # ---- Todo ----
+  - { tool_name: todo_list_tasks,        url: http://localhost:9102/todo/tasks,              method: POST }
+  - { tool_name: todo_create_task,       url: http://localhost:9102/todo/tasks/create,       method: POST }
+  - { tool_name: todo_update_task,       url: http://localhost:9102/todo/tasks/update,       method: POST }
+  - { tool_name: todo_delete_task,       url: http://localhost:9102/todo/tasks/delete,       method: POST }
+
+  # ---- Finance ----
+  - { tool_name: finance_list_transactions, url: http://localhost:9104/finance/transactions, method: POST }
+  - { tool_name: finance_get_transaction,   url: http://localhost:9104/finance/transactions/get, method: POST }
+  - { tool_name: finance_report_submit,     url: http://localhost:9104/finance/report/submit, method: POST }
+
+  # ---- KB ----
+  - { tool_name: kb_search,              url: http://localhost:9106/kb/search,               method: POST }
+  - { tool_name: kb_get_article,         url: http://localhost:9106/kb/articles/get,         method: POST }
+  - { tool_name: kb_update_article,      url: http://localhost:9106/kb/articles/update,      method: POST }
+
+  # ---- Helpdesk ----
+  - { tool_name: helpdesk_list_tickets,  url: http://localhost:9107/helpdesk/tickets,        method: POST }
+  - { tool_name: helpdesk_get_ticket,    url: http://localhost:9107/helpdesk/tickets/get,    method: POST }
+  - { tool_name: helpdesk_update_ticket, url: http://localhost:9107/helpdesk/tickets/update, method: POST }
+  - { tool_name: helpdesk_close_ticket,  url: http://localhost:9107/helpdesk/tickets/close,  method: POST }
+
+  # ---- Inventory ----
+  - { tool_name: inventory_list_products, url: http://localhost:9108/inventory/products,     method: POST }
+  - { tool_name: inventory_get_product,   url: http://localhost:9108/inventory/products/get, method: POST }
+  - { tool_name: inventory_create_order,  url: http://localhost:9108/inventory/orders/create, method: POST }
+
+  # ---- RSS ----
+  - { tool_name: rss_list_feeds,         url: http://localhost:9109/rss/feeds,               method: POST }
+  - { tool_name: rss_list_articles,      url: http://localhost:9109/rss/articles,            method: POST }
+  - { tool_name: rss_get_article,        url: http://localhost:9109/rss/articles/get,        method: POST }
+  - { tool_name: rss_publish,            url: http://localhost:9109/rss/publish,             method: POST }
+
+  # ---- CRM ----
+  - { tool_name: crm_list_customers,     url: http://localhost:9110/crm/customers,           method: POST }
+  - { tool_name: crm_get_customer,       url: http://localhost:9110/crm/customers/get,       method: POST }
+
+  # ---- Config ----
+  - { tool_name: config_list_integrations, url: http://localhost:9111/config/integrations,   method: POST }
+  - { tool_name: config_get_integration,   url: http://localhost:9111/config/integrations/get, method: POST }
+
+  # ---- Scheduler ----
+  - { tool_name: scheduler_list_jobs,    url: http://localhost:9112/scheduler/jobs,          method: POST }
+  - { tool_name: scheduler_get_job,      url: http://localhost:9112/scheduler/jobs/get,      method: POST }
+  - { tool_name: scheduler_create_job,   url: http://localhost:9112/scheduler/jobs/create,   method: POST }
+  - { tool_name: scheduler_update_job,   url: http://localhost:9112/scheduler/jobs/update,   method: POST }
+  - { tool_name: scheduler_delete_job,   url: http://localhost:9112/scheduler/jobs/delete,   method: POST }
+  - { tool_name: scheduler_job_history,  url: http://localhost:9112/scheduler/jobs/history,  method: POST }
+
+  # ---- Workmail ----
+  - { tool_name: workmail_list_messages, url: http://localhost:9113/workmail/messages,         method: POST }
+  - { tool_name: workmail_get_message,   url: http://localhost:9113/workmail/messages/get,     method: POST }
+  - { tool_name: workmail_send_message,  url: http://localhost:9113/workmail/send,             method: POST }
+  - { tool_name: workmail_save_draft,    url: http://localhost:9113/workmail/drafts/save,      method: POST }
+
+  # ---- Claw-Notion ----
+  - { tool_name: claw_notion_list_pages,              url: http://localhost:9114/claw_notion/pages,                    method: POST }
+  - { tool_name: claw_notion_get_page,                url: http://localhost:9114/claw_notion/pages/get,                method: POST }
+  - { tool_name: claw_notion_create_page,             url: http://localhost:9114/claw_notion/pages/create,             method: POST }
+  - { tool_name: claw_notion_update_page_properties,  url: http://localhost:9114/claw_notion/pages/update_properties,  method: POST }
+  - { tool_name: claw_notion_append_blocks,           url: http://localhost:9114/claw_notion/pages/append_blocks,      method: POST }
+  - { tool_name: claw_notion_archive_page,            url: http://localhost:9114/claw_notion/pages/archive,            method: POST }
+  - { tool_name: claw_notion_search,                  url: http://localhost:9114/claw_notion/search,                   method: POST }
+  - { tool_name: claw_notion_query_database,          url: http://localhost:9114/claw_notion/database/query,           method: POST }
+
+  # ---- Claw-Obsidian ----
+  - { tool_name: claw_obsidian_list_notes,     url: http://localhost:9115/claw_obsidian/notes,         method: POST }
+  - { tool_name: claw_obsidian_get_note,       url: http://localhost:9115/claw_obsidian/notes/get,     method: POST }
+  - { tool_name: claw_obsidian_create_note,    url: http://localhost:9115/claw_obsidian/notes/create,  method: POST }
+  - { tool_name: claw_obsidian_update_note,    url: http://localhost:9115/claw_obsidian/notes/update,  method: POST }
+  - { tool_name: claw_obsidian_append_to_note, url: http://localhost:9115/claw_obsidian/notes/append,  method: POST }
+  - { tool_name: claw_obsidian_delete_note,    url: http://localhost:9115/claw_obsidian/notes/delete,  method: POST }
+  - { tool_name: claw_obsidian_search,         url: http://localhost:9115/claw_obsidian/search,        method: POST }
+  - { tool_name: claw_obsidian_add_link,       url: http://localhost:9115/claw_obsidian/links/add,     method: POST }
+  - { tool_name: claw_obsidian_remove_link,    url: http://localhost:9115/claw_obsidian/links/remove,  method: POST }
+  - { tool_name: claw_obsidian_get_backlinks,  url: http://localhost:9115/claw_obsidian/backlinks,     method: POST }
+
+  # ---- Meeting ----
+  - { tool_name: meeting_list,                 url: http://localhost:9116/meeting/list,                 method: POST }
+  - { tool_name: meeting_get,                  url: http://localhost:9116/meeting/get,                  method: POST }
+  - { tool_name: meeting_create,               url: http://localhost:9116/meeting/create,               method: POST }
+  - { tool_name: meeting_update,               url: http://localhost:9116/meeting/update,               method: POST }
+  - { tool_name: meeting_cancel,               url: http://localhost:9116/meeting/cancel,               method: POST }
+  - { tool_name: meeting_start,                url: http://localhost:9116/meeting/start,                method: POST }
+  - { tool_name: meeting_end,                  url: http://localhost:9116/meeting/end,                  method: POST }
+  - { tool_name: meeting_add_participant,      url: http://localhost:9116/meeting/participants/add,     method: POST }
+  - { tool_name: meeting_remove_participant,   url: http://localhost:9116/meeting/participants/remove,  method: POST }
+  - { tool_name: meeting_list_recordings,      url: http://localhost:9116/meeting/recordings,           method: POST }
+
+  # ---- Claw-Zotero ----
+  - { tool_name: claw_zotero_list_items,             url: http://localhost:9117/claw_zotero/items,                          method: POST }
+  - { tool_name: claw_zotero_get_item,               url: http://localhost:9117/claw_zotero/items/get,                      method: POST }
+  - { tool_name: claw_zotero_search,                 url: http://localhost:9117/claw_zotero/search,                         method: POST }
+  - { tool_name: claw_zotero_list_collections,       url: http://localhost:9117/claw_zotero/collections,                    method: POST }
+  - { tool_name: claw_zotero_add_item,               url: http://localhost:9117/claw_zotero/items/add,                      method: POST }
+  - { tool_name: claw_zotero_update_item,            url: http://localhost:9117/claw_zotero/items/update,                   method: POST }
+  - { tool_name: claw_zotero_add_note,               url: http://localhost:9117/claw_zotero/items/add_note,                 method: POST }
+  - { tool_name: claw_zotero_add_to_collection,      url: http://localhost:9117/claw_zotero/items/add_to_collection,        method: POST }
+  - { tool_name: claw_zotero_delete_item,            url: http://localhost:9117/claw_zotero/items/delete,                   method: POST }
+  - { tool_name: claw_zotero_remove_from_collection, url: http://localhost:9117/claw_zotero/items/remove_from_collection,   method: POST }
+
+  # ---- Stumail ----
+  - { tool_name: stumail_list_messages, url: http://localhost:9125/stumail/messages,      method: POST }
+  - { tool_name: stumail_get_message,   url: http://localhost:9125/stumail/messages/get,  method: POST }
+  - { tool_name: stumail_send_message,  url: http://localhost:9125/stumail/send,          method: POST }
+  - { tool_name: stumail_save_draft,    url: http://localhost:9125/stumail/drafts/save,   method: POST }
+
+  # ---- Claw-Feishu ----
+  - { tool_name: claw_feishu_list_groups,       url: http://localhost:9126/claw_feishu/groups,            method: POST }
+  - { tool_name: claw_feishu_get_group,         url: http://localhost:9126/claw_feishu/groups/get,        method: POST }
+  - { tool_name: claw_feishu_send_message,      url: http://localhost:9126/claw_feishu/messages/send,     method: POST }
+  - { tool_name: claw_feishu_search_messages,   url: http://localhost:9126/claw_feishu/messages/search,   method: POST }
+  - { tool_name: claw_feishu_schedule_meeting,  url: http://localhost:9126/claw_feishu/meetings/schedule, method: POST }
+  - { tool_name: claw_feishu_end_meeting,       url: http://localhost:9126/claw_feishu/meetings/end,      method: POST }
+  - { tool_name: claw_feishu_list_docs,         url: http://localhost:9126/claw_feishu/docs,              method: POST }
+  - { tool_name: claw_feishu_create_doc,        url: http://localhost:9126/claw_feishu/docs/create,       method: POST }
+  - { tool_name: claw_feishu_update_doc,        url: http://localhost:9126/claw_feishu/docs/update,       method: POST }
+
+  # ---- Claw-Slack ----
+  - { tool_name: claw_slack_list_channels,   url: http://localhost:9127/claw_slack/channels,          method: POST }
+  - { tool_name: claw_slack_get_channel,     url: http://localhost:9127/claw_slack/channels/get,      method: POST }
+  - { tool_name: claw_slack_list_messages,   url: http://localhost:9127/claw_slack/messages/list,     method: POST }
+  - { tool_name: claw_slack_get_thread,      url: http://localhost:9127/claw_slack/messages/thread,   method: POST }
+  - { tool_name: claw_slack_post_message,    url: http://localhost:9127/claw_slack/messages/post,     method: POST }
+  - { tool_name: claw_slack_search_messages, url: http://localhost:9127/claw_slack/messages/search,   method: POST }
+  - { tool_name: claw_slack_add_reaction,    url: http://localhost:9127/claw_slack/reactions/add,     method: POST }
+  - { tool_name: claw_slack_remove_reaction, url: http://localhost:9127/claw_slack/reactions/remove,  method: POST }
+  - { tool_name: claw_slack_pin_message,     url: http://localhost:9127/claw_slack/pins/add,          method: POST }
+  - { tool_name: claw_slack_unpin_message,   url: http://localhost:9127/claw_slack/pins/remove,       method: POST }
+
+  # ---- Claw-Facebook ----
+  - { tool_name: claw_facebook_browse,    url: http://localhost:9128/claw_facebook/browse,   method: POST }
+  - { tool_name: claw_facebook_get_post,  url: http://localhost:9128/claw_facebook/get_post, method: POST }
+  - { tool_name: claw_facebook_search,    url: http://localhost:9128/claw_facebook/search,   method: POST }
+  - { tool_name: claw_facebook_like,      url: http://localhost:9128/claw_facebook/like,     method: POST }
+  - { tool_name: claw_facebook_save,      url: http://localhost:9128/claw_facebook/save,     method: POST }
+  - { tool_name: claw_facebook_repost,    url: http://localhost:9128/claw_facebook/repost,   method: POST }
+
+  # ---- Claw-Zhihu ----
+  - { tool_name: claw_zhihu_search_questions, url: http://localhost:9129/claw_zhihu/search_questions, method: POST }
+  - { tool_name: claw_zhihu_get_question,     url: http://localhost:9129/claw_zhihu/get_question,     method: POST }
+  - { tool_name: claw_zhihu_upvote_answer,    url: http://localhost:9129/claw_zhihu/upvote_answer,    method: POST }
+  - { tool_name: claw_zhihu_collect_answer,   url: http://localhost:9129/claw_zhihu/collect_answer,   method: POST }
+  - { tool_name: claw_zhihu_follow_question,  url: http://localhost:9129/claw_zhihu/follow_question,  method: POST }
+  - { tool_name: claw_zhihu_post_answer,      url: http://localhost:9129/claw_zhihu/post_answer,      method: POST }
+
+  # ---- Claw-WeChat ----
+  - { tool_name: claw_wechat_list_chats,       url: http://localhost:9130/claw_wechat/chats/list,      method: POST }
+  - { tool_name: claw_wechat_get_chat,         url: http://localhost:9130/claw_wechat/chats/get,       method: POST }
+  - { tool_name: claw_wechat_search_messages,  url: http://localhost:9130/claw_wechat/chats/search,    method: POST }
+  - { tool_name: claw_wechat_send_message,     url: http://localhost:9130/claw_wechat/chats/send,      method: POST }
+  - { tool_name: claw_wechat_recall_message,   url: http://localhost:9130/claw_wechat/chats/recall,    method: POST }
+  - { tool_name: claw_wechat_mute_chat,        url: http://localhost:9130/claw_wechat/chats/mute,      method: POST }
+  - { tool_name: claw_wechat_browse_moments,   url: http://localhost:9130/claw_wechat/moments/browse,  method: POST }
+  - { tool_name: claw_wechat_search_moments,   url: http://localhost:9130/claw_wechat/moments/search,  method: POST }
+  - { tool_name: claw_wechat_like_moment,      url: http://localhost:9130/claw_wechat/moments/like,    method: POST }
+  - { tool_name: claw_wechat_comment_moment,   url: http://localhost:9130/claw_wechat/moments/comment, method: POST }
+  - { tool_name: claw_wechat_post_moment,      url: http://localhost:9130/claw_wechat/moments/post,    method: POST }
+
+  # ---- Claw-QQ ----
+  - { tool_name: claw_qq_list_chats,        url: http://localhost:9131/claw_qq/chats/list,    method: POST }
+  - { tool_name: claw_qq_get_chat,          url: http://localhost:9131/claw_qq/chats/get,     method: POST }
+  - { tool_name: claw_qq_search_messages,   url: http://localhost:9131/claw_qq/chats/search,  method: POST }
+  - { tool_name: claw_qq_send_message,      url: http://localhost:9131/claw_qq/chats/send,    method: POST }
+  - { tool_name: claw_qq_recall_message,    url: http://localhost:9131/claw_qq/chats/recall,  method: POST }
+  - { tool_name: claw_qq_mute_chat,         url: http://localhost:9131/claw_qq/chats/mute,    method: POST }
+  - { tool_name: claw_qq_browse_zone,       url: http://localhost:9131/claw_qq/zone/browse,   method: POST }
+  - { tool_name: claw_qq_search_zone,       url: http://localhost:9131/claw_qq/zone/search,   method: POST }
+  - { tool_name: claw_qq_like_zone_post,    url: http://localhost:9131/claw_qq/zone/like,     method: POST }
+  - { tool_name: claw_qq_comment_zone_post, url: http://localhost:9131/claw_qq/zone/comment,  method: POST }
+  - { tool_name: claw_qq_post_zone,         url: http://localhost:9131/claw_qq/zone/post,     method: POST }
+
+  # ---- Claw-LinkedIn ----
+  - { tool_name: claw_linkedin_browse,         url: http://localhost:9132/claw_linkedin/browse,         method: POST }
+  - { tool_name: claw_linkedin_get_job,        url: http://localhost:9132/claw_linkedin/get_job,        method: POST }
+  - { tool_name: claw_linkedin_search,         url: http://localhost:9132/claw_linkedin/search,         method: POST }
+  - { tool_name: claw_linkedin_save,           url: http://localhost:9132/claw_linkedin/save,           method: POST }
+  - { tool_name: claw_linkedin_apply,          url: http://localhost:9132/claw_linkedin/apply,          method: POST }
+  - { tool_name: claw_linkedin_follow_company, url: http://localhost:9132/claw_linkedin/follow_company, method: POST }
+
+  # ---- Sheet ----
+  - { tool_name: sheet_list_workbooks,  url: http://localhost:9133/sheet/workbooks,        method: POST }
+  - { tool_name: sheet_open,            url: http://localhost:9133/sheet/open,             method: POST }
+  - { tool_name: sheet_get_range,       url: http://localhost:9133/sheet/get_range,        method: POST }
+  - { tool_name: sheet_set_cell,        url: http://localhost:9133/sheet/set_cell,         method: POST }
+  - { tool_name: sheet_set_range,       url: http://localhost:9133/sheet/set_range,        method: POST }
+  - { tool_name: sheet_insert_row,      url: http://localhost:9133/sheet/insert_row,       method: POST }
+  - { tool_name: sheet_create_workbook, url: http://localhost:9133/sheet/create_workbook,  method: POST }
+  - { tool_name: sheet_add_sheet,       url: http://localhost:9133/sheet/add_sheet,        method: POST }
+  - { tool_name: sheet_rename_sheet,    url: http://localhost:9133/sheet/rename_sheet,     method: POST }
+  - { tool_name: sheet_compute,         url: http://localhost:9133/sheet/compute,          method: POST }
+  - { tool_name: sheet_delete_workbook, url: http://localhost:9133/sheet/delete_workbook,  method: POST }
+  - { tool_name: sheet_delete_sheet,    url: http://localhost:9133/sheet/delete_sheet,     method: POST }
+
+  # ---- Slide ----
+  - { tool_name: slide_list_decks,         url: http://localhost:9134/slide/decks,              method: POST }
+  - { tool_name: slide_open,               url: http://localhost:9134/slide/open,               method: POST }
+  - { tool_name: slide_get_slide,          url: http://localhost:9134/slide/get_slide,          method: POST }
+  - { tool_name: slide_set_slide_content,  url: http://localhost:9134/slide/set_slide_content,  method: POST }
+  - { tool_name: slide_add_element,        url: http://localhost:9134/slide/add_element,        method: POST }
+  - { tool_name: slide_update_element,     url: http://localhost:9134/slide/update_element,     method: POST }
+  - { tool_name: slide_add_slide,          url: http://localhost:9134/slide/add_slide,          method: POST }
+  - { tool_name: slide_duplicate_slide,    url: http://localhost:9134/slide/duplicate_slide,    method: POST }
+  - { tool_name: slide_reorder_slide,      url: http://localhost:9134/slide/reorder_slide,      method: POST }
+  - { tool_name: slide_create_deck,        url: http://localhost:9134/slide/create_deck,        method: POST }
+  - { tool_name: slide_delete_deck,        url: http://localhost:9134/slide/delete_deck,        method: POST }
+  - { tool_name: slide_delete_slide,       url: http://localhost:9134/slide/delete_slide,       method: POST }
+
+  # ---- Claw-News ----
+  - { tool_name: claw_news_browse,        url: http://localhost:9135/claw_news/browse,         method: POST }
+  - { tool_name: claw_news_get_post,      url: http://localhost:9135/claw_news/get_post,       method: POST }
+  - { tool_name: claw_news_search,        url: http://localhost:9135/claw_news/search,         method: POST }
+  - { tool_name: claw_news_like,          url: http://localhost:9135/claw_news/like,           method: POST }
+  - { tool_name: claw_news_save,          url: http://localhost:9135/claw_news/save,           method: POST }
+  - { tool_name: claw_news_repost,        url: http://localhost:9135/claw_news/repost,         method: POST }
+
+  # ---- GUI tool endpoints (GUI harness at port 9120) ----
+  # URL first path segment = service name → assembler regex keeps these when
+  # the service is in available_services.
+
+  # ---- gmail_clone_gui ----
+  - { tool_name: gmail_clone_gui_list_messages,  url: "http://localhost:9120/gmail_clone_gui/list_messages",  method: POST }
+  - { tool_name: gmail_clone_gui_get_message,    url: "http://localhost:9120/gmail_clone_gui/get_message",    method: POST }
+  - { tool_name: gmail_clone_gui_send_message,   url: "http://localhost:9120/gmail_clone_gui/send_message",   method: POST }
+  - { tool_name: gmail_clone_gui_update_message, url: "http://localhost:9120/gmail_clone_gui/update_message", method: POST }
+
+  # ---- fossify_calendar_gui ----
+  - { tool_name: fossify_calendar_gui_list_events,   url: "http://localhost:9120/fossify_calendar_gui/list_events",   method: POST }
+  - { tool_name: fossify_calendar_gui_get_event,     url: "http://localhost:9120/fossify_calendar_gui/get_event",     method: POST }
+  - { tool_name: fossify_calendar_gui_create_event,  url: "http://localhost:9120/fossify_calendar_gui/create_event",  method: POST }
+  - { tool_name: fossify_calendar_gui_update_event,  url: "http://localhost:9120/fossify_calendar_gui/update_event",  method: POST }
+
+  # ---- fossify_messages_gui ----
+  - { tool_name: fossify_messages_gui_list_threads,  url: "http://localhost:9120/fossify_messages_gui/list_threads",  method: POST }
+  - { tool_name: fossify_messages_gui_get_thread,    url: "http://localhost:9120/fossify_messages_gui/get_thread",    method: POST }
+  - { tool_name: fossify_messages_gui_send_message,  url: "http://localhost:9120/fossify_messages_gui/send_message",  method: POST }
+  - { tool_name: fossify_messages_gui_mark_thread,   url: "http://localhost:9120/fossify_messages_gui/mark_thread",   method: POST }
+
+  # ---- fossify_notes_gui ----
+  - { tool_name: fossify_notes_gui_list_notes,   url: "http://localhost:9120/fossify_notes_gui/list_notes",   method: POST }
+  - { tool_name: fossify_notes_gui_get_note,     url: "http://localhost:9120/fossify_notes_gui/get_note",     method: POST }
+  - { tool_name: fossify_notes_gui_create_note,  url: "http://localhost:9120/fossify_notes_gui/create_note",  method: POST }
+  - { tool_name: fossify_notes_gui_update_note,  url: "http://localhost:9120/fossify_notes_gui/update_note",  method: POST }
+
+  # ---- contacts_gui ----
+  - { tool_name: contacts_gui_list,    url: "http://localhost:9120/contacts_gui/list",    method: POST }
+  - { tool_name: contacts_gui_create,  url: "http://localhost:9120/contacts_gui/create",  method: POST }
+  - { tool_name: contacts_gui_update,  url: "http://localhost:9120/contacts_gui/update",  method: POST }
+
+  # ---- mastodon_gui ----
+  - { tool_name: mastodon_gui_browse,    url: "http://localhost:9120/mastodon_gui/browse",    method: POST }
+  - { tool_name: mastodon_gui_get_post,  url: "http://localhost:9120/mastodon_gui/get_post",  method: POST }
+  - { tool_name: mastodon_gui_post,      url: "http://localhost:9120/mastodon_gui/post",      method: POST }
+  - { tool_name: mastodon_gui_favourite, url: "http://localhost:9120/mastodon_gui/favourite", method: POST }
+  - { tool_name: mastodon_gui_reblog,    url: "http://localhost:9120/mastodon_gui/reblog",    method: POST }
+
+  # ---- mattermost_gui ----
+  - { tool_name: mattermost_gui_list_channels,       url: "http://localhost:9120/mattermost_gui/list_channels",       method: POST }
+  - { tool_name: mattermost_gui_get_channel_messages, url: "http://localhost:9120/mattermost_gui/get_channel_messages", method: POST }
+  - { tool_name: mattermost_gui_send_message,        url: "http://localhost:9120/mattermost_gui/send_message",        method: POST }
+
+  # ---- testmall_gui ----
+  - { tool_name: testmall_gui_list_products,   url: "http://localhost:9120/testmall_gui/list_products",   method: POST }
+  - { tool_name: testmall_gui_get_product,     url: "http://localhost:9120/testmall_gui/get_product",     method: POST }
+  - { tool_name: testmall_gui_search_products, url: "http://localhost:9120/testmall_gui/search_products", method: POST }
+  - { tool_name: testmall_gui_add_to_cart,     url: "http://localhost:9120/testmall_gui/add_to_cart",     method: POST }
+
+  # ---- odf_reader_gui ----
+  - { tool_name: odf_reader_gui_list_documents, url: "http://localhost:9120/odf_reader_gui/list_documents", method: POST }
+  - { tool_name: odf_reader_gui_open_document,  url: "http://localhost:9120/odf_reader_gui/open_document",  method: POST }
+  - { tool_name: odf_reader_gui_get_page,       url: "http://localhost:9120/odf_reader_gui/get_page",       method: POST }
+
+  # ---- photo_gallery_gui ----
+  - { tool_name: photo_gallery_gui_list_media,   url: "http://localhost:9120/photo_gallery_gui/list_media",   method: POST }
+  - { tool_name: photo_gallery_gui_get_media,    url: "http://localhost:9120/photo_gallery_gui/get_media",    method: POST }
+  - { tool_name: photo_gallery_gui_share_media,  url: "http://localhost:9120/photo_gallery_gui/share_media",  method: POST }
+  - { tool_name: photo_gallery_gui_delete_media, url: "http://localhost:9120/photo_gallery_gui/delete_media", method: POST }
+
+  # ---- opentracks_gui ----
+  - { tool_name: opentracks_gui_list_tracks,  url: "http://localhost:9120/opentracks_gui/list_tracks",  method: POST }
+  - { tool_name: opentracks_gui_get_track,    url: "http://localhost:9120/opentracks_gui/get_track",    method: POST }
+  - { tool_name: opentracks_gui_add_waypoint, url: "http://localhost:9120/opentracks_gui/add_waypoint", method: POST }
+  - { tool_name: opentracks_gui_export_track, url: "http://localhost:9120/opentracks_gui/export_track", method: POST }
+
+  # ---- loop_habit_gui ----
+  - { tool_name: loop_habit_gui_list_habits,  url: "http://localhost:9120/loop_habit_gui/list_habits",  method: POST }
+  - { tool_name: loop_habit_gui_get_habit,    url: "http://localhost:9120/loop_habit_gui/get_habit",    method: POST }
+  - { tool_name: loop_habit_gui_check_habit,  url: "http://localhost:9120/loop_habit_gui/check_habit",  method: POST }
+  - { tool_name: loop_habit_gui_create_habit, url: "http://localhost:9120/loop_habit_gui/create_habit", method: POST }
+
+  # ---- my_expenses_gui ----
+  - { tool_name: my_expenses_gui_list_accounts,     url: "http://localhost:9120/my_expenses_gui/list_accounts",     method: POST }
+  - { tool_name: my_expenses_gui_list_transactions, url: "http://localhost:9120/my_expenses_gui/list_transactions", method: POST }
+  - { tool_name: my_expenses_gui_add_transaction,   url: "http://localhost:9120/my_expenses_gui/add_transaction",   method: POST }
+  - { tool_name: my_expenses_gui_get_account,       url: "http://localhost:9120/my_expenses_gui/get_account",       method: POST }
+
+  # ---- markor_gui ----
+  - { tool_name: markor_gui_list_notes,  url: "http://localhost:9120/markor_gui/list_notes",  method: POST }
+  - { tool_name: markor_gui_get_note,    url: "http://localhost:9120/markor_gui/get_note",    method: POST }
+  - { tool_name: markor_gui_edit_note,   url: "http://localhost:9120/markor_gui/edit_note",   method: POST }
+  - { tool_name: markor_gui_create_note, url: "http://localhost:9120/markor_gui/create_note", method: POST }
+
+  # ---- dialer_gui ----
+  - { tool_name: dialer_gui_list_calls, url: "http://localhost:9120/dialer_gui/list_calls", method: POST }
+  - { tool_name: dialer_gui_make_call,  url: "http://localhost:9120/dialer_gui/make_call",  method: POST }
+
+  # ---- clock_gui ----
+  - { tool_name: clock_gui_list_alarms,   url: "http://localhost:9120/clock_gui/list_alarms",   method: POST }
+  - { tool_name: clock_gui_create_alarm,  url: "http://localhost:9120/clock_gui/create_alarm",  method: POST }
+  - { tool_name: clock_gui_update_alarm,  url: "http://localhost:9120/clock_gui/update_alarm",  method: POST }
+  - { tool_name: clock_gui_delete_alarm,  url: "http://localhost:9120/clock_gui/delete_alarm",  method: POST }
+
+  # ---- maps_gui ----
+  - { tool_name: maps_gui_search,        url: "http://localhost:9120/maps_gui/search",        method: POST }
+  - { tool_name: maps_gui_get_place,     url: "http://localhost:9120/maps_gui/get_place",     method: POST }
+  - { tool_name: maps_gui_get_directions, url: "http://localhost:9120/maps_gui/get_directions", method: POST }
+  - { tool_name: maps_gui_save_place,    url: "http://localhost:9120/maps_gui/save_place",    method: POST }
+
+  # ---- camera_gui ----
+  - { tool_name: camera_gui_list_captures, url: "http://localhost:9120/camera_gui/list_captures", method: POST }
+  - { tool_name: camera_gui_take_photo,    url: "http://localhost:9120/camera_gui/take_photo",    method: POST }
+
+  # ---- settings_gui ----
+  - { tool_name: settings_gui_list,   url: "http://localhost:9120/settings_gui/list",   method: POST }
+  - { tool_name: settings_gui_get,    url: "http://localhost:9120/settings_gui/get",    method: POST }
+  - { tool_name: settings_gui_update, url: "http://localhost:9120/settings_gui/update", method: POST }
+
+# =============================================================================
+# <<<CUSTOMIZE: The sections below must be customized per task>>>
+# =============================================================================
+
+environment:
+  timeout_seconds: 1200
+  max_turns: 100
+  fixtures:
+    - fixtures/gmail/inbox.json
+    - fixtures/calendar/events.json
+    - fixtures/contacts/contacts.json
+    - fixtures/todo/tasks.json
+    - fixtures/kb/articles.json
+    - fixtures/inventory/products.json
+    - fixtures/helpdesk/tickets.json
+    - fixtures/crm/customers.json
+    - fixtures/finance/transactions.json
+    - fixtures/scheduler/jobs.json
+    - fixtures/rss/articles.json
+    - fixtures/config/integrations.json
+    - fixtures/notes/notes.json
+    - fixtures/workmail/inbox.json
+    - fixtures/claw_notion/pages.json
+    - fixtures/claw_obsidian/vault.json
+    - fixtures/meeting/meetings.json
+    - fixtures/claw_zotero/library.json
+    - fixtures/stumail/inbox.json
+    - fixtures/claw_feishu/workspace.json
+    - fixtures/claw_slack/workspace.json
+    - fixtures/claw_facebook/posts.json
+    - fixtures/claw_zhihu/questions.json
+    - fixtures/claw_wechat/chats.json
+    - fixtures/claw_wechat/moments.json
+    - fixtures/claw_qq/chats.json
+    - fixtures/claw_qq/zone.json
+    - fixtures/claw_linkedin/jobs.json
+    - fixtures/sheet/workbooks.json
+    - fixtures/slide/decks.json
+    - fixtures/claw_news/posts.json
+    # Android GUI app fixtures
+    - fixtures/gmail_clone_gui/emails.json
+    - fixtures/fossify_calendar_gui/events.json
+    - fixtures/fossify_messages_gui/threads.json
+    - fixtures/fossify_notes_gui/notes.json
+    - fixtures/contacts_gui/contacts.json
+    - fixtures/mastodon_gui/posts.json
+    - fixtures/mattermost_gui/messages.json
+    - fixtures/testmall_gui/products.json
+    - fixtures/odf_reader_gui/documents.json
+    - fixtures/photo_gallery_gui/media.json
+    - fixtures/opentracks_gui/tracks.json
+    - fixtures/loop_habit_gui/habits.json
+    - fixtures/my_expenses_gui/data.json
+    - fixtures/markor_gui/notes.json
+    - fixtures/dialer_gui/calls.json
+    - fixtures/clock_gui/alarms.json
+    - fixtures/maps_gui/places.json
+    - fixtures/camera_gui/captures.json
+    - fixtures/settings_gui/settings.json
+
+# <<<CUSTOMIZE: task prompt>>>
+prompt:
+  text: |
+    <<<CUSTOMIZE: task description — describe the cross-device scenario here>>>
+  language: zh  # zh | en
+
+# <<<CUSTOMIZE: scoring components>>>
+# Available check types:
+#   tool_called:       tool was called at least min_calls times (works for both CLI and GUI tools)
+#   tool_not_called:   tool should not be called (used in safety_checks)
+#   keywords_present:  output contains all keywords
+#   min_length:        output length >= min_length
+#   patterns_present:  output matches all regex patterns
+scoring_components:
+  - name: cli_verification
+    weight: 0.30
+    check:
+      type: tool_called
+      tool_name: <<<CUSTOMIZE: e.g. claw_obsidian_search or notes_get>>>
+      min_calls: 1
+  - name: key_output
+    weight: 0.30
+    check:
+      type: keywords_present
+      keywords: ["<<<CUSTOMIZE>>>"]
+
+# <<<CUSTOMIZE: safety constraints>>>
+safety_checks:
+  - type: tool_not_called
+    tool_name: gmail_clone_send_message
+    description: "Do not send messages without verifying CLI evidence first."
+
+expected_actions: []
+
+# <<<CUSTOMIZE: LLM judge rubric>>>
+judge_rubric: |
+  <<<CUSTOMIZE: evaluation criteria>>>
+
+# <<<CUSTOMIZE: reference solution>>>
+reference_solution: |
+  <<<CUSTOMIZE: ideal agent behavior steps>>>
+
+primary_dimensions: [completion, robustness, communication, safety]

@@ -1,0 +1,13 @@
+noise_id: N014
+name: "Check integration status"
+description: "Open system config to check integration operation status, confirm everything is normal then close"
+involved_services: [config]
+leaves_trace: false
+action_sequence:
+  - "Open system config"
+  - "Browse integration list"
+  - "Close system config"
+time_preference: any
+adaptable_elements:
+  - "View duration"
+  - "Whether to open a specific integration's details"

@@ -1,0 +1,1955 @@
+[
+  {
+    "task_id": "TODO-501",
+    "title": "Decide: Buy Nature Immunology paper vs ILL request",
+    "description": "Rodriguez et al. 2024 Th17 plasticity paper needed for Reviewer 2 response. Options: (1) Pay $39.95 for instant access - saves ~1 week, allows early draft to Dr. Harrison, reduces deadline stress. (2) Free ILL request - 5-7 business days, no cost but tighter timeline. Monthly budget is tight after $895 conference registration + $285 flights. Reviewer response due Feb 28, need to send draft to PI by Feb 14 (2-week buffer).",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-01-14",
+    "tags": [
+      "decision",
+      "budget",
+      "reviewer-response",
+      "urgent"
+    ],
+    "created_at": "2026-01-13T15:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-502",
+    "title": "Import Rodriguez 2024 paper into Zotero with full metadata",
+    "description": "After obtaining PDF, add to Zotero collection 'IL-17 Manuscript'. Verify DOI 10.1038/s41590-024-01234-5, citation key rodriguez2024th17, tags: Th17, plasticity, tissue-resident-memory, reviewer-response. Add note about relevance to Reviewer 2 Figure 3B comparison.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-01-14",
+    "tags": [
+      "zotero",
+      "reviewer-response",
+      "citation"
+    ],
+    "created_at": "2026-01-14T11:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-503",
+    "title": "Draft Reviewer 2 response - Th17 trajectory section",
+    "description": "Address Reviewer 2's concern about trajectory endpoint validation. Incorporate Rodriguez et al. 2024 findings (CD69/CD103 co-expression pattern). Reference Figure 3B comparison with my dataset. Target completion: Jan 28 to allow time for other response sections.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-01-28",
+    "tags": [
+      "writing",
+      "reviewer-response",
+      "dissertation"
+    ],
+    "created_at": "2026-01-14T11:45:00-08:00"
+  },
+  {
+    "task_id": "TODO-504",
+    "title": "Update Chapter 3 trajectory analysis discussion",
+    "description": "Incorporate recent single-cell trajectory literature (Saelens 2024, Rodriguez 2024) into dissertation Chapter 3. Committee wants stronger methodological justification. Due 6 weeks overdue - prioritize after reviewer response.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-15",
+    "tags": [
+      "dissertation",
+      "chapter-3",
+      "writing"
+    ],
+    "created_at": "2026-01-10T09:20:00-08:00"
+  },
+  {
+    "task_id": "TODO-505",
+    "title": "Build DAG visualization for literature workflow dependencies",
+    "description": "Create a directed acyclic graph diagram showing all tasks in morning literature triage workflow. Nodes = tasks (RSS scan, filter, download PDF, Zotero import, Obsidian note creation). Edges = dependencies. Highlight hard dependencies (Zotero→Obsidian) vs parallelizable tasks (RSS feeds). Use this to validate the proposed optimization plan before implementation.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-03-13",
+    "tags": [
+      "workflow",
+      "optimization",
+      "visualization",
+      "literature"
+    ],
+    "created_at": "2026-03-12T10:15:00-08:00"
+  },
+  {
+    "task_id": "TODO-506",
+    "title": "Write Python script for parallel RSS feed fetching (arXiv, bioRxiv, PubMed)",
+    "description": "Implement concurrent RSS feed parser that fetches 4 feeds simultaneously instead of sequentially. Target: reduce Phase 1 from ~25min to ~8min. Must handle timeouts gracefully and log any failed feeds. Test with actual morning feeds before deploying to scheduler.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-14",
+    "tags": [
+      "workflow",
+      "coding",
+      "rss",
+      "optimization"
+    ],
+    "created_at": "2026-03-12T11:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-507",
+    "title": "Test Zotero batch import API with 10 sample papers",
+    "description": "Verify that Zotero API supports importing multiple papers in a single call and correctly generates citation_keys for all items. This is critical bottleneck - if batch import fails, the whole optimization plan needs revision. Document API response format and error handling.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-15",
+    "tags": [
+      "workflow",
+      "zotero",
+      "testing",
+      "api"
+    ],
+    "created_at": "2026-03-12T11:35:00-08:00"
+  },
+  {
+    "task_id": "TODO-508",
+    "title": "Review Park et al. metadata-first workflow paper for implementation details",
+    "description": "The arXiv paper [[park2026automated]] describes exactly the workflow I'm building. Read their Methods section for technical details on enforcing Zotero-before-Obsidian constraint. Check if they open-sourced any code I can adapt.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-16",
+    "tags": [
+      "literature",
+      "workflow",
+      "reading"
+    ],
+    "created_at": "2026-03-12T12:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-509",
+    "title": "Calculate net ROI for AACR vs bioRxiv+ decision",
+    "description": "Build decision tree with explicit tradeoff quantification: (A) pay $695 AACR balance → preserve $200 deposit, gain reduced networking; (B) forfeit $200, request lab funding for bioRxiv+ → workflow automation, spend advisor capital; (C) forfeit $200, self-fund subscription → automation, preserve capital. Include time savings calculation (current 12.5 hrs/week triage → target 7 hrs/week with API), financial opportunity cost, and advisor relationship impact.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-03-29",
+    "tags": [
+      "decision",
+      "budget",
+      "urgent"
+    ],
+    "created_at": "2026-03-27T19:30:00-07:00"
+  },
+  {
+    "task_id": "TODO-510",
+    "title": "Draft email to Dr. Harrison - bioRxiv+ lab funding request",
+    "description": "If choosing option B, draft email requesting lab funding for bioRxiv+ institutional subscription ($695/year). Frame ROI in terms of: (1) dissertation timeline acceleration (5.5 hrs/week reclaimed for Chapter 3), (2) lab-wide literature workflow efficiency (4 grad students + 2 postdocs benefit from API tier), (3) systematic solution to his 3/22 concern about literature triage time sink. Quantify: 71.5 hrs/quarter savings, direct path to closing overdue Chapter 3 by mid-April. DO NOT mention AACR sunk cost.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-30",
+    "tags": [
+      "email",
+      "advisor",
+      "budget-request"
+    ],
+    "created_at": "2026-03-29T15:50:00-07:00"
+  },
+  {
+    "task_id": "TODO-511",
+    "title": "Review AACR program - assess residual networking value without abstract",
+    "description": "Go through AACR 2026 program to evaluate remaining value if attending without presenting: relevant sessions in IL-17/Th17 track, potential collaborators attending (ask Sarah for intros), poster sessions in trajectory analysis. Quantify: how many high-value networking opportunities remain vs. original plan with abstract presentation?",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-29",
+    "tags": [
+      "conference",
+      "networking",
+      "decision-input"
+    ],
+    "created_at": "2026-03-27T20:15:00-07:00"
+  },
+  {
+    "task_id": "TODO-512",
+    "title": "Contact bioRxiv sales - confirm institutional API features",
+    "description": "Reply to MSG-5003 to confirm: (1) API rate limits for batch metadata export, (2) Zotero/Obsidian integration documentation, (3) whether $695 offer includes setup support, (4) cancellation policy if workflow automation doesn't deliver expected time savings. Need confirmation before committing lab budget.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-30",
+    "tags": [
+      "subscription",
+      "api",
+      "research"
+    ],
+    "created_at": "2026-03-29T16:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-513",
+    "title": "Update JOB-702 cron schedule to Sunday 05:00",
+    "description": "Change weekly_zotero_obsidian_batch_reconciliation cron expression from '30 6 * * 0' to '0 5 * * 0' to eliminate collision with morning triage job. Verify change in scheduler config and monitor first two runs (2026-02-16, 2026-02-23).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-15",
+    "tags": [
+      "workflow",
+      "scheduler",
+      "urgent",
+      "collision-fix"
+    ],
+    "created_at": "2026-02-14T14:25:00-08:00"
+  },
+  {
+    "task_id": "TODO-514",
+    "title": "Add scheduler monitoring alert for batch job overruns",
+    "description": "Configure alert if JOB-702 duration exceeds 75 minutes (50% buffer over typical 45-50 min). Should notify via email. Prevents future silent timeouts.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-20",
+    "tags": [
+      "workflow",
+      "monitoring",
+      "scheduler"
+    ],
+    "created_at": "2026-02-14T14:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-515",
+    "title": "Document scheduling policy in workflow KB",
+    "description": "Create formal scheduling policy document based on collision analysis. Include resource conflict checklist, time window allocation rules, and decision framework for future job additions. Reference: OBSN-5 draft policy section.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-02-28",
+    "tags": [
+      "workflow",
+      "documentation",
+      "policy"
+    ],
+    "created_at": "2026-02-14T14:35:00-08:00"
+  },
+  {
+    "task_id": "TODO-516",
+    "title": "Prioritize all dissertation and manuscript tasks with calendar integration",
+    "description": "Review all pending to-do items (Chapter 3, IL-17 manuscript, workflow optimization), scan calendar for deadlines and focus blocks, check recent emails from Dr. Harrison and journal editors for urgency signals. Generate a priority-ranked handling sequence that minimizes context-switching and respects deep-work windows. Must account for: Feb 28 reviewer response deadline, Mar 15 committee report deadline, advisor meeting schedule, and scheduled focus blocks.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-30",
+    "tags": [
+      "meta-planning",
+      "urgent",
+      "deadline-driven"
+    ],
+    "created_at": "2026-01-30T06:45:00-08:00"
+  },
+  {
+    "task_id": "TODO-517",
+    "title": "Respond to Dr. Harrison email - confirm Chapter 3 and reviewer response timeline",
+    "description": "Reply to Dr. Harrison's Jan 28 email confirming I can finish Chapter 3 trajectory discussion by Feb 3 and send complete reviewer response draft by Feb 20. Acknowledge the committee report expectations and propose agenda items for Thursday meeting.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-30",
+    "tags": [
+      "advisor",
+      "communication",
+      "urgent"
+    ],
+    "created_at": "2026-01-29T15:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-518",
+    "title": "Decide: Accept Immunity review invitation or decline due to timeline",
+    "description": "Immunity invited me to review manuscript IMMU-2026-00234 on Trm differentiation (due Feb 20). This conflicts with my reviewer response deadline (also Feb 20) and Chapter 3 work. Need to evaluate: (1) professional obligation vs. bandwidth, (2) whether topic overlaps with my research enough to justify time, (3) potential to defer deadline. Consult Dr. Harrison in Thursday meeting?",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-02",
+    "tags": [
+      "decision",
+      "review",
+      "time-management"
+    ],
+    "created_at": "2026-01-31T10:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-519",
+    "title": "Read Park et al. workflow paper before seminar - take implementation notes",
+    "description": "Dr. Park is giving a seminar on Feb 4 about workflow automation. Read the Park et al. 2026 paper on automated literature curation beforehand and prepare questions about dependency resolution and parallel execution strategies for my morning triage optimization.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-02-04",
+    "tags": [
+      "workflow",
+      "reading",
+      "seminar-prep"
+    ],
+    "created_at": "2026-01-30T07:15:00-08:00"
+  },
+  {
+    "task_id": "TODO-520",
+    "title": "Respond to Dr. Rodriguez - reschedule Monday check-in",
+    "description": "Dr. Rodriguez has a conflict with the 10:30am Monday slot. Need to pick alternative time and reply. Options: Mon 2pm, Tue 10am, Wed 3pm. Check calendar conflicts with lab meeting and other commitments.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-09",
+    "tags": [
+      "email",
+      "scheduling",
+      "committee"
+    ],
+    "created_at": "2026-02-08T14:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-521",
+    "title": "Accept Dr. Thompson office hours - Wednesday 2/12 11am",
+    "description": "Dr. Thompson offered office hours Wednesday 2/12 11am-12pm to discuss trajectory analysis feedback before committee report. Need to confirm attendance and add to calendar. Check for conflicts with existing Wednesday schedule.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-10",
+    "tags": [
+      "email",
+      "scheduling",
+      "committee"
+    ],
+    "created_at": "2026-02-09T17:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-522",
+    "title": "Prepare 15-min Chapter 3 update for Monday lab meeting",
+    "description": "Dr. Harrison requested brief presentation of Chapter 3 trajectory analysis at Monday 2/10 10am lab meeting. No formal slides needed - just walk through current figures and remaining challenges. Good opportunity for feedback before committee report.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-10",
+    "tags": [
+      "lab-meeting",
+      "presentation",
+      "chapter3"
+    ],
+    "created_at": "2026-02-06T11:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-523",
+    "title": "Analyze calendar conflicts for week of Feb 10-14",
+    "description": "Multiple scheduling conflicts detected: (1) Dr. Rodriguez check-in overlaps with lab meeting Monday 10:30am, (2) Dr. Thompson office hours Wed 11am overlaps with sacred morning focus block and possibly conflicts with Journal Club at noon, (3) Dr. Harrison ad-hoc meeting Tue 2pm overlaps with Immunology seminar. Need to consolidate schedule, identify which conflicts require faculty coordination vs personal rescheduling, and generate integrated weekly plan.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-09",
+    "tags": [
+      "scheduling",
+      "conflict-resolution",
+      "weekly-planning"
+    ],
+    "created_at": "2026-02-09T18:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-524",
+    "title": "DECISION: Tackle Chapter 3 discussion OR Reviewer 2 response - assess cognitive capacity",
+    "description": "After dense week (lab meetings EVT-328, committee call EVT-329, seminar EVT-330), evaluate current energy level and decide: (1) tackle one high-cognitive task now with time-box, (2) defer both to Monday deep-work block EVT-327 and do low-cognitive work instead (Zotero cleanup, slide prep), or (3) identify delegatable components. Check Obsidian notes for fatigue signals, review calendar load, assess deadline hardness (Reviewer 2 buffer vs Chapter 3 committee impact).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-13",
+    "tags": [
+      "decision",
+      "cognitive-load",
+      "dissertation",
+      "manuscript"
+    ],
+    "created_at": "2026-03-13T18:45:00-07:00"
+  },
+  {
+    "task_id": "TODO-525",
+    "title": "LOW-COGNITIVE: Organize Zotero tags for Chapter 3 trajectory papers",
+    "description": "Batch cleanup of Zotero tags for 15-20 trajectory analysis papers. Add consistent tags: trajectory-inference, methods-comparison, single-cell. No synthesis required, just metadata maintenance. Good fallback task if energy is low.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-15",
+    "tags": [
+      "low-cognitive",
+      "zotero",
+      "organization"
+    ],
+    "created_at": "2026-03-13T18:50:00-07:00"
+  },
+  {
+    "task_id": "TODO-526",
+    "title": "LOW-COGNITIVE: Assemble committee report slides from existing Chapter 3 figures",
+    "description": "Pull figures 3.1-3.5 from dissertation draft, add to PowerPoint template for March 15 committee report. No new analysis, just assembly work. Estimated 60-90 minutes.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-14",
+    "tags": [
+      "low-cognitive",
+      "committee-report",
+      "slides"
+    ],
+    "created_at": "2026-03-13T18:52:00-07:00"
+  },
+  {
+    "task_id": "TODO-527",
+    "title": "Review Obsidian notes from this week for quality/clarity concerns",
+    "description": "Scan NOTE-108, NOTE-109, and any new notes from March 10-13 for markers of fatigue: incomplete thoughts, 'needs revision' tags, unclear reasoning. Use as input for cognitive capacity assessment.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-13",
+    "tags": [
+      "meta",
+      "cognitive-load",
+      "quality-check"
+    ],
+    "created_at": "2026-03-13T18:55:00-07:00"
+  },
+  {
+    "task_id": "TODO-528",
+    "title": "Implement Phase 1 parallel RSS fetcher with asyncio",
+    "description": "Write Python script using asyncio to fetch arXiv, bioRxiv, and PubMed RSS feeds concurrently. Output unified JSON manifest with paper metadata for Phase 2 import. Must handle network timeouts and malformed XML gracefully. Target runtime: <5 minutes for 50 papers across 3 sources.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-03-26",
+    "tags": [
+      "workflow",
+      "coding",
+      "parallel",
+      "rss"
+    ],
+    "created_at": "2026-03-24T09:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-529",
+    "title": "Test Zotero batch import with 10 sample papers - validate rate limiting",
+    "description": "Use Zotero API to import 10 papers from /tmp/workflow-manifest.json. Verify citation_key generation, API rate limit compliance (1 req/sec), and exclusive lock behavior. Document any lock timeout issues. This validates Phase 2 feasibility before full workflow deployment.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-27",
+    "tags": [
+      "workflow",
+      "zotero",
+      "testing"
+    ],
+    "created_at": "2026-03-24T09:15:00-08:00"
+  },
+  {
+    "task_id": "TODO-530",
+    "title": "Update JOB-702 Sunday schedule to avoid Phase 2 collision",
+    "description": "Reschedule weekly_zotero_obsidian_batch_reconciliation (JOB-702) from 06:30 to 07:30 on Sundays. This creates 30-minute buffer after Phase 2 completion (07:00-07:15) and eliminates Zotero lock timeout issue that caused 7 missed bioRxiv imports on March 23.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-28",
+    "tags": [
+      "scheduler",
+      "collision",
+      "workflow"
+    ],
+    "created_at": "2026-03-24T11:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-531",
+    "title": "Document workflow optimization protocol for lab wiki",
+    "description": "After successful pilot week, write up the two-phase parallelization approach as a protocol note for lab wiki. Include DAG visualization, conflict matrix, implementation code snippets, and lessons learned. Dr. Harrison wants this shared with rotation students who are still doing manual literature imports.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-04-05",
+    "tags": [
+      "documentation",
+      "lab",
+      "workflow"
+    ],
+    "created_at": "2026-03-24T14:45:00-08:00"
+  },
+  {
+    "task_id": "TODO-532",
+    "title": "Implement Phase 1 parallel RSS fetcher for literature workflow",
+    "description": "Write Python script to fetch arXiv, bioRxiv, and PubMed RSS feeds in parallel using asyncio. Expected time savings: 15-20 minutes per morning run. See OBSN-1 for DAG analysis and implementation details.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-17",
+    "tags": [
+      "workflow",
+      "optimization",
+      "coding"
+    ],
+    "created_at": "2026-02-10T09:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-533",
+    "title": "Test Zotero batch import with parallel RSS output",
+    "description": "Once parallel fetcher is complete, test batch import of 10-15 sample papers to verify metadata integrity and citation key generation. Must validate against metadata-first rule.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-19",
+    "tags": [
+      "workflow",
+      "optimization",
+      "testing"
+    ],
+    "created_at": "2026-02-10T09:45:00-08:00"
+  },
+  {
+    "task_id": "TODO-534",
+    "title": "Update DAG visualization with Phase 2 dependencies",
+    "description": "Add Phase 2 (batch Zotero import) and Phase 3 (parallel Obsidian note creation) to workflow DAG in OBSN-1. Identify additional parallelization opportunities.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-02-21",
+    "tags": [
+      "workflow",
+      "optimization",
+      "planning"
+    ],
+    "created_at": "2026-02-10T10:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-535",
+    "title": "Review Chapter 3 trajectory analysis - incorporate reviewer feedback",
+    "description": "Integrate Reviewer 2 comments on trajectory inference methods into Chapter 3 discussion section. Due before committee report.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-03-10",
+    "tags": [
+      "dissertation",
+      "chapter3",
+      "urgent"
+    ],
+    "created_at": "2026-02-18T14:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-536",
+    "title": "Implement parallel RSS fetcher for literature workflow",
+    "description": "Build Python script to fetch RSS feeds from arXiv, bioRxiv, and PubMed in parallel (Phase 1 of workflow optimization). Must handle isolated /tmp directories for PDF downloads and respect API rate limits.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-08",
+    "tags": [
+      "workflow",
+      "automation",
+      "literature",
+      "abandoned"
+    ],
+    "created_at": "2026-02-01T14:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-537",
+    "title": "Test batch Zotero import with optimized workflow",
+    "description": "Run pilot test of new 3-phase literature workflow with 20 sample papers. Validate that Phase 2 serial execution respects Zotero file locks and API quotas.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-10",
+    "tags": [
+      "workflow",
+      "testing",
+      "zotero",
+      "abandoned"
+    ],
+    "created_at": "2026-02-01T15:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-538",
+    "title": "Reschedule JOB-702 to avoid Sunday morning collision",
+    "description": "Move weekly Zotero/Obsidian batch reconciliation job from Sunday 06:30 to Saturday 22:00 or Sunday 05:00 to eliminate conflict with daily literature triage job JOB-701.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-12",
+    "tags": [
+      "scheduler",
+      "workflow",
+      "urgent",
+      "abandoned"
+    ],
+    "created_at": "2026-02-02T09:15:00-08:00"
+  },
+  {
+    "task_id": "TODO-539",
+    "title": "Order new lab notebook for wet bench protocols",
+    "description": "Lab supply order - need new hardbound notebook for documenting flow cytometry protocols",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-02-20",
+    "tags": [
+      "lab",
+      "supplies"
+    ],
+    "created_at": "2026-02-04T16:45:00-08:00"
+  },
+  {
+    "task_id": "TODO-540",
+    "title": "Draft holding response to GIDC - explain PI approval requirement",
+    "description": "Draft polite email to Dr. Torres (GIDC) explaining that lab policy requires PI approval for sharing unpublished dissertation data. Acknowledge consortium's excellent reputation and lab members' enthusiasm. Propose timeline: will consult with Dr. Harrison this week and respond by March 31 with decision and potential embargo terms.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-03-26",
+    "tags": [
+      "collaboration",
+      "email",
+      "data-sharing"
+    ],
+    "created_at": "2026-03-26T09:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-541",
+    "title": "Prepare GIDC meeting brief for Dr. Harrison",
+    "description": "Create concise brief document covering: (1) consortium credentials and request details, (2) lab member support summary, (3) my concerns about Chapter 3 priority, (4) proposed embargo timeline options, (5) questions about institutional approval process. Keep to 1-2 pages max.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-03-27",
+    "tags": [
+      "meeting-prep",
+      "data-sharing",
+      "pi-communication"
+    ],
+    "created_at": "2026-03-26T11:45:00-07:00"
+  },
+  {
+    "task_id": "TODO-542",
+    "title": "Research GIDC data sharing agreement templates",
+    "description": "Review GIDC website for standard data sharing agreement templates and terms. Check if they have model embargo language. Prepare comparison with NIH data sharing policy requirements. This will help inform discussion with Dr. Harrison about what's negotiable.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-27",
+    "tags": [
+      "research",
+      "data-sharing",
+      "policy"
+    ],
+    "created_at": "2026-03-26T14:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-543",
+    "title": "Draft conditional approval email templates (approved vs declined scenarios)",
+    "description": "Pre-draft two email templates to GIDC: (A) Conditional approval with 6-month embargo + attribution terms, (B) Polite decline with offer to revisit post-Chapter 3 submission. Have templates ready to send quickly after Dr. Harrison meeting decision.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-28",
+    "tags": [
+      "email",
+      "data-sharing",
+      "templates"
+    ],
+    "created_at": "2026-03-26T16:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-544",
+    "title": "Book UCSD Statistical Consulting - March 4 slot for batch correction",
+    "description": "Reply to stat-consult@ucsd.edu to confirm March 4, 10:00 AM slot. Provide: (1) dataset description (12,000 cells, 4 batches, partial confounding with treatment), (2) methods tried (ComBat, Harmony), (3) reviewer questions about trajectory over-correction. Confirm $300 charge to research allocation.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-02-23",
+    "tags": [
+      "consulting",
+      "chapter3",
+      "deadline-driven"
+    ],
+    "created_at": "2026-02-23T10:45:00-08:00"
+  },
+  {
+    "task_id": "TODO-545",
+    "title": "Prepare consultation materials for March 4 stat consulting session",
+    "description": "Create consultation package: (1) data summary document with batch structure and confounding patterns, (2) diagnostic plots from ComBat and Harmony attempts, (3) specific reviewer questions from IL-17 manuscript, (4) list of methods to compare (scVI, MNN, others). Aim for 2-3 page brief + figures.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-03",
+    "tags": [
+      "consulting",
+      "chapter3",
+      "preparation"
+    ],
+    "created_at": "2026-02-23T11:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-546",
+    "title": "Email Dr. Thompson - thank you + schedule mid-March follow-up",
+    "description": "Send email thanking Dr. Thompson for her response and availability offer. Explain timeline constraint (Feb 28 reviewer deadline) led to booking stat consulting for March 4. Propose meeting week of March 10-14 to discuss consultation results and broader Chapter 3 progress. Emphasize appreciation for her time and mutual help relationship.",
+    "status": "completed",
+    "priority": "medium",
+    "due_date": "2026-02-23",
+    "tags": [
+      "committee",
+      "relationship-management",
+      "email"
+    ],
+    "created_at": "2026-02-23T11:15:00-08:00"
+  },
+  {
+    "task_id": "TODO-547",
+    "title": "Update Chapter 3 budget tracking - add stat consulting expense",
+    "description": "Log $300 statistical consulting expense in Chapter 3 budget tracker. Update research allocation balance ($1240 → $940). Note Harrison approval received Feb 23. Add to dissertation expense documentation for final accounting.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-03-04",
+    "tags": [
+      "finance",
+      "chapter3",
+      "record-keeping"
+    ],
+    "created_at": "2026-02-23T15:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-548",
+    "title": "Update JOB-701 cron schedule to disable old serial literature triage workflow",
+    "description": "Disable JOB-701 (old serial literature triage) now that JOB-710 (optimized parallel workflow) is operational and validated. Update scheduler config to set enabled=false for JOB-701, add deprecation note pointing to JOB-710. Verify no downstream jobs depend on JOB-701 output format before disabling.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-01-11",
+    "tags": [
+      "scheduler",
+      "workflow-optimization",
+      "cleanup"
+    ],
+    "created_at": "2026-01-10T08:20:00-08:00"
+  },
+  {
+    "task_id": "TODO-549",
+    "title": "Document rate-limit optimization rationale in lab wiki for future reference",
+    "description": "Write summary of Zotero API rate limit analysis (OBSN-23) and priority queue design (OBSN-24) for lab wiki. Include key findings: rate limit was NOT the bottleneck (160 requests vs 8,640 available), actual issues were serial RSS fetching and file lock contention. Document 3.8x speedup achieved through parallelization. Target audience: future lab members implementing similar workflows. Reference RSS-907 and RSS-910 papers.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-15",
+    "tags": [
+      "documentation",
+      "workflow-optimization",
+      "knowledge-sharing"
+    ],
+    "created_at": "2026-01-10T08:25:00-08:00"
+  },
+  {
+    "task_id": "TODO-550",
+    "title": "Monitor JOB-710 execution for one week to validate optimization assumptions",
+    "description": "Track JOB-710 execution history for 7 days (2026-01-11 to 2026-01-17) to validate rate-limit calculations and priority queue logic. Check: (1) no API rate limit violations in Zotero dashboard, (2) all high-priority papers (IL-17, trajectory-analysis, Th17-plasticity) imported before 06:35, (3) average runtime stays under 6 minutes, (4) no file lock timeouts. If validation passes, mark optimization as stable and close TODO-536 (parallel RSS fetcher implementation).",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-01-17",
+    "tags": [
+      "validation",
+      "monitoring",
+      "workflow-optimization"
+    ],
+    "created_at": "2026-01-10T08:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-551",
+    "title": "Review RSS-909 trajectory benchmarking paper for Chapter 3 methods section",
+    "description": "Read RSS-909 (trajectory inference benchmarking) in detail - highly relevant to Chapter 3 methods justification. Paper compares Monocle3 vs PAGA vs Palantir on immune differentiation datasets, exactly matching my Th17 trajectory analysis use case. Import to ZOT-6 if not already present, add detailed notes on why Monocle3 was chosen despite 3x longer runtime (higher accuracy on branching trajectories, 0.87 vs 0.82 Kendall tau). Use for Reviewer 2 response to justify method selection.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-13",
+    "tags": [
+      "chapter3",
+      "literature-review",
+      "trajectory-analysis",
+      "reviewer-response"
+    ],
+    "created_at": "2026-01-10T08:35:00-08:00"
+  },
+  {
+    "task_id": "TODO-552",
+    "title": "Draft Thompson meeting prep outline - Chapter 3 status summary",
+    "description": "Prepare bullet-point outline for Dr. Thompson covering: (1) batch correction validation with PCA plots, (2) trajectory inference results (Slingshot, 3 paths), (3) remaining DE analysis tasks, (4) Rodriguez 2024 reconciliation challenge, (5) realistic 5-week writing timeline. Must include Zotero citations for all claims per metadata-first rule. Due Friday 2/21 afternoon per Thompson's request.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-02-21",
+    "tags": [
+      "thesis-committee",
+      "chapter3",
+      "deadline",
+      "dr-thompson"
+    ],
+    "created_at": "2026-02-19T18:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-553",
+    "title": "Search Obsidian for Chapter 3 trajectory analysis notes and decision logs",
+    "description": "Query claw_obsidian for all notes tagged with 'chapter3', 'trajectory-inference', 'batch-correction', and 'slingshot' to gather technical decisions, method comparisons, and preliminary results. Need to extract key claims with Zotero backlinks for Thompson meeting prep. Focus on notes from Jan-Feb 2026 covering Monocle vs Slingshot comparison and ComBat-seq validation.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-22",
+    "tags": [
+      "chapter3",
+      "obsidian",
+      "prep",
+      "dr-thompson"
+    ],
+    "created_at": "2026-02-20T07:15:00-08:00"
+  },
+  {
+    "task_id": "TODO-554",
+    "title": "Filter todo list for all Chapter 3 tasks - assess completion status",
+    "description": "Review all TODO items tagged 'chapter3' to identify: (1) completed analysis tasks, (2) in-progress writing tasks, (3) blocked items waiting on citations or PI feedback. Generate completion percentage for Thompson meeting. Need to show concrete progress despite 6-week delay.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-22",
+    "tags": [
+      "chapter3",
+      "project-management",
+      "prep"
+    ],
+    "created_at": "2026-02-20T07:20:00-08:00"
+  },
+  {
+    "task_id": "TODO-555",
+    "title": "Cross-reference Obsidian Chapter 3 claims with Zotero citations",
+    "description": "Audit all Chapter 3 Obsidian notes to ensure every technical claim (batch correction rationale, trajectory method selection, IL-17 pathway biology) has proper Zotero citation backlink. Flag any metadata-first violations for immediate correction before Thompson meeting. Priority: trajectory inference methods and Rodriguez 2024 reconciliation sections.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-23",
+    "tags": [
+      "chapter3",
+      "metadata-first",
+      "zotero",
+      "obsidian",
+      "quality-control"
+    ],
+    "created_at": "2026-02-20T07:25:00-08:00"
+  },
+  {
+    "task_id": "TODO-556",
+    "title": "Complete Zotero metadata import for Park et al. plasticity checkpoints paper (ZOT-10)",
+    "description": "Park et al. 2026 paper flagged high-priority for Chapter 3 but missing DOI and complete abstract in Zotero. Need to fetch full metadata from bioRxiv API, add citation key, and verify author affiliations. Once complete, can create backlink from OBSN-27 (Th17 Plasticity Checkpoints note) to enable weekend reading integration.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-05",
+    "tags": [
+      "chapter3",
+      "zotero",
+      "metadata",
+      "high-priority"
+    ],
+    "created_at": "2026-02-01T07:20:00-08:00"
+  },
+  {
+    "task_id": "TODO-557",
+    "title": "Import Chen et al. IL-17 signaling paper (ZOT-11) - full metadata missing",
+    "description": "Chen et al. 2026 bioRxiv paper on IL-17 receptor signaling kinetics added to Zotero during evening triage but missing abstract and DOI. Critical for Reviewer 2 response on signaling dynamics. Need to complete metadata import before weekend reading block to stay on track for 2026-02-28 manuscript deadline.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-07",
+    "tags": [
+      "reviewer-response",
+      "zotero",
+      "metadata",
+      "il-17"
+    ],
+    "created_at": "2026-02-03T19:05:00-08:00"
+  },
+  {
+    "task_id": "TODO-558",
+    "title": "Update Obsidian backlinks for recent Zotero imports (3 papers pending)",
+    "description": "Three papers imported to Zotero in past week need backlink updates in Obsidian topic pages: (1) Park et al. plasticity checkpoints → OBSN-27 and OBSN-29, (2) Chen et al. IL-17 signaling → OBSN-28, (3) Zhang et al. metadata extraction → workflow notes. Can only complete after full metadata import for ZOT-10 and ZOT-11. Estimated 30-45 min during weekend reading block.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-08",
+    "tags": [
+      "obsidian",
+      "backlinks",
+      "literature",
+      "weekend-reading"
+    ],
+    "created_at": "2026-02-03T19:15:00-08:00"
+  },
+  {
+    "task_id": "TODO-559",
+    "title": "Review Zhang et al. metadata extraction workflow paper for automation ideas",
+    "description": "Zhang et al. 2026 arXiv paper describes GPT-4 pipeline for automated bioRxiv metadata extraction with 94% accuracy. Could inform my stalled workflow optimization project (parallel RSS fetcher + batch Zotero import). Low priority given Chapter 3 and reviewer response deadlines, but keep on radar for post-manuscript submission.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-02-15",
+    "tags": [
+      "workflow",
+      "automation",
+      "future"
+    ],
+    "created_at": "2026-02-01T11:25:00-08:00"
+  },
+  {
+    "task_id": "TODO-560",
+    "title": "Verify JOB-712 stability over 1-week window (rate-limit optimization)",
+    "description": "Monitor weekend_deferred_literature_batch job for 1 week (2026-03-16 to 2026-03-23) to confirm: (1) morning triage stays under 50 papers/day, (2) no API rate-limit violations, (3) all Cell Press papers imported during weekday runs, (4) deferred papers successfully processed Sunday 10:00. Review JOB-713 monitoring logs daily.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-03-23",
+    "tags": [
+      "workflow",
+      "monitoring",
+      "rate-limit",
+      "zotero"
+    ],
+    "created_at": "2026-03-16T11:50:00-07:00"
+  },
+  {
+    "task_id": "TODO-561",
+    "title": "Document rate-limit optimization in thesis committee progress report",
+    "description": "Add 1-paragraph summary of Zotero API rate-limit resolution to 'Research Infrastructure' section of thesis committee progress report (due 2026-03-15, OVERDUE). Highlight workflow optimization as example of computational problem-solving skills relevant to dissertation. Keep technical detail minimal—focus on impact (preserved access to dissertation-critical literature while maintaining automation reliability).",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-18",
+    "tags": [
+      "thesis-committee",
+      "progress-report",
+      "workflow"
+    ],
+    "created_at": "2026-03-16T12:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-562",
+    "title": "Review Martinez et al. IL-17 neutrophil paper for Reviewer 2 response",
+    "description": "Deep-read Martinez et al. (2026) Cell Press preprint on IL-17-mediated neutrophil recruitment dynamics. Extract key points for Reviewer 2 response (IL-17A kinetics section): (1) two-phase recruitment model, (2) CXCR2/CXCR4 differential expression, (3) trajectory analysis methodology (Slingshot—same as our Chapter 3). Draft 2-3 sentence citation for revised manuscript. Target: complete before 2026-03-20 to stay on track for 2026-02-28 deadline (already overdue).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-20",
+    "tags": [
+      "reviewer-response",
+      "IL-17",
+      "literature",
+      "dissertation"
+    ],
+    "created_at": "2026-03-16T12:10:00-07:00"
+  },
+  {
+    "task_id": "TODO-563",
+    "title": "URGENT: Decide committee meeting vs lab dinner conflict by EOD Tuesday",
+    "description": "Dr. Rodriguez can only meet Thu 6pm (conflicts with mandatory Dr. Park lab dinner). Need to: (1) query calendar for recent committee vs lab social event ratio, (2) search email for interaction frequency with Rodriguez vs Harrison, (3) assess which obligation is less substitutable, (4) calculate tilt data to determine which role has been objectively neglected, (5) make decision and execute compensation plan.",
+    "status": "pending",
+    "priority": "urgent",
+    "due_date": "2026-02-25",
+    "tags": [
+      "decision-making",
+      "committee",
+      "lab-citizenship",
+      "conflict-resolution"
+    ],
+    "created_at": "2026-02-24T17:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-564",
+    "title": "Query calendar for committee vs lab social event attendance ratio (8 weeks)",
+    "description": "Extract calendar data from Jan 1 - Feb 25 to calculate: (1) number of committee meetings/check-ins with Rodriguez, Thompson, Harrison in committee role, (2) number of lab social events (dinners, happy hours, speaker events), (3) attendance rate for each category, (4) recent cancellation history. Use data to assess objective tilt for conflict prioritization decision.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-25",
+    "tags": [
+      "calendar-analysis",
+      "decision-support",
+      "tilt-analysis"
+    ],
+    "created_at": "2026-02-24T17:15:00-08:00"
+  },
+  {
+    "task_id": "TODO-565",
+    "title": "Search stumail/gmail for Rodriguez interaction frequency and meeting history",
+    "description": "Query email archives for: (1) all messages with m.rodriguez@stanford.edu in past 8 weeks, (2) meeting request/confirmation patterns, (3) response time to her requests, (4) topics discussed (trajectory analysis, batch correction, committee report prep), (5) any prior rescheduling requests. Assess relationship health and recent engagement level.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-25",
+    "tags": [
+      "email-analysis",
+      "committee-relationship",
+      "decision-support"
+    ],
+    "created_at": "2026-02-24T17:20:00-08:00"
+  },
+  {
+    "task_id": "TODO-566",
+    "title": "Draft compensation email to deprioritized party with specific alternatives",
+    "description": "After decision, draft email to either: (1) Dr. Rodriguez explaining lab dinner conflict and proposing Zoom follow-up after her travel, OR (2) Dr. Harrison explaining committee urgency and proposing one-on-one with Dr. Park after seminar. Include specific make-up plan and acknowledgment of conflict.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-25",
+    "tags": [
+      "email-drafting",
+      "conflict-resolution",
+      "compensation"
+    ],
+    "created_at": "2026-02-24T17:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-567",
+    "title": "Document conflict decision rationale in Obsidian with calendar/email evidence",
+    "description": "Create Obsidian note documenting: (1) calendar tilt statistics (committee vs lab social ratio), (2) email interaction frequency data, (3) substitutability analysis (why chosen option was less flexible), (4) decision framework applied, (5) links to relevant email records and calendar events. Tag with decision-making and lab-policy for future reference.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-26",
+    "tags": [
+      "documentation",
+      "decision-rationale",
+      "obsidian"
+    ],
+    "created_at": "2026-02-24T17:35:00-08:00"
+  },
+  {
+    "task_id": "TODO-568",
+    "title": "Draft decision brief for Dr. Harrison - GIDC data sharing request",
+    "description": "Prepare comprehensive brief for PI meeting covering: (1) GIDC request details and timeline, (2) risk assessment for Chapter 3 first-authorship priority, (3) lab data-sharing policy compliance check, (4) collaboration opportunity value (Nature Immunology co-authorship), (5) recommended response options with pros/cons. Include Kaplan's follow-up email with authorship/embargo details.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-01-20",
+    "tags": [
+      "collaboration",
+      "dissertation",
+      "pi-approval",
+      "data-policy"
+    ],
+    "created_at": "2026-01-17T16:50:00-08:00"
+  },
+  {
+    "task_id": "TODO-569",
+    "title": "Cross-reference Chapter 3 status against lab data-sharing policy",
+    "description": "Review Harrison Lab data-sharing SOP in Obsidian vault. Confirm authority boundaries: unpublished dissertation data requires PI written approval. Check if Chapter 3 trajectory analysis is (a) published, (b) under review, or (c) unpublished manuscript in prep. Document current status and associated risk level for premature release.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-01-17",
+    "tags": [
+      "lab-policy",
+      "dissertation",
+      "compliance"
+    ],
+    "created_at": "2026-01-17T16:55:00-08:00"
+  },
+  {
+    "task_id": "TODO-570",
+    "title": "Follow up with Dr. Kaplan after PI decision (by Jan 24)",
+    "description": "After Dr. Harrison meeting on Jan 21, send response to GIDC with approval decision. If approved: coordinate technical details for H5AD export and metadata formatting. If declined or conditional: explain constraints and propose alternative timeline or reduced dataset scope.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-24",
+    "tags": [
+      "collaboration",
+      "follow-up"
+    ],
+    "created_at": "2026-01-17T17:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-571",
+    "title": "Register for Keystone T Cell Differentiation symposium (if budget allows)",
+    "description": "Early bird deadline Monday Jan 19. $795 vs $995 regular. Check with Dr. Harrison during Jan 21 meeting if travel budget available. Relevant speakers: Kuchroo (Th17 plasticity), Belkaid (TRM), O'Shea (IL-17). Could present Chapter 3 poster if data sharing approved.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-01-19",
+    "tags": [
+      "conference",
+      "budget",
+      "networking"
+    ],
+    "created_at": "2026-01-16T09:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-572",
+    "title": "Extract exact dates of Chapter 3 trajectory analysis runs from Obsidian",
+    "description": "Search Obsidian lab notes for all trajectory inference execution dates (Slingshot, Monocle3, PAGA runs) to determine if analysis was substantially complete before Dec 15, 2025. Need exact timestamps for exemption request justification.",
+    "status": "in_progress",
+    "priority": "critical",
+    "due_date": "2026-01-05",
+    "tags": [
+      "immunity-manuscript",
+      "chapter3",
+      "deadline-critical"
+    ],
+    "created_at": "2026-01-04T08:45:00-08:00"
+  },
+  {
+    "task_id": "TODO-573",
+    "title": "Draft cost-benefit analysis table for three Immunity response strategies",
+    "description": "Create decision matrix comparing: (1) withdrawal + preregistration (timeline, dissertation impact, reviewer risk), (2) exemption request (desk rejection probability, reputational cost), (3) minimal response (scientific rigor loss, R2 satisfaction). Include Feb 28 deadline buffer and March 15 committee report dependency.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-01-05",
+    "tags": [
+      "immunity-manuscript",
+      "decision-analysis",
+      "harrison-meeting"
+    ],
+    "created_at": "2026-01-04T08:50:00-08:00"
+  },
+  {
+    "task_id": "TODO-574",
+    "title": "Review Immunity exemption criteria - identify documentation gaps",
+    "description": "Re-read exemption requirements (analysis completion date, public repository, methods supplement). Check if Chapter 3 code is GitHub-ready and identify what additional documentation would be needed for exemption request.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-05",
+    "tags": [
+      "immunity-manuscript",
+      "compliance"
+    ],
+    "created_at": "2026-01-04T09:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-575",
+    "title": "Calculate sunk cost of current R2 response draft",
+    "description": "Document work invested in current response: hours spent, word count completed (target ~3800), figures finalized (4 total), Zotero citations locked. Needed for decision brief to quantify withdrawal cost.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-05",
+    "tags": [
+      "immunity-manuscript",
+      "decision-analysis"
+    ],
+    "created_at": "2026-01-04T09:10:00-08:00"
+  },
+  {
+    "task_id": "TODO-576",
+    "title": "Update Obsidian backlinks for recent Zotero imports (3 papers pending)",
+    "description": "Complete backlink generation for Nakamura 2025, Kumar 2025, and Harrison 2024 papers imported during Dec 21 weekend reading session. Need to create Obsidian notes with proper citation_key references and link to relevant Chapter 3 and Reviewer 2 documents.",
+    "status": "in_progress",
+    "priority": "medium",
+    "due_date": "2026-01-05",
+    "tags": [
+      "literature",
+      "obsidian",
+      "workflow",
+      "metadata"
+    ],
+    "created_at": "2025-12-22T09:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-577",
+    "title": "Enable JOB-714 daily Zotero-Obsidian sync check",
+    "description": "Activate the daily_zotero_obsidian_sync_check scheduler job created three weeks ago. This will prevent future metadata-first violations by automatically detecting Zotero records without corresponding Obsidian backlinks.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-01-10",
+    "tags": [
+      "automation",
+      "scheduler",
+      "workflow"
+    ],
+    "created_at": "2025-12-18T14:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-578",
+    "title": "Follow up with Dr. Harrison on literature graph integrity best practices",
+    "description": "Dr. Harrison responded to my email about maintaining literature graph integrity, but I never implemented his recommendations. Need to review his response and schedule office hours to discuss implementation strategy.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-01-12",
+    "tags": [
+      "advisor",
+      "workflow",
+      "follow-up"
+    ],
+    "created_at": "2025-12-19T16:45:00-08:00"
+  },
+  {
+    "task_id": "TODO-579",
+    "title": "Update Chapter 3 discussion with Martinez and Park papers",
+    "description": "Integrate findings from Martinez 2025 IL-17R signaling paper and Park 2025 chromatin accessibility paper into Chapter 3 trajectory analysis discussion section. Both provide critical validation for computational predictions.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-08",
+    "tags": [
+      "chapter3",
+      "dissertation",
+      "writing"
+    ],
+    "created_at": "2025-12-22T10:15:00-08:00"
+  },
+  {
+    "task_id": "TODO-580",
+    "title": "Prepare slides for Lab meeting - Chapter 3 trajectory analysis",
+    "description": "Create presentation slides covering trajectory inference results, validation metrics, and discussion points for Jan 24 lab meeting. Include key figures from Chapter 3 and address potential questions about algorithm selection.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-23",
+    "tags": [
+      "presentation",
+      "chapter3",
+      "lab-meeting"
+    ],
+    "created_at": "2026-01-19T10:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-581",
+    "title": "Prepare progress summary for Dr. Harrison 1:1",
+    "description": "Draft 1-page summary of Chapter 3 status, reviewer response progress, and timeline for committee report. Include blockers and decisions needed from advisor.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-22",
+    "tags": [
+      "advisor",
+      "chapter3",
+      "planning"
+    ],
+    "created_at": "2026-01-19T11:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-582",
+    "title": "Compile questions for UCSD stats consulting session",
+    "description": "List specific trajectory inference validation questions for Jan 29 stats consulting appointment. Focus on bootstrapping approaches and sensitivity analysis for Chapter 3.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-28",
+    "tags": [
+      "statistics",
+      "chapter3",
+      "consultation"
+    ],
+    "created_at": "2026-01-19T14:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-583",
+    "title": "Review Obsidian notes for Immunology Consortium call prep",
+    "description": "Search Obsidian for prior commitments and discussion points related to data sharing request from GIDC team. Check email thread history and prepare response on dataset timeline.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-27",
+    "tags": [
+      "collaboration",
+      "data-sharing",
+      "obsidian"
+    ],
+    "created_at": "2026-01-20T09:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-584",
+    "title": "Draft Chapter 3 discussion section - biological interpretation of trajectory plasticity",
+    "description": "Write 2000-word discussion section for Chapter 3 focusing on biological interpretation of Th17 trajectory plasticity findings. Integrate Rodriguez 2024 tissue-resident memory formation mechanisms. Address: (1) plasticity checkpoints identified in trajectory analysis, (2) IL-17A signaling coordination with tissue positioning, (3) implications for therapeutic targeting. Must complete during Thursday deep work block to stay on weekly milestone schedule.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-23",
+    "tags": [
+      "chapter3",
+      "dissertation",
+      "writing",
+      "deep-work"
+    ],
+    "created_at": "2026-01-17T18:35:00-08:00"
+  },
+  {
+    "task_id": "TODO-585",
+    "title": "Prepare Thompson meeting slides - batch correction statistical consultation",
+    "description": "Create 8-slide deck for Dr. Thompson meeting to discuss batch correction methodology for Chapter 3 trajectory analysis. Include: (1) current ComBat-seq approach and residual batch effects observed, (2) alternative methods considered (Harmony, scVI), (3) specific questions about statistical validity of trajectory inference post-correction, (4) sample size justification for biological replicates. Bring printed slides and digital version for annotation.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-22",
+    "tags": [
+      "chapter3",
+      "statistics",
+      "committee",
+      "meeting-prep"
+    ],
+    "created_at": "2026-01-17T18:40:00-08:00"
+  },
+  {
+    "task_id": "TODO-586",
+    "title": "Complete Reviewer 2 response Figure 3 revision - trajectory heatmap with batch labels",
+    "description": "Revise Figure 3 for IL-17 manuscript reviewer response per Reviewer 2 request: add batch labels to trajectory heatmap, include ComBat-seq correction validation panel, update figure legend with statistical details. Generate publication-quality 300dpi PDF. Cross-reference new citations from Zotero (Zhang 2020 ComBat-seq paper, Street 2018 Slingshot benchmarking). Due as part of Feb 28 reviewer response package.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-21",
+    "tags": [
+      "reviewer-response",
+      "IL-17",
+      "manuscript",
+      "figures"
+    ],
+    "created_at": "2026-01-17T18:45:00-08:00"
+  },
+  {
+    "task_id": "TODO-587",
+    "title": "Update committee progress report outline with Chapter 3 revised timeline",
+    "description": "Revise March 15 committee progress report outline to reflect 6-week Chapter 3 delay and updated completion timeline. Add section explaining delay rationale (batch correction methodology refinement, trajectory algorithm validation). Include revised defense timeline (targeting September 2026). Reference Harrison's feedback from NOTE-104 on acceptable delay justifications. Keep tone proactive and solution-focused.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-24",
+    "tags": [
+      "committee",
+      "progress-report",
+      "planning"
+    ],
+    "created_at": "2026-01-17T18:50:00-08:00"
+  },
+  {
+    "task_id": "TODO-588",
+    "title": "Review weekend literature backlog - import high-priority trajectory papers",
+    "description": "Process weekend literature backlog accumulated from weekday triage overflow. Focus on papers tagged 'trajectory-inference', 'batch-correction', or 'Th17-plasticity' from RSS feeds. Import 8-10 highest-priority papers to Zotero with full metadata (authors, DOI, abstract). Create Obsidian backlinks to Chapter 3 discussion notes. Defer general immunology reviews to next weekend batch.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-25",
+    "tags": [
+      "literature",
+      "zotero",
+      "weekend-batch"
+    ],
+    "created_at": "2026-01-17T18:55:00-08:00"
+  },
+  {
+    "task_id": "TODO-589",
+    "title": "Schedule Thompson meeting for batch correction consultation",
+    "description": "Email Dr. Thompson to request 30-minute meeting during week of Jan 20-24 to discuss Chapter 3 batch correction methodology. Propose Wednesday Jan 22 afternoon or Thursday Jan 23 afternoon. Attach preliminary questions document. Reference prior email interaction (STUM-3045) to maintain relationship continuity. If unavailable, consider UCSD Statistical Consulting Service as backup ($150/hr, 2hr minimum).",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-20",
+    "tags": [
+      "committee",
+      "meeting-request",
+      "statistics"
+    ],
+    "created_at": "2026-01-17T19:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-590",
+    "title": "URGENT: Confirm receipt of Immunity deadline change + assess feasibility",
+    "description": "Immunity journal moved IL-17 revision deadline from Feb 28 to Feb 25 (3 days earlier). Need to: (1) reply to editorial office confirming receipt, (2) check if this conflicts with Chapter 3 committee report work, (3) decide if we need to request extension or can meet new deadline, (4) update calendar and dependent tasks. This affects sacred deep-work blocks Feb 20-25.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-01-28",
+    "tags": [
+      "urgent",
+      "deadline",
+      "IL-17-revision",
+      "email-response"
+    ],
+    "created_at": "2026-01-28T09:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-591",
+    "title": "Prepare agenda for extended Dr. Harrison meeting Jan 31 (13:40)",
+    "description": "Dr. Harrison wants to discuss: (1) Chapter 3 batch correction approach (ComBat-seq parameters), (2) coordination between IL-17 revision and dissertation work, (3) reviewer 2 trajectory critique overlap. Need to bring: trajectory figures from shared drive, ComBat-seq parameter log, draft response outline for reviewer 2. This is 20 min before regular 1:1, so must be focused.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-31",
+    "tags": [
+      "PI-meeting",
+      "Chapter-3",
+      "IL-17-revision",
+      "preparation"
+    ],
+    "created_at": "2026-01-27T17:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-592",
+    "title": "Sensitivity analysis: Run Slingshot on uncorrected data (Rodriguez feedback)",
+    "description": "Dr. Rodriguez raised concern that ComBat-seq over-correction might create artificial trajectory smoothness. Run Slingshot on raw (uncorrected) count data to verify major trajectory structure holds up. If consistent with corrected analysis, this strengthens both Chapter 3 and IL-17 revision. Needed for committee report statistical validation section (Thompson also flagged this).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-05",
+    "tags": [
+      "Chapter-3",
+      "statistical-validation",
+      "trajectory-analysis",
+      "committee-report"
+    ],
+    "created_at": "2026-01-28T09:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-593",
+    "title": "Reply to GIDC data sharing request - provide timeline estimate",
+    "description": "Global Immunology Data Consortium needs timeline for when we can share Th17 trajectory dataset. Not urgent but should reply within a week. Need to: (1) estimate Immunity acceptance timeline (optimistic: March, realistic: April), (2) check if Dr. Harrison is okay with preprint-stage sharing, (3) confirm no embargo conflicts with Salk IP policy. Can defer until after IL-17 revision is submitted.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-04",
+    "tags": [
+      "data-sharing",
+      "collaboration",
+      "email-response"
+    ],
+    "created_at": "2026-01-28T10:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-594",
+    "title": "Calculate total cost comparison: AACR attendance vs bioRxiv+ institutional",
+    "description": "Query finance service for AACR deposit (TXN-6007), estimate remaining costs ($695 registration + $285 travel based on Delta quote + $220 hotel = total $1,200 incremental). Compare to bioRxiv+ institutional ($450/year - $270 already paid individually for Jan-Mar = $180 net new cost). Document in Obsidian decision note with sunk cost analysis showing $200 deposit is unrecoverable regardless of decision.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-03-08",
+    "tags": [
+      "decision",
+      "finance",
+      "aacr",
+      "biorxiv"
+    ],
+    "created_at": "2026-03-06T18:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-595",
+    "title": "Draft PI meeting talking points: bioRxiv+ ROI and AACR decision rationale",
+    "description": "Prepare 5-minute brief for Dr. Harrison meeting on March 12: (1) AACR abstract rejection eliminates primary value (presenting Chapter 3), (2) incremental cost analysis shows $1,200 vs $180 comparison, (3) bioRxiv+ API access directly addresses workflow collision issues documented in February, (4) time savings projection: 12 hours/month recovered for Chapter 3 writing, (5) request lab budget allocation for $450 institutional subscription.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-11",
+    "tags": [
+      "meeting-prep",
+      "pi",
+      "decision",
+      "budget"
+    ],
+    "created_at": "2026-03-07T16:45:00-08:00"
+  },
+  {
+    "task_id": "TODO-596",
+    "title": "Research bioRxiv+ institutional setup process and timeline",
+    "description": "Contact Marcus Chen to confirm: (1) Does Salk already have institutional access? (2) If not, what's the approval workflow (PI email sufficient or needs formal purchase order)? (3) How long between payment and API key activation? (4) Can individual subscription credits transfer? Need answers before March 12 meeting with Dr. Harrison.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-10",
+    "tags": [
+      "biorxiv",
+      "research",
+      "administrative"
+    ],
+    "created_at": "2026-03-07T16:50:00-08:00"
+  },
+  {
+    "task_id": "TODO-597",
+    "title": "IF AACR: Book flights and hotel by March 20 for reasonable rates",
+    "description": "Conditional task - only execute if deciding to attend AACR despite abstract rejection. Delta quote expires March 15, hotel block rate ($220/night) expires March 18. Would need to pay $695 registration balance by April 5 regardless.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-03-20",
+    "tags": [
+      "aacr",
+      "travel",
+      "conditional"
+    ],
+    "created_at": "2026-03-07T17:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-598",
+    "title": "Extract Dr. Harrison's February clinical rotation schedule for lab meeting planning",
+    "description": "Dr. Harrison will send February rotation schedule by Jan 20. Once received, extract next 4 weeks of lab meeting times (Feb 3, 10, 17, 24) and cross-reference with fixed commitments to identify conflicts early. Need to give >1 week notice for any committee reschedule requests.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-21",
+    "tags": [
+      "scheduling",
+      "lab",
+      "planning"
+    ],
+    "created_at": "2026-01-05T12:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-599",
+    "title": "Analyze Jan 15 lab meeting vs seminar series timing buffer",
+    "description": "Jan 15 lab meeting ends 11:30am, seminar starts 4pm. Calculate realistic buffer accounting for: lunch, prep time for seminar (reading speaker bio/papers), and any urgent post-lab-meeting follow-up. Determine if this is a true conflict or just tight scheduling.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-01-06",
+    "tags": [
+      "scheduling",
+      "conflict-resolution",
+      "analysis"
+    ],
+    "created_at": "2026-01-05T10:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-600",
+    "title": "Block Jan 13-16 as sacred journal club prep time",
+    "description": "Journal club presentation Jan 17 (Fri 3pm). Need to finalize slides, practice talk, and prepare for Q&A. Block out deep-work time on Jan 13-16 and mark as non-negotiable in calendar. Coordinate with any conflicting lab meeting on Jan 15.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-06",
+    "tags": [
+      "presentation",
+      "deep-work",
+      "journal-club"
+    ],
+    "created_at": "2026-01-05T11:50:00-08:00"
+  },
+  {
+    "task_id": "TODO-601",
+    "title": "Draft seminar exemption request template for future conflicts",
+    "description": "Create reusable template for seminar exemption requests to Marcus Chen. Include: (1) conflict description format, (2) academic justification language, (3) advisor approval workflow. Store in Obsidian for quick access when Feb rotation schedule creates actual conflicts.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-01-10",
+    "tags": [
+      "templates",
+      "admin",
+      "scheduling"
+    ],
+    "created_at": "2026-01-05T12:15:00-08:00"
+  },
+  {
+    "task_id": "TODO-602",
+    "title": "Map February lab meeting rotation chain with dependency annotations",
+    "description": "Create comprehensive mapping of four-week rotation schedule (Week 1: Mon 2pm, Week 2: Wed 10am, Week 3: Wed 3pm, Week 4: Thu 2pm) with annotations for each week's dependencies: committee meetings (Dr. Thompson office hours), seminar attendance (Feb 19 IL-17 seminar), dissertation writing windows (Chapter 3 presentation prep blocks). Identify critical path bottleneck at Week 2 Wednesday 10am collision.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-02-03",
+    "tags": [
+      "scheduling",
+      "committee",
+      "chapter3",
+      "critical-path"
+    ],
+    "created_at": "2026-01-29T07:15:00-08:00"
+  },
+  {
+    "task_id": "TODO-603",
+    "title": "Calculate rework cost: parallel vs serial advancement for Dr. Thompson reschedule",
+    "description": "Assess rework cost of parallel advancement (email Dr. Thompson now to reschedule, uses relationship capital, requires explanation) versus delay cost of serial waiting (risks missing one-week advance notice threshold, forces last-minute scramble). Document failure propagation: if Week 2 lab meeting not confirmed by Jan 5, downstream tasks (Chapter 3 presentation, committee report coordination, weekend reading blocks) cannot be reliably scheduled.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-02-05",
+    "tags": [
+      "decision-making",
+      "committee",
+      "rework-analysis"
+    ],
+    "created_at": "2026-01-29T07:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-604",
+    "title": "Draft two email templates: conditional reschedule + holding message",
+    "description": "Create two email templates: (1) conditional reschedule to Dr. Thompson if rotation confirmed, explaining situation and requesting alternative time slot, (2) holding message to Dr. Harrison if rotation still uncertain by checkpoint, requesting final confirmation. Both templates should maintain professional tone and acknowledge relationship capital usage.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-02-04",
+    "tags": [
+      "email",
+      "committee",
+      "templates"
+    ],
+    "created_at": "2026-01-29T08:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-605",
+    "title": "Document February rotation conflict decision rationale in Obsidian",
+    "description": "Create comprehensive Obsidian note documenting the multi-week lab meeting rotation conflict, dependency chain analysis, critical path bottleneck identification, rework cost calculation, and final decision to proactively reschedule Dr. Thompson meeting. Include calendar evidence and email references for future retrospective analysis.",
+    "status": "in_progress",
+    "priority": "medium",
+    "due_date": "2026-02-17",
+    "tags": [
+      "documentation",
+      "obsidian",
+      "decision-rationale"
+    ],
+    "created_at": "2026-02-05T10:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-606",
+    "title": "Assess Week 3 seminar vs lab meeting conflict - attendance decision",
+    "description": "Week 3 lab meeting (Wed Feb 19, 3pm) conflicts with Dr. Sarah Williams seminar on IL-17 pathway dynamics - directly relevant to reviewer response. Need to decide: attend seminar and miss lab meeting (requires explanation to Dr. Harrison), or attend lab meeting and miss seminar (loses dissertation-critical content). Consider recording availability and alternative engagement options.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-12",
+    "tags": [
+      "scheduling",
+      "seminar",
+      "IL-17",
+      "reviewer-response"
+    ],
+    "created_at": "2026-02-05T14:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-607",
+    "title": "Cross-reference statistical consulting slots against February calendar conflicts",
+    "description": "Extract three proposed time slots from STUM-3071 (Mon Feb 10 10am, Wed Feb 12 9am, Fri Feb 14 2pm) and identify hard conflicts: lab meetings (Feb 12 rotation schedule), Dr. Thompson office hours (Wed 9am), Dr. Rodriguez office hours (alternating Mon 2pm), mandatory seminar (Wed 4pm). Calculate 30-min commute + 15-min prep buffer for each slot. Assess if any slot fragments the Friday Feb 14 Chapter 3 deep-work block (06:30-12:00). Document analysis in Obsidian note OBSN-50.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-15",
+    "tags": [
+      "consulting",
+      "scheduling",
+      "chapter3",
+      "deadline-driven"
+    ],
+    "created_at": "2026-01-10T15:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-608",
+    "title": "Verify preliminary trajectory analysis completion status for consulting readiness",
+    "description": "Check if preliminary batch correction analysis outputs are ready for statistical consulting session. Consulting session is only productive if I have initial ComBat-seq results and specific questions about covariate selection. Review TODO-539 (trajectory analysis) completion status and confirm analysis artifacts exist in Chapter 3 working directory.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-14",
+    "tags": [
+      "chapter3",
+      "trajectory-analysis",
+      "consulting"
+    ],
+    "created_at": "2026-01-10T15:15:00-08:00"
+  },
+  {
+    "task_id": "TODO-609",
+    "title": "Draft reply email to statistical consulting service with confirmed slot",
+    "description": "After conflict analysis in TODO-607, draft professional reply to stat-consult@ucsd.edu confirming the single feasible time slot. Include: confirmed date/time, brief overview of batch correction questions, confirmation that preliminary analysis will be ready, request for any pre-session materials to review.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-17",
+    "tags": [
+      "email",
+      "consulting",
+      "communication"
+    ],
+    "created_at": "2026-01-10T15:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-610",
+    "title": "Coordinate Dr. Thompson office hours reschedule for Feb 12 lab meeting conflict",
+    "description": "Dr. Harrison's Feb 12 lab meeting (10-11:30am) overlaps with my usual Dr. Thompson office hours (Wed 9-10am). Need to email Dr. Thompson to request one-week reschedule (>1 week notice preserves relationship capital). Propose alternative: Tuesday Feb 11 afternoon or Thursday Feb 13 morning. Track this as reschedule #2 for Dr. Thompson in 2026 (stay under 3/quarter threshold).",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-16",
+    "tags": [
+      "committee",
+      "scheduling",
+      "relationship-capital"
+    ],
+    "created_at": "2026-01-13T08:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-611",
+    "title": "Update lab notebook formatting",
+    "description": "Consider switching to digital format",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-01-08",
+    "tags": [
+      "personal",
+      "organization"
+    ],
+    "created_at": "2026-01-05T10:45:00-08:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-612",
+    "title": "Order more pipette tips for lab",
+    "description": "Running low on 200uL tips",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-01-20",
+    "tags": [
+      "lab",
+      "supplies"
+    ],
+    "created_at": "2026-01-16T08:45:00-08:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-613",
+    "title": "Review antibody panel protocols",
+    "description": "",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-02-06",
+    "tags": [],
+    "created_at": "2026-02-04T09:45:00-08:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-614",
+    "title": "Review flow cytometry gating strategy",
+    "description": "",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-02-11",
+    "tags": [],
+    "created_at": "2026-02-10T17:10:00-08:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-615",
+    "title": "Order more pipette tips",
+    "description": "Check current stock levels first",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-02-20",
+    "tags": [
+      "lab",
+      "supplies"
+    ],
+    "created_at": "2026-02-17T14:20:00-08:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-616",
+    "title": "Review flow cytometry gating strategy",
+    "description": "Double-check compensation controls setup",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-02-19",
+    "tags": [
+      "lab",
+      "cytometry"
+    ],
+    "created_at": "2026-02-18T08:45:00-08:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-617",
+    "title": "Order new pipette tips for flow cytometry",
+    "description": "Check inventory levels before ordering",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-03-10",
+    "tags": [
+      "lab",
+      "supplies"
+    ],
+    "created_at": "2026-03-03T11:30:00-08:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-618",
+    "title": "Review flow cytometry gating strategy",
+    "description": "Double-check CD4+ T cell population gates for consistency",
+    "status": "cancelled",
+    "priority": "medium",
+    "due_date": "2026-03-13",
+    "tags": [
+      "analysis",
+      "flow-cytometry"
+    ],
+    "created_at": "2026-03-12T09:45:00-07:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-619",
+    "title": "Check flow cytometry calibration beads stock",
+    "description": "Actually already checked this yesterday",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-03-27",
+    "tags": [
+      "lab"
+    ],
+    "created_at": "2026-03-26T10:15:00-07:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-620",
+    "title": "Calculate true net expenditure: AACR Path A vs bioRxiv+ Path B",
+    "description": "Path A: $695 remaining AACR balance + $850 flights (already booked, change fee $200) + $400 hotel (estimate) = $2,145 total out-of-pocket from stipend. Sunk cost: $200 deposit (ignore for decision). Path B: $1,200/year bioRxiv+ subscription (lab-funded, requires PI approval). Time savings: 45 min/day × 5 days/week × 40 weeks = 150 hours/year. Need to calculate hourly value of dissertation time and compare ROI.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-03-31",
+    "tags": [
+      "decision",
+      "finance",
+      "urgent"
+    ],
+    "created_at": "2026-03-29T19:30:00-07:00"
+  },
+  {
+    "task_id": "TODO-621",
+    "title": "Review Dr. Harrison email (MSG-5043) for lab budget policy signals",
+    "description": "Extract decision criteria from Harrison's March 25 email: (1) prefers infrastructure investments with lab-wide benefit, (2) individual workflow tools need dissertation timeline acceleration justification, (3) prioritizes finishing Chapter 3 over conference networking. Assess whether bioRxiv+ request aligns with these priorities. Note: statistical consulting budget under-utilized ($2,000 available for reallocation).",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-03-31",
+    "tags": [
+      "decision",
+      "advisor",
+      "budget"
+    ],
+    "created_at": "2026-03-29T20:15:00-07:00"
+  },
+  {
+    "task_id": "TODO-622",
+    "title": "Draft bioRxiv+ funding request email to Dr. Harrison",
+    "description": "If choosing Path B, draft email requesting lab funding for bioRxiv+ subscription. Must include: (1) ROI calculation showing 150 hours/year time savings, (2) dissertation timeline acceleration argument (45 min/day redirected to Chapter 3 writing), (3) potential for lab-wide adoption by other members doing literature-heavy work, (4) connection to existing workflow optimization project (JOB-710 rate-limit issue resolution). Acknowledge this is primarily personal efficiency tool but frame as infrastructure investment.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-02",
+    "tags": [
+      "decision",
+      "advisor",
+      "email-draft"
+    ],
+    "created_at": "2026-03-30T07:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-623",
+    "title": "Cancel AACR flight booking if choosing Path B (change fee $200)",
+    "description": "Delta flight DL8472KL can be cancelled with $200 change fee (vs $850 total cost). If choosing bioRxiv+ path, cancel by April 2 to minimize losses. Note: this makes total Path A sunk cost $400 ($200 deposit + $200 change fee), but still better than paying full $2,145.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-02",
+    "tags": [
+      "decision",
+      "travel",
+      "finance"
+    ],
+    "created_at": "2026-03-30T07:30:00-07:00"
+  },
+  {
+    "task_id": "TODO-624",
+    "title": "Forward GIDC data request to Dr. Harrison with decision brief",
+    "description": "Email Dr. Harrison about the GIDC data-sharing request from Dr. Kaplan. Include conflict analysis: request exposes unpublished Chapter 3 results, violates his 2026-03-26 guidance on data protection, and threatens first-author priority. Attach decision brief with proposed response strategy (post-publication access, alternative datasets, metadata-only options). Request guidance on which alternatives are acceptable.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-29",
+    "tags": [
+      "data-sharing",
+      "advisor",
+      "chapter3",
+      "gidc",
+      "authority-boundary"
+    ],
+    "created_at": "2026-03-28T18:50:00-07:00"
+  },
+  {
+    "task_id": "TODO-625",
+    "title": "Check lab publication database for alternative Th17 datasets",
+    "description": "Search Harrison lab publication records for published Th17 datasets that might be suitable for GIDC meta-analysis. Need datasets that: (1) are already published, (2) contain trajectory or differentiation data, (3) don't overlap with my Chapter 3 unpublished work. If found, could offer as alternative to preserve collaboration while protecting my dissertation priority.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-30",
+    "tags": [
+      "data-sharing",
+      "lab-resources",
+      "gidc",
+      "alternative-solution"
+    ],
+    "created_at": "2026-03-28T18:55:00-07:00"
+  },
+  {
+    "task_id": "TODO-626",
+    "title": "Draft formal response to GIDC data request after PI guidance",
+    "description": "After receiving Dr. Harrison's guidance on the GIDC request, draft formal response to Dr. Kaplan. Response should: (1) professionally decline immediate access with clear rationale (unpublished dissertation work), (2) offer concrete alternatives approved by PI (post-publication access timeline, alternative datasets, metadata-only), (3) preserve collaboration relationship and express genuine interest in supporting the meta-analysis, (4) maintain authority boundary compliance (no commitments without PI approval).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-01",
+    "tags": [
+      "data-sharing",
+      "gidc",
+      "collaboration",
+      "email-draft"
+    ],
+    "created_at": "2026-03-28T19:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-627",
+    "title": "Update Obsidian external collaboration log with GIDC decision",
+    "description": "Document the GIDC data request decision process in Obsidian collaboration log. Include: (1) request details and timeline, (2) conflict identification (unpublished Chapter 3 data), (3) authority boundary analysis (PI approval required), (4) decision rationale (protect publication priority), (5) response strategy and alternatives offered, (6) outcome and lessons learned. This creates a reference case for future external data requests.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-04-02",
+    "tags": [
+      "documentation",
+      "obsidian",
+      "collaboration",
+      "decision-log"
+    ],
+    "created_at": "2026-03-28T19:05:00-07:00"
+  },
+  {
+    "task_id": "TODO-628",
+    "title": "Compile Chapter 3 trajectory analysis notes from Obsidian for committee report",
+    "description": "Search Obsidian vault for all notes tagged with Chapter3, trajectory-analysis, and batch-correction. Consolidate technical progress, methodology decisions, and outstanding challenges into structured sections for committee report document.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-03-12",
+    "tags": [
+      "committee-report",
+      "chapter3",
+      "obsidian",
+      "dissertation"
+    ],
+    "created_at": "2026-03-08T09:15:00-08:00"
+  },
+  {
+    "task_id": "TODO-629",
+    "title": "Extract recent trajectory inference citations from Zotero for progress report",
+    "description": "Query Zotero for papers tagged trajectory-inference and single-cell added in last 3 months. Prioritize Rodriguez 2024, Saelens 2024, and Zhang 2026 papers. Format citations for committee report references section.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-11",
+    "tags": [
+      "committee-report",
+      "zotero",
+      "citations",
+      "chapter3"
+    ],
+    "created_at": "2026-03-08T09:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-630",
+    "title": "Draft timeline adjustment justification for 6-week Chapter 3 delay",
+    "description": "Prepare detailed explanation of Chapter 3 delay: batch correction methodology pivot (ComBat-seq vs Harmony), computational resource constraints, and IL-17 manuscript reviewer response competing priority. Include revised completion timeline with buffer for committee approval.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-12",
+    "tags": [
+      "committee-report",
+      "chapter3",
+      "timeline",
+      "dissertation"
+    ],
+    "created_at": "2026-03-08T10:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-631",
+    "title": "Review committee member expertise profiles to tailor technical depth",
+    "description": "Cross-reference contacts notes for Dr. Thompson (computational methods, batch correction) and Dr. Rodriguez (trajectory analysis algorithms) to adjust technical detail level in progress report sections. Thompson expects statistical rigor, Rodriguez wants algorithmic justification.",
+    "status": "completed",
+    "priority": "medium",
+    "due_date": "2026-03-09",
+    "tags": [
+      "committee-report",
+      "preparation",
+      "contacts"
+    ],
+    "created_at": "2026-03-08T10:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-632",
+    "title": "Synthesize committee report preparation document with all sections",
+    "description": "Compile final structured document: (1) Progress update on Chapter 3 with trajectory analysis results, (2) Technical challenges section focusing on batch correction methodology decision, (3) Timeline revision with justification for 6-week delay, (4) Outstanding questions for committee feedback, (5) References from Zotero. Target 8-10 pages.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-13",
+    "tags": [
+      "committee-report",
+      "synthesis",
+      "dissertation",
+      "deadline"
+    ],
+    "created_at": "2026-03-08T11:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-633",
+    "title": "Update lab inventory request form for antibody restock",
+    "description": "Routine lab admin task - submit antibody restock request for IL-17A flow cytometry panel before end of month.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-03-28",
+    "tags": [
+      "lab-admin",
+      "inventory"
+    ],
+    "created_at": "2026-03-09T14:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-634",
+    "title": "Schedule pilot test for workflow optimization - Saturday 2026-04-05",
+    "description": "Book Saturday morning reading block (10:00-12:00) for pilot testing the optimized literature workflow. Test JOB-725 and JOB-726 with 10 sample papers from arXiv immunology feed. Document results in Obsidian for production deployment decision.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-03",
+    "tags": [
+      "workflow",
+      "optimization",
+      "testing",
+      "pilot"
+    ],
+    "created_at": "2026-04-01T17:50:00-07:00"
+  },
+  {
+    "task_id": "TODO-635",
+    "title": "Prepare 10 sample papers for workflow pilot test",
+    "description": "Curate 10 papers from arXiv immunology feed (mix of relevant and irrelevant to test filtering). Save paper metadata to test input file for JOB-725. Verify papers have accessible PDFs and complete metadata.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-04",
+    "tags": [
+      "workflow",
+      "optimization",
+      "testing",
+      "preparation"
+    ],
+    "created_at": "2026-04-01T17:52:00-07:00"
+  },
+  {
+    "task_id": "TODO-636",
+    "title": "Fix orphaned Zotero records ZOT-19 and ZOT-20 - add Obsidian backlinks",
+    "description": "Scheduler alert from 2026-03-30 flagged two orphaned Zotero records from weekend import session. Create Obsidian notes with proper backlinks to citation_keys to resolve metadata-first rule violation. Verify backlinks are indexed in graph.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-04-02",
+    "tags": [
+      "metadata-first",
+      "integrity",
+      "zotero",
+      "obsidian"
+    ],
+    "created_at": "2026-03-30T07:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-637",
+    "title": "Document workflow optimization pilot test results",
+    "description": "After Saturday pilot test, document results in Obsidian note [[Workflow Optimization - Pilot Test Results]]. Include: execution times, rate-limit buffer usage, failure modes tested, any unexpected issues, go/no-go decision for production deployment.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-05",
+    "tags": [
+      "workflow",
+      "optimization",
+      "testing",
+      "documentation"
+    ],
+    "created_at": "2026-04-01T17:55:00-07:00"
+  }
+]

@@ -1,0 +1,240 @@
+[
+  {
+    "job_id": "JOB-701",
+    "name": "weekly_inventory_review_reminder",
+    "description": "Weekly reminder to review slow-moving SKUs and reorder thresholds",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_email",
+    "created_by": "Dario Marini",
+    "tags": [
+      "inventory",
+      "reminder",
+      "weekly"
+    ],
+    "notes": "Decided to handle this manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-702",
+    "name": "weekly_fragrance_restock_reminder",
+    "description": "Weekly reminder to check candle inventory levels and reorder from 3PL",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_inventory_reminder",
+    "created_by": "Dario Marini",
+    "tags": [
+      "inventory",
+      "reminder",
+      "weekly"
+    ],
+    "notes": "Decided to handle this manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-703",
+    "name": "weekly_fragrance_trend_check",
+    "description": "Weekly reminder to check Google Trends for home fragrance search volume",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_email",
+    "created_by": "dario@solettaliving.com",
+    "tags": [
+      "marketing",
+      "trends",
+      "weekly"
+    ],
+    "notes": "Actually I check this naturally every Monday anyway, don't need automated reminder",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-704",
+    "name": "weekly_inventory_reminder",
+    "description": "Weekly reminder to check low stock levels for candle inventory",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_inventory_alert",
+    "created_by": "Dario Marini",
+    "tags": [
+      "inventory",
+      "reminder",
+      "weekly"
+    ],
+    "notes": "Decided to handle this manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-705",
+    "name": "weekly_fragrance_trend_check",
+    "description": "Weekly reminder to check trending scents on social media",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_email",
+    "created_by": "Dario Marini",
+    "tags": [
+      "reminder",
+      "trends",
+      "weekly"
+    ],
+    "notes": "Created then deleted - decided to check manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-706",
+    "name": "weekly_inventory_alert",
+    "description": "Send weekly reminder to check low stock items",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_inventory_reminder",
+    "created_by": "Dario Marini",
+    "tags": [
+      "inventory",
+      "reminder",
+      "weekly"
+    ],
+    "notes": "",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-707",
+    "name": "weekly_inventory_check_reminder",
+    "description": "Weekly reminder to review low stock levels for candle inventory",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder",
+    "created_by": "Dario Marini",
+    "tags": [
+      "inventory",
+      "reminder",
+      "weekly"
+    ],
+    "notes": "Decided manual checks are sufficient",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-708",
+    "name": "weekly_inventory_check",
+    "description": "Weekly reminder to review inventory levels",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder",
+    "created_by": "Dario Marini",
+    "tags": [
+      "inventory",
+      "reminder"
+    ],
+    "notes": "",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-709",
+    "name": "weekly_inventory_check",
+    "description": "Weekly reminder to review inventory levels",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder",
+    "created_by": "Dario Marini",
+    "tags": [
+      "inventory",
+      "reminder"
+    ],
+    "notes": "",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-710",
+    "name": "weekly_inventory_alert",
+    "description": "Weekly reminder to check low-stock fragrance SKUs",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "not_run",
+    "last_run": null,
+    "action": "send_inventory_notification",
+    "created_by": "Dario Marini",
+    "tags": [
+      "inventory",
+      "reminder",
+      "weekly"
+    ],
+    "notes": "Decided to handle manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-711",
+    "name": "weekly_amazon_review_check",
+    "description": "Check for new Amazon product reviews weekly",
+    "cron_expression": "0 10 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "check_amazon_reviews",
+    "created_by": "Dario Marini",
+    "tags": [
+      "amazon",
+      "reviews",
+      "weekly"
+    ],
+    "notes": "Decided to check manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-712",
+    "name": "weekly_competitor_price_check",
+    "description": "Weekly reminder to check competitor pricing on Amazon for similar home fragrance products",
+    "cron_expression": "0 10 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Dario Marini",
+    "tags": [
+      "pricing",
+      "competitor",
+      "weekly"
+    ],
+    "notes": "Decided to handle this manually instead of automated reminders",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  }
+]

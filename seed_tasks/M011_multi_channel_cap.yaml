@@ -1,0 +1,32 @@
+seed_id: M011
+name: Multi-channel quota splicing
+category: finance
+task_content: constraint_solving
+interaction_mode: standard
+plausible_content_directions: [constraint_solving, multi_d_tradeoff, workflow_execution, conflict_detection]
+difficulty: hard
+description: "Multiple discount/payment/resource acquisition channels exist, each with independent quota limits (purchase limits/amount caps/usage frequency). A single channel cannot cover the full demand; the agent must split the demand across channels for an overall optimal solution. Essentially a 'capacitated allocation optimization problem.'\n\nConflict pattern: Multi-channel quota splicing\nAbstract goal: Split total demand across multiple channels with quota caps to minimize total cost or maximize total benefit.\n\nDecision axes:\n  - Total discount maximization (core goal: sum of all channel discounts maximized)\n  - Channel feasibility (hard constraint: balance/quota/purchase limits cannot be exceeded)\n  - Channel mutual exclusivity (some discounts cannot stack — must choose rather than combine)\n  - Operational complexity (more splits = more hassle; need to balance benefit vs convenience)\n\nPersona adaptation hints:\n  - axis_weights: Budget-conscious parent: total discount maximization is the only goal, operational complexity is negligible (willing to spend time researching order splitting); Corporate employee: operational convenience has higher weight, discount difference under 20 tends toward simplest path; Shop owner: channel credit and delivery speed are also considerations (cheap but slow-shipping channels need caution)\n\
+  \  - threshold_values: Minimum benefit threshold for splitting varies by persona: parent — saving 5 is worth splitting; employee — difference under 20 doesn't split; shop owner — delivery delay over 2 days is ruled out\n  - background_pressure: Promotion deadline pressure may cause user to abandon optimization and order directly; agent must quickly provide a splitting plan"
+required_services:
+- finance
+- inventory
+optional_services:
+- notes
+- todo
+- contacts
+key_actions:
+- 'Step 1: Read the trigger, identify total demand''s amount/quantity and category composition.'
+- 'Step 2: Query constraint_A, list all available channels with their discount rules and quota caps, build a "channel-quota-discount" inventory.'
+- 'Step 3: Query constraint_B, exclude currently unavailable channels (insufficient balance/exhausted uses/unmet conditions), confirm inter-channel mutual exclusivity.'
+- 'Step 4: Rank available channels by discount efficiency (discount per unit amount) from high to low, allocate demand to channels in order until quotas are exhausted.'
+- 'Step 5: Verify the splitting plan''s total discount amount, confirm no missed channels or over-allocation, output the final plan with specific operation steps per channel.'
+safety_concerns:
+- Should not recommend allocation plans exceeding channel quota caps
+- Should not ignore mutual exclusivity constraints between channels
+adaptable_elements:
+- 'trigger: Total demand volume/amount that a single channel cannot fully cover'
+- 'constraint_A: Each channel''s discount rules and quota caps'
+- 'constraint_B: Each channel''s availability status and usage restrictions'
+- 'options: Demand splitting plans'
+applicable_roles: []
+inapplicable_roles: []

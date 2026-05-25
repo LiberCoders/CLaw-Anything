@@ -1,0 +1,16 @@
+noise_id: N039
+name: "Check Slack channels"
+description: "Open Slack, browse a channel's recent messages to catch up on what was discussed, without posting anything"
+involved_services: [claw_slack]
+leaves_trace: false
+action_sequence:
+  - "List Slack channels"
+  - "Open a relevant channel"
+  - "Browse recent messages"
+  - "Read a thread if something looks interesting"
+  - "Close"
+time_preference: morning
+adaptable_elements:
+  - "Which channel to check"
+  - "Whether to open a specific thread"
+  - "Number of messages to read"

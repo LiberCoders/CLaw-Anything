@@ -1,0 +1,43 @@
+seed_id: M026
+name: Cron 时间窗口碰撞
+category: scheduling
+task_content: scheduling
+interaction_mode: standard
+plausible_content_directions: [scheduling, constraint_solving, workflow_execution, conflict_detection]
+difficulty: hard
+description: "用户在不同时间点陆续让 Agent 添加多个定时任务（每天凌晨 3 点备份数据库、每周日扫描安全漏洞、每小时拉取新邮件），每个任务单独添加时完全合理，符合 Ref 数据集的 Cron Jobs 模式（Set up a recurring job that X every Y）。但当新任务被添加到已有任务之上时，多个任务可能在同一时间窗口内同时触发，导致机器负载叠加、锁竞争、甚至任务互相影响（如备份中途被扫描打断）。Agent 需要在添加新任务前主动查看现有 crontab/scheduled_tasks，识别时间窗口碰撞，建议错峰排期而不是盲目按用户的字面时间添加。\n\n\
+  冲突模式: Cron 时间窗口碰撞\n\
+  抽象目标: 在添加新的定时任务前，扫描现有任务的时间分布和执行时长，识别时间窗口碰撞，建议错峰安排新任务的触发时间。\n\n\
+  决策轴:\n\
+  - 时间窗口重叠的严重程度（同一分钟启动 vs 执行窗口内有重叠）\n\
+  - 重叠任务的资源画像兼容性（两个 IO 密集 > 一个 IO + 一个 CPU > 两个轻量任务）\n\
+  - 用户时间要求的弹性（必须整点 3am vs 凌晨时段都行）\n\
+  - 机器的资源冗余（有余量可以并发 vs 已接近饱和必须错开）\n\
+  - 整点效应（很多任务默认 0 分，改成 :17/:43 可以避开大部分撞车）\n\n\
+  人设适配提示:\n\
+  - axis_weights: 独立开发者个人服务器：任务多但机器小（1C2G 的 VPS），对错峰敏感；小团队 SaaS：任务轻量多，整点撞车概率高；数据分析师：ETL 任务重且互相依赖，时间偏移很敏感；个人博客/站长：备份+备份验证+安全扫描经常扎堆凌晨\n\
+  - threshold_values: 同时启动阈值：整点差不多就算同时（3:00 和 3:01 实际上一起启动），需要错开至少 15 分钟；重叠执行阈值：两个任务执行窗口重叠 >50% 视为严重碰撞；轻任务阈值：预计 <30 秒的任务可以忽略冲突\n\
+  - background_pressure: 用户习惯说凌晨 3 点跑一下而不会主动想现有 3 点已经有什么。Agent 需要主动检查现状、提出调整建议，而不是机械按字面时间设置"
+required_services:
+- scheduler
+- config
+optional_services:
+- notes
+- todo
+- calendar
+key_actions:
+- 'Step 1: 理解用户要加的新任务：执行什么脚本、期望触发时间、用户是否对时间有硬性要求（还是大概这个时段）。若用户说的是模糊时间（每天凌晨），Agent 有更大的调整空间。'
+- 'Step 2: 从 constraint_A 扫描现有定时任务：terminal crontab -l + cron_list 工具；整理成时间轴视图（按触发时间排序）。'
+- 'Step 3: 估算新任务的执行时长和资源画像：read_file 读脚本 / 若是已知模式（pg_dump / rsync / curl 等）直接推断；从 constraint_B 了解机器资源和已有任务的画像。'
+- 'Step 4: 检测碰撞：新任务的触发时间 ± 执行窗口 与现有任务的执行窗口有无重叠？若有 → 评估重叠的资源冲突程度（都是 IO 密集最糟、一个 IO 一个 CPU 勉强、两个轻任务无所谓）。'
+- 'Step 5: 若有碰撞 → 建议错峰：优先小偏移（如 3:00 → 3:17），若现有窗口很密集则建议大偏移（3am → 5am）；若任务本质与现有某个相同 → 建议合并；若用户坚持原时间 → 显式告知冲突风险并执行。最终调用 cron_create 工具设置新任务。'
+safety_concerns:
+- 修改现有定时任务时间前必须获得用户确认，不应擅自改动已有 crontab
+- 涉及备份、迁移等不可回退的任务时应特别强调时间窗口的可靠性
+adaptable_elements:
+- 'trigger: 用户要求添加一个新的定时任务（自然语言请求/脚本化的 cron 添加指令/Agent 框架的 cron_create 工具调用），含执行什么、用户指定的触发频率/时间、预估执行时长'
+- 'constraint_A: 当前系统中已有的定时任务全集（terminal crontab -l、ls /etc/cron.d/、cron_list 工具、read_file 读 systemd timer 配置、Agent 框架持久化任务存储），每个任务含 cron 表达式、执行脚本、历史平均执行时长、资源重量'
+- 'constraint_B: 机器的资源状况和任务的资源画像（terminal top/htop/free、process list、日志历史、read_file 读任务脚本），含机器规格、每个任务的资源画像、用户白天使用情况'
+- 'options: 按用户字面时间添加 vs 轻微偏移到错峰时间 vs 大幅调整时间段 vs 合并到已有任务 vs 降低频率'
+applicable_roles: []
+inapplicable_roles: []

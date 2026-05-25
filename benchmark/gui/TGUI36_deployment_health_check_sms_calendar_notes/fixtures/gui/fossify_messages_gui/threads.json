@@ -1,0 +1,272 @@
+[
+  {
+    "id": 1,
+    "thread_id": "thread_cto_urgent",
+    "contact_name": "CTO - Wang Ming",
+    "contact_number": "+86 138-0000-1234",
+    "message_text": "Lin, server alert - what's the status? How long until we're back to normal?",
+    "timestamp": "2026-03-15T13:55:00+08:00",
+    "is_sent": false,
+    "is_read": true,
+    "message_type": "sms"
+  },
+  {
+    "id": 2,
+    "thread_id": "thread_cto_urgent",
+    "contact_name": "CTO - Wang Ming",
+    "contact_number": "+86 138-0000-1234",
+    "message_text": "Failover completed at 14:15, service restored. Primary server has disk failure - need hardware replacement. Standby is now single point of failure. Checking procurement options via CLI inventory system, will update ETA in 10min.",
+    "timestamp": "2026-03-15T14:18:00+08:00",
+    "is_sent": true,
+    "is_read": true,
+    "message_type": "sms"
+  },
+  {
+    "id": 3,
+    "thread_id": "thread_cto_urgent",
+    "contact_name": "CTO - Wang Ming",
+    "contact_number": "+86 138-0000-1234",
+    "message_text": "Update: CLI inventory shows vendor office 3km away has 2 units in stock, open until 16:00 today (Sat). Online delivery is 3 days min. Recommend immediate office pickup - can have replacement installed by 17:00. Proceeding unless you object.",
+    "timestamp": "2026-03-15T14:38:00+08:00",
+    "is_sent": true,
+    "is_read": true,
+    "message_type": "sms"
+  },
+  {
+    "id": 4,
+    "thread_id": "thread_vendor",
+    "contact_name": "Chen Wei - TechSource",
+    "contact_number": "+86 139-1234-5678",
+    "message_text": "Hi Chen, this is Lin from Lingxi AI. Do you still have SKU-2080 (2TB NVMe) in stock at your Zhangjiang office? Our system shows 2 units. Can I come pick up one today?",
+    "timestamp": "2026-03-15T14:40:00+08:00",
+    "is_sent": true,
+    "is_read": true,
+    "message_type": "sms"
+  },
+  {
+    "thread_id": "thread_cto_maintenance",
+    "contact_name": "CTO - Wang Ming",
+    "contact_number": "+86-138-0000-1234",
+    "last_message_preview": "Approved. Proceed with Jan 29 deployment. Keep me posted on Feb 1.",
+    "last_message_time": "2026-01-26T19:15:00+08:00",
+    "unread_count": 0,
+    "messages": [
+      {
+        "message_id": "msg_cto_maint_001",
+        "sender": "me",
+        "content": "Hi Wang Ming, sent you the CloudInfra maintenance impact assessment via email. Summary: need to update timeout configs on Jan 29, disable export job on Feb 2, and monitor closely during the 28-hour window. Blast radius ~30% of API calls. Runbook is in Obsidian Operations/Runbooks. Let me know if you want to discuss before I proceed.",
+        "timestamp": "2026-01-26T18:50:00+08:00",
+        "is_read": true
+      },
+      {
+        "message_id": "msg_cto_maint_002",
+        "sender": "contact",
+        "content": "Thanks for the detailed assessment. Looks solid. Approved. Proceed with Jan 29 deployment. Keep me posted on Feb 1.",
+        "timestamp": "2026-01-26T19:15:00+08:00",
+        "is_read": true
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "thread_id": "thread_cto_cdn_maintenance",
+    "contact_name": "CTO - Wang Ming",
+    "contact_number": "+86-138-0000-1001",
+    "messages": [
+      {
+        "id": 1,
+        "text": "Wang Zong, CloudInfra just sent maintenance notice for Feb 15-16. CDN upgrade in AP-East-1 zone, 28-hour window. I've drafted a runbook and impact assessment. Key points:\n\n1. HIGH impact: Web app frontend + media streaming (Premium feature)\n2. Expected 2-5% error rate during edge rotation\n3. Need to deploy timeout config changes by Feb 14\n4. Recommend notifying Premium customers (CUS-101/102/103) by Feb 12\n\nFull runbook in Obsidian OBSN-9. Should I send customer notification draft for your review?",
+        "timestamp": "2026-02-09T14:30:00+08:00",
+        "is_sent": true,
+        "is_delivered": true,
+        "is_read": true
+      },
+      {
+        "id": 2,
+        "text": "Good work on the runbook. Yes, draft the customer notification - keep it brief, emphasize we're taking proactive measures. Also make sure we have rollback plan if error rate goes above 10%. Can we enable Cloudflare secondary CDN as failover?",
+        "timestamp": "2026-02-09T14:45:00+08:00",
+        "is_sent": false,
+        "is_delivered": true,
+        "is_read": true
+      },
+      {
+        "id": 3,
+        "text": "Cloudflare is configured but not tested in prod yet. I'll test in staging this week and add to runbook. Rollback procedure already documented - we can switch to Cloudflare manually if needed. Will send customer notification draft by tomorrow morning.",
+        "timestamp": "2026-02-09T14:50:00+08:00",
+        "is_sent": true,
+        "is_delivered": true,
+        "is_read": true
+      }
+    ],
+    "is_archived": false,
+    "last_updated": "2026-02-09T14:50:00+08:00"
+  },
+  {
+    "thread_id": "thread_cto_db_maintenance",
+    "participants": [
+      "+86 13800138001"
+    ],
+    "contact_name": "CTO - Wang Ming",
+    "last_message": "Runbook looks solid. Approve the maintenance window. Keep me posted during the window.",
+    "last_message_time": "2026-04-02T23:20:00+08:00",
+    "unread_count": 0,
+    "pinned": true,
+    "archived": false,
+    "messages": [
+      {
+        "id": "MSG-DB-001",
+        "from": "me",
+        "text": "王总，CloudInfra 发来数据库维护通知，4月8-9日窗口。我整理了完整 runbook，已经在 Obsidian 里：CloudInfra Database Maintenance 2026-04-08。包含了依赖服务清单、监控方案、回滚标准和验证步骤。需要您审核一下。",
+        "time": "2026-04-02T22:30:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-DB-002",
+        "from": "+86 13800138001",
+        "text": "看到了。哪些生产服务会受影响？",
+        "time": "2026-04-02T22:45:00+08:00",
+        "is_outgoing": false
+      },
+      {
+        "id": "MSG-DB-003",
+        "from": "me",
+        "text": "主要三个：API Gateway (50连接)、Analytics Pipeline (20连接)、User Management (30连接)。都配置了重试逻辑，预计15-20分钟故障切换期间会有短暂连接中断，但有降级方案。",
+        "time": "2026-04-02T22:50:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-DB-004",
+        "from": "+86 13800138001",
+        "text": "Premium 客户需要提前通知吗？",
+        "time": "2026-04-02T23:00:00+08:00",
+        "is_outgoing": false
+      },
+      {
+        "id": "MSG-DB-005",
+        "from": "me",
+        "text": "需要。Runbook 里计划 T-48 小时通知 CUS-102、CUS-104、CUS-105。我明天发邮件。",
+        "time": "2026-04-02T23:05:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-DB-006",
+        "from": "+86 13800138001",
+        "text": "Runbook looks solid. Approve the maintenance window. Keep me posted during the window.",
+        "time": "2026-04-02T23:20:00+08:00",
+        "is_outgoing": false
+      }
+    ]
+  },
+  {
+    "thread_id": "FSMS-301",
+    "participants": [
+      "+86 138-0013-8001"
+    ],
+    "contact_name": "Wang Ming (CTO)",
+    "last_message": "Got it. Next-day delivery is fine given we have the slave. Keep me posted on installation tomorrow.",
+    "last_message_time": "2026-04-02T15:25:00+08:00",
+    "unread_count": 0,
+    "pinned": true,
+    "archived": false,
+    "messages": [
+      {
+        "id": "MSG-301-01",
+        "from": "me",
+        "text": "Wang ge, redis-prod-01 showing ECC memory errors in health checks. Error rate ~0.3%, slave is healthy. Need to replace RAM module.",
+        "time": "2026-04-02T15:05:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-301-02",
+        "from": "+86 138-0013-8001",
+        "text": "How urgent? Can it wait until tomorrow?",
+        "time": "2026-04-02T15:08:00+08:00",
+        "is_outgoing": false
+      },
+      {
+        "id": "MSG-301-03",
+        "from": "me",
+        "text": "Checked vendor (TechSource, 3km away, has stock) vs TestMall next-day. Given error rate is low and we have backup, I recommend TestMall - keeps me available for monitoring and lower risk than leaving office now. Part arrives tomorrow noon, can install 14:00-16:00 window.",
+        "time": "2026-04-02T15:12:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-301-04",
+        "from": "+86 138-0013-8001",
+        "text": "Makes sense. What's the failover plan if it gets worse tonight?",
+        "time": "2026-04-02T15:18:00+08:00",
+        "is_outgoing": false
+      },
+      {
+        "id": "MSG-301-05",
+        "from": "me",
+        "text": "redis-slave-01 can take over immediately. I'll monitor error rate every 2 hours tonight. If it crosses 1%, will trigger failover and notify you.",
+        "time": "2026-04-02T15:20:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-301-06",
+        "from": "+86 138-0013-8001",
+        "text": "Got it. Next-day delivery is fine given we have the slave. Keep me posted on installation tomorrow.",
+        "time": "2026-04-02T15:25:00+08:00",
+        "is_outgoing": false
+      }
+    ]
+  },
+  {
+    "thread_id": "FSMS-301",
+    "participants": [
+      "+86 13800001001"
+    ],
+    "contact_name": "CTO - Wang Ming",
+    "last_message": "Need to deploy rate-limiting feature tonight. Can you confirm system readiness?",
+    "last_message_time": "2026-04-02T18:45:00+08:00",
+    "unread_count": 1,
+    "pinned": true,
+    "archived": false,
+    "messages": [
+      {
+        "id": "MSG-3001",
+        "from": "+86 13800001001",
+        "text": "Need to deploy rate-limiting feature tonight. Can you confirm system readiness?",
+        "time": "2026-04-02T18:45:00+08:00",
+        "is_outgoing": false
+      }
+    ]
+  },
+  {
+    "thread_id": "FSMS-302",
+    "participants": [
+      "+86 13900002002"
+    ],
+    "contact_name": "Li Na - Product",
+    "last_message": "Thanks for the update on the API latency issue",
+    "last_message_time": "2026-04-02T15:30:00+08:00",
+    "unread_count": 0,
+    "pinned": false,
+    "archived": false,
+    "messages": [
+      {
+        "id": "MSG-3002",
+        "from": "+86 13900002002",
+        "text": "Hey, users are reporting slow API responses on the /v1/search endpoint",
+        "time": "2026-04-02T14:20:00+08:00",
+        "is_outgoing": false
+      },
+      {
+        "id": "MSG-3003",
+        "from": "me",
+        "text": "Checking the monitoring logs now, will update you in 30min",
+        "time": "2026-04-02T14:25:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-3004",
+        "from": "+86 13900002002",
+        "text": "Thanks for the update on the API latency issue",
+        "time": "2026-04-02T15:30:00+08:00",
+        "is_outgoing": false
+      }
+    ]
+  }
+]

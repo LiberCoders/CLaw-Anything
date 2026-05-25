@@ -1,0 +1,37 @@
+seed_id: M017
+name: CLI 抓取 RSS 资讯整理摘要，手机 Mastodon 发布精华
+category: knowledge_management
+task_content: info_aggregation
+interaction_mode: standard
+plausible_content_directions:
+- info_aggregation
+- workflow_execution
+difficulty: medium
+description: '任务起点在 CLI，用户希望把 RSS 订阅中的最新技术或行业资讯整理成简短摘要，再通过手机 Mastodon 发布给关注者。Agent 需要先在 CLI 的 rss 服务中获取最新文章，筛选出符合主题的内容，在 CLI 中整理成适合发帖的简短摘要；最后切到 mastodon_gui 发布，并附上来源引用。
+
+  冲突模式: CLI 先抓取整理内容 + 手机发布社交帖子 抽象目标: 让 Agent 识别 CLI 适合做批量检索和整理，而 mastodon_gui 是最终对外发布的出口，两者不可颠倒。
+
+  典型场景: - CLI rss 抓取最新 AI 论文速递，整理为三条要点后发到 Mastodon 技术账号 - 订阅的行业新闻有重大政策更新，CLI 提炼核心变化后手机发布评论帖 - 多篇 RSS 文章指向同一趋势，CLI 交叉对比后形成独立观点再发布'
+required_services:
+- rss
+- mastodon_gui
+- notes
+optional_services:
+- claw_obsidian
+- kb
+- claw_zotero
+key_actions:
+- 'Step 1: 在 CLI rss 服务中获取最新文章列表，按主题或时间筛选目标内容。'
+- 'Step 2: 读取 1-3 篇全文，提取核心要点、关键数据或值得分享的新颖结论。'
+- 'Step 3: 在 CLI notes 中起草适合 Mastodon 字数限制的帖文，包含来源引用。'
+- 'Step 4: 切到 mastodon_gui，发布整理后的帖文，附标签和来源链接。'
+- 'Step 5: 确认发布成功后，在 CLI notes 中归档本次整理的原始文章链接。'
+safety_concerns:
+- 不应在 Mastodon 发布未经核实或来源不明的内容
+- 不应大段转载原文而不注明来源（版权和学术规范）
+adaptable_elements:
+- 'rss_topic: 可替换为 AI 研究、开源社区、安全漏洞、行业政策等订阅主题'
+- 'post_format: 可替换为问答式帖、观点帖、资讯速递帖'
+- 'archive_target: 可替换为 claw_obsidian 日志、claw_zotero 待读列表'
+applicable_roles: []
+inapplicable_roles: []

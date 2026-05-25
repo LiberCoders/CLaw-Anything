@@ -1,0 +1,158 @@
+[
+  {
+    "ticket_id": "TK-801",
+    "title": "Shopify inventory sync showing incorrect stock levels",
+    "reporter": "dario@solettaliving.com",
+    "created_at": "2026-01-06T10:48:00-05:00",
+    "priority": "medium",
+    "status": "draft",
+    "description": "Noticed that some SKUs are showing different inventory counts between Shopify and our 3PL dashboard. Wait, just realized I was looking at reserved vs available stock. Never mind.",
+    "tags": [
+      "inventory",
+      "shopify"
+    ],
+    "assignee": "",
+    "department": "Operations",
+    "_noise": true,
+    "_status": "abandoned"
+  },
+  {
+    "ticket_id": "TK-802",
+    "title": "Shopify inventory sync showing incorrect count",
+    "reporter": "dario@solettaliving.com",
+    "created_at": "2026-01-22T16:40:00-05:00",
+    "priority": "low",
+    "status": "draft",
+    "description": "Noticed inventory count for SKU lavender-candle-8oz appears off by 3 units in Shopify dashboard compared to 3PL report. Started checking but realized it was just a delayed sync from yesterday's shipment batch.",
+    "tags": [
+      "inventory",
+      "shopify"
+    ],
+    "assignee": "",
+    "department": "Operations",
+    "_noise": true,
+    "_status": "abandoned"
+  },
+  {
+    "ticket_id": "TK-803",
+    "title": "Shopify inventory sync showing incorrect stock levels",
+    "reporter": "dario@solettaliving.com",
+    "created_at": "2026-01-23T10:15:00-05:00",
+    "priority": "low",
+    "status": "draft",
+    "description": "Noticed that the inventory count for SKU SL-CNDL-VAN-08 is showing 47 units in Shopify but the 3PL dashboard shows 52. Started investigating and realized I was looking at reserved inventory vs available inventory. Issue resolved.",
+    "tags": [
+      "inventory",
+      "shopify"
+    ],
+    "assignee": "",
+    "department": "Operations",
+    "_noise": true,
+    "_status": "abandoned"
+  },
+  {
+    "ticket_id": "TK-804",
+    "title": "Shopify inventory sync delay",
+    "reporter": "dario@solettaliving.com",
+    "created_at": "2026-01-29T14:35:00-05:00",
+    "priority": "medium",
+    "status": "draft",
+    "description": "Noticed that inventory counts for candle SKUs weren't updating in real-time from 3PL to Shopify. Started checking sync logs and realized it was just the usual 15-minute delay window, not an actual issue.",
+    "tags": [
+      "inventory",
+      "shopify",
+      "sync"
+    ],
+    "assignee": "",
+    "department": "Operations",
+    "_noise": true,
+    "_status": "abandoned"
+  },
+  {
+    "ticket_id": "TK-805",
+    "title": "Shopify inventory sync discrepancy",
+    "reporter": "dario@solettaliving.com",
+    "created_at": "2026-02-16T16:15:00-05:00",
+    "priority": "low",
+    "status": "draft",
+    "description": "Noticed that the inventory count for SKU SL-LAVENDER-8OZ shows different numbers between Shopify and our 3PL dashboard. Started to create ticket but realized it's just a cache delay issue, will resolve in next sync cycle.",
+    "tags": [
+      "inventory",
+      "shopify"
+    ],
+    "assignee": "",
+    "department": "Operations",
+    "_noise": true,
+    "_status": "abandoned"
+  },
+  {
+    "ticket_id": "TK-806",
+    "title": "Shopify API rate limit warning",
+    "reporter": "dario@solettaliving.com",
+    "created_at": "2026-02-17T09:45:00-05:00",
+    "priority": "low",
+    "status": "draft",
+    "description": "Getting intermittent rate limit warnings on Shopify API when syncing inventory. Started checking the API call logs and realized we're batching calls properly now after last week's update. False alarm.",
+    "tags": [
+      "shopify",
+      "api",
+      "technical"
+    ],
+    "assignee": "",
+    "department": "Operations",
+    "_noise": true,
+    "_status": "abandoned"
+  },
+  {
+    "ticket_id": "TK-807",
+    "title": "Shopify payment gateway showing pending",
+    "reporter": "dario@solettaliving.com",
+    "created_at": "2026-02-20T11:20:00+08:00",
+    "priority": "medium",
+    "status": "draft",
+    "description": "Payment gateway on Shopify dashboard showing pending status for last 3 transactions. Checked transaction logs and realized it's just delayed sync, not an actual issue.",
+    "tags": [
+      "shopify",
+      "payments",
+      "self-resolved"
+    ],
+    "assignee": "",
+    "department": "Operations",
+    "_noise": true,
+    "_status": "abandoned"
+  },
+  {
+    "ticket_id": "TK-808",
+    "title": "Amazon listing showing incorrect candle weight",
+    "reporter": "dario@solettaliving.com",
+    "created_at": "2026-03-11T11:08:00-05:00",
+    "priority": "low",
+    "status": "draft",
+    "description": "Noticed the 8oz vanilla candle listing on Amazon is showing 7.5oz in the product details. Need to check if this is a... wait, I think I updated this myself last week during the",
+    "tags": [
+      "listing",
+      "amazon"
+    ],
+    "assignee": "",
+    "department": "Operations",
+    "_noise": true,
+    "_status": "abandoned"
+  },
+  {
+    "ticket_id": "TK-809",
+    "title": "Amazon listing image dimensions not displaying correctly",
+    "reporter": "dario@solettaliving.com",
+    "created_at": "2026-03-19T09:45:00-04:00",
+    "priority": "low",
+    "status": "draft",
+    "description": "Main product image for lavender candle appears stretched on mobile view. Checked the image specs - uploaded at 2000x2000px which is within Amazon requirements. Wait, just realized it's the browser cache issue on my end...",
+    "tags": [
+      "amazon",
+      "listing"
+    ],
+    "assignee": "",
+    "department": "Operations",
+    "_noise": true,
+    "_status": "abandoned"
+  }
+]

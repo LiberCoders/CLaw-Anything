@@ -1,0 +1,35 @@
+[
+  {
+    "integration_id": "INT-101",
+    "name": "saas_db_connection",
+    "display_name": "SaaS Platform Database Connection",
+    "status": "error",
+    "error_rate": 100.0,
+    "notes": "MySQL connection to saas-db.chenghao-studio.com:3306. Used by monthly_revenue_report job. Experiencing connection timeouts since 2026-02-17. Possible causes: RDS instance issue, network firewall change, or IP whitelist modification.",
+    "service": "database",
+    "last_verified": "2026-02-19T14:23:45+08:00",
+    "monthly_calls": 720
+  },
+  {
+    "integration_id": "INT-102",
+    "name": "wechat_miniapp_api",
+    "display_name": "WeChat MiniApp API Integration",
+    "status": "active",
+    "error_rate": 2.3,
+    "notes": "WeChat API for e-commerce miniapp. Payment and order sync endpoints. Rate limit: 10000 calls/day.",
+    "service": "wechat_api",
+    "last_verified": "2026-02-19T01:30:00+08:00",
+    "monthly_calls": 15420
+  },
+  {
+    "integration_id": "INT-103",
+    "name": "saas_rds_connection",
+    "display_name": "SaaS RDS Database Connection",
+    "status": "degraded",
+    "error_rate": 8.5,
+    "notes": "Connection pool configuration needs adjustment. Current max_connections=10 is insufficient for peak load. Intermittent timeout errors observed since 2026-03-28. Recommended: increase to max_connections=50 and connection_timeout=30s.",
+    "service": "database",
+    "last_verified": "2026-04-02T15:30:00+08:00",
+    "monthly_calls": 2880
+  }
+]

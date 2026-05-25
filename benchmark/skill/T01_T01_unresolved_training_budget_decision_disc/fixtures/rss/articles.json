@@ -1,0 +1,34 @@
+[
+  {
+    "article_id": "RSS-901",
+    "title": "The Hidden Cost of Checkpointing: Why Your Training Jobs Are 20% Slower Than Expected",
+    "source": "ML Engineering Weekly",
+    "category": "Machine Learning Infrastructure",
+    "published_at": "2026-01-20T08:00:00+08:00",
+    "summary": "A deep dive into checkpoint overhead in distributed training. Research shows that aggressive checkpointing strategies can add 15-25% to total training time, especially for large language models. The article discusses optimal checkpoint frequency and the tradeoff between reliability and efficiency.",
+    "content": "# The Hidden Cost of Checkpointing\n\nBy Sarah Chen, ML Infrastructure Engineer at Scale AI\n\n## Introduction\n\nCheckpointing is essential for fault-tolerant training, but it comes at a cost. Our team analyzed 500+ production training jobs and found that checkpoint overhead is often underestimated by 2-3x.\n\n## Key Findings\n\n### Overhead Breakdown\n- **Serialization**: 40% of checkpoint time (model state → disk)\n- **I/O wait**: 35% (network/disk bottleneck)\n- **Synchronization**: 25% (multi-GPU coordination)\n\n### Model Size Impact\n- Models <1B params: 3-5% overhead per checkpoint\n- Models 1-10B params: 8-12% overhead\n- Models >10B params: 15-20% overhead\n\n### Frequency Tradeoffs\n\n**Aggressive (every 1-2 hours)**\n- Pros: Minimal lost work on failure\n- Cons: 20-25% total overhead, frequent I/O contention\n\n**Moderate (every 4-6 hours)**\n- Pros: 8-12% total overhead, balanced risk\n- Cons: 4-6 hours lost work on failure\n\n**Conservative (every 12+ hours)**\n- Pros: <5% total overhead\n- Cons: High risk of significant lost work\n\n## Recommendations\n\n1. **For deadline-driven projects**: Use moderate checkpointing (4-6 hours)\n2. **For exploratory work**: Use conservative checkpointing\n3. **For production training**: Invest in async checkpointing infrastructure\n\n## The Monitoring Burden\n\nBeyond overhead, checkpoint-based strategies require active monitoring:\n- Check job health every 2-4 hours\n- Respond to failures within 1 hour to minimize downtime\n- Plan for 10-15% time buffer for recovery\n\nFor teams with limited monitoring capacity, this can be a hidden cost that outweighs the technical overhead.\n\n## Conclusion\n\nCheckpointing is not free. Teams should carefully evaluate their risk tolerance, monitoring capacity, and deadline constraints when designing training strategies.\n\n---\n*Published: January 20, 2026*",
+    "relevance_tags": [
+      "ml-training",
+      "infrastructure",
+      "checkpoint",
+      "performance"
+    ],
+    "word_count": 420
+  },
+  {
+    "article_id": "RSS-902",
+    "title": "Preemptible GPU Instances: When to Use Them and When to Avoid Them",
+    "source": "Cloud Computing Insights",
+    "category": "Cloud Infrastructure",
+    "published_at": "2026-01-20T14:30:00+08:00",
+    "summary": "Preemptible GPU instances offer 60-70% cost savings but come with reliability tradeoffs. This article analyzes failure patterns across major cloud providers and provides decision frameworks for choosing between preemptible and on-demand instances.",
+    "content": "# Preemptible GPU Instances: A Cost-Reliability Analysis\n\n## Overview\n\nPreemptible (spot) GPU instances can reduce training costs by 60-70%, but the reliability tradeoff is often misunderstood.\n\n## Failure Patterns\n\n### Preemption Rates by Time of Day\n- Peak hours (9 AM - 6 PM): 40-50% preemption rate\n- Off-peak (2 AM - 6 AM): 15-20% preemption rate\n- Weekend: 10-15% preemption rate\n\n### Mean Time Between Failures\n- On-demand instances: 99.9% uptime (MTBF ~1000 hours)\n- Preemptible instances: 70-80% effective uptime (MTBF ~8-12 hours)\n\n## Decision Framework\n\n**Use preemptible when:**\n- Training time >48 hours (cost savings outweigh overhead)\n- You have robust checkpoint/resume infrastructure\n- Deadline has >30% time buffer\n- You can monitor and restart jobs within 2 hours\n\n**Avoid preemptible when:**\n- Hard deadline within 7 days\n- Limited monitoring capacity\n- Checkpoint overhead >10%\n- First time running this training pipeline\n\n## The Monitoring Tax\n\nPreemptible instances require active babysitting:\n- Check status every 2-4 hours\n- Restart failed jobs within 1-2 hours\n- Debug checkpoint issues when they arise\n\nFor junior engineers or teams with poor time management, this monitoring burden can negate the cost savings.\n\n---\n*Published: January 20, 2026*",
+    "relevance_tags": [
+      "cloud",
+      "gpu",
+      "cost-optimization",
+      "reliability"
+    ],
+    "word_count": 280
+  }
+]

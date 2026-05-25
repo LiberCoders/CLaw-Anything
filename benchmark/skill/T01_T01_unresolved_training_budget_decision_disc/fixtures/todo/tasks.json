@@ -1,0 +1,924 @@
+[
+  {
+    "task_id": "TODO-501",
+    "title": "Investigate production algorithm performance regression",
+    "description": "CTR dropped 3.2% after latest deployment. Pull A/B test metrics, compare inference latency, check feature pipeline. Dr. Wang needs preliminary analysis by EOD Feb 13.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-02-13",
+    "tags": [
+      "urgent",
+      "production",
+      "algorithm",
+      "mentor-request"
+    ],
+    "created_at": "2026-02-13T10:20:00+08:00"
+  },
+  {
+    "task_id": "TODO-502",
+    "title": "Fix blocking issues in PR #2847",
+    "description": "Address Chen Hui's code review comments: memory leak on line 234, thread safety issue on line 567, add missing unit tests. Must be done by Feb 13 to meet sprint deadline.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-13",
+    "tags": [
+      "code-review",
+      "blocking",
+      "sprint"
+    ],
+    "created_at": "2026-02-12T17:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-503",
+    "title": "Prepare sprint demo materials for Feb 17",
+    "description": "Create presentation deck with performance benchmarks, latency improvements (p50/p95/p99), deployment plan. Need to finish by Feb 16 EOD for dry run. High visibility with executives.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-16",
+    "tags": [
+      "demo",
+      "presentation",
+      "deadline",
+      "executive"
+    ],
+    "created_at": "2026-02-11T14:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-504",
+    "title": "Complete intern mid-term self-evaluation",
+    "description": "Fill out HR evaluation form covering learning objectives, challenges, mentorship feedback, and career interests. Due Feb 20.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-20",
+    "tags": [
+      "hr",
+      "administrative"
+    ],
+    "created_at": "2026-02-10T09:35:00+08:00"
+  },
+  {
+    "task_id": "TODO-505",
+    "title": "Prepare technical materials for mentor meeting",
+    "description": "Organize optimization approach documentation, experiment results, performance metrics, and technical challenges for deep-dive discussion with Dr. Wang. Need to compile: 1) Current methodology overview, 2) A/B test results and metrics, 3) Architecture diagrams, 4) Open questions and blockers",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-28",
+    "tags": [
+      "mentor",
+      "preparation",
+      "technical"
+    ],
+    "created_at": "2026-03-26T16:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-506",
+    "title": "Review calendar and respond to Dr. Wang's scheduling request",
+    "description": "Check existing calendar commitments against three proposed time slots (Thu 10:00 AM, Thu 3:00 PM, Fri 2:00 PM). Need to avoid conflicts with production sync, code review, and sprint demo dry run. Ensure enough buffer time for preparation.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-27",
+    "tags": [
+      "urgent",
+      "scheduling",
+      "mentor"
+    ],
+    "created_at": "2026-03-26T16:15:00+08:00"
+  },
+  {
+    "task_id": "TODO-507",
+    "title": "Complete production regression analysis report",
+    "description": "Finalize root cause analysis for the production performance regression. Document findings, proposed fixes, and timeline. Due EOD today as committed to Dr. Wang.",
+    "status": "in_progress",
+    "priority": "critical",
+    "due_date": "2026-03-27",
+    "tags": [
+      "P0",
+      "production",
+      "urgent"
+    ],
+    "created_at": "2026-03-26T09:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-508",
+    "title": "Update experiment tracking spreadsheet",
+    "description": "Add latest A/B test results for recommendation algorithm v2.3 variants. Include CTR, conversion rates, and latency metrics.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-29",
+    "tags": [
+      "experiments",
+      "documentation"
+    ],
+    "created_at": "2026-03-25T14:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-509",
+    "title": "CRITICAL: Production regression root cause analysis",
+    "description": "Deep algorithmic analysis of the recommendation model performance drop detected in production. Requires focused debugging of embedding layer interactions, memory profiling, and comparison with baseline metrics. High cognitive load - needs fresh mental state. Blocking the sprint demo.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-02-20",
+    "tags": [
+      "production",
+      "high-cognitive-load",
+      "algorithm",
+      "blocking"
+    ],
+    "created_at": "2026-02-17T09:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-510",
+    "title": "Respond to PR #2847 code review comments",
+    "description": "Address review feedback on embedding layer optimization PR. Includes architectural discussion points about memory allocation patterns and cache invalidation logic. Medium cognitive load - some can be delegated to Chen Hui.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-21",
+    "tags": [
+      "code-review",
+      "medium-cognitive-load",
+      "delegation-candidate"
+    ],
+    "created_at": "2026-02-16T14:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-511",
+    "title": "Update experiment tracking spreadsheet for demo",
+    "description": "Pull latest A/B test results from system and update shared tracking sheet with standard formatting. Routine data entry task - low cognitive load, can be done while fatigued. Required for executive deck.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-20",
+    "tags": [
+      "demo",
+      "low-cognitive-load",
+      "routine",
+      "data-entry"
+    ],
+    "created_at": "2026-02-18T14:25:00+08:00"
+  },
+  {
+    "task_id": "TODO-512",
+    "title": "Prepare demo presentation slides",
+    "description": "Create slide deck for sprint demo showcasing algorithm optimization results. Medium cognitive load - requires synthesizing technical results into executive-friendly narrative. Hard deadline for Monday demo.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-20",
+    "tags": [
+      "demo",
+      "medium-cognitive-load",
+      "presentation"
+    ],
+    "created_at": "2026-02-17T16:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-513",
+    "title": "Review and respond to mentor's technical questions",
+    "description": "Dr. Wang sent follow-up questions about the optimization approach. Low-medium cognitive load - mostly clarifications rather than new analysis.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-21",
+    "tags": [
+      "mentor",
+      "low-cognitive-load",
+      "email"
+    ],
+    "created_at": "2026-02-18T11:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-514",
+    "title": "Complete code review for PR #2891 (batch normalization refactor)",
+    "description": "Finish reviewing Zhang Lin's PR #2891 - Neural network batch normalization optimization. Already invested 3.5 hours, identified 4 key issues. Remaining files: optimizer hooks, distributed sync, benchmarks. Estimated 2.5 hours to complete.\n\nNOTE: PR #2903 (layer fusion) just merged - may impact this review. Need to assess conflict before continuing.",
+    "status": "in_progress",
+    "priority": "medium",
+    "due_date": "2026-02-22",
+    "tags": [
+      "code-review",
+      "neural-network",
+      "sprint-week"
+    ],
+    "created_at": "2026-02-21T14:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-515",
+    "title": "DECISION NEEDED: PR #2891 review strategy after PR #2903 merge",
+    "description": "PR #2903 (layer fusion approach) merged into main at 11:40 AM, potentially making PR #2891 (batch norm refactor) obsolete. Need to decide:\n\nOption 1: Continue review (2.5 hrs) - preserve sunk effort, maintain relationship\nOption 2: Abandon review - cut losses, align with codebase\nOption 3: Request rebase - preserve work quality, add coordination overhead\n\nLow-cost first step: async message to Zhang Lin to assess conflict severity.\n\nTime-sensitive: Zhang Lin wants to land before sprint ends (Feb 25). My review is blocking.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-22",
+    "tags": [
+      "decision",
+      "code-review",
+      "sunk-cost",
+      "sprint-week"
+    ],
+    "created_at": "2026-02-22T12:20:00+08:00"
+  },
+  {
+    "task_id": "TODO-516",
+    "title": "Review merged PR #2903 layer fusion implementation",
+    "description": "Liu Yang's layer fusion PR just merged - represents new optimization baseline. Should review to understand architectural changes and how they impact future work.\n\nPriority: medium-low (already merged, not blocking)\nEstimated time: 1.5-2 hours\nRelevance: helps inform decision on PR #2891 review strategy",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-02-23",
+    "tags": [
+      "code-review",
+      "learning",
+      "architecture"
+    ],
+    "created_at": "2026-02-22T12:10:00+08:00"
+  },
+  {
+    "task_id": "TODO-517",
+    "title": "Research Apple repair service options for MacBook thermal issue",
+    "description": "MacBook Pro started thermal throttling during model training runs (temps hitting 95°C, clock speed dropping to 1.2GHz). Need to evaluate: 1) Apple Express Service (¥2,800, 2-day turnaround) vs Standard (¥2,200, 5-7 days), 2) Alternative: ask Chen Hui for help diagnosing (he fixed GPU driver issue before). Sprint demo dry run is Jan 13 - hard deadline for having working laptop.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-07",
+    "tags": [
+      "hardware",
+      "urgent",
+      "decision"
+    ],
+    "created_at": "2026-01-05T18:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-518",
+    "title": "Evaluate Chen Hui's availability for laptop help",
+    "description": "Check: 1) Chen Hui's calendar for free slots before Jan 13, 2) Recent email threads indicating his workload (saw caching refactor backlog email), 3) Past help history and relationship capital. Need to weigh: asking him (free but uncertain timeline + imposing on busy colleague) vs paid Apple service (expensive on intern salary but guaranteed).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-06",
+    "tags": [
+      "decision",
+      "social-capital"
+    ],
+    "created_at": "2026-01-05T19:15:00+08:00"
+  },
+  {
+    "task_id": "TODO-519",
+    "title": "Prepare training environment backup plan for sprint demo",
+    "description": "In case laptop repair takes longer than expected, identify backup options: 1) Remote access to team GPU server, 2) Borrow spare laptop from IT, 3) Pair with teammate for demo. Demo dry run is Jan 13, need working setup by Jan 12 at latest.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-08",
+    "tags": [
+      "sprint",
+      "contingency"
+    ],
+    "created_at": "2026-01-05T20:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-520",
+    "title": "Update training metrics dashboard for sprint demo",
+    "description": "Compile final recommendation algorithm optimization results: baseline vs optimized model performance, training time improvements, resource utilization stats. Zhang Lin expects this ready for Jan 13 dry run.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-12",
+    "tags": [
+      "sprint",
+      "demo"
+    ],
+    "created_at": "2026-01-04T11:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-521",
+    "title": "Complete HR onboarding portal (BLOCKS all other credentials)",
+    "description": "Finish HR onboarding at https://hr.bytedance.com/onboarding - this is the entry point that unlocks security training and KB access. Estimated 2 hours. Must complete before security training.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-02-12",
+    "tags": [
+      "onboarding",
+      "blocking",
+      "credentials"
+    ],
+    "created_at": "2026-02-10T09:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-522",
+    "title": "Map credential dependency graph and identify circular dependencies",
+    "description": "Extract all credential requirements from MSG-5025, MSG-5026, MSG-5027, MSG-5028, MSG-5030. Identify circular dependency: IT says get mentor approval first (MSG-5027), mentor says submit IT ticket first (MSG-5026). Find valid entry points and parallel tracks.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-03-02",
+    "tags": [
+      "credentials",
+      "planning",
+      "urgent"
+    ],
+    "created_at": "2026-03-01T16:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-523",
+    "title": "Resolve VPN approval circular dependency with Dr. Wang and IT",
+    "description": "CIRCULAR DEPENDENCY DETECTED: IT requires mentor pre-approval before ticket (MSG-5027), but Dr. Wang requires ticket number before approval (MSG-5026). Need to clarify with both parties which process takes precedence or find policy exception.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-03",
+    "tags": [
+      "credentials",
+      "blocked",
+      "vpn",
+      "urgent"
+    ],
+    "created_at": "2026-03-01T17:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-524",
+    "title": "Calculate critical path timeline for all credentials vs sprint demo deadline",
+    "description": "Sprint demo is March 10 (EVT-319). Calculate: VPN (3-5 days after approval resolved) + Security training (2 days, but cert expires in 14 days) + GPU cluster (1-2 days after cert) + GitLab (1 day after VPN+cert). Total serial path: ~20+ days. Current date: March 2. TIMELINE CRISIS: only 8 days remaining but need 20+ days of serial processing.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-03-02",
+    "tags": [
+      "credentials",
+      "timeline",
+      "critical-path",
+      "urgent"
+    ],
+    "created_at": "2026-03-02T09:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-525",
+    "title": "Check KB-403 for temporary/supervised access policies",
+    "description": "MSG-5028 mentions KB-403 has info on 'Supervised Access Policy for Interns' - this might allow starting work before full credentials arrive. Check if temporary GPU access is available to unblock sprint demo work.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-03",
+    "tags": [
+      "credentials",
+      "workaround",
+      "kb"
+    ],
+    "created_at": "2026-03-02T10:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-526",
+    "title": "Time security training to maximize 14-day cert validity window",
+    "description": "Security training cert only valid 14 days (MSG-5025). GPU cluster needs it, but if completed too early it expires before other credentials arrive. Optimal timing: start training after VPN approval is confirmed, complete just before GPU cluster request. Need to schedule carefully.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-04",
+    "tags": [
+      "credentials",
+      "security-training",
+      "timing"
+    ],
+    "created_at": "2026-03-02T10:15:00+08:00"
+  },
+  {
+    "task_id": "TODO-527",
+    "title": "Respond to Dr. Wang's hyperparameter tuning questions",
+    "description": "Prepare detailed comparison of fixed vs adaptive learning rate schedules before Monday standup. Need to include: 1) Comparison charts from experiment logs, 2) Computational cost analysis, 3) Recommendation with reasoning. Critical for intern evaluation.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-13",
+    "tags": [
+      "mentor",
+      "technical",
+      "urgent",
+      "evaluation"
+    ],
+    "created_at": "2026-01-12T16:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-528",
+    "title": "Review PR #2956 - Memory optimization for embedding layers",
+    "description": "Zhang Lin needs code review by EOD Tuesday Jan 14. Check for conflicts with my PR #2847 caching approach. Focus on memory fragmentation vs allocation overhead tradeoffs and lazy initialization compatibility.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-14",
+    "tags": [
+      "code-review",
+      "deadline",
+      "teammate"
+    ],
+    "created_at": "2026-01-11T14:20:00+08:00"
+  },
+  {
+    "task_id": "TODO-529",
+    "title": "Complete intern mid-term self-evaluation form",
+    "description": "HR deadline Jan 17. Need to submit: 1) Self-evaluation form, 2) Project milestone summary, 3) Learning objectives progress. Evaluation meeting with Dr. Wang on Jan 24.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-17",
+    "tags": [
+      "hr",
+      "evaluation",
+      "deadline"
+    ],
+    "created_at": "2026-01-10T10:35:00+08:00"
+  },
+  {
+    "task_id": "TODO-530",
+    "title": "Save experiment checkpoints before GPU cluster maintenance",
+    "description": "GPU cluster maintenance Jan 14 22:00 - Jan 15 06:00. All training jobs will be terminated. Save all checkpoints and plan training schedule accordingly.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-14",
+    "tags": [
+      "infrastructure",
+      "checkpoint",
+      "maintenance"
+    ],
+    "created_at": "2026-01-09T09:20:00+08:00"
+  },
+  {
+    "task_id": "TODO-531",
+    "title": "Reply to Chen Hui's gradient accumulation question",
+    "description": "Chen Hui asked about batch size optimization approach - gradient accumulation vs physical batch size increase. Low priority but good for team collaboration.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-01-15",
+    "tags": [
+      "teammate",
+      "technical",
+      "low-priority"
+    ],
+    "created_at": "2026-01-11T11:45:00+08:00"
+  },
+  {
+    "task_id": "TODO-532",
+    "title": "Investigate production API latency spike",
+    "description": "Production alert from Jan 12 evening - recommendation API p99 latency at 2.3s (threshold 500ms). Check if related to recent model updates or caching changes. May need to review during standup.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-13",
+    "tags": [
+      "production",
+      "alert",
+      "investigation"
+    ],
+    "created_at": "2026-01-12T21:50:00+08:00"
+  },
+  {
+    "task_id": "TODO-533",
+    "title": "Run hyperparameter sweep - learning rates [0.001, 0.0001, 0.00001]",
+    "description": "Test different learning rates for the recommendation model training. Need to compare convergence speed and final validation accuracy. Use GPU cluster with 4x V100 setup.",
+    "status": "deleted",
+    "priority": "high",
+    "due_date": "2026-03-20",
+    "tags": [
+      "gpu",
+      "training",
+      "hyperparameter"
+    ],
+    "created_at": "2026-03-18T11:20:00+08:00"
+  },
+  {
+    "task_id": "TODO-534",
+    "title": "Decide on batch size strategy for distributed training",
+    "description": "Need to finalize whether to use large batch (512) with gradient accumulation or smaller batch (128) with more frequent updates. Both approaches have tradeoffs for memory and convergence. Should probably ask Dr. Wang but need to think through the options first.",
+    "status": "deleted",
+    "priority": "high",
+    "due_date": "2026-03-21",
+    "tags": [
+      "gpu",
+      "training",
+      "decision"
+    ],
+    "created_at": "2026-03-19T15:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-535",
+    "title": "Debug warmup phase spike in training loss",
+    "description": "Training loss spikes at epoch 3 with cosine annealing scheduler. Need to investigate if this is expected behavior or a bug in the learning rate warmup implementation. Check data pipeline and gradient clipping settings.",
+    "status": "deleted",
+    "priority": "medium",
+    "due_date": "2026-03-22",
+    "tags": [
+      "gpu",
+      "training",
+      "debugging"
+    ],
+    "created_at": "2026-03-20T14:15:00+08:00"
+  },
+  {
+    "task_id": "TODO-536",
+    "title": "Update sprint demo slides with latest model metrics",
+    "description": "Add the new F1 scores and precision/recall curves from this week's experiments. Need to prepare comparison charts showing improvement over baseline.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-25",
+    "tags": [
+      "demo",
+      "presentation"
+    ],
+    "created_at": "2026-03-21T16:45:00+08:00"
+  },
+  {
+    "task_id": "TODO-537",
+    "title": "Analyze GPU cluster allocation options and select tier",
+    "description": "Review compute-admin email with 4 GPU allocation options (Standard, Priority, Premium, Spot). Perform Pareto dominance analysis across cost, training time, preemption risk, and queue wait. Apply constraints: must complete before Jan 28 demo deadline, cannot exceed 3000 credit remaining budget. Draft selection email with justification. DUE: Jan 20 per compute-admin requirement.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-01-20",
+    "tags": [
+      "compute",
+      "decision",
+      "tradeoff",
+      "deadline-critical"
+    ],
+    "created_at": "2026-01-14T11:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-538",
+    "title": "Monitor Priority Tier GPU training job execution",
+    "description": "Track training job progress on Priority Tier allocation (14h estimated runtime). Check for preemption events (5% risk). Validate checkpointing working correctly. Be aware of Jan 18 evening maintenance window 8-11 PM - job should complete before or be paused automatically. Log metrics for post-training analysis.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-18",
+    "tags": [
+      "compute",
+      "monitoring",
+      "sprint-demo"
+    ],
+    "created_at": "2026-01-16T17:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-539",
+    "title": "Validate training results and prepare demo materials",
+    "description": "After Priority Tier training completes (~Jan 18), validate model metrics against baseline. If results acceptable, prepare visualization and slides for Jan 28 sprint demo. If metrics off, assess if remaining 1200 credit budget sufficient for re-run or hyperparameter adjustment. Escalate to Dr. Wang if budget insufficient.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-26",
+    "tags": [
+      "sprint-demo",
+      "validation",
+      "deadline-critical"
+    ],
+    "created_at": "2026-01-16T17:15:00+08:00"
+  },
+  {
+    "task_id": "TODO-540",
+    "title": "Review compute budget burn rate for Q1 planning",
+    "description": "System alert shows 60% Q1 budget consumed with 74 days remaining. Calculate daily burn rate and project end-of-quarter buffer. Document lessons learned from allocation decision (Priority tier choice, Pareto analysis approach) for future reference. Update experiment tracking spreadsheet with cost data.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-22",
+    "tags": [
+      "budget",
+      "planning",
+      "learning"
+    ],
+    "created_at": "2026-01-16T17:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-541",
+    "title": "Launch concurrent training experiments for sprint demo",
+    "description": "Need to run three experiments simultaneously: (1) hyperparameter tuning job with TensorBoard visualization, (2) baseline model training with Jupyter notebook for analysis, (3) distributed training coordinator service. Check port configurations and avoid conflicts.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-02-06",
+    "tags": [
+      "sprint-demo",
+      "training",
+      "experiments"
+    ],
+    "created_at": "2026-02-04T14:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-542",
+    "title": "Document port mapping for training experiments",
+    "description": "Record final port assignments for all training services so I can reference URLs during mentor demo without confusion. TensorBoard, Jupyter, coordinator ports.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-05",
+    "tags": [
+      "documentation",
+      "demo-prep"
+    ],
+    "created_at": "2026-02-05T10:15:00+08:00"
+  },
+  {
+    "task_id": "TODO-543",
+    "title": "Update experiment launch checklist with port-conflict pre-check",
+    "description": "Add port-conflict detection step to experiment launch checklist for future sprints. Should include lsof check and config verification before starting new training jobs.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-02-10",
+    "tags": [
+      "process-improvement",
+      "checklist"
+    ],
+    "created_at": "2026-02-05T15:45:00+08:00"
+  },
+  {
+    "task_id": "TODO-544",
+    "title": "Review hyperparameter search results before mentor meeting",
+    "description": "Check TensorBoard logs for hyperparameter tuning job, prepare summary of learning rate and batch size experiments for Dr. Wang's review.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-07",
+    "tags": [
+      "mentor-meeting",
+      "analysis"
+    ],
+    "created_at": "2026-02-05T16:20:00+08:00"
+  },
+  {
+    "task_id": "TODO-545",
+    "title": "Query finance service for Q1 GPU budget balance and burn rate",
+    "description": "Check current remaining budget ($20K as of Jan 28) and calculate daily burn rate to understand resource constraints for three competing training demands. Need exact figures for mentor meeting prioritization discussion.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-01-29",
+    "tags": [
+      "budget",
+      "planning",
+      "compute"
+    ],
+    "created_at": "2026-01-28T10:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-546",
+    "title": "Assess consequence severity for three competing workloads",
+    "description": "Production retraining: affects live user metrics (irreversible impact). Sprint demo: affects intern evaluation (career consequence). Hyperparameter search: exploratory work, recoverable if delayed. Document severity ranking for decision justification.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-01-30",
+    "tags": [
+      "planning",
+      "prioritization"
+    ],
+    "created_at": "2026-01-28T11:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-547",
+    "title": "Document budget allocation decision rationale in notes",
+    "description": "Write detailed justification for sequential execution plan: (1) production retraining 25% budget, (2) sprint demo 40% budget, (3) defer exploratory work until mid-Feb replenishment clarity. Include deadline hardness × consequence severity matrix for intern evaluation defense.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-02-01",
+    "tags": [
+      "documentation",
+      "budget",
+      "evaluation"
+    ],
+    "created_at": "2026-01-30T15:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-548",
+    "title": "Execute production model retraining job",
+    "description": "Launch retraining pipeline for recommendation model addressing data drift. Must complete by Feb 3 hard deadline. Budget allocated: $5K (25% of remaining). Monitor job progress and alert Zhang Lin if issues arise.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-02-03",
+    "tags": [
+      "production",
+      "training",
+      "urgent"
+    ],
+    "created_at": "2026-01-30T16:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-549",
+    "title": "Review team calendar for Q1 planning meetings",
+    "description": "Check upcoming algorithm team sync meetings and sprint planning sessions to stay aligned on quarterly priorities. Non-urgent admin task.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-02-07",
+    "tags": [
+      "admin",
+      "calendar"
+    ],
+    "created_at": "2026-01-29T09:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-550",
+    "title": "Parse GPU pricing policy (KB-410) and extract all discount tiers",
+    "description": "Read KB-410 thoroughly to identify all 5 discount tiers: base intern (20%), bulk commitment (15% for 100+ hours), off-peak (25% for 2-6 AM), preemption (30% but killable), team pooling (variable). Extract stacking rules, mutual exclusions, and application order.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-01-23",
+    "tags": [
+      "sprint",
+      "compute",
+      "planning"
+    ],
+    "created_at": "2026-01-22T09:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-551",
+    "title": "Enumerate feasible discount combinations for 72-hour training job",
+    "description": "Given constraints: 72 GPU-hours needed, Feb 17 sprint demo deadline (26 days away), 344 GPU-hours remaining in Q1 budget, poor time management (off-peak risky). List all valid combinations considering mutual exclusions (preemption vs off-peak) and threshold interactions (preemption may break bulk commitment).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-23",
+    "tags": [
+      "sprint",
+      "compute",
+      "planning"
+    ],
+    "created_at": "2026-01-22T09:45:00+08:00"
+  },
+  {
+    "task_id": "TODO-552",
+    "title": "Calculate final cost per GPU-hour for each discount path",
+    "description": "For each feasible combination: (1) Base only: ¥96/hour, (2) Base + Bulk: ¥81.60/hour (if 72 hours meets threshold), (3) Base + Off-peak: ¥72/hour (but requires night monitoring), (4) Base + Preemption: ¥67.20/hour (but risky for deadline), (5) Any + Team pooling (Chen Hui's 85 hours available). Include hidden costs: off-peak monitoring burden, preemption re-run risk, team pooling approval delay (2-3 days).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-24",
+    "tags": [
+      "sprint",
+      "compute",
+      "analysis"
+    ],
+    "created_at": "2026-01-22T10:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-553",
+    "title": "Select optimal discount combination and document rationale",
+    "description": "Choose discount path that minimizes cost while satisfying hard constraints: (1) Must complete before Feb 17 deadline, (2) Must fit in 344 GPU-hour remaining budget, (3) Account for poor time management (off-peak monitoring risky), (4) Leave buffer for potential re-runs. Document selected combination, cost calculation, and reasoning in notes for mentor review.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-24",
+    "tags": [
+      "sprint",
+      "compute",
+      "decision"
+    ],
+    "created_at": "2026-01-22T10:15:00+08:00"
+  },
+  {
+    "task_id": "TODO-554",
+    "title": "URGENT: Decide on GPU job cancellation vs keeping original slot",
+    "description": "Policy change offers 40% discount (384 credits savings) but requires canceling Job #8521 and resubmitting through new portal. Must weigh: (1) Cost savings vs deadline risk - queue now 14-18 hours, demo is Feb 17 (14 days buffer), (2) Guaranteed 8 PM start slot vs uncertain queue position, (3) My poor time management - can I handle monitoring uncertainty? Decision factors: 384 credits = 13.5% of remaining Q1 budget (2,847 credits after refund), sprint demo is hard deadline, queue might normalize or worsen. Need to calculate: worst-case queue delay + 48hr job duration + buffer for failures = still before Feb 17?",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-02-03",
+    "tags": [
+      "urgent",
+      "gpu-cluster",
+      "budget",
+      "sprint-demo",
+      "decision"
+    ],
+    "created_at": "2026-02-03T14:20:00+08:00"
+  },
+  {
+    "task_id": "TODO-555",
+    "title": "Calculate GPU job split strategy - 2x24hr jobs for discount eligibility",
+    "description": "Evaluate hybrid approach: split 48-hour job into two 24-hour jobs to potentially use discount while hedging queue risk. Questions: (1) Do 2x24hr jobs qualify for 40% discount (need >36 hours per job or total?), (2) Coordination overhead - need to chain jobs, monitor first completion, launch second, (3) Risk of partial failure - what if first job succeeds but second gets delayed?, (4) My time management issues - can I reliably monitor and coordinate handoff between jobs? Need to check KB-411 for discount eligibility rules on split jobs.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-03",
+    "tags": [
+      "gpu-cluster",
+      "strategy",
+      "analysis"
+    ],
+    "created_at": "2026-02-03T15:10:00+08:00"
+  },
+  {
+    "task_id": "TODO-556",
+    "title": "Check intern-portal queue status and estimate realistic wait time",
+    "description": "Query intern-portal for current queue depth and job distribution. System alert says 14-18 hours now (up from 8-12), but need to understand: (1) Queue trend - is it still growing or stabilizing?, (2) Historical data - how long do queue spikes last after policy changes?, (3) My job size (48hr/192 GPU-hours) vs queue priority rules, (4) Worst-case scenario planning - if queue hits 24+ hours, do I still have buffer before Feb 17 demo? Need realistic estimate, not optimistic one given my tendency to underestimate time.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-03",
+    "tags": [
+      "gpu-cluster",
+      "queue",
+      "research"
+    ],
+    "created_at": "2026-02-03T15:25:00+08:00"
+  },
+  {
+    "task_id": "TODO-557",
+    "title": "Update Q1 budget tracking after Job #8521 cancellation refund",
+    "description": "Refund of 1,536 credits processed (TXN-6009). New Q1 balance: 2,847 credits. Update budget spreadsheet and recalculate remaining allocation for: (1) This architecture search job (1,152 credits with discount or 1,536 without), (2) Final validation runs before demo (~400 credits estimated), (3) Buffer for unexpected experiments (~300 credits). If I take the discount, remaining after this job: 1,695 credits (comfortable). If I keep original pricing: 1,311 credits (tighter but still viable). Budget alone favors discount, but need to weigh against deadline risk.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-04",
+    "tags": [
+      "budget",
+      "tracking",
+      "finance"
+    ],
+    "created_at": "2026-02-03T16:50:00+08:00"
+  },
+  {
+    "task_id": "TODO-558",
+    "title": "Query GPU quota usage for all discount tiers before sprint demo job",
+    "description": "Check current usage against monthly/cycle caps: off-peak (X/100 GPU-hours used this month), long-job (Y/150 GPU-hours used this cycle), team-pooled quota remaining. Need accurate numbers to design 288 GPU-hour allocation plan for 72-hour training job.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-25",
+    "tags": [
+      "gpu",
+      "compute",
+      "sprint-demo",
+      "planning"
+    ],
+    "created_at": "2026-02-24T16:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-559",
+    "title": "Design GPU job splitting plan - minimize cost while meeting demo deadline",
+    "description": "72-hour job, 4×V100 GPUs = 288 GPU-hours total. Must allocate across discount tiers respecting quota caps and mutual exclusivity rules. Demo deadline is March 7 (10 days). Calculate cost per tier, rank by efficiency, verify operational feasibility given my time management issues.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-26",
+    "tags": [
+      "gpu",
+      "optimization",
+      "sprint-demo",
+      "cost-analysis"
+    ],
+    "created_at": "2026-02-24T17:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-560",
+    "title": "Document GPU allocation plan with cost breakdown and rationale",
+    "description": "Write up final splitting plan in notes: allocation per tier, total cost, operational steps (submission times, monitoring windows), and justification for tier choices. Include note about avoiding off-peak path due to night monitoring risk (my time management weakness).",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-27",
+    "tags": [
+      "documentation",
+      "gpu",
+      "sprint-demo"
+    ],
+    "created_at": "2026-02-24T17:15:00+08:00"
+  },
+  {
+    "task_id": "TODO-561",
+    "title": "Request team-pooled quota allocation from Dr. Wang",
+    "description": "Need to confirm 200 GPU-hours available in team pool and get approval to use for sprint demo training. Prepare justification: critical demo deadline, most cost-effective tier at 25% discount.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-26",
+    "tags": [
+      "gpu",
+      "approval",
+      "team-coordination"
+    ],
+    "created_at": "2026-02-25T09:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-562",
+    "title": "Read KB-412: Intern Discount Bundle policy details and 48hr rationale",
+    "description": "Need to understand the full policy constraint, why the 48-hour limit exists (fairness rationale), and what alternatives are available. Critical for making compliant training plan decision.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-01-18",
+    "tags": [
+      "policy",
+      "gpu-cluster",
+      "urgent"
+    ],
+    "created_at": "2026-01-18T10:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-563",
+    "title": "Analyze job splitting feasibility - checkpoint overhead and monitoring burden",
+    "description": "Evaluate whether splitting 72hr job into 3×24hr jobs is technically feasible. Check KB-413 for best practices, estimate checkpoint I/O overhead, assess monitoring time commitment (given my time management weakness).",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-01-18",
+    "tags": [
+      "training",
+      "technical-analysis"
+    ],
+    "created_at": "2026-01-18T10:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-564",
+    "title": "Prepare compliance options analysis for Dr. Wang meeting",
+    "description": "Document all compliant alternatives (job splitting, tier upgrade, architecture optimization) with cost/risk/time tradeoffs. Need to show why job splitting is optimal despite majority preference for single 72hr job.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-01-18",
+    "tags": [
+      "decision-making",
+      "mentor-meeting"
+    ],
+    "created_at": "2026-01-18T11:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-565",
+    "title": "Update training plan notes with 3×24hr job splitting approach",
+    "description": "Revise NOTE-123 with the compliant job splitting strategy. Document checkpoint chain design, per-job objectives, and submission schedule. Include rationale for overriding original 72hr preference.",
+    "status": "completed",
+    "priority": "medium",
+    "due_date": "2026-01-18",
+    "tags": [
+      "documentation",
+      "training"
+    ],
+    "created_at": "2026-01-18T15:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-566",
+    "title": "Set up checkpoint verification script for job chain",
+    "description": "Before submitting Job 1, create script to verify checkpoint integrity between jobs. Need to ensure optimizer state, RNG state, and model weights are correctly saved/restored. Reduces risk of failed resume.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-19",
+    "tags": [
+      "training",
+      "technical-prep"
+    ],
+    "created_at": "2026-01-18T16:30:00+08:00"
+  }
+]

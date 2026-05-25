@@ -1,0 +1,239 @@
+[
+  {
+    "task_id": "TODO-501",
+    "title": "Install replacement NVMe SSD on primary database server",
+    "description": "After picking up SKU-2080 from TechSource office, install on Dell PowerEdge R740 primary DB server, run diagnostics, and validate failback from standby. Document installation steps in incident log OBSN-3.",
+    "status": "in_progress",
+    "priority": "critical",
+    "due_date": "2026-03-15",
+    "tags": [
+      "incident-response",
+      "hardware",
+      "production"
+    ],
+    "created_at": "2026-03-15T14:35:00+08:00"
+  },
+  {
+    "task_id": "TODO-502",
+    "title": "Update vendor procurement runbook with office pickup workflow",
+    "description": "Document the CLI inventory check -> Maps verification -> office pickup decision workflow in operations runbook. Include decision criteria: when to choose office pickup vs online delivery based on urgency and stock availability.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-18",
+    "tags": [
+      "documentation",
+      "operations",
+      "procurement"
+    ],
+    "created_at": "2026-03-15T14:40:00+08:00"
+  },
+  {
+    "task_id": "TODO-503",
+    "title": "Send CloudInfra maintenance notification to Premium customers",
+    "description": "Draft and send email to Premium tier customers (CUS-101, CUS-102, CUS-103) notifying them of potential 5-10s API response delays during CloudInfra maintenance window Feb 1-2. Use template from Customer-Comms folder.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-31",
+    "tags": [
+      "customer-comms",
+      "maintenance",
+      "cloudinfra"
+    ],
+    "created_at": "2026-01-26T18:55:00+08:00"
+  },
+  {
+    "task_id": "TODO-504",
+    "title": "Update monitoring alert thresholds for new CloudInfra SLA",
+    "description": "After Feb 15, CloudInfra SLA changes to 99.9% (Block Storage) and 99.95% (LB). Review and update our monitoring alert thresholds to account for the new acceptable downtime windows. Discuss with CTO if we need to adjust customer-facing SLAs.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-14",
+    "tags": [
+      "monitoring",
+      "sla",
+      "cloudinfra"
+    ],
+    "created_at": "2026-01-26T19:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-505",
+    "title": "Test Cloudflare secondary CDN failover in staging",
+    "description": "Before Feb 15 CloudInfra maintenance, need to verify Cloudflare secondary CDN works as failover. Test in staging environment:\n\n1. Configure DNS to point to Cloudflare\n2. Verify cache behavior and hit ratio\n3. Test with simulated CloudInfra failure\n4. Document switching procedure in runbook\n5. Measure failover time (DNS propagation)\n\nThis is critical for rollback plan if CloudInfra error rate exceeds 10%.\n\nRelated: OBSN-9 runbook, OBSN-10 learning notes",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-12",
+    "tags": [
+      "cdn",
+      "testing",
+      "maintenance-prep",
+      "cloudinfra"
+    ],
+    "created_at": "2026-02-09T14:25:00+08:00"
+  },
+  {
+    "task_id": "TODO-506",
+    "title": "Draft customer notification for CloudInfra CDN maintenance",
+    "description": "CTO requested customer notification draft for Premium tier clients about Feb 15-16 CDN maintenance.\n\nRecipients: CUS-101 (数据云科技), CUS-102 (智汇网络), CUS-103 (创新软件)\n\nKey points to include:\n- Maintenance window: Feb 15 10:00 - Feb 16 14:00 Beijing Time\n- Expected impact: Intermittent errors (2-5%), possible latency increase\n- Services affected: Web application, media streaming\n- Our preparation: Increased timeouts, monitoring, rollback plan ready\n- Emphasize proactive measures and monitoring\n\nKeep brief and professional. Send draft to CTO for review by Feb 10 morning.\n\nRelated: OBSN-9 runbook, Fossify Notes impact assessment",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-10",
+    "tags": [
+      "customer-communication",
+      "maintenance",
+      "cdn"
+    ],
+    "created_at": "2026-02-09T14:55:00+08:00"
+  },
+  {
+    "task_id": "TODO-507",
+    "title": "Run health check regression suite before CDN maintenance",
+    "description": "T-2h before CloudInfra CDN maintenance (Feb 15 08:00), run full health check regression suite to establish baseline.\n\nScheduler job: JOB-702\n\nVerify:\n- All services passing health checks\n- No existing issues that could confuse maintenance monitoring\n- Origin server capacity headroom >40%\n\nDocument baseline metrics for comparison during maintenance window.\n\nRelated: OBSN-9 runbook section 'T-2h Pre-Maintenance'",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-15",
+    "tags": [
+      "testing",
+      "maintenance-prep",
+      "monitoring"
+    ],
+    "created_at": "2026-02-09T14:28:00+08:00"
+  },
+  {
+    "task_id": "TODO-508",
+    "title": "Review CloudInfra database maintenance runbook with CTO",
+    "description": "Schedule review meeting with Wang Ming to confirm runbook OBSN-12 is complete. Need approval on rollback criteria (5% vs 10% error rate threshold) and customer notification scope (Premium only vs all tiers).",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-04-03",
+    "tags": [
+      "maintenance",
+      "runbook",
+      "cto-review"
+    ],
+    "created_at": "2026-04-02T22:45:00+08:00"
+  },
+  {
+    "task_id": "TODO-509",
+    "title": "Send T-48h maintenance notifications to Premium customers",
+    "description": "Email CUS-102 (数据云科技), CUS-104 (CloudInfra Technologies), CUS-105 about CloudInfra database maintenance window April 8-9. Include expected impact, maintenance window details, and support contact.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-06",
+    "tags": [
+      "customer-communication",
+      "maintenance",
+      "premium"
+    ],
+    "created_at": "2026-04-02T23:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-510",
+    "title": "Run health check regression suite before DB maintenance",
+    "description": "Execute JOB-702 health check regression suite at T-24 hours (April 7, 10:00 CST). Verify all dependent services (API Gateway, Analytics Pipeline, User Management) pass connection retry tests.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-07",
+    "tags": [
+      "testing",
+      "maintenance",
+      "pre-flight"
+    ],
+    "created_at": "2026-04-02T23:10:00+08:00"
+  },
+  {
+    "task_id": "TODO-511",
+    "title": "Update Grafana dashboard for DB maintenance monitoring",
+    "description": "Add temporary annotations to Production DB Connections dashboard for maintenance window. Adjust alert thresholds: connection failures >5% (from >1%), API errors >3% (from >0.5%).",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-07",
+    "tags": [
+      "monitoring",
+      "grafana",
+      "maintenance"
+    ],
+    "created_at": "2026-04-02T23:25:00+08:00"
+  },
+  {
+    "task_id": "TODO-512",
+    "title": "Prepare Redis failover runbook for installation window",
+    "description": "Document step-by-step procedure for failing over to redis-slave-01 during hardware replacement on 2026-04-03. Include rollback steps and verification checklist.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-03",
+    "tags": [
+      "redis",
+      "runbook",
+      "incident-prep"
+    ],
+    "created_at": "2026-04-02T15:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-513",
+    "title": "Update hardware inventory tracking in Obsidian",
+    "description": "Add redis-prod-01 memory replacement to hardware maintenance log. Update server component inventory with new RAM module serial number after installation.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-04",
+    "tags": [
+      "documentation",
+      "inventory"
+    ],
+    "created_at": "2026-04-02T15:35:00+08:00"
+  },
+  {
+    "task_id": "TODO-512",
+    "title": "Respond to CTO deployment request with technical assessment",
+    "description": "Provide CTO Wang Ming with evidence-based deployment timeline based on current system health, DB migration status, and health check results. Propose alternative window if tonight is not feasible.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-04-02",
+    "tags": [
+      "urgent",
+      "deployment",
+      "cto"
+    ],
+    "created_at": "2026-04-02T18:50:00+08:00"
+  },
+  {
+    "task_id": "TODO-513",
+    "title": "Monitor DB migration completion and system stabilization",
+    "description": "Watch db_migration_user_preferences job until completion (ETA 20:00), then verify system load and P95 latency return to baseline before making final deployment decision",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-02",
+    "tags": [
+      "monitoring",
+      "database",
+      "deployment"
+    ],
+    "created_at": "2026-04-02T18:52:00+08:00"
+  },
+  {
+    "task_id": "TODO-514",
+    "title": "Verify health check regression suite results",
+    "description": "Review complete health_check_regression_suite results when job finishes (ETA 19:30). Ensure all tests pass before committing to deployment window.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-02",
+    "tags": [
+      "testing",
+      "health-check",
+      "deployment"
+    ],
+    "created_at": "2026-04-02T18:53:00+08:00"
+  },
+  {
+    "task_id": "TODO-515",
+    "title": "Update rate-limiting deployment runbook with lessons learned",
+    "description": "After deployment decision, update runbook with additional prerequisite: verify no conflicting DB migrations scheduled during deployment window",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-03",
+    "tags": [
+      "documentation",
+      "runbook"
+    ],
+    "created_at": "2026-04-02T18:55:00+08:00"
+  }
+]

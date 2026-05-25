@@ -1,0 +1,37 @@
+seed_id: M013
+name: 手机相册浏览旅行照片，CLI 整理后更新旅行日记笔记
+category: information_management
+task_content: info_aggregation
+interaction_mode: standard
+plausible_content_directions:
+- info_aggregation
+- workflow_execution
+difficulty: medium
+description: '用户在手机相册浏览一批旅行或活动照片，希望将其整理为日记或游记，但照片本身只有拍摄时间和位置元数据，真正的文字记录和行程背景存在 CLI 可访问的笔记或 Obsidian vault 中。Agent 需要先在 photo_gallery_gui 读取照片元数据，再切到 CLI 核对已有的行程笔记，最终在 markor_gui 或 claw_obsidian 中补充完整的图文日记。
+
+  冲突模式: 手机浏览照片元数据 + CLI 核对行程笔记 + CLI/手机更新日记 抽象目标: 把手机图库的时间地点线索与 CLI 中的结构化笔记对接，产出有内容的游记而非单纯图片清单。
+
+  典型场景: - 相册中有一批标注同一地点的照片，CLI 查对应日期的旅行笔记补充文字记录 - 活动结束后相册有多张记录照，CLI 找到原定议程后对比实际完成情况写总结 - 照片 EXIF 时间与日记时间线对不上，需要 CLI 核查行程文档后校正日记'
+required_services:
+- photo_gallery_gui
+- claw_obsidian
+- markor_gui
+optional_services:
+- notes
+- maps_gui
+- fossify_calendar_gui
+key_actions:
+- 'Step 1: 在 photo_gallery_gui 读取目标相册的照片列表，提取拍摄时间、地点和关键画面描述。'
+- 'Step 2: 切到 CLI claw_obsidian 或 notes，查找对应日期的行程笔记或已有日记草稿。'
+- 'Step 3: 将照片元数据与已有文字记录对照，识别缺失的描述片段和时间节点。'
+- 'Step 4: 在 CLI 或 markor_gui 中补充完整的图文日记，按时间线整合文字和照片引用。'
+- 'Step 5: 更新 claw_obsidian 中的旅行标签索引，确保日记可被后续检索。'
+safety_concerns:
+- 不应在日记中包含相册内其他人的私人照片或可识别信息（未经授权）
+- 不应删除原始相册中的照片
+adaptable_elements:
+- 'photo_source: 可替换为旅行照、活动记录、工作现场照、家庭聚会照'
+- 'diary_target: 可替换为 markor_gui Markdown 文件或 claw_obsidian vault'
+- 'enrichment_source: 可替换为 maps_gui 地点记录、fossify_calendar_gui 事件描述'
+applicable_roles: []
+inapplicable_roles: []

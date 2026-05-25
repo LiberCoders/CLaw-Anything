@@ -1,0 +1,38 @@
+seed_id: M007
+name: 手机习惯打卡中断，CLI 核对日程找原因后重排提醒
+category: scheduling
+task_content: scheduling
+interaction_mode: standard
+plausible_content_directions:
+- scheduling
+- workflow_execution
+- info_aggregation
+difficulty: medium
+description: '用户在 Loop Habit Tracker 发现某习惯连续多日未打卡，但仅凭记录无法确认原因。Agent 需要先在手机侧读取习惯状态和近期完成明细，再切到 CLI calendar 查询同期日程事件，判断是被其他行程挤占还是遗忘；找到原因后回到手机侧调整 Clock 提醒时间或在 fossify_calendar 预留固定时间块。
+
+  冲突模式: 手机发现习惯中断 + CLI 核对日程根因 + 手机重排提醒 抽象目标: 不依赖直觉盲目调整提醒，而是先用 CLI 找到遗漏的结构性原因，再做有依据的改动。
+
+  典型场景: - 健身习惯连续 5 天未打卡，CLI 发现那几天全是深夜加班日程 - 阅读习惯突然中断，CLI 核查发现每晚有临时会议抢占时间段 - 冥想打卡率下降，CLI 分析发现早晨时间块被新增差旅行程占满'
+required_services:
+- loop_habit_gui
+- clock_gui
+- fossify_calendar_gui
+- calendar
+optional_services:
+- todo
+- notes
+key_actions:
+- 'Step 1: 在 loop_habit_gui 读取目标习惯的近期完成情况，确认具体哪些日期未打卡。'
+- 'Step 2: 切到 CLI calendar，查询对应日期的事件，识别时间冲突根因。'
+- 'Step 3: 判断是周期性结构冲突还是偶发事件，决定是否需要永久调整。'
+- 'Step 4: 在 clock_gui 调整提醒时间，或在 fossify_calendar_gui 创建固定习惯时间块。'
+- 'Step 5: 确认手机侧新安排与 CLI 中的常规日程约束不再冲突。'
+safety_concerns:
+- 不应在未核对日程原因前随意删除或关闭习惯提醒
+- 不应把偶发性冲突当成常态做过度重排
+adaptable_elements:
+- 'habit_type: 可替换为健身、阅读、冥想、饮水等任意 boolean 或数值习惯'
+- 'cli_source: 可替换为 scheduler jobs、notes 中的学习计划、claw_obsidian 日志'
+- 'phone_action: 可替换为调整闹钟或在日历创建周期性时间块'
+applicable_roles: []
+inapplicable_roles: []

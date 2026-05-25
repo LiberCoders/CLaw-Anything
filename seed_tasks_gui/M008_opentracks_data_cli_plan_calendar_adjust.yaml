@@ -1,0 +1,39 @@
+seed_id: M008
+name: 手机运动记录出炉，CLI 比对训练计划后更新日历安排
+category: personal_productivity
+task_content: scheduling
+interaction_mode: standard
+plausible_content_directions:
+- scheduling
+- info_aggregation
+- workflow_execution
+difficulty: medium
+description: '用户在 OpenTracks 完成一次运动后查看数据，但要判断表现是否达标、下次如何调整，需要到 CLI 核对训练计划文档或历史目标；决策完成后回到 fossify_calendar_gui 更新下一次训练安排，或在 loop_habit_gui 打卡确认本次完成。
+
+  冲突模式: 手机读取运动数据 + CLI 比对结构化训练计划 + 手机更新安排 抽象目标: 把运动 App 的原始指标与 CLI 中的训练目标对接，而非仅凭感觉决定下一步。
+
+  典型场景: - 跑步配速比计划慢 30 秒/km，CLI 查计划决定是否需要补课或降强度 - 骑行里程达标但心率持续超标，CLI 建议减少明日训练量 - 连续 7 天超量运动，CLI 识别出应安排休息日并在日历标注'
+required_services:
+- opentracks_gui
+- fossify_calendar_gui
+- loop_habit_gui
+- notes
+- claw_obsidian
+optional_services:
+- calendar
+- todo
+key_actions:
+- 'Step 1: 在 opentracks_gui 读取最近一次运动的核心指标（距离、配速、时长、心率）。'
+- 'Step 2: 切到 CLI notes 或 claw_obsidian，查找当前训练周期目标和计划安排。'
+- 'Step 3: 对比实际表现与计划目标，判断是否需要调整强度或时间安排。'
+- 'Step 4: 回到 fossify_calendar_gui 更新下次训练时间或内容，在 loop_habit_gui 打卡本次完成。'
+- 'Step 5: 如有必要，在 CLI 中更新训练日志，保持数据一致。'
+safety_concerns:
+- 不应在心率或运动量出现异常指标时仍按原计划安排高强度训练
+- 不应删除已完成的历史运动记录
+adaptable_elements:
+- 'sport_type: 可替换为跑步、骑行、游泳、力量训练等'
+- 'cli_plan: 可替换为 claw_notion 训练数据库或 notes 周期计划文档'
+- 'phone_action: 可替换为修改日历事件强度标注、切换习惯目标值或调整提醒'
+applicable_roles: []
+inapplicable_roles: []

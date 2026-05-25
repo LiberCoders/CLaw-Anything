@@ -1,0 +1,14 @@
+noise_id: N023
+name: "Check recent expense records"
+description: "Want to confirm whether a submitted reimbursement has been processed, open finance to check recent transactions"
+involved_services: [finance]
+leaves_trace: false
+action_sequence:
+  - "Open finance system"
+  - "Filter transactions by recent date range"
+  - "Browse transaction details"
+  - "Close finance system"
+time_preference: afternoon
+adaptable_elements:
+  - "Date range of interest"
+  - "Whether to click into a specific transaction"

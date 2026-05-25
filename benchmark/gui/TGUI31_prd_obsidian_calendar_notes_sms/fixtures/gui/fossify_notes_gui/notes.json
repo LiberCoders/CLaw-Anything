@@ -1,0 +1,97 @@
+[
+  {
+    "note_id": "1",
+    "title": "待办 - 数据请求响应 2026-01-09",
+    "content": "📋 王磊数据请求 - Q1留存漏斗\n\n收到时间：2026-01-09 15:32\n请求方：王磊（数据分析组）\n用途：明天规划会\n\n需要提供：\n✓ Q1用户留存数据（D1/D7/D30）\n✓ 按渠道拆分（重点：社交分享）\n✓ 漏斗关键节点流失率\n\n数据源：\n/data/analytics/retention/2026-Q1/aggregated/retention_summary_20260106.json\n\n下一步：\n1. CLI验证数据版本（确认是v3不是测试版）\n2. 提取关键指标整理成手机可读格式\n3. 通过短信发送摘要\n4. Obsidian记录交付日志\n\n⏰ 截止：今晚22:00前完成",
+    "created_at": "2026-01-09T15:40:00+08:00",
+    "last_modified": "2026-01-09T15:40:00+08:00",
+    "tags": [
+      "urgent",
+      "data-request",
+      "q1"
+    ]
+  },
+  {
+    "note_id": "2",
+    "title": "本周待办清单 2026-W02",
+    "content": "# Week 2 Todo List\n\n## 高优先级\n- [ ] 回复王磊数据请求（今晚）\n- [ ] 完成PRD剩余章节（需求评审明天）\n- [ ] 处理Sprint排期冲突（老板新需求）\n\n## 中优先级\n- [ ] 跟进A/B实验配置报错\n- [ ] 整理周报数据\n- [ ] 更新产品路线图\n\n## 低优先级\n- [ ] 清理Obsidian笔记结构\n- [ ] 学习新的数据分析工具\n\n---\n加班预计到22:00",
+    "created_at": "2026-01-06T10:00:00+08:00",
+    "last_modified": "2026-01-09T15:42:00+08:00",
+    "tags": [
+      "weekly",
+      "todo"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "数据交付记录 - 2026-02-01 运营部留存数据",
+    "content": "## 数据请求响应记录\n\n**日期**: 2026-02-01\n**请求方**: 刘婷 (运营部组长)\n**交付内容**: 社交分享渠道留存数据\n\n### 验证步骤\n✓ 检查 scheduler job JOB-704 执行状态 (成功)\n✓ 确认生产环境输出路径\n✓ 交叉验证实验配置文档\n✓ 提取关键指标并格式化\n\n### 交付数据\n- 实验版本: v2.3_social_share_prod\n- 时间窗口: 2026-01-15 至 2026-01-31\n- Day-1 留存: 38.6%\n- Day-7 留存: 21.4%\n- 样本量: 156,800\n\n### 后续\n- 已在 Obsidian 记录完整交付日志\n- 提供了详细报告获取方式\n- 状态: 已完成 ✓\n\n---\n\n**总用时**: ~3.5小时 (含验证和格式化)\n**交付方式**: WeChat 手机端",
+    "timestamp": "2026-02-01T15:15:00+08:00",
+    "color": "#4CAF50",
+    "is_pinned": false
+  },
+  {
+    "note_id": 3,
+    "title": "Decision Archive Quick Link - Social Sharing Postponement",
+    "content": "Product Decision 2026-03-18\n\nSocial sharing feature postponed to Sprint 12 (Mar 25 start)\n\nFull decision record in Obsidian:\nProduct/Decisions/2026-03-18-social-sharing-postponement.md\n\nKey rationale:\n- Sprint 11 at 92% capacity (12/13 person-days)\n- Q1 KPI focus: retention (+15%), not acquisition\n- A/B experiment infrastructure needs stabilization first\n\nParticipants: Zhao Qiang, Zhang Hao, Wang Lei, Li Ming, Chen Xiaoyu\n\nWeChat discussion: 产品技术日常 group, Mar 18 14:23-14:38",
+    "created_at": "2026-03-18T16:50:00+08:00",
+    "last_modified": "2026-03-18T16:50:00+08:00",
+    "color_hex": "#4CAF50"
+  },
+  {
+    "note_id": "FNOT-203",
+    "title": "Morning Check 2026-04-02",
+    "content": "# Morning Workflow Check - 2026-04-02\n\n## Overnight Jobs Status\n- [ ] user_retention_funnel_analysis - CHECK LOGS\n- [ ] ab_experiment_config_validator - CHECK LOGS\n- [ ] daily_kpi_dashboard_sync - CHECK LOGS\n\n## High Priority Items\n- [ ] Review WeChat urgent messages\n- [ ] Check calendar for today's meetings\n- [ ] Assess sprint capacity impact\n\n## Decisions Needed\n- Adjust calendar if jobs failed?\n- Send coordination messages to dev team?\n- Postpone non-critical meetings?",
+    "created_at": "2026-04-02T09:30:00+08:00",
+    "updated_at": "2026-04-02T09:30:00+08:00",
+    "color": "#FF6F00",
+    "tags": [
+      "morning-check",
+      "workflow"
+    ],
+    "checklist": true
+  },
+  {
+    "note_id": "FNOT-204",
+    "title": "Sprint Blocker - A/B Config Error",
+    "content": "# A/B Experiment Config Error - 2026-04-02\n\n## Issue\nJob: ab_experiment_config_validator\nStatus: FAILED at 03:00\n\nError: ConfigValidationError\nFile: /configs/experiments/social_sharing_viral_v1.json\nLine: 23\nMissing: control_group_ratio (expected float 0.0-1.0, got null)\n\n## Impact\n- Blocks social sharing feature A/B test\n- Dev team waiting for fix\n- Boss urgent request for this sprint\n\n## Action Plan\n1. Fix config file - add control_group_ratio: 0.5\n2. Re-run validator manually\n3. Notify Zhang Hao (Dev Lead) via WeChat\n4. Update sprint board",
+    "created_at": "2026-04-02T09:35:00+08:00",
+    "updated_at": "2026-04-02T09:35:00+08:00",
+    "color": "#D32F2F",
+    "tags": [
+      "blocker",
+      "ab-test",
+      "urgent"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-205",
+    "title": "PRD Blocker - Strategic Misalignment (URGENT)",
+    "content": "## Issue Discovered: 2026-04-02 18:20\n\n**Problem**: Social sharing PRD (OBSN-7) Section 3 proposes acquisition-focused viral sharing mechanism\n\n**Conflict**: Q1 OKR (OBSN-10) explicitly prioritizes RETENTION over acquisition. Social/viral deferred to Q2.\n\n**Impact**: \n- Feature won't move Q1 KPIs (Day-7 retention 25%, repeat purchase 40%)\n- Wastes sprint capacity on off-strategy work\n- Review meeting tomorrow 10am - need fix ASAP\n\n**Resolution**:\n✅ Located OKR doc (OBSN-10) - confirmed retention focus\n✅ Messaged Li Jing (Design Lead) via Fossify Messages at 18:30\n✅ Agreed to reframe as retention tool (share-for-rewards model)\n✅ Li Jing updating wireframes tonight\n✅ I'm revising PRD sections 4-5 tonight\n✅ Pre-review sync scheduled 9am tomorrow\n\n**For Standup**:\n- Blocker resolved\n- PRD will be ready for review\n- Strategy now aligned with Q1 OKR",
+    "created_at": "2026-04-02T18:50:00+08:00",
+    "updated_at": "2026-04-02T19:50:00+08:00",
+    "color": "#E53935",
+    "tags": [
+      "urgent",
+      "blocker",
+      "prd",
+      "strategy"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-206",
+    "title": "Q1 KPI Tracking - Week 13",
+    "content": "## Week Ending 2026-03-30\n\n**Day-7 Retention**: 22.1% (target 25%)\n- Up from 21.3% last week\n- Still 2.9pp short of Q1 goal\n- Recommendation engine launch helping\n\n**Repeat Purchase Rate**: 37.2% (target 40%)\n- Up from 35.8%\n- 2.8pp to go\n- Loyalty program v2 launching next week\n\n**30-Day Churn Reduction**: -11% (target -15%)\n- Good progress\n- Push notification optimization showing results\n\n**Status**: On track but tight. Need to stay focused on retention initiatives.",
+    "created_at": "2026-03-31T16:00:00+08:00",
+    "updated_at": "2026-03-31T16:30:00+08:00",
+    "color": "#43A047",
+    "tags": [
+      "kpi",
+      "tracking",
+      "q1"
+    ],
+    "checklist": false
+  }
+]

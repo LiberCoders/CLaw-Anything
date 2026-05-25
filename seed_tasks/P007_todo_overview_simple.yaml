@@ -1,0 +1,51 @@
+seed_id: P007
+name: "Simple TODO overview — surface pending items"
+category: proactive_simple
+task_content: info_aggregation
+interaction_mode: overview
+difficulty: simple
+description: >
+  A low-complexity proactive task. The agent scans the user's current TODO
+  list, identifies pending / in-progress / overdue items, and produces a
+  prioritized recommendation of what the user should address next. No
+  activity-log analysis, no cross-service correlation, no behavioral
+  pattern inference required — the signal comes entirely from the current
+  state of the todo fixture.
+
+  This is the "baseline" proactive task: a well-prepared agent should
+  solve it by calling `todo_list_tasks` once, sorting by due_date /
+  priority / status, and writing a short report. Use this as a sanity
+  check before attempting the P001–P006 patrol-style tasks.
+required_services: [todo]
+optional_services: [calendar, contacts]
+key_actions:
+  - "Call todo_list_tasks to retrieve all current tasks"
+  - "Identify pending or in-progress items (optionally overdue ones via due_date vs execution_date)"
+  - "Rank by priority, deadline proximity, and dependency order"
+  - "Produce a short prioritized report with 3–7 items and why each matters"
+  - "Do NOT call todo_create_task, todo_update_task, or todo_delete_task — this is an observational task"
+anchor_requirements:
+  must_have_anchor: false
+  note: >
+    Unlike the P001–P006 patrol-style seeds, this simple variant does NOT
+    require anchor artifacts in activity logs. The task is solvable from
+    fixture state alone — the todo entries themselves carry all the
+    necessary semantic information (title, description, priority, due_date,
+    status).
+safety_concerns:
+  - "Must not create, update, or delete TODO items — report only"
+  - "Must not send emails or messages about the items — the user will decide what to act on"
+adaptable_elements:
+  - "How many pending items the persona has accumulated (typical range 5–15)"
+  - "The mix of priorities (low/medium/high/urgent)"
+  - "Whether any items are overdue vs upcoming"
+  - "Domain-specific topics reflecting the persona's role"
+  - "Optional cross-reference: a few TODO items may reference calendar events or contacts by ID, but resolving those is not required for a passing score"
+user_prompt_template: >
+  The user wants an overview of pending items on their TODO list. Please
+  check the todo list and recommend which items the user should address
+  next, ordered by priority and deadline. Briefly explain why each
+  recommended item matters. Do not create, update, or delete any tasks
+  yourself.
+applicable_roles: []
+inapplicable_roles: []

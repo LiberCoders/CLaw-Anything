@@ -1,0 +1,364 @@
+[
+  {
+    "job_id": "JOB-701",
+    "name": "monthly_revenue_report",
+    "description": "Generate monthly revenue report for SaaS customers - aggregates billing data and sends PDF via email",
+    "cron_expression": "0 2 1 * *",
+    "enabled": true,
+    "last_status": "failed",
+    "last_run": "2026-02-19T14:23:45+08:00",
+    "action": "generate_revenue_report",
+    "created_by": "Wei Chenghao",
+    "tags": [
+      "saas",
+      "billing",
+      "reports"
+    ],
+    "notes": "Runs on the 1st of each month at 2 AM. Customers: Lianhua Tech, Dongfang Trading",
+    "execution_history": [
+      {
+        "run_time": "2026-02-19T14:23:45+08:00",
+        "status": "failed",
+        "duration_seconds": 8,
+        "notes": "Connection timeout to data source mysql://saas-db.chenghao-studio.com:3306"
+      },
+      {
+        "run_time": "2026-02-18T02:00:00+08:00",
+        "status": "failed",
+        "duration_seconds": 12,
+        "notes": "Connection refused - data source unreachable"
+      },
+      {
+        "run_time": "2026-02-17T02:00:00+08:00",
+        "status": "failed",
+        "duration_seconds": 9,
+        "notes": "Timeout connecting to mysql://saas-db.chenghao-studio.com:3306"
+      },
+      {
+        "run_time": "2026-02-16T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 145,
+        "notes": "Report generated successfully, sent to 2 customers"
+      },
+      {
+        "run_time": "2026-02-15T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 138,
+        "notes": ""
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-702",
+    "name": "daily_backup",
+    "description": "Daily backup of all project repositories and database snapshots to Aliyun OSS",
+    "cron_expression": "0 4 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-02-19T04:00:00+08:00",
+    "action": "backup_to_oss",
+    "created_by": "Wei Chenghao",
+    "tags": [
+      "backup",
+      "maintenance"
+    ],
+    "notes": "Runs daily at 4 AM, typically takes 15-20 minutes",
+    "execution_history": [
+      {
+        "run_time": "2026-02-19T04:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1024,
+        "notes": "Backed up 3 projects, total 2.3GB"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-703",
+    "name": "ecommerce_miniapp_deploy",
+    "description": "Automated deployment pipeline for Zhang's e-commerce miniapp to WeChat production environment",
+    "cron_expression": "",
+    "enabled": false,
+    "last_status": "success",
+    "last_run": "2026-02-12T23:15:00+08:00",
+    "action": "deploy_miniapp",
+    "created_by": "Wei Chenghao",
+    "tags": [
+      "deployment",
+      "ecommerce",
+      "zhang-zong"
+    ],
+    "notes": "Manual trigger only - disabled until requirements stabilize",
+    "execution_history": [
+      {
+        "run_time": "2026-02-12T23:15:00+08:00",
+        "status": "success",
+        "duration_seconds": 320,
+        "notes": "Deployed version 0.8.2 to production"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-704",
+    "name": "saas_report_generation",
+    "description": "Daily report generation for SaaS platform clients",
+    "cron_expression": "0 3 * * *",
+    "enabled": true,
+    "last_status": "failed",
+    "last_run": "2026-04-02T03:00:00+08:00",
+    "action": "generate_client_reports",
+    "created_by": "Wei Chenghao",
+    "tags": [
+      "saas",
+      "reports",
+      "daily"
+    ],
+    "notes": "Generates daily business reports for all active SaaS clients. Connects to RDS instance for data extraction.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T03:00:00+08:00",
+        "status": "failed",
+        "duration_seconds": 45,
+        "notes": "Error: connection pool exhausted - max_connections limit reached. Client Li Qiang affected."
+      },
+      {
+        "run_time": "2026-04-01T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 320,
+        "notes": "All reports generated successfully"
+      },
+      {
+        "run_time": "2026-03-31T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 305,
+        "notes": ""
+      },
+      {
+        "run_time": "2026-03-30T03:00:00+08:00",
+        "status": "failed",
+        "duration_seconds": 52,
+        "notes": "Error: connection timeout - database connection pool issue suspected"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-705",
+    "name": "datalytics_usage_monitor",
+    "description": "Monitor DataLytics Cloud API usage and log metrics for cost analysis",
+    "cron_expression": "0 2 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-01T02:00:00+08:00",
+    "action": "fetch_datalytics_metrics",
+    "created_by": "Wei Chenghao",
+    "tags": [
+      "monitoring",
+      "saas",
+      "cost-tracking"
+    ],
+    "notes": "Runs daily at 2 AM to fetch previous day's API usage from DataLytics Cloud. Logs stored in /var/log/datalytics-usage/",
+    "execution_history": [
+      {
+        "run_time": "2026-04-01T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 12,
+        "notes": "API calls: 4,187 (41.9% of quota)"
+      },
+      {
+        "run_time": "2026-03-31T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 11,
+        "notes": "API calls: 4,203 (42.0% of quota)"
+      },
+      {
+        "run_time": "2026-03-30T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 13,
+        "notes": "API calls: 4,156 (41.6% of quota)"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-706",
+    "name": "datalytics_usage_monitor",
+    "description": "Daily monitor of DataLytics API usage and data transfer for cost tracking",
+    "cron_expression": "0 2 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-01T02:00:00+08:00",
+    "action": "fetch_datalytics_metrics",
+    "created_by": "Wei Chenghao",
+    "tags": [
+      "monitoring",
+      "cost-tracking",
+      "datalytics"
+    ],
+    "notes": "Fetches daily API call count and data transfer volume from DataLytics API, appends to local log file for monthly cost analysis",
+    "execution_history": [
+      {
+        "run_time": "2026-04-01T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 8,
+        "notes": "Q1 summary: Total API calls: 487,320 | Total data transfer: 42.3GB | Avg daily calls: 5,415"
+      },
+      {
+        "run_time": "2026-03-31T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 7,
+        "notes": "March 31: API calls: 6,120 | Data transfer: 1.8GB"
+      },
+      {
+        "run_time": "2026-03-30T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 9,
+        "notes": "March 30: API calls: 4,890 | Data transfer: 1.2GB"
+      },
+      {
+        "run_time": "2026-03-29T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 6,
+        "notes": "March 29: API calls: 5,240 | Data transfer: 1.5GB"
+      },
+      {
+        "run_time": "2026-03-01T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 7,
+        "notes": "February summary: Total API calls: 158,940 | Total data transfer: 13.7GB"
+      },
+      {
+        "run_time": "2026-02-01T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 8,
+        "notes": "January summary: Total API calls: 162,180 | Total data transfer: 14.1GB"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-707",
+    "name": "weekly_service_health_check",
+    "description": "Weekly health check of all third-party service integrations",
+    "cron_expression": "0 3 * * 1",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-31T03:00:00+08:00",
+    "action": "check_service_health",
+    "created_by": "Wei Chenghao",
+    "tags": [
+      "monitoring",
+      "health-check"
+    ],
+    "notes": "Checks response times and error rates for DataLytics, Aliyun OSS, WeChat API, and other integrations",
+    "execution_history": [
+      {
+        "run_time": "2026-03-31T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 42,
+        "notes": "All services healthy. DataLytics avg response: 180ms, Aliyun OSS: 95ms, WeChat API: 220ms"
+      },
+      {
+        "run_time": "2026-03-24T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 38,
+        "notes": "All services healthy. DataLytics avg response: 175ms"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-708",
+    "name": "saas_report_generation_manual_test",
+    "description": "Manual test run of report generation after DataLytics tier upgrade to verify resolution",
+    "cron_expression": "",
+    "enabled": false,
+    "last_status": "success",
+    "last_run": "2026-03-31T23:30:00+08:00",
+    "action": "generate_saas_reports",
+    "created_by": "Wei Chenghao",
+    "tags": [
+      "saas",
+      "manual-test",
+      "troubleshooting"
+    ],
+    "notes": "One-time manual execution to verify DataLytics API rate limit fix after tier upgrade. Completed successfully in 14 minutes with all 15 batch calls succeeding.",
+    "execution_history": [
+      {
+        "run_time": "2026-03-31T23:30:00+08:00",
+        "status": "success",
+        "duration_seconds": 840,
+        "notes": "Manual test after DataLytics Professional tier upgrade. All API calls succeeded. Quota usage: 1420/5000 calls. Report generation completed for all active clients."
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-709",
+    "name": "saas_report_generation",
+    "description": "Generate daily analytics reports for SaaS platform subscribers",
+    "cron_expression": "0 3 * * *",
+    "enabled": true,
+    "last_status": "failed",
+    "last_run": "2026-04-02T03:15:00+08:00",
+    "action": "generate_saas_reports",
+    "created_by": "Wei Chenghao",
+    "tags": [
+      "saas",
+      "reports",
+      "daily"
+    ],
+    "notes": "Runs daily at 3 AM, generates reports for all active subscribers. Connects to DataLytics API for data aggregation.",
+    "execution_history": [
+      {
+        "run_time": "2026-03-30T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 245,
+        "notes": "All 8 subscriber reports generated successfully"
+      },
+      {
+        "run_time": "2026-03-31T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 238,
+        "notes": "All 8 subscriber reports generated successfully"
+      },
+      {
+        "run_time": "2026-04-01T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 252,
+        "notes": "All 8 subscriber reports generated successfully"
+      },
+      {
+        "run_time": "2026-04-02T03:15:00+08:00",
+        "status": "failed",
+        "duration_seconds": 12,
+        "notes": "Connection timeout: DataLytics API endpoint unreachable. Error: Connection refused at api.datalytics-cloud.com:443"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-710",
+    "name": "weekly_client_invoice_reminder",
+    "description": "Send automated invoice reminders to clients with pending payments",
+    "cron_expression": "0 10 * * 1",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-31T10:00:00+08:00",
+    "action": "send_invoice_reminders",
+    "created_by": "Wei Chenghao",
+    "tags": [
+      "finance",
+      "invoicing",
+      "weekly"
+    ],
+    "notes": "Runs every Monday at 10 AM, checks for invoices overdue by more than 7 days",
+    "execution_history": [
+      {
+        "run_time": "2026-03-24T10:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 18,
+        "notes": "2 reminders sent: Dongfang Trading, another client"
+      },
+      {
+        "run_time": "2026-03-31T10:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 15,
+        "notes": "1 reminder sent: Dongfang Trading milestone 2 payment"
+      }
+    ]
+  }
+]

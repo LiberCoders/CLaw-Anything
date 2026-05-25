@@ -1,0 +1,14 @@
+noise_id: N029
+name: "Review todo completion progress"
+description: "Open the todo list to review what's done and what's still pending, mentally track progress"
+involved_services: [todo]
+leaves_trace: false
+action_sequence:
+  - "Open todo list"
+  - "Filter to view completed tasks"
+  - "Switch to view pending tasks"
+  - "Close todo list"
+time_preference: evening
+adaptable_elements:
+  - "Category of todos to focus on"
+  - "Whether any pending item causes concern"

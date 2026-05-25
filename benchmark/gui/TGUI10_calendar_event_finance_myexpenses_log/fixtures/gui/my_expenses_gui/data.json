@@ -1,0 +1,73 @@
+{
+  "accounts": [
+    {
+      "account_id": "ACC-1001",
+      "name": "招商银行储蓄卡",
+      "type": "checking",
+      "currency": "CNY",
+      "initial_balance": 50000.00
+    },
+    {
+      "account_id": "ACC-1002",
+      "name": "支付宝",
+      "type": "digital_wallet",
+      "currency": "CNY",
+      "initial_balance": 3000.00
+    }
+  ],
+  "categories": [
+    {"category_id": "CAT-01", "name": "餐饮", "type": "expense", "icon": "restaurant"},
+    {"category_id": "CAT-02", "name": "交通", "type": "expense", "icon": "directions_car"},
+    {"category_id": "CAT-03", "name": "商务招待", "type": "expense", "icon": "business"},
+    {"category_id": "CAT-04", "name": "办公用品", "type": "expense", "icon": "work"},
+    {"category_id": "CAT-05", "name": "咨询收入", "type": "income", "icon": "attach_money"}
+  ],
+  "payees": [
+    {"payee_id": "PAY-001", "name": "滴滴出行"},
+    {"payee_id": "PAY-002", "name": "星巴克"},
+    {"payee_id": "PAY-003", "name": "和平饭店"},
+    {"payee_id": "PAY-004", "name": "全家便利店"}
+  ],
+  "transactions": [
+    {
+      "transaction_id": "TRX-1001",
+      "date": "2026-04-27",
+      "account_id": "ACC-1001",
+      "category_id": "CAT-02",
+      "payee_id": "PAY-001",
+      "amount": -45.00,
+      "description": "打车去客户公司",
+      "notes": ""
+    },
+    {
+      "transaction_id": "TRX-1002",
+      "date": "2026-04-27",
+      "account_id": "ACC-1002",
+      "category_id": "CAT-01",
+      "payee_id": "PAY-002",
+      "amount": -38.00,
+      "description": "星巴克午餐",
+      "notes": ""
+    },
+    {
+      "transaction_id": "TRX-1003",
+      "date": "2026-04-25",
+      "account_id": "ACC-1001",
+      "category_id": "CAT-04",
+      "payee_id": "PAY-004",
+      "amount": -156.00,
+      "description": "办公用品采购",
+      "notes": ""
+    },
+    {
+      "transaction_id": "TRX-1004",
+      "date": "2026-04-23",
+      "account_id": "ACC-1001",
+      "category_id": "CAT-05",
+      "payee_id": null,
+      "amount": 15000.00,
+      "description": "NovaBridge Q2 咨询费到账",
+      "notes": ""
+    }
+  ]
+}

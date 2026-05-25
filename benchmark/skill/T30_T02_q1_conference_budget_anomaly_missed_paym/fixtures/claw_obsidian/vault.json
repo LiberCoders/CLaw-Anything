@@ -1,0 +1,708 @@
+[
+  {
+    "note_id": "OBSN-1",
+    "title": "EBA Technical Standards - March 2026 Revision",
+    "folder": "Regulatory/Basel IV",
+    "tags": [
+      "basel-iv",
+      "eba",
+      "regulatory-change"
+    ],
+    "content": "# EBA Technical Standards Update - March 18, 2026\n\n## Key Changes Impacting Model Architecture\n\n### 1. Credit Risk RWA Calculation (Article 124)\n**OLD ASSUMPTION (invalidated):**\n- SME supporting factor applied uniformly at 0.7619 across all EU jurisdictions\n- Implementation in my model: single hardcoded multiplier in `calc_credit_rwa()` function\n\n**NEW STANDARD:**\n- SME factor now jurisdiction-specific, ranging 0.70-0.85 based on national discretion\n- Requires country-level lookup table + dynamic application\n- **Impact:** Need to refactor entire SME RWA module (~25 hours estimated)\n\n### 2. Output Floor Transition (Article 465)\n**OLD ASSUMPTION (invalidated):**\n- Linear phase-in from 72.5% (2025) to 75% (2030)\n- Implementation: simple time-based interpolation\n\n**NEW STANDARD:**\n- Non-linear transition with interim steps: 72.5% (2025), 73.5% (2027), 75% (2030)\n- Banks can apply for accelerated transition if CET1 > 13%\n- **Impact:** Need conditional logic + bank-specific eligibility checks (~15 hours)\n\n## Competitor Response\n- Deutsche Bank published open-source Python model (March 25) incorporating both changes\n- GitHub: github.com/db-research/basel-iv-capital\n- Peer-reviewed by 3 external quants, modular design\n\n## Decision Point\nContinue refactoring (est. 60 more hours) vs adopt open-source (est. 10 hours integration)?",
+    "outlinks": [
+      "OBSN-2"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-19T11:30:00+01:00",
+    "last_updated": "2026-03-26T16:45:00+01:00"
+  },
+  {
+    "note_id": "OBSN-2",
+    "title": "Basel IV Model - Sunk Cost Analysis",
+    "folder": "Projects/Model Build",
+    "tags": [
+      "basel-iv",
+      "decision-analysis",
+      "sunk-cost"
+    ],
+    "content": "# Proprietary Basel IV Model - Investment Analysis\n\n## Time Invested (as of March 27, 2026)\n\n### Calendar Review\nTagged 'Model Build' blocks from Feb 10 - Mar 22:\n- 14 sessions × avg 4.2 hours = ~59 hours during work\n- Estimated evening/weekend work: ~61 hours\n- **Total: ~120 hours**\n\n## Completion Status\n\n### Functional Modules (40%)\n1. ✅ Data ingestion pipeline (bank financials from Bloomberg)\n2. ✅ Basic CET1 numerator calculation\n3. ✅ Standardized approach RWA (pre-EBA revision)\n4. ✅ Output dashboard shell\n\n### Non-Functional / Invalidated (60%)\n1. ❌ SME supporting factor logic (invalidated by EBA Article 124)\n2. ❌ Output floor transition (invalidated by EBA Article 465)\n3. ⏳ IRB approach RWA (partially built, needs SME refactor)\n4. ⏳ Stress scenario engine (30% complete)\n5. ⏳ Multi-bank comparison module (not started)\n\n## Reusable Components\n- Data cleaning scripts for 11 covered banks → portable to any model\n- Bank-specific parameter tables (leverage ratios, MREL buffers) → CSV format, framework-agnostic\n- Estimated reuse value: ~15 hours of work preserved\n\n## Continue vs Pivot Decision\nSee [[OBSN-3]] for cost-benefit analysis",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-3"
+    ],
+    "inlinks": [
+      "OBSN-1"
+    ],
+    "created_at": "2026-03-26T14:00:00+01:00",
+    "last_updated": "2026-03-27T10:30:00+01:00"
+  },
+  {
+    "note_id": "OBSN-3",
+    "title": "Decision Framework - Continue vs Pivot",
+    "folder": "Projects/Model Build",
+    "tags": [
+      "decision",
+      "cost-benefit",
+      "basel-iv"
+    ],
+    "content": "# Model Build Decision - March 27, 2026\n\n## Option A: Continue Proprietary Build\n\n### Incremental Cost\n- Refactor SME module: 25 hours\n- Refactor output floor: 15 hours\n- Complete IRB approach: 20 hours\n- Testing & validation: 10 hours\n- **Total: ~70 hours** (conservative estimate)\n\n### Probability of Success\n- Solo-built model without peer review: **medium confidence**\n- Risk: subtle errors in complex Basel formulas could undermine credibility\n- Buy-side clients expect institutional-grade robustness\n\n### Opportunity Cost\n- Marco's green taxonomy note request (3rd time!) - high priority\n- Client calls being deferred due to model work\n- Competitor mindshare loss (Deutsche already published)\n\n## Option B: Adopt Open-Source + Pivot\n\n### Incremental Cost\n- Clone & review Deutsche model: 3 hours\n- Port data cleaning scripts: 2 hours\n- Integrate bank parameter tables: 3 hours\n- Validation testing: 2 hours\n- **Total: ~10 hours**\n\n### Advantages\n- Peer-reviewed by external quants (quality signal to clients)\n- Active maintenance by Deutsche team (future EBA updates)\n- Reallocate 60 hours to:\n  - Green taxonomy thematic note (20 hours)\n  - Updated CET1 forecasts using validated model (15 hours)\n  - Client meetings & ad-hoc requests (25 hours)\n\n### Sunk Cost Mitigation\n- 15 hours of data work preserved\n- Learning value: deep Basel IV expertise retained\n- Not a total loss: ~88% of sunk cost was learning investment\n\n## Decision: PIVOT to Option B\n\n**Rationale:**\n1. Incremental cost ratio: 10h vs 70h (7x efficiency)\n2. Quality: peer-reviewed > solo-built for client credibility\n3. Strategic: reallocate to high-ROI client deliverables\n4. Risk: lower execution risk with proven framework\n\n**Next Steps:**\n- Archive proprietary model in WB-1 with documentation\n- Email Marco with revised timeline\n- Set 2-week checkpoint (Apr 10) for integration validation",
+    "outlinks": [
+      "OBSN-2"
+    ],
+    "inlinks": [
+      "OBSN-2"
+    ],
+    "created_at": "2026-03-27T13:00:00+01:00",
+    "last_updated": "2026-03-27T17:15:00+01:00"
+  },
+  {
+    "note_id": "OBSN-4",
+    "title": "Green Taxonomy Impact Note - Outline",
+    "folder": "Research/Thematic",
+    "tags": [
+      "green-taxonomy",
+      "esg",
+      "thematic"
+    ],
+    "content": "# Green Taxonomy Impact on EU Banks - Draft Outline\n\n## Client Context\nNordic ESG funds repeatedly asking for our take on ECB's April guidance. Deutsche published 2 weeks ago - we need to catch up.\n\n## Key Questions\n1. Which of our 11 covered banks have highest green asset ratio (GAR) exposure?\n2. Funding cost implications for low-GAR banks\n3. Regulatory capital treatment under Pillar 2 guidance\n\n## Data Sources\n- EBA transparency exercise (Dec 2025)\n- Bank disclosures (Q4 2025 earnings)\n- ECB draft guidance (leaked Feb 2026)\n\n## Timeline\n- Draft: Week of Apr 14\n- Review with Marco: Apr 18\n- Publish: Apr 22\n\nFinally addressing this after model pivot!",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-03-27T17:45:00+01:00",
+    "last_updated": "2026-03-27T17:45:00+01:00"
+  },
+  {
+    "note_id": "OBSN-5",
+    "title": "Desk Brief Template - Regulatory Digest",
+    "folder": "Templates/Research",
+    "tags": [
+      "template",
+      "desk-brief",
+      "regulatory",
+      "morning-read"
+    ],
+    "content": "# Regulatory Digest Template - Desk Morning Brief\n\n**Date**: [YYYY-MM-DD]  \n**Prepared by**: [Analyst Name]  \n**Distribution**: EU Banks Research Desk  \n**Time**: 7:15 AM CET\n\n---\n\n## Executive Summary\n[2-3 sentence overview of regulatory changes and immediate implications]\n\n---\n\n## Key Regulatory Updates\n\n### [Regulation/Standard Name]\n- **Source**: [EBA/ECB/National Authority]\n- **Effective Date**: [Date]\n- **One-line takeaway**: [Single sentence impact statement]\n\n**Details**:\n- Change 1: [Description]\n- Change 2: [Description]\n\n**Coverage Impact**:\n- Affected banks: [List of covered banks]\n- Model/forecast adjustments: [Specific changes needed]\n\n---\n\n## Model Implications\n\n### Capital Adequacy Models\n- **Component**: [e.g., CET1 numerator, RWA calculation]\n- **Change required**: [Specific adjustment]\n- **Priority**: [High/Medium/Low]\n\n### Valuation Impact\n- **Affected metrics**: [e.g., P/TBV multiples, ROE forecasts]\n- **Magnitude**: [Quantitative estimate if available]\n\n---\n\n## Action Items\n- [ ] Update proprietary models\n- [ ] Revise published forecasts\n- [ ] Client communication (if material)\n- [ ] Peer comparison refresh\n\n---\n\n## Related Research\n- [Link to relevant thematic notes]\n- [Link to bank-specific reports]\n\n---\n\n**Questions?** Reply to this thread or ping on internal chat.",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2025-11-20T14:00:00+01:00",
+    "last_updated": "2026-01-04T09:30:00+01:00"
+  },
+  {
+    "note_id": "OBSN-6",
+    "title": "Basel IV Digest - January 8 2026 Draft",
+    "folder": "Research/Daily Briefs",
+    "tags": [
+      "desk-brief",
+      "Basel-IV",
+      "regulatory",
+      "EBA",
+      "draft"
+    ],
+    "content": "# Basel IV Regulatory Digest - January 8, 2026\n\n**Prepared by**: Lucia Moretti  \n**Distribution**: EU Banks Research Desk (research-eu-banks@milanbank.eu)  \n**For**: Morning Brief 7:15 AM CET\n\n---\n\n## Executive Summary\nEBA's March 2026 technical standards update accelerates Basel IV implementation timeline for SME supporting factors and software intangible treatment. Key changes affect CET1 numerator calculations and RWA standardized approach, with material impact on 7 of our 11 covered banks. Output floor transition assumptions in our proprietary model require immediate revision.\n\n---\n\n## Key Regulatory Updates\n\n### EBA Basel IV Technical Standards - March 2026 Revision\n- **Source**: EBA/GL/2026/03\n- **Effective Date**: Q2 2026 (SME factor), Immediate (CET1 treatment)\n- **One-line takeaway**: Accelerated SME supporting factor recalibration reduces RWA by ~2-3% for banks with significant SME portfolios; software intangible deduction sequencing changes increase CET1 impact by 5-8 bps for tech-heavy banks.\n\n**Details**:\n- **SME Supporting Factor**: New factor 0.7366 (vs. 0.7619 previously), threshold raised to €3.0M per counterparty. Applies to standardized approach credit risk RWA.\n- **CET1 Software Intangibles**: Deduction now occurs before regulatory adjustments (vs. after), affecting net CET1 calculation for banks with significant software assets.\n- **Output Floor Transition**: 2026 floor confirmed at 50%, but stress testing guidance now requires banks to model 55% floor scenarios for Q3-Q4 2026 (originally 2027 assumption).\n\n**Coverage Impact**:\n- **High impact** (SME portfolio >15% of loans): UniCredit, Intesa Sanpaolo, Banco BPM, BPER Banca\n- **Medium impact** (software intangibles >€500M): UniCredit, Intesa Sanpaolo, Mediobanca\n- **Model adjustment priority**: HIGH - affects Q1 earnings preview models due Jan 20\n\n---\n\n## Model Implications\n\n### RWA Standardized Approach (SME Component)\n- **Component**: Credit risk RWA for SME exposures\n- **Change required**: Update supporting factor from 0.7619 to 0.7366; raise threshold to €3.0M\n- **Priority**: HIGH\n- **Impact**: ~2.5% RWA reduction for high-SME banks → +8-10 bps CET1 ratio improvement\n- **Note**: Invalidates output floor calculations in our proprietary model (ARCHIVED). Open-source Deutsche model already incorporates new parameters.\n\n### CET1 Numerator Calculation\n- **Component**: Software intangible deduction sequencing\n- **Change required**: Move deduction to pre-adjustment step\n- **Priority**: MEDIUM\n- **Impact**: -5 to -8 bps CET1 for UniCredit, Intesa, Mediobanca\n- **Note**: Affects P/TBV valuation multiples; recommend 1-2% target price adjustments\n\n### Output Floor Transition (Stress Scenarios)\n- **Component**: 2026 stress testing assumptions\n- **Change required**: Model 55% floor for H2 2026 scenarios (vs. 50% baseline)\n- **Priority**: MEDIUM\n- **Impact**: Increases stressed RWA by 8-10% for advanced IRB banks\n- **Note**: Affects stress test thematic note due February; coordinate with Sofia on scenario design\n\n---\n\n## Action Items\n- [x] Cross-reference KB-402 (EBA March 2026 update details) - DONE\n- [x] Review OBSN-1 (March 2026 revision notes) - DONE\n- [ ] Finalize digest for 7:15 AM distribution\n- [ ] Update Q1 earnings preview models (UniCredit, Intesa, BPM, BPER) by Jan 12\n- [ ] Flag P/TBV adjustments to Marco for client calls\n- [ ] Schedule model sync with Sofia (open-source integration)\n\n---\n\n## Related Research\n- Basel IV Model Build (archived) - see WB-1\n- Q1 2026 Research Pipeline - see WB-2\n- Green Taxonomy Thematic Note (in progress) - OBSN-4\n\n---\n\n**Status**: DRAFT - ready for final review before 7:00 AM send",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-4"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-07T18:30:00+01:00",
+    "last_updated": "2026-01-08T06:45:00+01:00"
+  },
+  {
+    "note_id": "OBSN-7",
+    "title": "BPM Merger Speculation - Credibility Tracking (Jan 28 2026)",
+    "folder": "Research/Market Intelligence",
+    "tags": [
+      "banco-bpm",
+      "M&A",
+      "credibility-disputed",
+      "monitoring"
+    ],
+    "content": "# BPM Merger Speculation - Credibility Tracking\n\n**Date**: 2026-01-28  \n**Status**: DISPUTED - Do not distribute to clients  \n**Source**: RSS-901 (EuroFinance Insider)\n\n## Summary\nBreaking news this morning (10:15 CET) suggests Banco BPM in 'advanced merger talks' with unnamed regional partner. Market reaction: BPM shares +3.2%.\n\n## Credibility Assessment\n- ❌ No named sources ('senior banking circles')\n- ❌ No official company statement\n- ❌ Reuters/Bloomberg have not independently verified\n- ❌ BPM IR declined to comment (per Marco's call)\n- ⚠️ Contradictory signal: no regulatory filing (Consob)\n\n**Verdict**: DISPUTED per KB-405 standards. Classic market rumor pattern.\n\n## Personal Compliance Check\nAlmost forwarded to client distribution list (CON-204, CON-205, CON-206, etc.) this morning. Drafted email (WMSG-5010) but caught myself before sending.\n\n**Red-line rule** (NOTE-102): Never forward disputed-credibility content client-facing. This is exactly the scenario the rule is designed to prevent.\n\n## Next Steps\n1. Monitor for verification:\n   - Reuters/Bloomberg independent confirmation\n   - Official BPM press release\n   - Consob regulatory filing\n2. Set alert for 24-48 hour window (TODO-510)\n3. If verified, can include in follow-up client note with proper sourcing\n4. If unverified after 48 hours, discard as market noise\n\n## Alternative Actions (if time-critical)\nIf clients ask directly about the rumor:\n- Acknowledge market speculation exists\n- Emphasize lack of official confirmation\n- Provide context on Italian banking consolidation trends (general)\n- Do NOT forward the disputed RSS article\n\n## Lessons Reinforced\n- Timeliness does not outweigh credibility for client-facing content\n- Personal compliance rules work when followed\n- Marco's advice (WMSG-5011) was spot-on: ECB supervisory priorities piece is strong enough standalone\n\n---\n\n**Links**: [[NOTE-102]], [[KB-405]], [[RSS-901]]",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-28T10:35:00+01:00",
+    "last_updated": "2026-01-28T11:30:00+01:00"
+  },
+  {
+    "note_id": "OBSN-8",
+    "title": "Q1 2026 Research Goals & Strategic Priorities",
+    "folder": "Research/Planning",
+    "tags": [
+      "quarterly-planning",
+      "goals",
+      "Q1-2026"
+    ],
+    "content": "# Q1 2026 Research Goals & Strategic Priorities\n\n## Strategic Deliverables (Marco's Priorities)\n\n### 1. Green Taxonomy Thematic Note [HIGH PRIORITY]\n- **Status**: Outline drafted (OBSN-4), awaiting execution\n- **Marco's asks**: 3 emails requesting this deliverable\n- **Scope**: Impact of EU green taxonomy on Italian banks' lending portfolios\n- **Target completion**: End of January\n- **Estimated effort**: 15-20 hours (research, model analysis, writing, compliance review)\n- **Dependencies**: BPM, BPER green lending disclosures; EBA sustainable finance guidelines\n\n### 2. Basel IV Implementation Tracking [ONGOING]\n- **Status**: Regulatory digest launched (Jan 8), model archived, open-source integration pending\n- **Deliverables**:\n  - Weekly regulatory digest for desk morning brief\n  - SME supporting factor impact analysis (BPER, BPM portfolios)\n  - Output floor transition timeline monitoring\n- **Estimated effort**: 3-4 hours/week\n\n### 3. Q1 Earnings Preview Season [MID-FEB START]\n- **Coverage**: 11 EU SIFI banks (primary: BPM, BPER, UniCredit, Intesa Sanpaolo)\n- **Key tasks**:\n  - Update earnings models with Q4 actuals\n  - Integrate Basel IV SME factor adjustments\n  - Client preview calls (Henrik, Alessio, Marie, Thomas)\n- **Peak workload**: Feb 10-28\n- **Estimated effort**: 25-30 hours total\n\n## Calendar Constraints (Week of Jan 13-17)\n\n- **Model build blocks**: Mon-Fri 9:00-12:30 (Basel IV open-source integration)\n- **Team syncs**: Wed 14:00 (Marco catch-up), Fri 11:00 (checkpoint review)\n- **Desk brief**: Thu 8:30 (regulatory digest presentation)\n- **Available work blocks**: Afternoons 14:00-18:00 (except Wed)\n\n## This Week's Execution Plan (Jan 13-17)\n\nSee WB-2 (Q1 Research Pipeline) for detailed task breakdown and time allocation.\n\n## Notes\n- Marco's green taxonomy request is now 3rd ask - cannot defer further\n- Open-source model integration frees up ~8 hours/week previously spent on proprietary model maintenance\n- BPM merger rumor monitoring is low-effort but high client interest",
+    "outlinks": [
+      "OBSN-4",
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-06T09:00:00+01:00",
+    "last_updated": "2026-01-13T08:30:00+01:00"
+  },
+  {
+    "note_id": "OBSN-9",
+    "title": "Weekly Task Breakdown - Jan 13-17 2026",
+    "folder": "Research/Planning",
+    "tags": [
+      "weekly-planning",
+      "task-breakdown",
+      "Jan-2026"
+    ],
+    "content": "# Weekly Task Breakdown - Jan 13-17 2026\n\n## High Priority (Must Complete This Week)\n\n### Green Taxonomy Thematic Note - Phase 1\n- **Sub-tasks**:\n  1. Pull BPM and BPER green lending disclosures from Q3 2025 reports (1.5 hrs)\n  2. Extract EBA sustainable finance guideline key requirements (1 hr)\n  3. Draft Section 1: Regulatory framework overview (2 hrs)\n  4. Draft Section 2: Italian bank exposure analysis (3 hrs)\n- **Total estimated**: 7.5 hours\n- **Schedule**: Tue 14:00-18:00, Wed 15:00-18:00, Fri 14:00-16:00\n- **Dependencies**: None (can start immediately)\n\n### Basel IV Regulatory Monitoring\n- **Sub-tasks**:\n  1. Monitor EBA website for new technical standards (30 min daily)\n  2. Update SME portfolio data for BPM and BPER (2 hrs) - **OVERDUE from TODO-509**\n  3. Draft next regulatory digest for Jan 15 desk brief (1.5 hrs)\n- **Total estimated**: 4 hours\n- **Schedule**: Daily 13:30-14:00 (monitoring), Thu 13:00-15:30 (digest prep)\n\n## Medium Priority (Start This Week, Complete Next Week)\n\n### Q1 Earnings Model Updates\n- **Sub-tasks**:\n  1. Review Q4 2025 preliminary results for UniCredit, Intesa (1 hr)\n  2. Update Basel IV SME factor in earnings model template (2 hrs)\n  3. Test model with BPM Q3 actuals (1 hr)\n- **Total estimated**: 4 hours\n- **Schedule**: Mon 14:00-16:00, Fri 16:00-18:00\n\n## Low Priority (Monitor Only)\n\n### BPM Merger Credibility Tracking\n- **Sub-tasks**:\n  1. Check EuroFinance Insider, Reuters for verified follow-up (15 min daily)\n  2. Update OBSN-7 credibility log if new sources emerge\n- **Total estimated**: 1.5 hours (week)\n- **Schedule**: Daily 18:00-18:15\n\n## Calendar Integration Check\n\n- ✅ No conflicts with model build blocks (9:00-12:30)\n- ✅ Marco catch-up Wed 14:00 - need to show green taxonomy progress\n- ✅ Checkpoint review Fri 11:00 - open-source model integration demo\n- ✅ Desk brief Thu 8:30 - regulatory digest ready by Wed EOD\n\n## Risk Mitigation\n\n- Green taxonomy note: If BPM/BPER disclosure data insufficient, pivot to UniCredit (more detailed ESG reporting)\n- SME portfolio data pull: If data quality issues, escalate to Sofia Romano (data team lead)\n- Time overruns: Defer earnings model testing to next week if green taxonomy runs over",
+    "outlinks": [
+      "OBSN-8",
+      "OBSN-4",
+      "OBSN-7"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-13T08:45:00+01:00",
+    "last_updated": "2026-01-13T17:30:00+01:00"
+  },
+  {
+    "note_id": "OBSN-10",
+    "title": "Work-Life Balance Reflection - March 2026",
+    "folder": "Personal/Reflection",
+    "tags": [
+      "personal",
+      "work-life-balance",
+      "career"
+    ],
+    "content": "# Work-Life Balance Crisis - March 11, 2026\n\n## The Wake-Up Call\n\nToday forced a decision I never want to face again: choosing between a career milestone (Frankfurt conference with key clients) and family (mother's cardiac emergency).\n\n## Recent Travel Pattern (Feb 18 - Mar 11)\n- Feb 18-19: London (ECB policy meetings)\n- Feb 24-26: Stockholm (Nordic Capital roadshow)\n- Mar 2-4: London (Basel IV technical conference)\n- Mar 5-6: Zurich (Alpine Funds annual meeting)\n- Mar 9-10: Paris (BNP Paribas earnings call)\n- **Total: 14 days traveling in 21 days**\n\n## Family Contact Log\n- Last in-person visit: Feb 18 (Bologna, 4 hours)\n- Phone calls: Feb 25 (10 min), Mar 3 (8 min), Mar 8 (12 min)\n- Total family time: ~4.5 hours in 21 days\n- **Work time: ~250 hours in same period**\n\n## What I Learned Today\n\n1. **Substitutability matters**: Having Sofia as a capable backup made the family decision possible. If I were truly irreplaceable at work, I'd be trapped.\n\n2. **Irreversibility is the true test**: Client relationships can be repaired. Mother's health cannot wait.\n\n3. **Tilt monitoring**: I didn't realize how extreme the work tilt had become until I looked at the calendar. 95/5 is not sustainable.\n\n4. **Compensation is possible**: The makeup call plan (March 18-19) shows that professional obligations can be rescheduled. Family emergencies cannot.\n\n## Action Items\n\n- [ ] Set hard limit: max 2 travel weeks per month\n- [ ] Block every other weekend for Bologna family visits\n- [ ] Decline next international conference if family visit is overdue\n- [ ] Monthly work-life ratio review (target: 80/20, not 95/5)\n\n## Note to Future Self\n\nIf you're reading this while deciding whether to skip a family obligation for work: remember today. Remember that Sofia could present your research, but Giovanni couldn't be your sister at the hospital.\n\nThe irreplaceable things are rarely at the office.\n\n---\n\n**Related**: [[Q1 2026 Research Goals & Strategic Priorities]], [[Weekly Task Breakdown - Jan 13-17 2026]]",
+    "outlinks": [
+      "OBSN-7",
+      "OBSN-9"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-11T08:00:00+01:00",
+    "last_updated": "2026-03-11T08:00:00+01:00"
+  },
+  {
+    "note_id": "OBSN-11",
+    "title": "Travel Decision Framework - Time Valuation Model",
+    "folder": "Personal/Decision-Making",
+    "tags": [
+      "decision-framework",
+      "travel",
+      "time-management",
+      "cost-benefit"
+    ],
+    "content": "# Travel Decision Framework - Time Valuation Model\n\n## Purpose\nReusable framework for evaluating travel mode trade-offs when cost and time are competing factors. Developed for Milan-London roadshow decision (March 2026) but generalizable to future scenarios.\n\n## Core Principle\n**Time has monetary value.** When evaluating travel options, calculate the opportunity cost of time spent traveling vs working, and compare against the price premium of faster/more productive options.\n\n## Decision Variables\n\n### 1. Total Time Cost\n- Door-to-door time (city center to city center)\n- Include: airport/station arrival requirements, security, boarding, transfers\n- Distinguish: productive time (work-capable) vs dead time (queues, transit)\n\n### 2. Productive Work Capacity\n- Connectivity quality (Wi-Fi reliability, bandwidth)\n- Workspace ergonomics (table, power, seating)\n- Cognitive feasibility (noise, interruptions, fatigue)\n- Estimate realistic productive hours for each option\n\n### 3. Effective Hourly Value\n**For mid-level research associate (2026 baseline)**:\n- Internal cost: base + bonus / billable hours ≈ €47/hour\n- Client-facing multiplier: 2-3x (research drives trading commissions)\n- **Working rate for high-priority deliverables**: €100-140/hour\n\n**Adjust for**:\n- Deadline pressure (higher value when time-constrained)\n- Deliverable type (client-facing > internal)\n- Substitutability (lower value if task can be delegated)\n\n### 4. Cost Premium\n- Absolute price difference between options\n- Check travel policy compliance (economy mandate, premium rail justification)\n- Consider: is premium within business class flight equivalent?\n\n### 5. Quality-of-Life Factors (qualitative)\n- Arrival fatigue impact on meeting performance\n- Stress/comfort during travel\n- City center vs airport arrival convenience\n\n## Decision Formula\n\n```\nTime_Value_Delta = (Productive_Hours_A - Productive_Hours_B) × Hourly_Value\nCost_Premium = Price_B - Price_A\n\nIF Time_Value_Delta > Cost_Premium AND within_policy:\n    CHOOSE option with higher productive time\nELSE:\n    CHOOSE lower-cost option\n```\n\n## Worked Example: Milan-London (March 2026)\n\n**Option A (Flight)**: €89, 9.5h total, 0h productive\n**Option B (Train)**: €340, 8h total, 6.5h productive\n\nTime_Value_Delta = (6.5h - 0h) × €120/h = €780\nCost_Premium = €340 - €89 = €251\n\n**Result**: €780 > €251 → Choose train (time value exceeds cost by 2.1x)\n\n## Application Guidelines\n\n**When to use this framework**:\n- Business travel with competing time/cost trade-offs\n- High-priority deliverables pending (deadline pressure increases time value)\n- Significant productive time differential between options (>3 hours)\n\n**When NOT to use**:\n- Personal travel (different value calculus)\n- Low-workload periods (time value drops)\n- Policy-mandated options (no discretion)\n\n**Key insight**: For knowledge workers with billable output, productive travel time often justifies significant cost premiums. The €251 premium is small relative to the value of 6.5 reclaimed work hours.\n\n## Related Notes\n- [[NOTE-109]] - Milan-London decision analysis (March 2026)\n- [[OBSN-10]] - Work-Life Balance Reflection (time allocation audit)\n\n## Future Improvements\n- Track actual productive hours achieved on train vs estimate (validation)\n- Build decision history database to refine hourly value estimates\n- Add environmental cost consideration (carbon footprint) as tie-breaker\n\n---\n*Created: 2026-03-17*\n*Last updated: 2026-03-17*",
+    "outlinks": [
+      "OBSN-10"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-17T11:00:00+01:00",
+    "last_updated": "2026-03-17T16:30:00+01:00"
+  },
+  {
+    "note_id": "OBSN-12",
+    "title": "Vendor Selection Framework - Presentation Design Services",
+    "folder": "Decision-Making/Frameworks",
+    "tags": [
+      "vendor",
+      "decision-framework",
+      "cost-benefit",
+      "presentation"
+    ],
+    "content": "# Vendor Selection Framework - Presentation Design\n\n## When to Use External Vendors vs Internal Resources\n\n### Decision Criteria Matrix\n1. **Time Opportunity Cost** (highest weight: 30%)\n   - Calculate: (estimated internal hours) × (effective hourly value)\n   - Effective hourly value for mid-level research associate: ~€120/hr (based on travel decision framework, NOTE-110)\n   - Threshold: If opportunity cost > 1.5× vendor cost, default to vendor\n\n2. **Internal Resource Availability** (weight: 25%)\n   - Check workmail history for workload signals\n   - Review calendar for conflicting commitments\n   - Assess relationship capital cost (asking during high-pressure periods)\n\n3. **Quality Requirements** (weight: 20%)\n   - Client-facing deliverables with hard deadlines → prioritize reliability over marginal quality gains\n   - Internal deliverables or flexible timelines → internal collaboration acceptable\n\n4. **Domain Context Importance** (weight: 15%)\n   - High domain context needs (e.g., Basel IV regulatory charts) → prefer vendors with financial services specialization\n   - Generic corporate presentations → broader vendor pool acceptable\n\n5. **Deadline Risk** (weight: 10%)\n   - Hard client deadlines with travel commitments → vendor SLA reduces single-point-of-failure risk\n   - Flexible internal deadlines → internal best-effort acceptable\n\n### Vendor Evaluation Checklist\n- [ ] Portfolio review: financial services experience?\n- [ ] Turnaround time: fits within deadline buffer?\n- [ ] Revision policy: how many rounds included?\n- [ ] Cost: within discretionary budget or requires approval?\n- [ ] References: prior banking research clients?\n- [ ] Data sensitivity: NDA required for proprietary content?\n\n### Execution Best Practices\n1. **Content handoff package**:\n   - Slide outlines with clear messaging hierarchy\n   - Data tables (Excel format for charts)\n   - Chart specifications (axis labels, color schemes, Basel IV conventions)\n   - Brand guidelines (fonts, colors, logo placement)\n   - Reference slides from prior decks (style examples)\n\n2. **Revision cycle management**:\n   - First review: structural issues, chart accuracy, regulatory terminology\n   - Second review: polish, consistency, final QA\n   - Budget internal expert (e.g., Sofia) for final domain-specific QA, not full design\n\n3. **Relationship capital preservation**:\n   - Communicate vendor decision transparently (\"preserving your bandwidth for critical projects\")\n   - Offer limited QA role to maintain collaboration relationship\n   - Acknowledge expert contribution in follow-up\n\n## Case Study: Q1 2026 Earnings Preview Deck\n- **Context**: 40-slide buy-side roadshow deck, March 20 deadline\n- **Internal option**: 20-25 hrs (Lucia + Sofia), opportunity cost €2,400-3,000, Sofia bandwidth constrained\n- **Vendor option**: PresentPro €1,150 (3-day turnaround, financial services specialist)\n- **Decision**: Vendor (net savings €1,500+, relationship capital preserved, deadline reliability)\n- **Outcome**: [to be documented post-delivery]\n\n## Related Frameworks\n- [[Travel Decision Framework - Milan-London Cost-Time Analysis]] (NOTE-110)\n- [[Time-Value Calculation Methodology]]\n- [[Relationship Capital Accounting]]",
+    "outlinks": [
+      "OBSN-10"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-07T10:45:00+01:00",
+    "last_updated": "2026-03-07T10:45:00+01:00"
+  },
+  {
+    "note_id": "OBSN-13",
+    "title": "Cascade Conflict Decision Framework",
+    "folder": "Decision-Making/Frameworks",
+    "tags": [
+      "decision-framework",
+      "cascade-analysis",
+      "commitment-management"
+    ],
+    "content": "# Cascade Conflict Decision Framework\n\n## When to Use\nUse this framework when a single triggering event creates a chain of deadline conflicts across multiple commitments with different stakeholders, rigidity levels, and violation costs.\n\n## Step 1: Map the Cascade Chain\n1. Identify the triggering event (e.g., vendor delay, data unavailability, resource conflict)\n2. Enumerate all affected commitments with:\n   - Deadline date\n   - Stakeholder (internal vs external, relationship strength)\n   - Rigidity level (contractual, reputational, internal)\n   - Downstream dependencies (what else breaks if this fails)\n\n## Step 2: Assess Violation Costs\nFor each commitment, quantify:\n- **Financial cost**: Contractual penalties, lost revenue, vendor fees\n- **Relationship cost**: Client trust damage, internal morale impact, reputational harm\n- **Opportunity cost**: Lost networking, delayed projects, blocked dependencies\n- **Recoverability**: Can violation be remediated later? (e.g., reschedule vs permanent loss)\n\n## Step 3: Evaluate Remediation Options\nFor each potential solution, calculate:\n- **Time reclaimed**: Hours freed up to address other commitments\n- **Direct cost**: Financial outlay, resource allocation\n- **Indirect cost**: Relationship damage, quality degradation\n- **Feasibility**: Can it be executed in available time? Dependencies satisfied?\n\n## Step 4: Select Minimum-Loss Combination\nPriority hierarchy:\n1. **Contractual obligations** with financial penalties (highest priority)\n2. **Critical client relationships** with revenue impact\n3. **Internal dependencies** blocking team productivity\n4. **Reputational commitments** with recoverable alternatives (lowest priority)\n\nSelect combination that:\n- Satisfies highest-priority commitments\n- Leverages delegation to capable substitutes where possible\n- Minimizes total violation cost across all stakeholders\n- Maintains long-term relationship trust\n\n## Step 5: Execute Preemptive Remediation\n1. **Communicate early**: Inform all affected stakeholders immediately\n2. **Offer value-add**: Offset inconvenience with enhanced deliverables\n3. **Provide alternatives**: Substitutes, partial deliveries, phased approaches\n4. **Document decisions**: Capture rationale for future reference\n5. **Follow through**: Deliver on revised commitments flawlessly\n\n## Red Flags (When NOT to Use This Framework)\n- Single commitment conflict (use simpler prioritization)\n- No downstream dependencies (no cascade effect)\n- All commitments equally rigid (no optimization possible)\n- Triggering event is reversible (fix root cause instead)\n\n## Success Metrics\n- Zero contractual violations\n- Client satisfaction maintained or improved\n- Team productivity unblocked\n- Reputational damage minimized\n- Framework reusability for future conflicts\n\n## Related Frameworks\n- [[Time-Value Tradeoff Analysis]] - for resource allocation decisions\n- [[Delegation Readiness Assessment]] - for substitution feasibility\n- [[Client Communication Playbook]] - for proactive stakeholder management",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-02-11T17:45:00+01:00",
+    "last_updated": "2026-02-11T17:45:00+01:00"
+  },
+  {
+    "note_id": "OBSN-14",
+    "title": "Vendor Conflict Resolution Framework - PresentPro Case Study",
+    "folder": "Decision-Making/Frameworks",
+    "tags": [
+      "vendor-management",
+      "decision-framework",
+      "client-relationships",
+      "cost-benefit"
+    ],
+    "content": "# Vendor Conflict Resolution Framework\n\n## Context\nDerived from PresentPro Q1 earnings deck timeline extension decision (Feb 2026). Generalizable template for future vendor delivery conflicts.\n\n## Decision Framework\n\n### Step 1: Classify the Conflict Type\n- **Timeline slip** (this case): vendor cannot meet original deadline due to external dependency\n- **Scope creep**: vendor requests additional budget for originally agreed deliverables\n- **Quality issue**: vendor delivers substandard output requiring rework\n- **Communication breakdown**: vendor unresponsive or misaligned on requirements\n\n### Step 2: Map Stakeholder Preferences (Do Not Assume)\n**Critical lesson from PresentPro case**: I initially assumed speed > completeness for client, but James Thornton explicitly stated opposite preference.\n\n**Action**: Send brief email to key stakeholders outlining options and asking preference BEFORE deciding.\n\nExample template:\n```\nHi [Client],\n\nWe've encountered [issue] affecting [deliverable]. Three options:\n1. [Option A]: [tradeoffs]\n2. [Option B]: [tradeoffs]\n3. [Option C]: [tradeoffs]\n\nGiven your workflow needs, which approach works best for you?\n```\n\n### Step 3: Calculate True Cost of Each Option\nInclude:\n- **Monetary cost**: cancellation fees, additional vendor charges, refunds\n- **Opportunity cost**: hours required × effective hourly value (use €120/hr from travel analysis framework)\n- **Reputational cost**: client relationship damage, future commission risk\n- **Quality cost**: output degradation from rushed work or suboptimal process\n\n**PresentPro example**:\n- Cancellation: €1,150 fee + 20-25 hrs rebuild × €120/hr = €3,550-4,150 total cost\n- Extension: €0 + 0 hrs = €0 total cost\n→ Extension saves €3,550-4,150 despite appearing to \"cost\" timeline buffer\n\n### Step 4: Timeline Buffer Analysis\nDon't evaluate deadlines in isolation. Map:\n1. Vendor delivery date (original vs adjusted)\n2. Internal customization/review time needed\n3. Client distribution deadline (if any)\n4. Final usage deadline (presentation, meeting, publication)\n5. **Buffer between each milestone**\n\n**Key insight**: \"5 days before travel\" sounds tight, but if final usage is 14 days later, the buffer is adequate.\n\n### Step 5: Assess Relationship Value\nQuantify client relationship importance:\n- Revenue contribution (top-tier, mid-tier, low-tier)\n- Repeat engagement likelihood\n- Reputational leverage (do they refer other clients?)\n- Switching cost (how hard to replace this client?)\n\n**PresentPro case**: Kensington = top-3 revenue client → relationship preservation worth > €1,150 + time cost\n\n### Step 6: Communicate Proactively\nTransparency builds trust. Notify:\n1. **Client**: Explain issue, present options, ask preference (Step 2)\n2. **Vendor**: Confirm decision, document revised terms\n3. **Internal stakeholders**: Update team on timeline changes\n\nDo this BEFORE problems become visible to stakeholders.\n\n## Decision Matrix Template\n\n| Criterion | Option A | Option B | Option C | Weight | Winner |\n|-----------|----------|----------|----------|--------|--------|\n| Monetary cost | | | | 20% | |\n| Time cost (hrs) | | | | 25% | |\n| Opportunity cost | | | | 25% | |\n| Client satisfaction | | | | 30% | |\n| Timeline risk | | | | 10% | |\n| Reputational risk | | | | 20% | |\n| Output quality | | | | 15% | |\n\n(Adjust weights based on context)\n\n## Anti-Patterns to Avoid\n\n### 1. Sunk Cost Fallacy\n\"We already paid €1,150, so we should cancel to avoid wasting it.\"\n→ **Wrong**: Cancellation fee is sunk. Real question: which option minimizes FUTURE cost?\n\n### 2. Timeline Anchoring\n\"Original deadline was Feb 6, so Feb 10 is a failure.\"\n→ **Wrong**: Evaluate buffer to FINAL deadline (client meeting), not intermediate milestone.\n\n### 3. Assuming Client Preferences\n\"Clients always want things faster.\"\n→ **Wrong**: Sophisticated clients often prefer quality > speed (see James Thornton feedback).\n\n### 4. Ignoring Opportunity Cost\n\"Cancellation saves €1,150.\"\n→ **Wrong**: Cancellation costs €1,150 + 20 hrs × €120/hr = €3,550 total.\n\n### 5. False Urgency\n\"We need to decide immediately.\"\n→ **Better**: Take 24 hours to consult stakeholders (Step 2) before committing.\n\n## Application Checklist\n\n- [ ] Classify conflict type (timeline, scope, quality, communication)\n- [ ] Email key stakeholders to ask preference (do not assume)\n- [ ] Calculate monetary + opportunity + reputational cost for each option\n- [ ] Map timeline with buffer analysis (intermediate vs final deadlines)\n- [ ] Assess client relationship value (revenue, repeat likelihood, leverage)\n- [ ] Choose option that minimizes total cost (not just monetary)\n- [ ] Communicate decision to client, vendor, internal team proactively\n- [ ] Document rationale for future reference (this note)\n\n## Cross-References\n- [[NOTE-115]] - PresentPro decision analysis (detailed case study)\n- [[WB-7]] - Vendor Decision Matrix (quantitative comparison)\n- [[NOTE-109]] - Travel Cost-Benefit Analysis (€120/hr value framework)\n- [[CON-216]] - James Thornton (client relationship context)\n\n## Future Improvements\nNext time vendor conflict arises:\n1. Use this framework within 2 hours of notification (don't delay)\n2. Create decision matrix spreadsheet immediately (forces structured thinking)\n3. Send stakeholder preference email same day (24-hour turnaround)\n4. Document decision rationale in Obsidian for pattern recognition",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-8",
+      "OBSN-10"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-04T11:00:00+01:00",
+    "last_updated": "2026-02-04T11:00:00+01:00"
+  },
+  {
+    "note_id": "OBSN-15",
+    "title": "Vendor Selection Framework - Presentation Design Services",
+    "folder": "Decision-Making/Frameworks",
+    "tags": [
+      "vendor-selection",
+      "decision-framework",
+      "procurement"
+    ],
+    "content": "# Vendor Selection Framework - Presentation Design Services\n\nCreated: 2026-02-14\nLast updated: 2026-02-20\n\n## Decision Context\nNeed professional presentation design for Q1 earnings preview deck (London roadshow, March 24-25). Evaluating external vendor options vs internal build with Sofia.\n\n## Evaluation Criteria\n\n### Cost\n- Monetary: €800-1,800 range depending on vendor and timeline\n- Opportunity cost: My time = €120/hour effective value (see [[Travel Cost-Benefit Analysis]])\n- Social capital: Asking Sofia during busy Q1 period\n\n### Quality\n- Professional polish vs internal capability\n- Banking sector domain knowledge\n- House style consistency\n\n### Timeline\n- Standard: 7 days\n- Express: 3 days (premium pricing)\n- Internal: 20-25 hours (Sofia + my time)\n\n## Vendor Comparison\n\n### PresentPro Milano (Andrea Visconti)\n- Prior relationship: delivered green taxonomy deck Jan 2026\n- Quote: €950 base\n- Timeline: 7 business days\n- Pros: knows our style, responsive, banking experience\n- Cons: timeline tight given current workload\n\n### DesignStudio EU (Laura Ferretti)\n- New vendor, strong portfolio\n- Quote: €1,200 standard / €1,800 express (3-day)\n- Pros: impressive banking samples, express option available\n- Cons: higher cost, no relationship history\n\n## Decision Status\n\n**2026-02-20 Update:**\nLeaning toward PresentPro if timeline can extend to March 10 delivery (still 2-week buffer before roadshow). Need to:\n1. Confirm Marco approval for date shift\n2. Check Andrea availability\n3. Verify client meeting dates haven't moved\n\nIf hard deadline remains March 5, may need DesignStudio express despite €1,800 cost.\n\n## Reusable Template\n\nThis framework can be applied to future vendor decisions:\n- [ ] Define evaluation criteria (cost, quality, timeline)\n- [ ] Collect quotes from 2-3 vendors\n- [ ] Calculate opportunity cost of internal alternative\n- [ ] Document decision rationale\n- [ ] Set review checkpoints\n\n## Related Notes\n- [[Travel Cost-Benefit Analysis - Milan-London Mar 2026]]\n- [[Q1 Earnings Model Update - Client Communication Plan]]\n- [[Build vs Buy Decision Template]]",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-02-14T17:30:00+01:00",
+    "last_updated": "2026-02-20T19:45:00+01:00"
+  },
+  {
+    "note_id": "OBSN-16",
+    "title": "PresentPro Vendor Research - Service Comparison",
+    "folder": "Research/Vendors",
+    "tags": [
+      "vendor-research",
+      "presentation-design"
+    ],
+    "content": "# PresentPro Vendor Research\n\n## Initial Contact\n2026-02-12: Reached out to Andrea Visconti after seeing his work on competitor deck at Nordic Capital conference.\n\n## Services Offered\n- Investor presentation design\n- Earnings deck templates\n- Roadshow materials\n- Data visualization for financial services\n\n## Pricing (from Feb 12 email)\n- Standard deck (20-30 slides): €950\n- Rush delivery (< 5 days): +30% premium\n- Template development: €1,500\n- Revision rounds: 2 included, €150 per additional\n\n## Portfolio Notes\n- Strong banking sector experience (UniCredit, Intesa Sanpaolo clients mentioned)\n- Clean, modern design style\n- Good data visualization capability\n- Milan-based (easy coordination)\n\n## Timeline Considerations\nStandard turnaround: 7 business days from final content delivery\n- Day 1-2: Initial design concepts\n- Day 3-5: Full deck draft\n- Day 6-7: Revisions and finalization\n\n## Decision Factors\n- Cost competitive vs alternatives\n- Prior successful delivery (green taxonomy deck)\n- Timeline slightly tight but manageable if I can shift deadline\n- Responsive communication\n\n## Next Steps\n- [ ] Confirm March 10 delivery timeline works\n- [ ] Get Marco approval for date shift\n- [ ] Send content brief and data inputs\n- [ ] Schedule kickoff call",
+    "outlinks": [
+      "OBSN-15"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-12T16:20:00+01:00",
+    "last_updated": "2026-02-18T17:00:00+01:00"
+  },
+  {
+    "note_id": "OBSN-17",
+    "title": "Basel IV Model - February Progress Notes",
+    "folder": "Projects/Model Build",
+    "tags": [
+      "basel-iv",
+      "model-build",
+      "regulatory"
+    ],
+    "content": "# Basel IV Model - February 2026 Progress\n\n## Week of Feb 10-14\n- Completed RWA calculation module integration\n- EBA technical standards update required minor adjustments\n- Data pipeline stable, running nightly validation checks\n\n## Week of Feb 17-21\n- Focus shifted to Q1 earnings model updates (Marco priority)\n- Basel IV model on maintenance mode\n- Documented decision to pause active development (see [[Basel IV Model - Sunk Cost Analysis]])\n\n## Week of Feb 24-28\n- Minimal activity - prioritizing client deliverables\n- Model remains functional for ad-hoc queries\n- Open-source alternative monitoring ongoing\n\n## Outstanding Items\n- Stress scenario engine (deferred to Q2)\n- Output dashboard enhancements (low priority)\n- Documentation finalization (80% complete)\n\nModel is production-ready for current use cases. Further enhancements paused pending Q2 resource allocation discussion with Marco.",
+    "outlinks": [
+      "OBSN-3"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-10T09:00:00+01:00",
+    "last_updated": "2026-02-28T16:30:00+01:00"
+  },
+  {
+    "note_id": "OBSN-18",
+    "title": "Q1 2026 Pipeline Reordering - Multi-Factor Priority Framework",
+    "folder": "Research/Planning",
+    "tags": [
+      "prioritization",
+      "q1-2026",
+      "decision-framework",
+      "pipeline-management"
+    ],
+    "content": "# Q1 2026 Pipeline Reordering - Priority Framework\n\n**Date**: 2026-02-18\n**Trigger**: EBA regulatory update + Marco Basel IV acceleration + Henrik commission + Sofia blocker\n\n## Priority Scoring Criteria (5-point scale)\n\n### 1. Client Revenue Impact (Weight: 30%)\n- **5 points**: Direct revenue (commissioned work, blocks mandate decision)\n- **4 points**: High indirect revenue (SLA compliance, relationship maintenance for top-tier clients)\n- **3 points**: Medium indirect (general client service, positioning)\n- **2 points**: Low indirect (nice-to-have, speculative)\n- **1 point**: No revenue tie (internal, strategic only)\n\n### 2. Regulatory Timeliness (Weight: 25%)\n- **5 points**: Breaking news, peak relevance window (EBA updates, ECB announcements)\n- **4 points**: High relevance, timely but not breaking\n- **3 points**: Medium relevance, evergreen topic\n- **2 points**: Low relevance, can be delayed\n- **1 point**: No regulatory tie\n\n### 3. Hard Deadline Type (Weight: 25%)\n- **5 points**: Contractual SLA, paid commission, conference presentation date\n- **4 points**: Explicit client request with date, MD directive with date\n- **3 points**: Implicit client expectation, internal deadline\n- **2 points**: Soft deadline, flexible timing\n- **1 point**: No deadline, evergreen\n\n### 4. Team Dependencies (Weight: 10%)\n- **5 points**: No dependencies, can start immediately\n- **3 points**: Minor dependencies, workarounds available\n- **1 point**: Hard blocker, cannot proceed until resolved\n\n### 5. MD Strategic Priority (Weight: 10%)\n- **5 points**: Explicit MD priority directive\n- **3 points**: MD interest expressed, not urgent\n- **1 point**: MD indifferent or deferred\n\n## Application to Current Pipeline\n\n### Basel IV Implementation Thematic\n- Revenue: 5 (blocks Nordic mandate)\n- Regulatory: 5 (EBA March update peak relevance)\n- Deadline: 5 (MD directive Feb 28)\n- Dependencies: 5 (no blockers)\n- MD Priority: 5 (explicit email Feb 17)\n- **Total**: (5×0.3) + (5×0.25) + (5×0.25) + (5×0.1) + (5×0.1) = **5.0** → Rank 1\n\n### Output Floor Transition Analysis\n- Revenue: 5 (commissioned work, Henrik paid)\n- Regulatory: 4 (Basel IV related, timely)\n- Deadline: 5 (Henrik IC Mar 10 hard date)\n- Dependencies: 5 (no blockers)\n- MD Priority: 3 (not mentioned by Marco)\n- **Total**: (5×0.3) + (4×0.25) + (5×0.25) + (5×0.1) + (3×0.1) = **4.55** → Rank 2\n\n### Q1 Earnings Model Updates\n- Revenue: 4 (SLA compliance, high-value clients)\n- Regulatory: 3 (routine earnings, not breaking)\n- Deadline: 5 (client SLA Mar 15)\n- Dependencies: 1 (HARD BLOCKER - Sofia template Feb 25)\n- MD Priority: 3 (not mentioned)\n- **Total**: (4×0.3) + (3×0.25) + (5×0.25) + (1×0.1) + (3×0.1) = **3.65** → Rank 3 (but execution delayed by dependency)\n\n### Green Taxonomy Impact Note\n- Revenue: 1 (no client tie, internal strategic)\n- Regulatory: 2 (EU taxonomy ongoing, not breaking)\n- Deadline: 2 (soft deadline, deferred twice)\n- Dependencies: 5 (no blockers)\n- MD Priority: 3 (requested but deferred twice by Marco himself)\n- **Total**: (1×0.3) + (2×0.25) + (2×0.25) + (5×0.1) + (3×0.1) = **2.1** → Rank 7 (defer to Q2)\n\n## Decision Rules\n\n1. **Score ≥ 4.5**: Tier 1 priority, execute immediately\n2. **Score 3.5-4.4**: Tier 2 priority, execute after Tier 1 or in parallel if capacity\n3. **Score 2.5-3.4**: Tier 3 priority, execute if time permits or defer to next quarter\n4. **Score < 2.5**: Defer or cancel\n\n## Dependency Handling\n\n- **Hard blockers** (score = 1): Reduce priority by 0.5 points, plan workaround or delay execution\n- **Soft blockers** (score = 3): Monitor closely, prepare contingency\n- **No blockers** (score = 5): Prioritize for immediate execution\n\n## Links\n- [[Q1 2026 Research Goals & Strategic Priorities]] (OBSN-8)\n- [[Decision Framework - Continue vs Pivot]] (OBSN-3)\n- [[Work-Life Balance Reflection - March 2026]] (OBSN-17)\n\n---\n\n**Usage**: Apply this framework whenever pipeline reordering needed due to:\n- MD priority directive changes\n- New client commissioned work\n- Regulatory breaking news\n- Team dependency blockers\n- Calendar compression (travel, conferences)\n\n**Review cadence**: Monthly or when >3 active projects compete for bandwidth",
+    "outlinks": [
+      "OBSN-8",
+      "OBSN-3",
+      "OBSN-17"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-18T14:30:00+01:00",
+    "last_updated": "2026-02-18T16:45:00+01:00"
+  },
+  {
+    "note_id": "OBSN-19",
+    "title": "Intesa Sanpaolo German Partnership Rumor - Credibility Tracking (Feb 9 2026)",
+    "folder": "Research/Market Intelligence",
+    "tags": [
+      "Intesa-Sanpaolo",
+      "M&A",
+      "credibility-disputed",
+      "monitoring"
+    ],
+    "content": "# Intesa Sanpaolo German Partnership Rumor - Credibility Tracking\n\n**Date:** 2026-02-09  \n**Source:** MilanoFinanza Blog (RSS-905)  \n**Credibility:** DISPUTED (single unverified source)  \n**Status:** Monitoring for corroboration\n\n## Summary\nOvernight rumor suggests Intesa Sanpaolo (ISP.MI) exploring strategic partnership or minority stake in unnamed German mid-tier bank. Described as \"early-stage discussions\" in late January. No names, structure, or timeline disclosed. ISP declined comment.\n\n## Credibility Assessment\n- **Source quality:** MilanoFinanza blog (not primary news desk) - historically mixed track record\n- **Corroboration:** None as of 07:30 CET Feb 9\n- **Official response:** ISP \"no comment\" (neither confirm nor deny)\n- **Market reaction:** No unusual ISP share movement Friday close\n\n## Personal Compliance Rule\n**NEVER forward credibility=disputed content client-facing.** Lesson from prior Spanish lender incident (see [[NOTE-102]]).\n\n## Monitoring Plan\n1. Check Reuters, Bloomberg, Sole 24 Ore for corroborating reports by 16:00 CET\n2. Monitor ISP.MI share price/volume for unusual activity\n3. Check CONSOB filings for any partnership disclosures\n4. If verified by reputable source → escalate to client distribution with sourcing note\n5. If no corroboration by close → archive as unsubstantiated rumor\n\n## Strategic Context\nISP already operates 50+ branches in Germany via subsidiary. Potential partnership could be:\n- Wealth management collaboration (plays to ISP strength)\n- Regional lending JV (less likely given existing footprint)\n- Defensive move vs UniCredit's Central EU expansion\n\nWorth monitoring but NOT actionable until verified.\n\n## Links\n- [[BPM Merger Speculation - Credibility Tracking (Jan 28 2026)]] (similar monitoring framework)\n- [[Personal Compliance Rule - Client-Facing Content]] (NOTE-102)",
+    "outlinks": [
+      "OBSN-7",
+      "NOTE-102"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-09T07:30:00+01:00",
+    "last_updated": "2026-02-09T07:30:00+01:00"
+  },
+  {
+    "note_id": "OBSN-20",
+    "title": "Morning News Triage - Feb 9 2026",
+    "folder": "Research/Daily Briefs",
+    "tags": [
+      "news-triage",
+      "morning-routine",
+      "client-distribution"
+    ],
+    "content": "# Morning News Triage - Feb 9 2026\n\n**Arrival:** 07:15 CET  \n**claw_news filters:** category=Business + sort_by=hot → category=Politics (regulatory cross-check) → credibility=verified\n\n## Scan Results (4 articles)\n\n### MARKET-MOVING ✅ CLIENT-FACING\n**RSS-904: UniCredit Q4 Prelim CET1 15.2% vs 14.8% consensus**  \n- Source: Reuters (verified)  \n- Impact: Positive for capital return outlook  \n- Action: Included in AM Read (WMSG-5052) + proactive outreach to Henrik (WMSG-5053)  \n- Follow-up: Update Q1 earnings model (TODO-562), Thu call scheduled\n\n### REGULATORY / BACKGROUND ✅ CLIENT-FACING\n**RSS-906: ECB VP de Guindos climate risk speech (Frankfurt Forum)**  \n- Source: ECB Press Release (verified)  \n- Impact: Reinforces Q3 2026 climate stress test, EU Taxonomy alignment  \n- Action: Included in AM Read (WMSG-5052) as regulatory background  \n- Follow-up: Draft implications note for green taxonomy thematic (TODO-564)\n\n### BACKGROUND ✅ CLIENT-FACING (low priority)\n**RSS-907: BNP Paribas Southern EU appointment**  \n- Source: Les Echos (verified)  \n- Impact: Organizational, not material  \n- Action: Included in AM Read (WMSG-5052) as brief background item  \n- Follow-up: Low-priority review for competitive analysis (TODO-565)\n\n### DISPUTED ❌ INTERNAL MONITORING ONLY\n**RSS-905: Intesa Sanpaolo German partnership rumor**  \n- Source: MilanoFinanza Blog (credibility=disputed)  \n- Impact: Potentially material IF verified, but single unverified source  \n- Action: **NOT forwarded client-facing** per personal compliance rule  \n- Monitoring: Saved to watchlist (OBSN-19), checking for corroboration by close (TODO-563)  \n- Rationale: Prior incident with Spanish lender rumor (NOTE-102) - never forward disputed content\n\n## Classification Framework Applied\n- **Market-moving:** CET1 impacts, M&A (verified only), regulatory enforcement  \n- **Background:** Conference speeches, appointments, organizational changes  \n- **Disputed:** Monitor internally, never client-facing until verified\n\n## Client Outreach Decisions\n- **Henrik Larsson (Nordic Fund):** Proactive call offer on UniCredit CET1 beat - relevant to his long position  \n- **Alessio Conti, Marie Dubois:** No immediate outreach (no portfolio-specific triggers today)  \n- **Marco Bellini (MD):** AM Read distribution covers team awareness\n\n## Time Efficiency\n- Scan + triage: 30 min (07:15-07:45)  \n- AM Read draft + send: 15 min (07:45-08:00)  \n- Henrik proactive email: 10 min (08:00-08:10)  \n- Obsidian documentation: 15 min (08:10-08:25)  \n**Total:** 70 min → desk ready for model work by 08:30\n\n## Lessons\n- Credibility filter working well - caught disputed ISP rumor before client exposure  \n- Proactive outreach on UniCredit beat likely strengthens Henrik relationship  \n- ECB climate speech ties nicely into existing green taxonomy thematic → efficiency gain",
+    "outlinks": [
+      "OBSN-19",
+      "NOTE-102"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-09T08:25:00+01:00",
+    "last_updated": "2026-02-09T08:25:00+01:00"
+  },
+  {
+    "note_id": "OBSN-21",
+    "title": "Q1 Earnings Workflow - Critical Path Analysis",
+    "folder": "Research/Earnings Season",
+    "tags": [
+      "earnings",
+      "workflow-optimization",
+      "critical-path",
+      "q1-2026"
+    ],
+    "content": "# Q1 Earnings Workflow - Critical Path Analysis\n\n## Critical Path Definition\nThe **critical path** is the longest sequence of dependent tasks that determines the minimum project duration. Any delay on the critical path delays the entire project.\n\n## Q1 2026 Earnings Critical Path\n\n```\nSofia template v1.1 (Feb 3) \n  ↓\nTier 2 model updates (Feb 4-10) [7 days + 2 day buffer]\n  ↓\nValuation sensitivity (Feb 6-8) [3 days + 1 day buffer]\n  ↓\nDeck content generation (Feb 8-11) [4 days]\n  ↓\nVendor design handoff (Feb 11-13) [2 days + 1 day buffer]\n  ↓\nMarco approval (Feb 13-14) [1 day, ZERO SLACK]\n  ↓\nClient distribution (Feb 14-15) [2 days, HARD DEADLINE]\n```\n\n**Total critical path duration**: 17 days (Jan 29 - Feb 15)\n**Embedded contingency**: 4 days (template, data quality, vendor)\n**Zero-slack checkpoints**: Marco approval, client distribution deadlines\n\n## Off Critical Path (Can Absorb Delays)\n- Phase 1 data collection (2 days slack)\n- Tier 1 model updates (overlap with Tier 2)\n- Sector thematic note (not blocking client delivery)\n- Client call scheduling (post-distribution)\n\n## Bottleneck Analysis\n\n### High-Risk Bottlenecks\n1. **Sofia template v1.1 (Feb 3)**\n   - Risk: Hybrid capital logic complexity\n   - Impact: Delays all Tier 2 banks (5 banks = 45% of coverage)\n   - Mitigation: Daily check-ins, 2-day buffer, fallback to v1.0 with manual adjustments\n\n2. **Marco approval checkpoint (Feb 13-14)**\n   - Risk: Review queue if all 11 decks submitted simultaneously\n   - Impact: Misses client distribution deadlines (contractual SLA)\n   - Mitigation: Batch submission by priority (early reporters first), pre-brief Marco on key changes\n\n3. **Vendor design turnaround (Feb 11-13)**\n   - Risk: PresentPro capacity constraints (external dependency)\n   - Impact: Delays Marco approval submission\n   - Mitigation: Pre-negotiate timeline, 1-day buffer, internal template fallback\n\n### Medium-Risk Bottlenecks\n1. **Tier 2 model updates (Feb 4-10)**\n   - Risk: Hybrid capital complexity, data quality issues\n   - Impact: Delays sensitivity analysis and deck content\n   - Mitigation: 2-day contingency buffer, sequential execution to catch errors early\n\n2. **Context-switching cost (model vs client work)**\n   - Risk: Inefficient task switching reduces deep work quality\n   - Impact: Model errors, longer build times\n   - Mitigation: Block 4-hour morning sessions for models, batch client work in afternoons\n\n## Parallel Execution Opportunities\n- **Phase 2**: Tier 1 and Tier 2 models can overlap (Feb 4-5) if workbook conflicts managed\n- **Phase 3**: Sensitivity analysis can run per-bank as models complete (don't need to wait for all 11)\n- **Phase 4**: Deck content writing can proceed while vendor designs earlier banks' decks\n- **Phase 4**: Thematic note drafting can proceed in parallel with vendor design (different resources)\n\n## Stage Gate Review Points\n1. **Jan 30 EOD**: Sofia template v1.0 delivery → GO/NO-GO for Tier 1 models\n2. **Feb 3 11am**: Phase gate review with Marco → assess progress, reallocate resources if needed\n3. **Feb 10 EOD**: All models updated → GO/NO-GO for consolidation phase\n4. **Feb 13 5pm**: Vendor delivery → GO/NO-GO for Marco approval submission\n\n## Lessons from Prior Projects\n- **Basel IV model pivot (Jan 2026)**: Sunk cost analysis prevented 3-week delay by switching to open-source model\n- **Q1 model delegation conflict (Feb 2026)**: Workbook locking taught me to serialize write-heavy operations\n- **Conference-client cascade (Mar 2026)**: Early conflict detection (48 hours before deadline) enabled successful resolution\n\n**Key takeaway**: Build contingency buffers at high-risk dependencies, but keep zero slack at hard external deadlines (Marco approval, client SLA).\n\n---\nRelated notes: [[Q1 Earnings Workflow Planning]], [[Resource Conflict Matrix]], [[Vendor Management - PresentPro]]",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-12"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-29T16:00:00+01:00",
+    "last_updated": "2026-01-29T17:00:00+01:00"
+  },
+  {
+    "note_id": "OBSN-22",
+    "title": "Dependency Chain Decision Framework - Earnings Season Template",
+    "folder": "Decision-Making/Frameworks",
+    "tags": [
+      "earnings-season",
+      "dependency-management",
+      "risk-mitigation",
+      "process-template"
+    ],
+    "content": "# Dependency Chain Decision Framework - Earnings Season Template\n\n## Context\nReusable framework developed during Q1 2026 earnings season when EBA regulatory data delay created 5-node dependency chain threatening non-movable London roadshow deadline.\n\n## Core Principles\n1. **Early Uncertainty Detection**: Identify high-risk nodes (e.g. regulatory data releases) with historical delay patterns\n2. **Checkpoint Placement**: Set decision points 2-3 days before critical path nodes to enable adaptive pivots\n3. **Conditional Parallel Strategy**: Advance low-risk preparatory work while holding high-rework-cost tasks\n4. **Quantified Rework Cost**: Calculate hours required if parallel work must be redone vs delay cost of serial waiting\n\n## Q1 2026 Case Study\n\n### Dependency Chain Map (see [[WB-13]] for full analysis)\n- **N1**: EBA Regulatory Data Release (Feb 1 target, 40% 3-day delay probability)\n- **N2**: Sofia Romano Model Template Update (depends on N1)\n- **N3**: Lucia Bank-Specific Model Updates - 11 banks (depends on N2)\n- **N4**: Valuation Sensitivity Generation (depends on N3)\n- **N5**: Client Deck Finalization (depends on N4, hard deadline for Feb 24 roadshow)\n\n### Risk Assessment\n- **Delay cost**: €5K SLA penalty + relationship damage with Kensington Capital Partners\n- **Rework cost**: 12-15 hours if RWA calculations done with prior-quarter templates prove invalid\n- **Roadshow non-movability**: Client calendars locked, flights booked, no flexibility\n\n### Decision Matrix\n1. **Strict Serial Waiting**: REJECTED - High delay risk, tight buffer, unacceptable roadshow risk\n2. **Full Parallel Advancement**: REJECTED - Too high rework probability on regulatory-dependent calcs\n3. **Conditional Parallel (SELECTED)**: Advance low-risk work (data collection, deck outline, preliminary forecasts), hold high-risk RWA/capital ratio calculations until template confirmed\n4. **Feb 3 Checkpoint**: If EBA data not released by Feb 3, trigger aggressive parallel mode accepting rework risk\n\n### Actual Outcome\n- EBA delayed 3 days (Feb 4 release) - matched historical 40% probability\n- Sofia compressed template work to weekend (Feb 7 delivery)\n- Conditional parallel strategy preserved 4-5 days through low-risk advancement\n- Roadshow deadline met with 1-day buffer\n- Actual rework: 6-8 hours (mid-range of estimate) on 4 banks' RWA calculations\n\n## Reusable Checklist for Future Dependency Chains\n\n### Phase 1: Dependency Mapping (T-30 days)\n- [ ] Map all nodes from external data dependencies through final deliverable\n- [ ] Identify hard vs soft deadlines (client SLAs, conference slots, internal reviews)\n- [ ] Calculate historical delay probability for external dependencies\n- [ ] Estimate rework cost for each task if done with incomplete/outdated inputs\n\n### Phase 2: Checkpoint Placement (T-15 days)\n- [ ] Set decision checkpoints 2-3 days before high-risk nodes\n- [ ] Define trigger conditions for pivot strategies\n- [ ] Communicate checkpoint dates to all stakeholders\n- [ ] Prepare contingency plans (aggressive parallel, scope reduction, deadline renegotiation)\n\n### Phase 3: Conditional Execution (T-10 to T-0 days)\n- [ ] Advance low-risk preparatory work immediately\n- [ ] Hold high-rework-cost tasks until dependencies confirmed\n- [ ] Monitor checkpoint triggers daily\n- [ ] Execute pivot if delay confirmed at checkpoint\n- [ ] Communicate proactively to downstream stakeholders\n\n### Phase 4: Post-Mortem (T+7 days)\n- [ ] Document actual delay vs predicted probability\n- [ ] Calculate actual rework cost vs estimate\n- [ ] Assess decision quality (would you make same choice with hindsight?)\n- [ ] Update historical delay database for future risk assessment\n\n## Key Insights\n- **Uncertainty is manageable with checkpoints**: Feb 3 checkpoint gave 24 hours to prepare pivot before EBA delay confirmed\n- **Parallel work categories matter**: Data collection (5% rework risk) vs RWA calculations (60% rework risk) require different strategies\n- **Communication buys flexibility**: Sofia's weekend push recovered 2 of 3 lost days because she understood downstream pressure\n- **Hard deadlines force prioritization**: Non-movable roadshow eliminated \"wait and see\" option, clarified decision\n\n## Links\n- [[WB-13]] - Q1 Earnings Model Update Dependency Chain Analysis (full quantitative breakdown)\n- [[TODO-575]] - Documentation task for this framework\n- [[Q1 2026 Research Goals & Strategic Priorities]] - Original planning context\n\n---\n*Created: 2026-02-26 | Last updated: 2026-02-26*\n*Template status: VALIDATED - ready for Q2 2026 earnings season*",
+    "outlinks": [
+      "OBSN-16"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-26T16:30:00+01:00",
+    "last_updated": "2026-02-26T17:45:00+01:00"
+  },
+  {
+    "note_id": "OBSN-23",
+    "title": "ECB Stress Test 2026 - Research Initiative (ABANDONED)",
+    "folder": "Research/Abandoned_Projects",
+    "tags": [
+      "stress-test",
+      "ecb",
+      "abandoned",
+      "prioritization"
+    ],
+    "content": "# ECB Stress Test 2026 - Research Initiative (ABANDONED)\n\n**Status**: Abandoned Jan 22, 2026\n**Reason**: Q1 workload compression - earnings season prioritization\n\n## Original Vision\nComprehensive deep-dive into ECB's revised 2026 stress test methodology with quantitative impact model for coverage universe.\n\n### Proposed Deliverables\n1. Technical methodology note (adverse scenario parameter changes)\n2. Bank-by-bank capital depletion model (11 EU SIFIs)\n3. Sector thematic: \"Winners and Losers Under ECB 2026 Stress Test\"\n\n### Resource Requirements\n- Model build: ~80 hours (adverse scenario calculator, capital depletion module, validation)\n- Research/writing: ~40 hours\n- Total: ~120 hours over 6-8 weeks\n\n## Why Abandoned\n\n### Timing Conflict\n- Q1 = earnings season (non-negotiable)\n- Basel IV tracking already committed\n- Green taxonomy thematic pending (MD request)\n- Available capacity: ~15 hrs/week for new work\n- Stress test needs sustained 4-6 week focus\n\n### Decision Logic\n- ECB results not published until Q3 → not time-critical\n- Starting but not finishing = zero client value\n- Better to excel at earnings than do both poorly\n- Can revisit in Q2 when calendar opens up\n\n## Artifacts Created (Then Abandoned)\n\n### Workmail\n- Draft proposal to Marco/Stefano (NEVER SENT) - WMSG-5069\n- Signal: drafted but couldn't commit to sending = subconscious recognition of infeasibility\n\n### Todo Tasks (All Cancelled)\n- TODO-581: Build capital depletion model (due Jan 28)\n- TODO-582: Pull ECB parameter changes (due Jan 17)\n- TODO-583: Draft thematic outline (due Feb 5)\n\n### Calendar\n- EVT-352: Weekly stress test model review (recurring, cancelled after first instance)\n- Created recurring 2-hour blocks, then deleted all future occurrences\n\n### Sheet\n- WB-15: ECB_Stress_Test_2026_Analysis\n- Created 4 tabs (parameters, model, coverage, timeline)\n- All tabs empty except coverage universe reference data\n- Left in place for potential Q2 reuse\n\n## Client Interest (Unmet)\n- Henrik Larsson inquiry (Jan 9) - asking about stress test coverage\n- Natural extension of Basel IV work clients already value\n- Competitor coverage thin on technical methodology\n\n## Lessons Learned\n\n### Red Flags Ignored\n1. **Unsent draft email**: If I couldn't commit to sending proposal, should have recognized I couldn't commit to work\n2. **Calendar reality**: Created recurring blocks without checking existing commitments\n3. **Scope enthusiasm**: 120 hours is massive - didn't do honest capacity check upfront\n\n### Process Improvements\n1. **Mandatory calendar capacity check** before creating ANY new project infrastructure\n2. **Q1 = earnings season**: Default to declining new initiatives in Jan-Feb\n3. **Draft email test**: If I can't send the proposal email within 24 hours, abandon the project idea\n4. **Sunk cost awareness**: Deleting empty infrastructure is OK - better than accumulating guilt and clutter\n\n## Potential Q2 Revival\n\n### Prerequisites\n- Earnings season complete (late Feb)\n- Q2 research pipeline reviewed with Marco\n- Honest 6-week calendar capacity confirmed\n- Client interest reconfirmed (follow up with Henrik)\n\n### Salvageable Assets\n- Sofia has ECB parameter files in research drive\n- WB-15 sheet structure can be reused\n- Coverage universe data already assembled\n- Methodology understanding from initial scoping\n\n## Related Notes\n- [[Q1 2026 Research Goals & Strategic Priorities]]\n- [[Decision Framework - Continue vs Pivot]]\n- [[Work-Life Balance Reflection - March 2026]]\n\n---\n*This abandonment was the right call. Earnings season excellence > overcommitment.*",
+    "outlinks": [
+      "OBSN-18",
+      "OBSN-3",
+      "OBSN-21"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-14T16:45:00+01:00",
+    "last_updated": "2026-01-22T11:30:00+01:00"
+  },
+  {
+    "note_id": "OBSN-24",
+    "title": "ECB Banking Supervision Weekly Bulletin - Feb 10-14 2026 - Key Extracts",
+    "folder": "Regulatory/Weekly Digests",
+    "tags": [
+      "regulatory-digest",
+      "ecb",
+      "basel-iv",
+      "climate-risk",
+      "feb-2026"
+    ],
+    "content": "# ECB Banking Supervision Weekly Bulletin - Week 6/2026\n\n**Source:** ECB Banking Supervision Weekly Bulletin (Feb 14, 2026)\n**Received:** 2026-02-14 08:15 CET\n**Credibility:** Official ECB publication (verified)\n\n## Key Updates\n\n### 1. Supervisory Priorities 2026-2027 Implementation Guidance\n\n**Published:** Week of Feb 10, 2026\n**Scope:** All significant institutions under SSM supervision\n\n**Priority Areas:**\n- **Climate & environmental risk integration into ICAAP**\n  - **Deadline:** Q3 2026 for significant institutions\n  - **Requirements:** Quantitative climate scenario analysis, governance structures, transition plans\n  - **Implication for coverage:** Mid-tier Italian banks (BPM, BPER, Carige) may face compliance pressure vs UniCredit/Intesa with established frameworks\n  \n- **Enhanced CRE exposure monitoring**\n  - **Context:** Persistent valuation pressures in European commercial real estate\n  - **Implication:** Italian mid-tier banks with high CRE concentration (BPM ~12%, BPER ~10% of loans) may face additional scrutiny\n  - **Potential impact:** Capital buffers, provisioning requirements\n\n- **Operational resilience - digital banking channels**\n  - **Focus:** Cyber risk, third-party dependencies, business continuity\n  - **Less relevant for equity research coverage**\n\n### 2. Basel IV Output Floor - Transitional Reporting Requirements\n\n**Status:** Confirmed by ECB following EBA technical standards (March 2026)\n\n**Key dates:**\n- **Q2 2026 (June 30 reference date):** Parallel output floor calculations required\n- **Jan 1, 2025:** 50% floor applies (transitional - no capital impact yet)\n- **2025-2030:** Annual 5% increases → 72.5% floor by 2030\n- **Jan 2028:** Full integration into Pillar 1 capital requirements\n\n**Modeling implications:**\n- Update Q2 earnings models to include output floor RWA inflation estimates\n- ECB guidance: 4-6% aggregate RWA increase by 2030 for IRB banks\n- Greatest impact: UniCredit, Intesa (high IRB coverage)\n- Limited near-term P&L impact due to transitional arrangements\n\n**Cross-reference:** [[RSS-908 - ECB Press Release on Output Floor]] (verified source)\n\n### 3. SREP 2026 Methodology Update\n\n**Timeline:** End-February communication to institutions\n**Changes:** Minor refinements to SREP capital guidance framework\n**Assessment:** No material changes to Pillar 2 Requirement calculation methodology\n**Relevance:** Low priority for thematic research\n\n---\n\n## Follow-up Actions\n\n- [ ] Flag output floor reporting timeline for Q2 earnings model updates → [[TODO-595]]\n- [ ] Monitor for ECB climate risk ICAAP detailed guidance (expected Feb-Mar)\n- [ ] Cross-reference climate risk compliance readiness with MilanoFinanza analysis → [[RSS-910]]\n\n---\n\n**Document metadata:**\n- Created: 2026-02-14 10:30 CET\n- Last updated: 2026-02-14 10:30 CET\n- Related: [[Basel IV Model - Sunk Cost Analysis]], [[Green Taxonomy Impact Note - Outline]]",
+    "outlinks": [
+      "OBSN-2",
+      "OBSN-4"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-14T10:30:00+01:00",
+    "last_updated": "2026-02-14T10:30:00+01:00"
+  },
+  {
+    "note_id": "OBSN-25",
+    "title": "EBA Green Asset Ratio Consultation - Feb 2026 - Implications for Coverage Universe",
+    "folder": "Regulatory/Green Taxonomy",
+    "tags": [
+      "green-taxonomy",
+      "eba",
+      "gar-disclosure",
+      "regulatory-digest",
+      "feb-2026"
+    ],
+    "content": "# EBA Draft RTS - Green Asset Ratio Disclosure Requirements\n\n**Source:** EBA Technical Standards Update (EBA/CP/2026/03)\n**Published:** 2026-02-11\n**Consultation closes:** 2026-04-15\n**Credibility:** Official EBA consultation paper (verified)\n\n## Overview\n\nEBA has published draft regulatory technical standards specifying Green Asset Ratio (GAR) disclosure requirements under Article 8 of EU Taxonomy Regulation.\n\n**GAR Definition:** (Taxonomy-aligned exposures) / (Total covered assets)\n\n## Key Provisions\n\n### 1. Application Timeline\n\n| Institution Size | First Disclosure Date |\n|---|---|\n| Large institutions (>€30bn assets) | December 31, 2026 |\n| Other institutions | June 30, 2027 |\n\n**Coverage universe impact:**\n- **Dec 2026 disclosure:** UniCredit, Intesa Sanpaolo, Banco BPM, BPER Banca\n- **Jun 2027 disclosure:** Smaller coverage banks (Banca Carige, regional banks)\n\n### 2. Calculation Methodology\n\n**Numerator:** Taxonomy-aligned exposures (financing activities meeting all technical screening criteria + DNSH + minimum safeguards)\n\n**Denominator:** Total covered assets\n- **Exclusions:** Sovereign exposures, central bank exposures, exposures to financial institutions\n\n**Transitional provisions (2026-2027):**\n- Separate disclosure of taxonomy-**eligible** vs taxonomy-**aligned** exposures\n- Allows for data gaps and estimation methodologies (with qualitative explanation)\n\n### 3. Mandatory Sectoral Breakdown\n\n- Real estate (residential and commercial)\n- Manufacturing  \n- Energy generation and distribution\n- Transport and logistics\n- Other sectors\n\n### 4. Qualitative Disclosures Required\n\n- Data gaps and estimation methodologies\n- Transition plans for increasing taxonomy alignment\n- Integration with climate risk management frameworks\n\n## Implications for Italian Bank Coverage\n\n### Current GAR Baseline\n\n**EBA estimate:** Most European banks currently have GAR <10%\n\n**Expected variation by bank type:**\n- **Lower GAR:** Banks with high legacy corporate lending in carbon-intensive sectors (manufacturing, energy)\n- **Higher GAR:** Banks with large residential mortgage portfolios (if properties meet energy efficiency criteria)\n\n**Coverage universe assessment (preliminary):**\n- **UniCredit, Intesa:** Likely GAR 6-10% (diversified portfolios, some green bond issuance, residential mortgage base)\n- **BPM, BPER:** Likely GAR 4-8% (higher CRE and SME manufacturing exposure)\n- **Smaller banks:** Likely GAR 3-6% (limited green lending programs, regional SME focus)\n\n### Strategic Implications\n\n1. **Investor pressure:** Low GAR may negatively impact ESG ratings, cost of capital for banks\n2. **Capital reallocation:** Banks may accelerate green lending programs to improve GAR metrics ahead of Dec 2026 disclosure\n3. **Loan pricing:** Potential for taxonomy-aligned borrowers to receive preferential pricing (\"green premium\")\n4. **Competitive dynamics:** Large banks with resources to rapidly scale green lending may gain advantage\n\n### Data Availability Challenge\n\n**Key bottleneck:** Obtaining taxonomy alignment data from corporate borrowers\n- Many SME clients lack resources to assess/certify taxonomy alignment of their activities\n- Banks will need to develop estimation methodologies and engage clients for data collection\n- Transitional provisions allow simplified disclosure but may not prevent negative investor perception\n\n## Research Follow-Up Actions\n\n**HIGH PRIORITY:**\n- [ ] Develop thematic note: \"EBA Green Asset Ratio Disclosure - Capital Reallocation Implications for Italian Banks\" → [[TODO-594]]\n- [ ] Estimate preliminary GAR ranges for 11-bank coverage universe (requires loan book sectoral data)\n- [ ] Assess which banks have announced green lending targets/programs that could drive GAR improvement\n\n**MEDIUM PRIORITY:**  \n- [ ] Monitor EBA consultation feedback (closes Apr 15) for potential modifications to timeline/methodology\n- [ ] Track European Banking Federation response (EBF coordinating member feedback)\n- [ ] Cross-reference with existing green taxonomy impact analysis → [[Green Taxonomy Impact Note - Outline]]\n\n**Client communication:**\n- Consider including GAR disclosure timeline in Friday weekly thematic note (week of Feb 17)\n- Flag Dec 2026 deadline as near-term catalyst for Italian large-cap banks\n- Emphasize data availability challenge and transitional provisions\n\n---\n\n**Cross-references:**\n- [[RSS-909 - EBA GAR Consultation]] (verified source)\n- [[WMSG-5012 - European Banking Federation Weekly Digest]] (mentions EBF coordination of member feedback)\n- [[Green Taxonomy Impact Note - Outline]] (existing research project)\n\n**Document metadata:**\n- Created: 2026-02-14 11:15 CET  \n- Last updated: 2026-02-14 11:15 CET\n- Status: Draft analysis - requires data collection for bank-level GAR estimates",
+    "outlinks": [
+      "OBSN-4"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-14T11:15:00+01:00",
+    "last_updated": "2026-02-14T11:15:00+01:00"
+  },
+  {
+    "note_id": "OBSN-26",
+    "title": "Regulatory News Digest - Week of Feb 10-14, 2026 - Consolidated Summary",
+    "folder": "Regulatory/Weekly Digests",
+    "tags": [
+      "regulatory-digest",
+      "weekly-summary",
+      "basel-iv",
+      "green-taxonomy",
+      "climate-risk"
+    ],
+    "content": "# Regulatory News Digest - Week 6/2026 (Feb 10-14)\n\n**Compiled:** 2026-02-14\n**Sources:** ECB Banking Supervision bulletin, EBA technical updates, European Banking Federation digest, Deutsche Bank research, verified RSS feeds\n**Coverage period:** Feb 10-14, 2026\n\n---\n\n## EXECUTIVE SUMMARY\n\nThree major regulatory developments this week with direct implications for Italian bank coverage:\n\n1. **ECB confirms Basel IV output floor parallel reporting starts Q2 2026** (June 30 reference date)\n2. **EBA launches Green Asset Ratio disclosure consultation** (final rules Q3 2026, first disclosure Dec 2026 for large banks)\n3. **ECB supervisory priorities emphasize climate risk ICAAP integration** (Q3 2026 deadline) and CRE monitoring\n\n**High-priority follow-up:** Output floor reporting timeline affects Q2 earnings models; GAR disclosure creates thematic research opportunity; climate risk compliance readiness varies significantly across coverage universe.\n\n---\n\n## 1. BASEL IV OUTPUT FLOOR - PARALLEL REPORTING TIMELINE CONFIRMED\n\n### Source & Credibility\n- **Primary:** ECB Banking Supervision Weekly Bulletin (Feb 14, 2026) ✓ Official\n- **Corroborating:** ECB Press Release (Feb 13, 2026) ✓ Verified [[RSS-908]]\n- **Context:** Deutsche Bank Research analysis (Feb 14, 2026) - peer research desk\n\n### Key Facts\n\n**Timeline:**\n- **June 30, 2026:** First parallel output floor calculation required (Q2 2026 reporting cycle)\n- **Jan 1, 2025:** 50% floor applies (transitional - no capital impact)\n- **2025-2030:** Annual 5% increases → 72.5% floor by 2030  \n- **Jan 2028:** Full integration into Pillar 1 capital requirements\n- **Dec 2026:** Enhanced Pillar 3 disclosure requirements take effect\n\n**Output Floor Mechanism:**\nRWA under internal models must be ≥ [Floor %] × RWA under standardized approach\n\n**ECB Impact Estimate:**\n- Aggregate RWA inflation for significant institutions using IRB models: **+4% to +6% by 2030**\n- Variation across institutions depending on IRB coverage and model calibration\n\n### Implications for Coverage Universe\n\n**High IRB coverage (greatest impact):**\n- **UniCredit:** ~85% IRB coverage → expect upper end of RWA inflation range (+5-6%)\n- **Intesa Sanpaolo:** ~80% IRB coverage → similar impact\n\n**Mixed approach:**\n- **Banco BPM:** ~60% IRB coverage → moderate impact (+3-4%)\n- **BPER Banca:** ~55% IRB coverage → moderate impact\n\n**Limited IRB / Standardized:**\n- Smaller coverage banks → minimal impact\n\n**Capital planning implications:**\n- Limited near-term P&L impact due to transitional arrangements (no capital requirement until 2028)\n- Banks should begin disclosing output floor calculations in Q2 2026 earnings releases\n- Potential for Pillar 2 guidance adjustments if ECB views output floor as insufficient\n\n### Research Actions\n\n**IMMEDIATE:**\n- [ ] Update Q2 2026 earnings models to include output floor RWA estimates\n- [ ] Flag in client communications: \"June 2026 marks first public disclosure of output floor impact\"\n\n**Q2 2026:**\n- Monitor actual output floor calculations disclosed by banks in Q2 earnings\n- Compare vs internal estimates; update RWA inflation assumptions if material variance\n\n---\n\n## 2. EBA GREEN ASSET RATIO DISCLOSURE - CONSULTATION LAUNCHED\n\n### Source & Credibility\n- **Primary:** EBA Technical Standards Update (EBA/CP/2026/03, Feb 11, 2026) ✓ Official\n- **Corroborating:** EBA website consultation paper ✓ Verified [[RSS-909]]\n- **Context:** European Banking Federation digest (Feb 12, 2026) - mentions EBF coordination of member feedback\n\n### Key Facts\n\n**Consultation timeline:**\n- **Consultation closes:** April 15, 2026  \n- **Final standards expected:** Q3 2026\n- **First disclosure (large institutions >€30bn):** December 31, 2026\n- **First disclosure (other institutions):** June 30, 2027\n\n**GAR Calculation:**\nGAR = (Taxonomy-aligned exposures) / (Total covered assets)\n\n**Covered assets exclude:** Sovereigns, central bank exposures, interbank exposures\n\n**Mandatory sectoral breakdown:**\n- Real estate (residential / commercial)\n- Manufacturing\n- Energy  \n- Transport\n- Other\n\n**Transitional provisions (2026-2027):**\n- Banks may disclose taxonomy-**eligible** vs taxonomy-**aligned** separately\n- Qualitative explanation of data gaps and estimation methodologies allowed\n\n### Implications for Coverage Universe\n\n**Dec 2026 disclosure required:**\n- UniCredit (€950bn assets)\n- Intesa Sanpaolo (€850bn assets)  \n- Banco BPM (€180bn assets)\n- BPER Banca (€160bn assets)\n\n**Jun 2027 disclosure required:**\n- Smaller coverage banks\n\n**Preliminary GAR estimates (based on EBA guidance of <10% for most European banks):**\n\n| Bank | Estimated GAR Range | Key Drivers |\n|---|---|---|\n| UniCredit | 6-10% | Diversified portfolio, residential mortgage base, some green bond issuance |\n| Intesa Sanpaolo | 6-10% | Similar to UniCredit; large retail mortgage book |\n| Banco BPM | 4-8% | Higher CRE exposure, SME manufacturing concentration |\n| BPER Banca | 4-8% | Regional SME focus, limited green lending programs |\n| Smaller banks | 3-6% | Minimal green lending infrastructure |\n\n**Note:** These are preliminary estimates pending detailed loan book sectoral analysis.\n\n### Strategic Implications\n\n1. **Investor pressure:** Low GAR may negatively impact ESG ratings, institutional ownership, cost of equity\n2. **Capital reallocation catalyst:** Banks may accelerate green lending programs ahead of Dec 2026 disclosure\n3. **Loan pricing dynamics:** Potential for \"green premium\" - preferential pricing for taxonomy-aligned borrowers\n4. **Competitive advantage:** Large banks with resources to scale green lending rapidly may gain market share\n5. **Data availability bottleneck:** SME clients often lack resources to certify taxonomy alignment → banks must develop estimation methodologies\n\n### Research Actions\n\n**HIGH PRIORITY:**\n- [ ] Develop thematic note: \"EBA Green Asset Ratio Disclosure - Capital Reallocation Implications for Italian Banks\"\n  - Target publication: Week of Feb 24 (allows time for loan book data collection)\n  - Estimated preliminary GAR ranges for coverage universe\n  - Assess which banks have announced green lending targets\n  - Identify potential winners/losers from investor ESG scrutiny\n\n**MEDIUM PRIORITY:**\n- [ ] Monitor EBA consultation feedback (closes Apr 15) for potential timeline/methodology changes\n- [ ] Track final standards publication (Q3 2026) for any material revisions\n- [ ] Request loan book sectoral data from banks to refine GAR estimates\n\n**CLIENT COMMUNICATION:**\n- Include in Friday weekly thematic note (week of Feb 17): \"EBA GAR Consultation - Dec 2026 Disclosure Deadline Creates Near-Term Catalyst for Italian Large-Cap Banks\"\n- Emphasize: (1) Dec 2026 timeline, (2) investor ESG pressure, (3) data availability challenge\n\n**Detailed analysis:** [[OBSN-25 - EBA Green Asset Ratio Consultation]]\n\n---\n\n## 3. ECB SUPERVISORY PRIORITIES 2026-2027 - CLIMATE RISK & CRE FOCUS\n\n### Source & Credibility\n- **Primary:** ECB Banking Supervision Weekly Bulletin (Feb 14, 2026) ✓ Official\n- **Context:** MilanoFinanza analysis (Feb 14, 2026) - market commentary (opinion)\n- **Context:** Deutsche Bank Research (Feb 14, 2026) - peer research desk\n\n### Key Facts\n\n**Priority 1: Climate & Environmental Risk Integration into ICAAP**\n\n**Deadline:** Q3 2026 for significant institutions\n\n**Requirements:**\n- Quantify climate-related credit risk in loan portfolios\n- Integrate climate scenarios into capital planning (ICAAP)\n- Establish governance structures for climate risk oversight  \n- Develop transition plans for high-emission exposures\n\n**Priority 2: Enhanced CRE Exposure Monitoring**\n\n**Context:** Persistent valuation pressures in European commercial real estate (down 8-12% in secondary cities since 2023)\n\n**Supervisory focus:**\n- CRE concentration risk\n- Valuation methodologies\n- Provisioning adequacy\n\n**Potential supervisory actions:**\n- Additional capital buffers (Pillar 2)\n- Enhanced provisioning requirements\n- Dividend restrictions for banks with high CRE risk\n\n### Implications for Coverage Universe\n\n**Climate Risk ICAAP Compliance - Readiness Assessment:**\n\n| Bank | Readiness Level | Key Factors |\n|---|---|---|\n| **UniCredit** | High | Dedicated ESG team, climate risk analytics platform, board-level sustainability committee |\n| **Intesa Sanpaolo** | High | Similar infrastructure to UniCredit; 2+ years of climate risk framework investment |\n| **Banco BPM** | Medium-Low | Limited ESG infrastructure; Q3 deadline may create compliance pressure |\n| **BPER Banca** | Medium-Low | Smaller institution with limited technology budget for climate risk systems |\n| **Banca Carige** | Low | Minimal climate risk capabilities; may require external consulting support |\n\n**Estimated compliance costs (industry estimates):**\n- **Upfront investment:** €2-5 million (data systems, consulting, training)\n- **Ongoing annual costs:** €500K-1M\n- **Material expense for mid-tier banks with ROE pressure**\n\n**CRE Exposure - Supervisory Scrutiny Risk:**\n\n| Bank | CRE % of Loans | Supervisory Risk |\n|---|---|---|\n| **Banco BPM** | ~12% | High - above peer average, Italian CRE under pressure |\n| **BPER Banca** | ~10% | Moderate-High |\n| **UniCredit** | ~6-7% | Low - diversified across geographies |\n| **Intesa Sanpaolo** | ~6-7% | Low |\n\n**Potential impact:** ECB may impose additional Pillar 2 capital buffers or enhanced provisioning for banks with high CRE concentration.\n\n### Research Actions\n\n**MEDIUM PRIORITY:**\n- [ ] Assess climate risk compliance readiness for mid-tier coverage banks (BPM, BPER, Carige)\n- [ ] Monitor for ECB detailed ICAAP guidance (expected Feb-Mar 2026)\n- [ ] Track any supervisory actions on CRE exposures (Pillar 2 add-ons, provisioning requirements)\n\n**CLIENT COMMUNICATION:**\n- Note in weekly thematic: \"ECB climate risk deadline (Q3 2026) may create compliance cost headwinds for Italian mid-tier banks\"\n- Highlight scale advantage for UniCredit/Intesa with established ESG infrastructure\n\n**Cross-reference:** MilanoFinanza analysis [[RSS-910]] provides useful context on compliance readiness gap, though opinion-based rather than verified regulatory source.\n\n---\n\n## NOISE FILTERING - EXCLUDED ITEMS\n\nThe following emails received this week were excluded from regulatory digest (promotional/non-regulatory content):\n\n1. **EuroFinance Week 2026 conference registration** (MSG-5009)\n   - Category: Conference marketing\n   - Reason: Promotional content; early bird deadline Feb 17\n   - Action: Separate evaluation of conference relevance → [[TODO-596]] (low priority)\n\n2. **CashbackRewards Valentine's Day promotion** (MSG-5011)  \n   - Category: Credit card rewards marketing\n   - Reason: Personal finance promotional content; no regulatory relevance\n\n3. **European Parliament ECON Committee hearing** (mentioned in EBF digest)\n   - Category: Legislative discussion (non-binding)\n   - Reason: MEP commentary on Basel IV; no new regulatory guidance or timeline changes\n   - Assessment: Monitor for potential future legislative action but not actionable for current research\n\n---\n\n## SUMMARY - HIGH-PRIORITY FOLLOW-UP ITEMS\n\n### Immediate Actions (This Week)\n\n1. ✅ **Output floor timeline** → Update Q2 earnings models with RWA inflation estimates [[TODO-593]]\n2. ✅ **GAR disclosure** → Draft thematic note outline on capital reallocation implications [[TODO-594]]\n3. ✅ **Weekly thematic note** → Include ECB/EBA updates in Friday client communication\n\n### Near-Term Actions (Next 2-4 Weeks)\n\n4. **GAR thematic note** → Collect loan book sectoral data, refine preliminary GAR estimates, publish by week of Feb 24\n5. **Climate risk compliance** → Assess readiness for mid-tier banks (BPM, BPER, Carige); monitor for detailed ECB ICAAP guidance\n6. **EBA consultation monitoring** → Track GAR consultation feedback (closes Apr 15) for potential methodology changes\n\n### Medium-Term Monitoring\n\n7. **Q2 2026 earnings** → Monitor first public output floor disclosures; compare vs internal estimates\n8. **Q3 2026** → EBA publishes final GAR standards; ECB climate risk ICAAP deadline\n9. **Dec 2026** → First GAR disclosures from large Italian banks (UniCredit, Intesa, BPM, BPER)\n\n---\n\n**Document metadata:**\n- Created: 2026-02-14 14:45 CET\n- Compilation time: ~4 hours (email filtering, RSS cross-referencing, source verification, categorization, analysis)\n- Sources: 6 emails (4 regulatory, 2 promotional excluded), 3 RSS articles (all verified), 1 competitor research report\n- Word count: ~2,400 words\n\n**Related documents:**\n- [[OBSN-24 - ECB Banking Supervision Weekly Bulletin Extracts]]\n- [[OBSN-25 - EBA Green Asset Ratio Consultation Analysis]]  \n- [[Green Taxonomy Impact Note - Outline]] (existing project)\n- [[Basel IV Model - Sunk Cost Analysis]] (archived project - output floor updates required)\n\n**Next weekly digest:** Week of Feb 17-21, 2026",
+    "outlinks": [
+      "OBSN-24",
+      "OBSN-25",
+      "OBSN-2",
+      "OBSN-4"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-14T14:45:00+01:00",
+    "last_updated": "2026-02-14T14:45:00+01:00"
+  },
+  {
+    "note_id": "OBSN-27",
+    "title": "Morning Brief Rotation - Rebalancing Template",
+    "folder": "Research/Process",
+    "tags": [
+      "template",
+      "scheduling",
+      "morning-brief",
+      "team-coordination"
+    ],
+    "content": "# Morning Brief Rotation Rebalancing - Reusable Framework\n\n## Context\nThis template documents the process for identifying and resolving scheduling conflicts between rotating team responsibilities (morning briefs) and individual deliverable deadlines.\n\n## When to Use\n- Quarterly rotation planning\n- Mid-quarter conflict identification\n- Team capacity reallocation\n- Reciprocity negotiation\n\n## Step 1: Extract and Map Assignments\n**Input:** Rotation schedule email (e.g., WMSG-5091)\n**Action:**\n1. Extract all assigned dates for focal person\n2. Create calendar blocks for:\n   - Brief presentation time (e.g., 7:15am, 15 min)\n   - Evening preparation window (90-120 min)\n   - Morning arrival buffer (30 min, arrive 6:45am for 7:15am brief)\n3. Export to sheet workbook for analysis\n\n**Output:** Complete assignment calendar with prep time visibility\n\n## Step 2: Cross-Reference with Deliverables\n**Input:** Q1 deliverables timeline (from planning notes, project trackers)\n**Action:**\n1. Identify all deadlines in rotation period\n2. Map deliverable work windows (not just deadlines - include lead time)\n3. Flag deliverables requiring deep work (analytical, writing) vs coordination work\n4. Note client-facing vs internal deliverables (client = higher priority)\n\n**Output:** Deliverable timeline with work intensity indicators\n\n## Step 3: Calculate Time Collision Severity\n**Formula:**\n```\nCollision Severity = (Brief Prep Hours + Deliverable Work Hours) / Available Hours\n- HIGH: >1.1 (overcommitted, something will slip)\n- MEDIUM: 0.9-1.1 (tight but feasible with perfect execution)\n- LOW: <0.9 (manageable with normal buffer)\n```\n\n**Factors:**\n- Brief prep: 90-120 min/evening for regulatory digest + market commentary\n- Deliverable work: Estimate based on complexity and prior experience\n- Available hours: Assume 5h/evening (6pm-11pm), 8h/day for deep work\n- Context switching cost: Add 20% overhead if brief prep interrupts deep work day\n\n**Output:** Conflict severity matrix in sheet workbook\n\n## Step 4: Assess Team Capacity\n**For each potential swap candidate:**\n1. Review their Q1 deliverable schedule\n2. Identify capacity gaps (periods with below-average load)\n3. Check for known constraints (travel, family commitments, prior swap obligations)\n4. Assess swap feasibility: HIGH (clear capacity), MEDIUM (tight but possible), LOW (overloaded)\n\n**Red flags:**\n- Team member has major deliverable in swap window\n- Team member already owes reciprocity to others\n- Swap would create cascading conflicts\n\n**Output:** Team capacity assessment table\n\n## Step 5: Design Swap Scenarios\n**Principles:**\n- Reciprocity: Every swap requires return coverage (maintain fairness)\n- Minimize disruption: Prefer small swaps (1-3 days) over large blocks\n- Respect capacity: Don't swap into someone else's conflict window\n- Preserve quality: All solutions must maintain brief preparation standards\n\n**Solution types:**\n1. **Direct swap:** A takes B's dates, B takes A's dates (different periods)\n2. **Compression:** Reduce number of consecutive days, redistribute to others\n3. **Pre-recording:** Record briefs in advance, distribute asynchronously (requires approval)\n4. **Co-presentation:** Split brief into segments, share prep load (reduces quality consistency)\n\n**Output:** 3-4 rebalancing scenarios with pros/cons\n\n## Step 6: Document Decision Rationale\n**Required elements:**\n1. Constraint hierarchy (hard vs soft)\n2. Conflict severity justification (why this is urgent)\n3. Solution comparison (why chosen scenario over alternatives)\n4. Reciprocity terms (what is owed to whom)\n5. Fallback options (if primary solution fails)\n6. Compliance check (does solution meet quality/policy standards?)\n\n**Output:** Decision memo (see [[NOTE-133]] for example)\n\n## Step 7: Coordinate with Stakeholders\n**Sequence:**\n1. Manager approval (Marco) - present analysis + recommendation\n2. Peer negotiation (Sofia/Stefano/Sarah) - propose swaps with reciprocity\n3. Calendar updates - finalize changes once confirmed\n4. Team communication - broadcast updated rotation schedule\n\n**Communication tips:**\n- Lead with constraint (\"I have X deadline that conflicts with Y brief dates\")\n- Propose solution, don't just raise problem (\"Can we swap? I'll cover your Z dates\")\n- Be specific about reciprocity (\"I owe you 2 days, I'll cover Mar 27-28\")\n- Provide fallbacks (\"If that doesn't work, alternative is...\")\n\n## Step 8: Track Reciprocity Obligations\n**Maintain table:**\n| Colleague | Took from me | I owe them | Status | Notes |\n|-----------|--------------|------------|--------|-------|\n| Sofia | Feb 10-12 (3 days) | Apr 7 week (5 days) | Pending | Her family commitment |\n| Stefano | Feb 20-21 (2 days) | Mar 27-28 (2 days) | Confirmed | His Frankfurt forum |\n\n**Review quarterly:** Ensure reciprocity balances over time, no one systematically over/under-covered.\n\n## Lessons Learned (Feb 2026 Resolution)\n\n**What worked:**\n- Early detection (identified conflicts 4 days before first brief, allowed time for coordination)\n- Quantitative analysis (sheet workbook made severity objective, not subjective)\n- Reciprocity framing (positioned swaps as mutual benefit, not favor-asking)\n- Multiple fallbacks (gave Marco options, increased approval likelihood)\n\n**What to improve:**\n- Earlier rotation review (should have flagged conflicts during Jan 20 planning, not Feb 3)\n- Proactive capacity mapping (should maintain standing team capacity tracker, not rebuild each time)\n- Pre-negotiation with peers (informal soundings before formal proposal reduces rejection risk)\n\n**Reusable insight:**\nScheduling conflicts are constraint satisfaction problems. Solution quality depends on:\n1. Completeness of constraint mapping (all deadlines, all prep time)\n2. Accuracy of capacity assessment (realistic hour estimates)\n3. Creativity in solution space (swaps, compression, pre-recording, co-presentation)\n4. Stakeholder coordination skill (manager approval, peer negotiation)\n\nThe goal is not to eliminate all conflicts (impossible in dynamic environment), but to detect early and resolve systematically with minimal disruption to quality standards.\n\n---\n**Related notes:**\n- [[Q1 2026 Research Goals & Strategic Priorities]]\n- [[Decision Framework - Continue vs Pivot]]\n- [[Weekly Task Breakdown - Jan 13-17 2026]]\n\n**Template version:** 1.0 (Feb 2026)\n**Next review:** May 2026 (after Q1 resolution assessment)",
+    "outlinks": [
+      "OBSN-8",
+      "OBSN-9",
+      "OBSN-10"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-06T20:00:00+01:00",
+    "last_updated": "2026-02-06T20:45:00+01:00"
+  },
+  {
+    "note_id": "OBSN-28",
+    "title": "Frankfurt Conference Travel Decision - Expected Value Analysis",
+    "folder": "Decision-Making/Frameworks",
+    "tags": [
+      "decision-analysis",
+      "travel",
+      "risk-assessment",
+      "expected-value"
+    ],
+    "content": "# Frankfurt Conference Rail Booking - Expected Value Analysis\n## Scenario Date: February 20, 2026\n\n### Problem Statement\nTime-sensitive travel booking decision under payment approval uncertainty. Premium rail discount expires in 48 hours while conference registration payment (€230 direct reimbursement tranche) is pending corporate approval.\n\n### Decision Variables\n- **Discount fare**: €285 (non-refundable, expires Feb 22 5pm)\n- **Standard fare**: €420 (flexible, available until departure)\n- **Savings**: €135 (32% discount)\n- **Approval timeline**: Decision expected Feb 21-25 (5-7 business days from Feb 14 voucher charge)\n- **Conference date**: March 11, 2026\n\n### Probability Estimates\nBased on Travel Admin communication (WMSG-5095) and historical split-payment processing:\n- **P(approval success)**: 70%\n  - Rationale: Travel Admin indicated \"low probability\" of failure, but flagged timing risk and Finance Ops audit workload\n- **P(approval failure/delay)**: 30%\n  - Failure modes: denied if not mission-critical, delayed beyond March 11, partial approval\n\n### Expected Value Calculation\n\n**Option 1: Book discount rail now**\n- Outcome A (70% probability): Approval succeeds → Net cost = €285 (reimbursed) → Effective savings = €135\n- Outcome B (30% probability): Approval fails → Sunk cost = €285 (non-refundable, cannot attend)\n- **Expected cost**: 0.70 × (€285 - €135 savings) + 0.30 × €285 = €105 + €85.50 = **€190.50**\n- **Expected loss from sunk cost**: 0.30 × €285 = **€85.50**\n\n**Option 2: Wait for approval, book standard fare**\n- Outcome A: Approval succeeds → Book standard fare €420 (reimbursed) → Opportunity cost = €135 vs discount\n- Outcome B: Approval fails → Don't book, don't attend → Cost = €0\n- **Expected cost**: 0.70 × €420 + 0.30 × €0 = **€294**\n- **Expected opportunity cost**: €135 (certain, if approval succeeds)\n\n### Comparison\n- **Option 1 expected cost**: €190.50\n- **Option 2 expected cost**: €294\n- **Net advantage of Option 1**: €103.50 (if probability estimates are accurate)\n\n### Sensitivity Analysis\n**Break-even probability**: At what P(failure) do options have equal expected cost?\n- Let p = P(failure)\n- Option 1: (1-p) × €150 + p × €285 = p × €285 + €150 - €150p = €150 + €135p\n- Option 2: (1-p) × €420 = €420 - €420p\n- Set equal: €150 + €135p = €420 - €420p\n- Solve: 555p = 270 → **p = 48.6%**\n\n**Interpretation**: Option 1 (book now) is superior as long as P(failure) < 48.6%. Current estimate is 30%, well below break-even.\n\n### Strategic Considerations (Non-Financial)\n1. **Conference criticality**: Keynote presentation (9am March 11) + client meetings (Henrik 2pm, Alessio 3:30pm)\n   - High visibility, revenue impact, reputational risk of no-show\n2. **Substitutability**: Sofia can cover presentation but is already overloaded (Basel IV deadline)\n3. **Manager priorities**: Need Marco's input on whether conference is mission-critical if reimbursement fails\n\n### Information Gaps & Uncertainty\n1. **True approval failure probability**: 30% is rough estimate. Travel Admin said \"low probability\" but gave 5-7 day window creating timing risk.\n2. **Expedited approval option**: Can I escalate to Marco for faster processing?\n3. **Self-funding willingness**: Would Marco approve personal attendance if corporate reimbursement fails?\n\n### Decision Rule (Bayesian Framework)\n**Prior belief**: P(approval_success) = 70% (based on Travel Admin guidance)\n\n**Conditional strategy**:\n- **IF** Marco confirms conference is mission-critical **AND** no new information changes P(failure) estimate:\n  → **Book discount rail now** (expected value favors Option 1 by €103.50)\n  \n- **IF** Marco signals conference is deferrable **OR** new information increases P(failure) above 48.6%:\n  → **Wait for approval confirmation** (capital preservation, avoid sunk cost)\n\n- **IF** approval delayed beyond Feb 25 (after discount expires):\n  → **Book standard fare by March 9** (expensive but safe fallback)\n\n### Action Items\n1. ✅ Email Marco for strategic input (sent 9:15am Feb 20)\n2. ⏳ Set calendar reminder for Feb 22, 4pm (final booking deadline)\n3. ⏳ Monitor workmail for Travel Admin approval notification (check 2x daily)\n4. ⏳ Prepare Sofia handoff materials (contingency, by Feb 24)\n\n### Lessons for Future\n- Request payment pre-approval 10+ days before booking deadlines\n- Build buffer between approval timeline and discount expiration\n- Maintain relationship with Travel Admin for expedited processing when needed\n- Always run expected value calculation for time-sensitive decisions under uncertainty\n\n### Related Notes\n- [[NOTE-134]] - Frankfurt Conference Travel Decision Risk Assessment Framework\n- [[NOTE-135]] - Reusable Template for Travel Booking Under Payment Uncertainty\n- [[WMSG-5095]] - Travel Admin approval status update\n- [[WMSG-5096]] - Email to Marco requesting strategic input",
+    "outlinks": [
+      "OBSN-10",
+      "OBSN-15"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-20T11:30:00+01:00",
+    "last_updated": "2026-02-20T16:00:00+01:00"
+  },
+  {
+    "note_id": "OBSN-29",
+    "title": "ECB Weekly LCR Reporting - Thematic Note Outline (March 2026)",
+    "folder": "Research/Thematic",
+    "tags": [
+      "ECB",
+      "regulatory",
+      "LCR",
+      "liquidity"
+    ],
+    "content": "# ECB Weekly LCR Reporting - Thematic Note Outline\n\n**Date:** March 10, 2026\n**Source:** ECB SSM Q1 Supervisory Priorities (MSG-5031)\n**Flagged by:** Stefano Ricci (WMSG-5113)\n**Target publication:** Friday March 13, 2026\n\n## Executive Summary (draft)\n\nECB announces accelerated LCR monitoring: weekly reporting (vs bi-weekly) for institutions >€30bn assets, effective March 22, 2026. Impacts 8 of 11 covered banks. Operational costs modest (€50-150k one-time system upgrades for mid-tier banks), but signals ECB supervisory intensity escalation.\n\n## Key Points\n\n### 1. Regulatory Change Details\n- **Effective date:** March 22, 2026\n- **Scope:** All institutions with total assets >€30bn\n- **Frequency change:** Weekly (previously bi-weekly)\n- **Rationale:** Enhanced liquidity monitoring amid volatile rate environment\n\n### 2. Covered Bank Impact Analysis\n\n**Tier 1 (minimal impact):**\n- UniCredit: Already weekly internal monitoring\n- Intesa Sanpaolo: Weekly reporting infrastructure in place\n- BNP Paribas: Group-wide weekly LCR tracking\n\n**Tier 2 (moderate operational cost):**\n- Banco BPM: Likely needs system upgrade (~€100k one-time)\n- BPER: Manual reporting process → automation required (~€80k)\n- Banco Sabadell: Legacy systems, potential €150k upgrade\n\n**Tier 3 (below threshold):**\n- Credito Emiliano: <€30bn, exempt\n- Banca Carige: <€30bn, exempt\n\n### 3. Client Positioning Implications\n\n- **Short-term:** Neutral to slightly negative for BPM/BPER (Q2 cost uptick)\n- **Medium-term:** Positive signal of regulatory rigor → systemic stability\n- **Risk flag:** Potential for false-positive liquidity alerts in volatile periods (worth monitoring client communication)\n\n## Data Requirements\n\n- [ ] Pull latest LCR ratios for all 8 affected banks (Q4 2025 data)\n- [ ] Estimate system upgrade costs (IT vendor quotes or peer benchmarks)\n- [ ] Review ECB supervisory intensity trend (cross-ref OBSN-8)\n- [ ] Check client feedback from Nordic/Alpine funds on liquidity concerns\n\n## Draft Structure (2 pages)\n\n1. **Lede:** ECB supervisory intensity escalation continues\n2. **Regulatory detail:** Weekly LCR reporting mechanics\n3. **Bank-by-bank impact:** Tier 1/2/3 segmentation\n4. **Client takeaway:** Modest cost, positive regulatory signal\n5. **Watchlist:** Monitor for false-positive alerts in volatile markets\n\n## Cross-References\n\n- [[OBSN-8]] - ECB Supervisory Priorities 2026\n- [[KB-402]] - EBA Basel IV Technical Standards\n- [[NOTE-144]] - Morning triage (March 10)\n\n## Status\n\n- **Outline:** ✅ Complete\n- **Data pull:** ⏳ Pending\n- **Draft writing:** ⏳ Deferred to post-earnings\n- **Target delivery:** Friday March 13, 2026",
+    "outlinks": [
+      "OBSN-8"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-10T07:05:00+01:00",
+    "last_updated": "2026-03-10T07:05:00+01:00"
+  },
+  {
+    "note_id": "OBSN-30",
+    "title": "ECB Supervisory Priorities 2026 - Q1 Digest Consolidation",
+    "folder": "Regulatory/ECB",
+    "tags": [
+      "ECB",
+      "supervisory-priorities",
+      "regulatory-digest",
+      "Q1-2026"
+    ],
+    "content": "# ECB Supervisory Priorities 2026 - Q1 Digest Consolidation\n\n## Overview\nConsolidated from morning brief regulatory digests Jan-Mar 2026. ECB published 2026 supervisory priorities in early February (see [[EBA Technical Standards - March 2026 Revision]]).\n\n## Key Priority Areas\n\n### 1. Climate & Environmental Risk\n- **Green taxonomy disclosure requirements** now in draft consultation (EBA, expected Q3 2026 finalization)\n- ECB Vice President Frankfurt Forum speech (Feb 2026): accelerated green transition timeline\n- **Coverage impact**: BNP Paribas, Société Générale, Crédit Agricole most exposed due to large corporate loan books with fossil fuel exposure\n- Italian banks (UniCredit, Intesa, BPM, BPER) moderate exposure, but disclosure burden high relative to resources\n\n### 2. Basel IV Output Floor Implementation\n- **Q2 2026 parallel reporting confirmed** (ECB press release, Feb 2026)\n- Transition schedule 2025-2030 unchanged (see KB-403)\n- **Coverage impact**: Deutsche Bank, BNP Paribas highest RWA inflation risk under output floor\n- SME supporting factor revision (EBA March 2026) provides modest relief for BPM, BPER, Santander\n\n### 3. Digital Operational Resilience\n- DORA implementation timeline: Jan 2025 entry into force, full compliance by Jan 2026\n- ECB supervisory review cycle Q1-Q2 2026 focusing on ICT risk management\n- **Coverage impact**: All 11 banks, but ING and Deutsche flagged in industry press for third-party vendor concentration\n\n## Model Impact Assessment\n\n### Capital Models\n- Basel IV output floor: need to update RWA calculation modules for all 11 banks\n- Green taxonomy: may require separate capital allocation tracking for green vs brown assets\n- SME factor: already incorporated in Q1 earnings models (see [[Q1 2026 Research Goals & Strategic Priorities]])\n\n### Client Communication Needs\n- **Henrik (Nordic Fund)**: focused on Scandinavian banks, but ING exposure relevant\n- **Alessio (Alpine Funds)**: Swiss perspective, interested in cross-border Basel IV arbitrage opportunities\n- **Marie (Paris AM)**: French banks climate risk disclosure quality assessment\n- **Thomas (Frankfurt Cap)**: Deutsche Bank capital adequacy under stress scenarios\n\n## Pending Research Tasks\n- [ ] Green taxonomy impact note (outline drafted, see [[Green Taxonomy Impact Note - Outline]])\n- [ ] Basel IV output floor sensitivity analysis for coverage universe\n- [ ] DORA compliance cost estimates for Italian mid-tier banks\n\n## Sources\n- Morning brief regulatory digests: Jan 8, Jan 15, Jan 22, Feb 5, Feb 12, Feb 19, Mar 5, Mar 12, Mar 19\n- ECB Banking Supervision Weekly Bulletins: Weeks 2-11/2026\n- EBA Technical Updates: Feb 2026, Mar 2026\n- Industry press: EuroFinance Insider, Reuters Banking, MilanoFinanza\n\n---\n*Created: 2026-03-21 | Updated: 2026-03-23*",
+    "outlinks": [
+      "OBSN-2",
+      "OBSN-4",
+      "OBSN-8"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-21T10:30:00+01:00",
+    "last_updated": "2026-03-23T16:45:00+01:00"
+  },
+  {
+    "note_id": "OBSN-31",
+    "title": "Q1 2026 Regulatory Review - Marco Meeting Prep",
+    "folder": "Research/Planning",
+    "tags": [
+      "quarterly-review",
+      "regulatory",
+      "meeting-prep",
+      "Marco"
+    ],
+    "content": "# Q1 2026 Regulatory Review - Marco Meeting Prep\n\n**Meeting**: March 25, 2026 14:00-15:30\n**Attendees**: Marco Bellini (MD), Lucia Moretti\n**Objective**: Review Q1 regulatory developments, assess coverage model impacts, align on client communication strategy\n\n## Agenda (Marco's priorities)\n\n1. Basel IV implementation updates\n2. ECB supervisory priorities 2026\n3. Green taxonomy disclosure requirements\n4. Coverage model impact assessment\n5. Client communication strategy\n\n## Key Talking Points\n\n### Basel IV\n- **Q2 2026 parallel reporting confirmed** - no surprises, timeline stable\n- **Output floor transition**: Deutsche, BNP most impacted (RWA inflation 8-12% estimated)\n- **SME supporting factor revision**: modest relief for BPM, BPER (already incorporated in Q1 earnings models)\n- **Model readiness**: Open-source model integration complete (see [[Basel IV Model - Sunk Cost Analysis]]), RWA modules updated\n\n### ECB Supervisory Priorities\n- Climate risk & green taxonomy now top priority (see [[ECB Supervisory Priorities 2026 - Q1 Digest Consolidation]])\n- Digital operational resilience (DORA) compliance review cycle Q1-Q2\n- Coverage impact: French banks (BNP, SocGen, CA) highest climate disclosure burden; ING, Deutsche flagged for ICT vendor concentration\n\n### Green Taxonomy\n- **EBA draft RTS consultation**: Q3 2026 finalization expected\n- **Disclosure burden**: Italian mid-tier banks (BPM, BPER) resource-constrained, may need to flag implementation risk in coverage notes\n- **Client interest**: Marie (Paris AM) specifically requested French banks climate disclosure quality assessment\n- **Pending deliverable**: Green taxonomy thematic note (outline complete, drafting blocked by Q1 earnings priority - see [[Green Taxonomy Impact Note - Outline]])\n\n## Coverage Bank Impact Matrix\n\n| Bank | Basel IV Output Floor | Green Taxonomy | DORA/ICT Risk |\n|------|----------------------|----------------|---------------|\n| UniCredit | Medium | Medium | Low |\n| Intesa Sanpaolo | Medium | Medium | Low |\n| BNP Paribas | **High** | **High** | Medium |\n| Santander | Medium | Medium | Low |\n| BBVA | Medium | Low | Low |\n| Deutsche Bank | **High** | Medium | **High** |\n| Banco BPM | Low (SME relief) | Medium-High (resource burden) | Low |\n| BPER | Low (SME relief) | Medium-High (resource burden) | Low |\n| Crédit Agricole | Medium-High | **High** | Low |\n| Société Générale | Medium-High | **High** | Medium |\n| ING | Medium | Medium | **High** |\n\n## Model Impact & Next Steps\n\n### Completed Q1\n- ✅ Basel IV RWA modules updated with SME factor revision\n- ✅ Q1 earnings models incorporate regulatory changes\n- ✅ Morning brief regulatory digest rotation (Jan 8, Feb 5, Mar 12)\n\n### Pending / Q2 Rollover\n- ⏳ Green taxonomy thematic note (blocked by Q1 earnings priority, propose Q2 delivery)\n- ⏳ Basel IV output floor sensitivity analysis (deep-dive for high-impact banks)\n- ⏳ DORA compliance cost estimates for Italian mid-tier banks\n\n## Client Communication Strategy\n\n### Proactive Outreach\n- **Henrik (Nordic Fund)**: ING ICT risk flagging in next update call\n- **Marie (Paris AM)**: French banks climate disclosure quality note (tie to green taxonomy deliverable)\n- **Thomas (Frankfurt Cap)**: Deutsche Bank Basel IV + DORA combined capital/operational risk assessment\n\n### Reactive / On-Request\n- **Alessio (Alpine Funds)**: Basel IV cross-border arbitrage opportunities (Swiss vs EU implementation timing)\n- General buy-side: green taxonomy FAQs (prepare standard Q&A doc for distribution)\n\n## Questions for Marco\n\n1. **Green taxonomy note priority**: Approve Q2 delivery? Or compress timeline for late-Q1 rush delivery?\n2. **Resource allocation**: Basel IV sensitivity deep-dive vs DORA compliance estimates - which is higher client value?\n3. **Morning brief rotation Q2**: Continue regulatory digest slot, or rotate to thematic/sector focus?\n4. **ECB stress test 2026**: Revisit abandoned initiative from January? (see existing planning docs, silently dropped due to workload)\n\n## Pre-Meeting Actions\n\n- [x] Consolidate Obsidian regulatory digest notes ([[ECB Supervisory Priorities 2026 - Q1 Digest Consolidation]])\n- [x] Cross-reference KB articles (KB-402, KB-403, KB-404) with morning brief content\n- [ ] Finalize coverage bank impact matrix (draft above, validate with latest data)\n- [ ] Filter Q1 pipeline sheet for regulatory task status\n- [ ] Prepare 1-page summary handout for Marco\n\n---\n*Created: 2026-03-20 | Updated: 2026-03-24*",
+    "outlinks": [
+      "OBSN-2",
+      "OBSN-4",
+      "OBSN-30"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-20T14:00:00+01:00",
+    "last_updated": "2026-03-24T11:30:00+01:00"
+  },
+  {
+    "note_id": "OBSN-32",
+    "title": "Conference Coordination - Hidden Conflict Pattern Template",
+    "folder": "Templates/Professional",
+    "tags": [
+      "template",
+      "conference",
+      "scheduling",
+      "conflict-resolution"
+    ],
+    "content": "# Hidden Conference Conflict Pattern - Decision Template\n\n## Pattern Description\n\nOfficial conference system shows confirmed attendance/speaking slot, but informal communication channel (WeChat, Slack, email thread) reveals hidden scheduling conflict or change.\n\n## Credibility Assessment Checklist\n\n### Message Source Analysis\n- [ ] Sender identity verified (official account vs personal/unknown)\n- [ ] Message timestamp (recent vs outdated)\n- [ ] Corroborating evidence from other participants\n- [ ] Plausible explanation for change provided\n- [ ] Official channel communication promised (email, portal update)\n\n### Official System Cross-Check\n- [ ] Conference portal checked (current status)\n- [ ] Calendar invites reviewed (any updates)\n- [ ] Email confirmation reviewed (most recent)\n- [ ] Registration/payment status verified\n\n### Credibility Scoring\n- **High (>70%)**: Official account + corroboration + plausible explanation\n- **Medium (40-70%)**: Some verification but missing key elements\n- **Low (<40%)**: Unverified source or contradictory evidence\n\n## Conflict Analysis Framework\n\n### Identify Competing Commitments\n1. **Conference commitment:**\n   - Registration status (paid/confirmed)\n   - Speaking slot (yes/no)\n   - Sunk costs (€ amount)\n   - Career/visibility value (high/medium/low)\n\n2. **Conflicting commitment:**\n   - Type (client meeting, internal deadline, personal)\n   - Stakeholder importance (key client, MD, team)\n   - Rescheduling feasibility (easy/difficult/impossible)\n   - Relationship cost of rescheduling (low/medium/high)\n\n### Prioritization Matrix\n\n| Commitment Type | Priority Level | Rationale |\n|----------------|---------------|----------|\n| Key client meeting (non-negotiable) | Highest | Revenue + relationship |\n| Speaking opportunity | High | Visibility + career |\n| Internal meeting (reschedulable) | Medium | Team coordination |\n| Sunk costs | Lowest | Already spent, should not drive decision |\n\n## Decision Options Template\n\n### Option 1: Escalate to organizers - request restoration\n**When to use:** Original slot is critical, conflict is recent/organizer error\n\n**Execution steps:**\n1. Email conference organizers directly (official contact)\n2. Explain pre-existing commitment (with dates)\n3. Request original slot restoration\n4. Provide decision deadline (24-48 hours)\n5. Emphasize willingness to work with organizers\n\n**Success probability:** Medium (30-50%)\n**Timeline:** 1-3 days\n\n### Option 2: Withdraw from speaking, attend conference only\n**When to use:** Conflicting commitment is non-negotiable, speaking slot cannot be restored\n\n**Execution steps:**\n1. Notify conference organizers (apologize for late withdrawal)\n2. Confirm continued attendance (if valuable)\n3. Assess sunk cost recovery (partial refund possible?)\n4. Update calendar and stakeholder communications\n\n**Success probability:** High (90%+)\n**Timeline:** Immediate\n\n### Option 3: Delegate speaking slot to colleague\n**When to use:** Colleague has relevant expertise, organizers allow substitution\n\n**Execution steps:**\n1. Check colleague availability (calendar + willingness)\n2. Request organizer approval for speaker substitution\n3. Brief colleague thoroughly (slides, talking points, Q&A prep)\n4. Coordinate handoff timeline (2-3 weeks minimum)\n\n**Success probability:** Medium-High (60-70%)\n**Timeline:** 1-2 days for approval, 2-3 weeks for prep\n\n### Option 4: Reschedule conflicting commitment\n**When to use:** Conflicting commitment is reschedulable, stakeholder is flexible\n\n**Execution steps:**\n1. Assess stakeholder flexibility (explicit ask vs implicit assumption)\n2. Propose alternative dates (3+ options)\n3. Explain conference commitment value\n4. Confirm rescheduled commitment in writing\n\n**Success probability:** Varies (depends on stakeholder)\n**Timeline:** 1-3 days\n\n**⚠️ WARNING:** Do NOT attempt if conflicting commitment is:\n- Explicitly marked non-negotiable by stakeholder\n- Tied to external deadline (board meeting, regulatory filing)\n- Key client with relationship risk\n\n## Recommended Decision Path\n\n```\n1. Assess credibility of informal message (use checklist above)\n   ├─ If <40% credibility → Trust official system, ignore message\n   └─ If >40% credibility → Proceed to step 2\n\n2. Analyze competing commitments (use prioritization matrix)\n   ├─ If conflicting commitment is reschedulable → Consider Option 4\n   └─ If conflicting commitment is non-negotiable → Proceed to step 3\n\n3. Attempt escalation (Option 1)\n   ├─ Set 24-48 hour deadline for organizer response\n   └─ Prepare backup plan in parallel (Option 2 or 3)\n\n4. If escalation fails:\n   ├─ If colleague available → Execute Option 3\n   └─ If colleague unavailable → Execute Option 2\n```\n\n## Post-Resolution Actions\n\n- [ ] Update calendar with final decision\n- [ ] Notify all affected stakeholders\n- [ ] Document lessons learned\n- [ ] Update personal rules (if pattern reveals system gap)\n- [ ] File expense reports (if withdrawal/rebooking costs incurred)\n\n## Related Templates\n\n- [[KB-417]] - Content Credibility Standards\n- [[NOTE-102]] - Personal Compliance Rules\n- [[Decision Framework - Continue vs Pivot]] - Sunk cost analysis\n\n---\n*Template version: 1.0*\n*Created: 2026-02-12*\n*Last updated: 2026-02-12*",
+    "outlinks": [
+      "OBSN-8",
+      "OBSN-15"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-12T10:00:00+01:00",
+    "last_updated": "2026-02-12T10:00:00+01:00"
+  },
+  {
+    "note_id": "OBSN-33",
+    "title": "Energy Management Framework - Cognitive Load Matching",
+    "folder": "Personal/Decision-Making",
+    "tags": [
+      "energy-management",
+      "cognitive-load",
+      "productivity",
+      "self-awareness"
+    ],
+    "content": "# Energy Management Framework - Cognitive Load Matching\n\n## Core Principle\nMatch task cognitive load to current energy state. Do NOT force high-cognitive work during fatigued states - defer to peak-energy windows instead.\n\n## Energy State Assessment Signals\n\n### Physiological\n- Sleep quantity (target: 7+ hours)\n- Sleep quality (interrupted vs. continuous)\n- Time of day (morning peak, post-lunch dip, evening decline)\n- Physical fatigue (travel, illness, stress)\n\n### Contextual\n- Calendar density (meetings = context-switching = energy drain)\n- Recent work intensity (accumulated fatigue over days)\n- Environmental factors (noise, interruptions, workspace quality)\n\n## Task Cognitive Load Classification\n\n### HIGH-COGNITIVE Tasks\n**Characteristics**: Require sustained concentration, complex analysis, error detection, strategic synthesis\n**Examples**: Regulatory framework analysis, earnings model validation, client presentation design\n**Energy Requirement**: Peak state (morning after full rest, low interruption risk)\n**Fatigued-State Risk**: High error rate, slow progress, decision fatigue, quality degradation\n\n### LOW-COGNITIVE Tasks\n**Characteristics**: Routine, repetitive, administrative, well-practiced\n**Examples**: Email triage, expense reports, calendar management, formatting cleanup\n**Energy Requirement**: Minimal (can execute during fatigued states)\n**Fatigued-State Risk**: Low (errors are minor and easily corrected)\n\n## Decision Framework: Continue vs. Defer\n\n### CONTINUE if:\n- Current energy state matches task cognitive load\n- Deadline is immediate (today/tomorrow) AND hard\n- Task is low-cognitive (fatigued state acceptable)\n- No better execution window exists\n\n### DEFER if:\n- Current energy state mismatches task cognitive load\n- Peak-energy window available before deadline\n- Task is high-cognitive (quality-sensitive)\n- Forcing execution risks errors or rework\n\n## Implementation: Feb 2 2026 Case Study\n\n### Context\n- Sleep: 4.5 hours (overnight Frankfurt train)\n- Current time: 2:30pm (post-lunch dip)\n- Tomorrow: 8 back-to-back events (context-switching hell)\n- Next peak window: Saturday Feb 8, 9am (after Friday night recovery)\n\n### Decision\n**DEFER**: Basel IV analysis, Q1 earnings validation (HIGH-COGNITIVE)\n**EXECUTE**: Email triage, expense reports, calendar confirmations (LOW-COGNITIVE)\n**DELEGATE**: Routine data pulls to Sofia (preserve bandwidth for validation work)\n\n### Outcome\nPreserved cognitive capacity for hard-deadline deliverables. Avoided forcing high-quality analytical work during suboptimal energy state. Protected weekend peak-energy windows with explicit calendar blocks.\n\n## Lessons Learned\n1. **Self-awareness is non-negotiable**: Objectively assess energy state using concrete signals (sleep data, calendar density)\n2. **Sunk time is irrelevant**: Don't force work just because \"I'm already at my desk\" - energy mismatch guarantees poor output\n3. **Calendar blocking is defensive**: Protect peak-energy windows BEFORE they get claimed by meetings\n4. **Delegation preserves bandwidth**: Offload routine tasks to preserve energy for high-value work\n5. **Weekend work requires explicit family boundaries**: Sunday afternoon protected time prevents work creep\n\n## Related Frameworks\n- [[Decision Framework - Continue vs Pivot]]\n- [[Sunk Cost Fallacy in Research Projects]]\n- [[Work-Life Balance Reflection - March 2026]]\n\n---\n*Created: 2026-02-02 | Context: Post-Frankfurt travel energy management decision*",
+    "outlinks": [
+      "OBSN-2",
+      "OBSN-30"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-02T16:00:00+01:00",
+    "last_updated": "2026-02-02T16:30:00+01:00"
+  },
+  {
+    "note_id": "OBSN-34",
+    "title": "Client Meeting Scheduling - Buffer Time Requirements",
+    "folder": "Work/Client Management",
+    "tags": [
+      "client-calls",
+      "scheduling",
+      "time-management"
+    ],
+    "content": "# Client Meeting Prep Buffer Requirements\n\n## Standard Prep Time by Meeting Type\n\n### Portfolio Review Calls (1 hour duration)\n**Prep Time Required:** 1.5-2 hours\n- Data pulls: 30-45 min (latest financials, model outputs, peer comps)\n- Talking points draft: 30-45 min (key themes, Q&A anticipation)\n- Materials review: 15-30 min (refresh context, check for data errors)\n\n**Example:** Nordic Fund Q1 positioning call (Mar 4)\n- Client: Henrik Larsson\n- Topics: BPM/BPER earnings preview, merger speculation, capital ratios\n- Scheduled: 15:00-16:00\n- Prep block: 13:00-15:00 (2 hours)\n\n### Thematic Deep-Dive Calls (1.5 hour duration)  \n**Prep Time Required:** 2-3 hours\n- Research synthesis from multiple sources\n- Custom analysis or scenario modeling\n- Slide deck preparation if presenting\n\n### Quick Check-In Calls (30 min duration)\n**Prep Time Required:** 30-45 min\n- Quick data refresh\n- Review recent notes/emails with client\n- Agenda confirmation\n\n## Scheduling Principles\n1. **Never schedule client calls on hard deadline days** (e.g., Feb 28 Basel IV deadline)\n2. **Avoid calls during critical focus blocks** (deep work for model validation, regulatory analysis)\n3. **Ensure prep buffer is available same-day or prior evening** (don't rely on \"I'll prep after this other meeting\")\n4. **Morning calls require prior-day evening prep** (morning energy should go to call, not scrambling for data)\n\n## Conflict Resolution Framework\nWhen client proposes multiple slots:\n1. Map each slot against calendar for hard conflicts (deadlines, travel, existing meetings)\n2. Calculate prep buffer availability (working backward from proposed time)\n3. Assess interference with continuous focus requirements (e.g., model validation needs 3-4 hour blocks)\n4. Rank slots: green (clean), yellow (tight but workable), red (conflicts)\n5. Confirm best green slot with brief professional justification\n\n---\n**Cross-reference:** [[Decision-Making/Frameworks]] for broader scheduling decision trees",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-02-23T17:20:00+01:00",
+    "last_updated": "2026-02-23T17:20:00+01:00"
+  },
+  {
+    "note_id": "OBSN-35",
+    "title": "Q1 2026 Regulatory Digest Archive - Morning Brief Rotation",
+    "folder": "Research/Regulatory",
+    "tags": [
+      "regulatory-digest",
+      "morning-brief",
+      "Q1-2026",
+      "archive"
+    ],
+    "content": "# Q1 2026 Regulatory Digest Archive - Morning Brief Rotation\n\n## Purpose\nConsolidation of all regulatory updates covered during my Q1 2026 morning brief rotation slots. This archive serves as the foundation for the March 25 quarterly review meeting with Marco Bellini.\n\n## My Morning Brief Dates (Q1 2026)\n- January 8, 2026 (completed - [[Basel IV Digest - January 8 2026 Draft]])\n- January 22, 2026 (scheduled)\n- February 5, 2026 (scheduled)\n- February 19, 2026 (scheduled - HIGH CONFLICT with Q1 earnings deadline)\n- March 5, 2026 (scheduled)\n- March 19, 2026 (scheduled)\n\n## Search Strategy for Completeness\n1. Search vault for tags: #regulatory-digest, #ECB, #EBA, #Basel-IV, #green-taxonomy\n2. Filter date range: 2026-01-01 to 2026-03-31\n3. Cross-reference with calendar morning brief slots\n4. Identify coverage gaps (dates assigned but no note created)\n\n## Thematic Organization Framework\n### Theme 1: Basel IV Implementation\n- Output floor transition timeline updates\n- SME supporting factor revisions\n- Parallel reporting requirements\n- RWA calculation methodology changes\n\n### Theme 2: Green Taxonomy Disclosure\n- EBA draft RTS on Green Asset Ratio\n- ECB climate risk guidance\n- Disclosure timeline and compliance pressure\n\n### Theme 3: ECB Supervisory Priorities\n- 2026 priority risk areas (published Feb 10)\n- Stress testing methodology (Q2 2026 parameters pending)\n- SREP implications for Italian banks\n\n### Theme 4: EBA Technical Standards\n- March 2026 technical standards revision\n- Consultation periods and comment deadlines\n\n## Bank-Specific Impact Matrix (Draft)\n| Regulatory Change | UniCredit | Intesa | BPM | BPER | Coverage Notes |\n|-------------------|-----------|--------|-----|------|----------------|\n| Basel IV output floor | High | High | Medium | Medium | Large banks face earlier compliance |\n| SME supporting factor | Low | Low | High | High | Mid-tier benefits from revised factor |\n| Green taxonomy | High | High | Medium | Low | Disclosure burden varies by portfolio |\n| ECB stress test | High | High | Medium | Medium | SIFI vs non-SIFI parameters |\n\n## Client Communication Gaps Identified\n- No proactive Basel IV timeline update sent to Nordic Fund (Henrik) since January\n- Green taxonomy note delayed (Sofia dependency) - clients may have stale assumptions\n- ECB stress test coverage gap - no thematic note planned for Q2 methodology\n\n## Next Steps for March 25 Review\n1. Retrieve all Q1 regulatory digest notes from vault\n2. Verify completeness against calendar slots\n3. Populate thematic sections with specific regulatory changes\n4. Complete bank-specific impact matrix with quantitative estimates\n5. Draft Q2 research priorities based on identified gaps\n6. Prepare client communication strategy recommendations\n\n## Notes\n- This is purely an aggregation task - no new calendar events or todos to be created\n- Focus on synthesis and pattern identification across Q1 updates\n- Highlight any regulatory changes that were covered in morning brief but not translated to client-facing research",
+    "outlinks": [
+      "OBSN-6"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-10T09:15:00+01:00",
+    "last_updated": "2026-01-10T09:15:00+01:00"
+  },
+  {
+    "note_id": "OBSN-36",
+    "title": "ECB Supervisory Priorities 2026 - Regulatory Digest Notes",
+    "folder": "Research/Regulatory",
+    "tags": [
+      "regulatory-digest",
+      "ECB",
+      "supervisory-priorities",
+      "Q1-2026"
+    ],
+    "content": "# ECB Supervisory Priorities 2026 - Regulatory Digest Notes\n\n**Source**: ECB Banking Supervision Press Release, February 10, 2026\n**Morning Brief Date**: February 19, 2026 (scheduled)\n**Prepared**: January 10, 2026 (advance prep for high-conflict date)\n\n## Key Priorities Published\n1. **Climate and Environmental Risk Management**\n   - Banks must integrate climate risk into ICAAP by end-2026\n   - Enhanced disclosure requirements aligned with green taxonomy\n   - Supervisory expectations for transition risk scenario analysis\n\n2. **Digital Transformation and Cyber Resilience**\n   - Operational resilience testing requirements\n   - Third-party vendor risk management\n   - Cloud outsourcing governance standards\n\n3. **Credit Risk in High-Inflation Environment**\n   - Monitoring of commercial real estate exposures\n   - Household debt sustainability assessments\n   - NPL formation risk in SME portfolios\n\n4. **Capital and Liquidity Management**\n   - MREL compliance for mid-tier banks\n   - NSFR optimization under stressed conditions\n   - Basel IV implementation monitoring\n\n## Italian Bank Implications\n### UniCredit & Intesa (SIFI banks)\n- Full scope of supervisory expectations applies\n- Climate risk integration most urgent (large CRE/corporate portfolios)\n- MREL already compliant, focus on operational resilience\n\n### BPM & BPER (Mid-tier)\n- MREL compliance timeline pressure (2027 deadline)\n- SME credit risk monitoring elevated priority\n- Climate risk integration timeline extended vs SIFIs\n\n## Research Angle Opportunities\n- **Thematic Note**: \"ECB 2026 Priorities - Capital Reallocation Implications for Italian Banks\"\n- **Client Q&A**: Climate risk ICAAP integration - timeline and cost estimates\n- **Earnings Call Prep**: Questions on MREL compliance progress (BPM/BPER)\n\n## Cross-References\n- Related to green taxonomy work (climate risk disclosure overlap)\n- Connects to abandoned ECB stress test initiative (credit risk monitoring)\n- Potential Q2 research priority if client demand materializes\n\n## Coverage Status\n- Morning brief scheduled for Feb 19 (high conflict with earnings deadline)\n- Consider pre-recording 5-min digest to preserve analytical time\n- No client-facing deliverable planned yet - monitor buy-side interest",
+    "outlinks": [
+      "OBSN-35",
+      "OBSN-4"
+    ],
+    "inlinks": [
+      "OBSN-35"
+    ],
+    "created_at": "2026-01-10T10:30:00+01:00",
+    "last_updated": "2026-01-10T10:30:00+01:00"
+  },
+  {
+    "note_id": "OBSN-37",
+    "title": "Green Taxonomy RTS Consultation - EBA February 2026",
+    "folder": "Research/Regulatory",
+    "tags": [
+      "regulatory-digest",
+      "EBA",
+      "green-taxonomy",
+      "consultation",
+      "Q1-2026"
+    ],
+    "content": "# Green Taxonomy RTS Consultation - EBA February 2026\n\n**Source**: EBA Technical Update - Draft RTS on Green Asset Ratio Disclosure (Feb 2026)\n**Morning Brief Date**: March 5, 2026 (scheduled)\n**Prepared**: January 10, 2026 (advance review)\n\n## Consultation Overview\n- **Publication Date**: February 7, 2026\n- **Comment Deadline**: April 30, 2026\n- **Final Standards Expected**: Q3 2026\n- **Implementation Date**: January 1, 2027 (first disclosure cycle)\n\n## Key Technical Standards\n1. **Green Asset Ratio (GAR) Calculation**\n   - Numerator: EU Taxonomy-aligned exposures (Pillar 1 + Pillar 2)\n   - Denominator: Total covered assets (excludes trading book, derivatives, central bank exposures)\n   - Separate ratios for corporate, retail mortgage, and sovereign exposures\n\n2. **Disclosure Requirements**\n   - Annual Pillar 3 disclosure (initial implementation)\n   - Semi-annual disclosure from 2028 onwards\n   - Granular breakdown by economic activity (NACE codes)\n   - Transition plan narrative disclosure (qualitative)\n\n3. **Data Collection Challenges**\n   - Counterparty taxonomy alignment data availability\n   - SME portfolio estimation methodologies (simplified approach allowed)\n   - Sovereign exposure treatment (green bond vs general obligation)\n\n## Italian Bank Impact Assessment\n### High Impact (UniCredit, Intesa)\n- Large corporate portfolios require extensive counterparty data collection\n- CRE exposures need energy performance certificate verification\n- IT system upgrades required for NACE-level granularity\n- Estimated compliance cost: €5-8M per bank\n\n### Medium Impact (BPM, BPER)\n- SME-heavy portfolios benefit from simplified estimation approach\n- Smaller data collection burden vs large banks\n- Compliance cost estimated at €2-3M per bank\n- Timeline pressure: 12 months from final standards to first disclosure\n\n## Research Deliverable Status\n- **Thematic Note**: Delayed due to Sofia dependency (model template)\n- **Client Communication Gap**: Buy-side clients may have stale assumptions on timeline\n- **Q2 Priority**: Complete thematic note once Sofia's template available\n\n## Competitive Intelligence\n- Deutsche Bank published preliminary GAR estimate (internal model) - Feb 14\n- BNP Paribas announced €10M budget for taxonomy IT infrastructure - Feb 20\n- Italian banks have not yet disclosed compliance budgets publicly\n\n## Action Items for March 25 Review\n- Assess whether delayed thematic note created client communication gap\n- Evaluate Q2 research priorities: deep-dive on Italian bank GAR estimates?\n- Consider proactive outreach to Henrik (Nordic Fund) - ESG mandate implications\n\n## Cross-References\n- Links to ECB supervisory priorities (climate risk integration)\n- Related to abandoned stress test work (transition risk scenarios)\n- Connects to Q1 research goals (green taxonomy impact note)",
+    "outlinks": [
+      "OBSN-35",
+      "OBSN-4",
+      "OBSN-8"
+    ],
+    "inlinks": [
+      "OBSN-35"
+    ],
+    "created_at": "2026-01-10T11:45:00+01:00",
+    "last_updated": "2026-01-10T11:45:00+01:00"
+  },
+  {
+    "note_id": "OBSN-38",
+    "title": "Weekend Reading - Italian Banking Sector Consolidation Dynamics",
+    "folder": "Personal/Learning",
+    "tags": [
+      "weekend-reading",
+      "banking-sector",
+      "M&A",
+      "personal-development"
+    ],
+    "content": "# Weekend Reading - Italian Banking Sector Consolidation Dynamics\n\n**Date**: January 11, 2026\n**Source**: Various industry publications\n\n## Articles Read\n1. \"The Future of Italian Regional Banks\" - MilanoFinanza, Jan 8\n2. \"ECB's Stance on Cross-Border M&A in Banking Union\" - ECB Blog, Dec 2025\n3. \"Valuation Multiples in European Bank M&A 2020-2025\" - McKinsey Banking Report\n\n## Key Takeaways\n- Regional bank consolidation likely to accelerate under ECB pressure for scale\n- Cross-border deals still face regulatory friction despite Banking Union progress\n- Valuation multiples compressed due to low interest rate environment legacy\n\n## Personal Reflection\n- Need to balance market intelligence gathering (rumors, speculation) with compliance standards\n- BPM merger rumor tracking (OBSN-7) is appropriate for internal monitoring\n- Must maintain bright line: internal tracking ≠ client-facing research without verification\n\n## Skills Development\n- Understanding M&A dynamics helps with credit analysis (integration risk)\n- Valuation multiple frameworks useful for relative value calls\n- Regulatory approval process knowledge gap - should review ECB merger guidelines\n\n## Not Work-Related\n- Interesting read but no immediate research deliverable\n- Useful background for future thematic notes if consolidation wave materializes\n- Good example of productive weekend learning without work pressure",
+    "outlinks": [
+      "OBSN-7"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-11T14:20:00+01:00",
+    "last_updated": "2026-01-11T14:20:00+01:00"
+  }
+]

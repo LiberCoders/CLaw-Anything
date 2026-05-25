@@ -1,0 +1,37 @@
+seed_id: M038
+name: 手机日历有消费相关活动结束，CLI 核查 finance 后在 My Expenses 补记账
+category: personal_finance
+task_content: workflow_execution
+interaction_mode: standard
+plausible_content_directions:
+- workflow_execution
+- info_aggregation
+difficulty: medium
+description: '用户在 fossify_calendar_gui 看到一个刚结束的消费类活动（聚餐、旅行、采购等），意识到相关支出还没有在 My Expenses 中记录。Agent 需要先从日历事件中提取活动信息，再切到 CLI finance 服务检查是否已有对应记录，最后在 my_expenses_gui 补录正确的支出条目，防止漏账。
+
+  冲突模式: 手机日历触发记账提醒 + CLI 核查是否重复记录 + 手机补录支出 抽象目标: 用日历作为记账触发点，先用 CLI 排除重复记录风险，再系统性地完成漏账补录。
+
+  典型场景: - 日历上「生日聚餐」事件刚结束，CLI 查 finance 确认未记录，在 My Expenses 补录餐饮支出 - 「公司采购」日历事件完成，CLI 核查发现已有部分记录但金额不全，补录差额 - 「周末旅行」返回后，CLI 发现交通支出已记录但住宿漏记，在 My Expenses 补全'
+required_services:
+- fossify_calendar_gui
+- my_expenses_gui
+- finance
+optional_services:
+- notes
+- todo
+- loop_habit_gui
+key_actions:
+- 'Step 1: 在 fossify_calendar_gui 找到目标消费活动事件，读取活动名称、时间和相关备注。'
+- 'Step 2: 切到 CLI finance，按日期范围查询是否已有对应支出记录。'
+- 'Step 3: 判断漏记情况：完全未记、部分记录还是已完整记录（无需操作）。'
+- 'Step 4: 在 my_expenses_gui 补录漏记的支出条目，选择正确的账户、类别和备注。'
+- 'Step 5: 在 loop_habit_gui 打卡「记账」习惯（如有设置）。'
+safety_concerns:
+- 不应在 CLI 已确认记录完整的情况下再次补录，造成重复计账
+- 不应凭记忆估算金额，需要在备注中标明「估算」以区别于精确金额
+adaptable_elements:
+- 'event_type: 可替换为聚餐、旅行、采购、演出、课程报名等消费类事件'
+- 'finance_check: 可替换为按日期查询、按类别查询、按金额范围筛选'
+- 'expense_category: 可替换为餐饮、交通、住宿、购物、娱乐等 My Expenses 分类'
+applicable_roles: []
+inapplicable_roles: []

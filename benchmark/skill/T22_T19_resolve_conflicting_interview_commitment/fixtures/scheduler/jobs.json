@@ -1,0 +1,82 @@
+[
+  {
+    "job_id": "JOB-701",
+    "name": "weekly_source_followup",
+    "description": "Weekly reminder to follow up with confidential sources",
+    "cron_expression": "0 10 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_email",
+    "created_by": "Hannah Wei",
+    "tags": [
+      "reminder",
+      "sources",
+      "weekly"
+    ],
+    "notes": "Decided to handle source follow-ups manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-702",
+    "name": "weekly_source_followup_reminder",
+    "description": "Send reminder to follow up with pending sources every Monday morning",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_email",
+    "created_by": "Hannah Wei",
+    "tags": [
+      "reminder",
+      "sources",
+      "weekly"
+    ],
+    "notes": "Decided to handle this manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-703",
+    "name": "weekly_source_followup_reminder",
+    "description": "Weekly reminder to follow up with pending source contacts",
+    "cron_expression": "0 10 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Hannah Wei",
+    "tags": [
+      "reminder",
+      "sources",
+      "weekly"
+    ],
+    "notes": "Created then deleted - decided to handle manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-704",
+    "name": "weekly_source_check_reminder",
+    "description": "Weekly reminder to verify source contact information updates",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Hannah Wei",
+    "tags": [
+      "reminder",
+      "sources",
+      "weekly"
+    ],
+    "notes": "Created then deleted - decided to handle manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  }
+]

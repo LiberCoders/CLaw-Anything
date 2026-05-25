@@ -1,0 +1,16 @@
+noise_id: N032
+name: "Draft a reply but save for later"
+description: "See an email that needs a reply, write a response, feel the wording isn't right, save as draft to revise later"
+involved_services: [gmail]
+leaves_trace: true
+trace_type: "saved_draft"
+action_sequence:
+  - "Open inbox"
+  - "Open an email that needs a reply"
+  - "Click reply and edit response"
+  - "Unhappy with the wording, save as draft"
+  - "Close mailbox"
+time_preference: any
+adaptable_elements:
+  - "Email subject and reply recipient"
+  - "Reason for dissatisfaction with wording"

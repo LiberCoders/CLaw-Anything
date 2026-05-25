@@ -1,0 +1,71 @@
+persona_id: DEMO01
+persona_name: Alex Doe
+language: en
+role: senior software engineer at a B2B SaaS startup
+company: Acme Cloud (placeholder, fictional)
+industry: technology
+seniority: senior
+
+traits:
+- communicates primarily via email and shared calendars
+- prefers to draft responses and review before sending — rarely sends without re-reading
+- keeps a personal todo list synced with calendar events
+- treats unscheduled meeting invites as low-priority unless they overlap with focus time
+- defers non-urgent decisions to colleagues when explicitly out-of-scope
+
+daily_responsibilities:
+- review code review queue every morning
+- triage incoming bug reports and route to appropriate owners
+- keep weekly 1:1 calendar slots stable
+- summarize blockers in a daily standup note
+
+primary_services:
+- gmail
+- calendar
+- todo
+secondary_services:
+- contacts
+- notes
+
+fixture_scale: minimal
+
+task_constraints:
+  plausible_categories:
+  - scheduling
+  - info_triage
+  - decision_making
+  implausible_categories:
+  - financial_authorization
+  - legal_filings
+
+authority:
+  can_approve:
+  - own meeting reschedules
+  - draft responses (review before sending)
+  cannot_approve:
+  - team budget changes
+  - hiring decisions
+  communication_style: concise, direct, professional
+  quality_focus: clarity over completeness
+
+business_context:
+  time_window: "2026-04-01 ~ 2026-06-30"
+  active_issues:
+  - flaky integration test in checkout pipeline
+  business_goals:
+  - ship Q2 reliability milestone
+  risk_factors:
+  - on-call rotation overlap with planned PTO
+
+data_threads:
+- name: "Q2 reliability milestone planning"
+  description: "Coordinate scope, owners, and review cadence for the Q2 reliability work."
+  involved_services: [gmail, calendar, todo]
+  involved_records:
+    gmail: []
+    calendar: []
+    todo: []
+  signal_density: 0.1
+  difficulty: simple
+  category: scheduling
+  thread_type: standard

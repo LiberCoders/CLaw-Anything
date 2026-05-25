@@ -1,0 +1,2462 @@
+[
+  {
+    "task_id": "TODO-501",
+    "title": "Verify Cyprus Companies House registry - Shell entities batch 1",
+    "description": "Online verification of 12 shell companies registered in Cyprus. Extract incorporation dates, director names, registered addresses. Cross-reference with leaked documents. Can run in parallel with other jurisdictions.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-10",
+    "tags": [
+      "investigation",
+      "clearview",
+      "cyprus",
+      "registry-verification",
+      "parallelizable"
+    ],
+    "created_at": "2026-02-05T15:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-502",
+    "title": "Submit formal request to Jersey Financial Services Commission",
+    "description": "Prepare and submit journalist inquiry for corporate records on 8 Jersey-registered trusts. Include legal basis under Freedom of Information provisions. Lead time: 5-7 business days. Can run in parallel with Cyprus verification.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-09",
+    "tags": [
+      "investigation",
+      "clearview",
+      "jersey",
+      "registry-verification",
+      "parallelizable"
+    ],
+    "created_at": "2026-02-05T15:05:00+00:00"
+  },
+  {
+    "task_id": "TODO-503",
+    "title": "Coordinate Panama registry search via local agent",
+    "description": "Contact vetted Panama City legal contact to conduct registry search for 5 shell companies. Requires wire transfer for agent fee ($800). Can run in parallel with other registry checks.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-10",
+    "tags": [
+      "investigation",
+      "clearview",
+      "panama",
+      "registry-verification",
+      "parallelizable"
+    ],
+    "created_at": "2026-02-05T15:10:00+00:00"
+  },
+  {
+    "task_id": "TODO-504",
+    "title": "Cross-reference leaked documents with verified registry data",
+    "description": "Once registry verifications complete, systematically cross-check 2,400 pages of leaked Panama documents against verified corporate records. Identify discrepancies, confirm beneficial ownership chains. Can run partially in parallel with ongoing verifications.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-12",
+    "tags": [
+      "investigation",
+      "clearview",
+      "document-analysis",
+      "parallelizable"
+    ],
+    "created_at": "2026-02-05T15:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-505",
+    "title": "Interview Source A (Cyprus insider) - TIMEZONE CRITICAL",
+    "description": "Source A available Feb 12-13 only. Must schedule during Cyprus business hours (08:00-15:00 EET / 06:00-13:00 GMT) to allow real-time registry verification if needed. DEPENDENCY: Should complete Cyprus registry check first. Secure video call, record with consent, arrange transcription.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-02-13",
+    "tags": [
+      "investigation",
+      "clearview",
+      "interview",
+      "source-a",
+      "timezone-constraint",
+      "sequential"
+    ],
+    "created_at": "2026-02-06T09:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-506",
+    "title": "Interview Source B (beneficial ownership expert) - CRITICAL SEQUENCING",
+    "description": "Source B available evenings Feb 14-16. **HOLDS MISSING LINK ON BENEFICIAL OWNERSHIP CHAIN** - this interview MUST happen BEFORE narrative draft, not after as initially planned. DEPENDENCY: Needs completed registry verifications and Source A interview context. Evening availability (after 19:00 GMT).",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-02-16",
+    "tags": [
+      "investigation",
+      "clearview",
+      "interview",
+      "source-b",
+      "sequential",
+      "dependency-conflict"
+    ],
+    "created_at": "2026-02-06T09:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-507",
+    "title": "Draft narrative article - OPERATION CLEARVIEW",
+    "description": "Write full investigative narrative (target: 3,500-4,000 words). DEPENDENCIES: Must have both interview transcripts, all registry verifications complete, documents cross-referenced. SEQUENCING CONFLICT RESOLVED: Move this AFTER Source B interview, not before.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-17",
+    "tags": [
+      "investigation",
+      "clearview",
+      "writing",
+      "sequential",
+      "depends-on-interviews"
+    ],
+    "created_at": "2026-02-06T10:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-508",
+    "title": "Legal review by Morning Ledger counsel",
+    "description": "Submit complete draft to legal team for defamation risk assessment, source protection review, jurisdiction-specific legal exposure analysis. HARD DEPENDENCY: Cannot start until draft complete AND all facts verified. If legal flags issues, halt publication workflow immediately (fail-fast).",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-02-18",
+    "tags": [
+      "investigation",
+      "clearview",
+      "legal",
+      "sequential",
+      "hard-dependency",
+      "fail-fast"
+    ],
+    "created_at": "2026-02-06T10:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-509",
+    "title": "Encrypted handoff to Editor Marcus Chen",
+    "description": "Final legally-cleared draft transfer via encrypted channel. REQUIRES: Both Priya and Marcus online simultaneously. Marcus available Feb 18-19, 19:00-22:00 GMT. Use Signal + PGP-encrypted backup. DEPENDENCY: Legal review must be complete and cleared.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-02-19",
+    "tags": [
+      "investigation",
+      "clearview",
+      "handoff",
+      "sequential",
+      "synchronous-constraint"
+    ],
+    "created_at": "2026-02-06T10:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-510",
+    "title": "Expense report - CLEARVIEW investigation costs",
+    "description": "Compile and submit expense report: Cyprus registry expedited search (£450), Panama agent fee ($800), secure transcription service, travel costs if any. Finance deadline end of month.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-02-28",
+    "tags": [
+      "administrative",
+      "expenses"
+    ],
+    "created_at": "2026-02-04T14:20:00+00:00"
+  },
+  {
+    "task_id": "TODO-511",
+    "title": "URGENT: Secure Signal call with Source A (Dmitri) - Dubai connection intel",
+    "description": "Source A (Dmitri Kozlov) sent encrypted ProtonMail 2026-01-14 03:42 UTC with critical new intelligence: Apex Consolidated SA Dubai entity confirmed as third node in shell network. €4.2M wire transfers Dec 2025. Three-way flow: Cyprus->Malta->Dubai->Cyprus. Source window closing - being transferred internally next week. Must coordinate secure Signal call Thu/Fri (Jan 16-17) Cyprus evening time (UTC+2). Use established Signal drop protocol. Extract: wire transfer documentation, Apex SA registration details, beneficial owner signature patterns, timeline of fund movements. CRITICAL for CLEARVIEW article narrative.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-01-17",
+    "tags": [
+      "CLEARVIEW",
+      "source-interview",
+      "time-sensitive",
+      "encrypted-comms"
+    ],
+    "created_at": "2026-01-14T08:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-512",
+    "title": "Monitor Source B (Elena) communication blackout - assess compromise risk",
+    "description": "Source B (Elena Volkov) reported 2026-01-14 that her audit firm is questioning document access patterns. Requested 72-hour communication blackout for safety assessment. DEADLINE: Monitor for contact by Monday 2026-01-19 EOD. If no contact received, assume source has been flagged/compromised and cannot proceed safely. Contingency: Elena stated existing documents (beneficial ownership chain Meridian->Sentinel) are sufficient for publication if cross-referenced with Cyprus registry. Prepare to proceed without additional Elena intel if necessary. Flag to Marcus and Legal (Rajesh) if source burned.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-19",
+    "tags": [
+      "CLEARVIEW",
+      "source-protection",
+      "compromise-risk",
+      "monitoring"
+    ],
+    "created_at": "2026-01-14T14:35:00+00:00"
+  },
+  {
+    "task_id": "TODO-513",
+    "title": "Verify Apex Consolidated SA Dubai - registry and beneficial ownership",
+    "description": "New entity identified by Source A: Apex Consolidated SA, Dubai (DMCC registration suspected). Registered 2024. Alleged beneficial owner signature pattern matches Sentinel Cyprus and Meridian Malta. Verify: DMCC registry search for Apex Consolidated SA, registration date and beneficial owner records, corporate structure and nominee directors, connection to Cyprus/Malta entities. €4.2M wire transfer Dec 2025 requires documentary evidence. Coordinate with Dubai registry agent if needed. This is the \"missing link\" for three-jurisdiction shell network narrative.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-20",
+    "tags": [
+      "CLEARVIEW",
+      "registry-verification",
+      "Dubai",
+      "beneficial-ownership"
+    ],
+    "created_at": "2026-01-14T08:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-514",
+    "title": "Triage new UK shell network tip - assess credibility and scope",
+    "description": "Received unsolicited encrypted tip 2026-01-15 from anonymous.tipster.2026@tutanota.com. Claims: UK-based shell network (12+ entities, London/Jersey/Cayman), £47M flow over 18 months, construction procurement fraud, source is UK bank compliance officer with internal memos and recordings. NOT related to CLEARVIEW but potentially larger scale. ASSESS: Source credibility (new/unverified contact), timeline feasibility (internal audit starting Feb 1st - pressure tactic?), resource allocation (CLEARVIEW deadline takes priority), honeypot/phishing risk. Consult Marcus before responding. May be legitimate new investigation thread for post-CLEARVIEW.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-18",
+    "tags": [
+      "new-lead",
+      "triage",
+      "source-verification",
+      "UK"
+    ],
+    "created_at": "2026-01-15T10:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-515",
+    "title": "CHECKPOINT DECISION: Singapore source confirmation status (go/no-go)",
+    "description": "CRITICAL PATH DECISION POINT: Assess whether Source A (Dmitri K.) has provided Singapore beneficial ownership documents by Jan 6. If NO confirmation by checkpoint:\n- Trigger contingency plan: scale back to Option B (BVI/Kenya only, redact Singapore entities)\n- Cancel Kenya flight booking to avoid sunk cost\n- Notify legal counsel of reduced scope\n- Inform partner newsrooms of modified story angle\n\nIf YES confirmation received:\n- Proceed with Option A (full three-jurisdiction story)\n- Book Kenya flights immediately\n- Fast-track legal clearance with Rajesh\n\nCheckpoint meeting: Jan 6, 2pm with Marcus and Rajesh",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-01-06",
+    "tags": [
+      "clearview",
+      "decision-point",
+      "critical-path"
+    ],
+    "created_at": "2026-01-04T10:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-516",
+    "title": "Draft non-Singapore sections (parallel advancement, low rework risk)",
+    "description": "PARALLEL TASK: Draft article sections that don't depend on Singapore confirmation:\n- BVI shell company structure (verified via registry)\n- Kenya banking wire transfer timeline (based on existing leaked docs)\n- Background on money laundering typologies\n- Methodology section\n\nThese sections can be written speculatively with minimal rework cost if Singapore thread fails. Allows progress while waiting on critical path.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-01-08",
+    "tags": [
+      "clearview",
+      "drafting",
+      "parallel-task"
+    ],
+    "created_at": "2026-01-04T10:15:00+08:00"
+  },
+  {
+    "task_id": "TODO-517",
+    "title": "Prepare Kenya interview questions (conditional on checkpoint)",
+    "description": "PARALLEL TASK (low cost): Prepare interview protocol and questions for James Omondi:\n- Wire transfer documentation he can provide\n- Timeline of compliance violations\n- Management response to his flagging\n- Corroborating witnesses\n- Security/anonymity concerns\n\nLow rework cost if interview cancelled. DO NOT book flights until after Jan 6 checkpoint.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-06",
+    "tags": [
+      "clearview",
+      "interview-prep",
+      "kenya"
+    ],
+    "created_at": "2026-01-04T10:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-518",
+    "title": "CONDITIONAL: Book Nairobi flights (only if checkpoint GREEN)",
+    "description": "CONDITIONAL TASK - DO NOT EXECUTE UNTIL JAN 6 CHECKPOINT:\n\nIf Singapore source confirms by Jan 6 checkpoint:\n- Book flights to Nairobi for Jan 8-10\n- Arrange secure interview location\n- Confirm with James Omondi by Jan 6 evening\n\nIf Singapore source FAILS to confirm:\n- DO NOT BOOK - cancel interview to avoid burning source relationship and sunk flight costs\n- Send apologetic email to James explaining investigation timeline shifted\n\nNon-refundable flight cost: ~$1,200. Relationship cost if cancelled: moderate-high risk.",
+    "status": "blocked",
+    "priority": "high",
+    "due_date": "2026-01-06",
+    "tags": [
+      "clearview",
+      "conditional",
+      "kenya",
+      "travel"
+    ],
+    "created_at": "2026-01-04T10:45:00+08:00"
+  },
+  {
+    "task_id": "TODO-519",
+    "title": "Coordinate contingency scenarios with partner newsrooms",
+    "description": "Prepare Marcus for partner newsroom call on Jan 13:\n- Scenario A: Full three-jurisdiction story (if Singapore confirms)\n- Scenario B: Scaled-back BVI/Kenya story (if Singapore fails)\n- Impact on coordinated release messaging\n- Backup publication angles\n\nPartners (Reuters, FT) need clarity by Jan 13 for final editorial planning.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-12",
+    "tags": [
+      "clearview",
+      "coordination",
+      "editorial"
+    ],
+    "created_at": "2026-01-04T11:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-520",
+    "title": "URGENT: Consolidate CLEARVIEW task overview for Marcus - Week 2 critical path",
+    "description": "Generate comprehensive overview of all CLEARVIEW investigation tasks for critical verification phase. Must include: (1) All pending/in-progress tasks with current status, (2) Overdue items requiring immediate attention, (3) Critical path tasks for next 7 days, (4) External dependencies (legal, sources, registries), (5) Calendar conflicts with interview prep/execution, (6) Tasks blocking downstream work (especially Source A interview gating beneficial ownership narrative), (7) Lower-priority items that can be deferred. OBSERVATIONAL ONLY - do not create/update/delete tasks. Needed for 2pm sync with Marcus today.",
+    "status": "in_progress",
+    "priority": "critical",
+    "due_date": "2026-02-22",
+    "tags": [
+      "clearview",
+      "overview",
+      "critical-path",
+      "urgent"
+    ],
+    "created_at": "2026-02-22T08:20:00+00:00"
+  },
+  {
+    "task_id": "TODO-521",
+    "title": "OVERDUE: Follow up with Panama registry agent - document retrieval status",
+    "description": "Panama corporate registry search for shell entities connecting Sentinel Holdings to ultimate beneficial owners. Formal request should have been submitted 5 days ago. No confirmation received from agent. Critical for completing shell network chain documentation. Rajesh (legal) flagging this as potential gap that could weaken allegations. Need immediate status update and expected delivery timeline. If documents won't arrive by Feb 26, must develop backup strategy for legal review.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-18",
+    "tags": [
+      "clearview",
+      "registry",
+      "panama",
+      "overdue",
+      "legal-dependency"
+    ],
+    "created_at": "2026-02-13T10:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-522",
+    "title": "Assess Singapore source (Tan Wei Ling) status - proceed without or delay?",
+    "description": "Source Tan Wei Ling (Apex Maritime compliance officer) has been dark for 72+ hours. Last contact Feb 19. She provided initial beneficial ownership documents but additional verification was expected. This creates uncertainty for Singapore investigation branch. DECISION REQUIRED: (A) Proceed with existing documents and accept verification gap, or (B) Delay Singapore thread pending source re-contact. Impacts: Legal review timeline, partner newsroom coordination, publication scope. Discuss with Marcus at 2pm sync today.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-23",
+    "tags": [
+      "clearview",
+      "singapore",
+      "source-management",
+      "decision-point",
+      "blocking"
+    ],
+    "created_at": "2026-02-21T09:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-523",
+    "title": "Prepare interview question matrix - Source A & B cross-verification points",
+    "description": "Develop detailed question matrix for Source A (Dimitri K., Cyprus interview Feb 25) and Source B (Elena V., beneficial ownership interview Feb 26). Focus on cross-verification points between sources to strengthen narrative. Key areas: (1) Beneficial ownership structure of Sentinel Holdings, (2) Timeline of fund transfers through Malta entities, (3) Dubai connection verification, (4) Document authentication. Must identify contradictions in advance and prepare follow-up questions. Critical for maximizing interview value given tight timeline to legal review.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-24",
+    "tags": [
+      "clearview",
+      "interview-prep",
+      "sources",
+      "verification"
+    ],
+    "created_at": "2026-02-20T14:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-524",
+    "title": "Review and update expense tracking for Q1 CLEARVIEW investigation costs",
+    "description": "Compile all investigation expenses for Q1 reporting: registry search fees (Cyprus, Jersey, Panama), encrypted communication services, source travel reimbursements, document translation costs. Finance needs breakdown by Feb 28 for quarterly budget reconciliation. Low priority - can defer until after legal review if needed.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-02-28",
+    "tags": [
+      "clearview",
+      "admin",
+      "expenses",
+      "deferrable"
+    ],
+    "created_at": "2026-02-15T11:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-525",
+    "title": "Confirm T.W. interview time slot - analyze calendar conflicts",
+    "description": "URGENT: T.W. (Cayman whistleblower) has proposed three interview windows (March 3 14:00-16:00, March 4 10:00-12:00, March 5 16:00-18:00 GMT). Must cross-check against existing commitments and identify feasible slot:\n\n- March 4 10:00-12:00 CONFLICTS with legal review session (hard conflict)\n- March 5 16:00-18:00 starts immediately after partner coordination call (15:00-16:00) - insufficient buffer for encrypted setup + mental prep (need 60min minimum)\n- March 3 14:00-16:00 appears clear - verify no conflicts\n\nRequirements: 60min pre-interview buffer for encrypted connection setup, document review, mental preparation. Interview is critical path for CLEARVIEW - T.W. relocates March 8th.\n\nAction: Confirm March 3rd slot via encrypted reply, provide Signal backup protocol.",
+    "status": "pending",
+    "priority": "urgent",
+    "due_date": "2026-02-28",
+    "tags": [
+      "CLEARVIEW",
+      "source-coordination",
+      "urgent",
+      "scheduling"
+    ],
+    "created_at": "2026-02-27T14:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-526",
+    "title": "Draft encrypted reply to T.W. - confirm March 3rd interview slot",
+    "description": "Send encrypted confirmation via ProtonMail to t.wl.secure.2026@protonmail.com:\n\n- Confirm March 3, 2026, 14:00-16:00 GMT slot\n- Provide Jitsi encrypted video link (generate fresh link day-of)\n- Share Signal backup number: +44-XXX-XXX-XXXX\n- Confirm document list: beneficial ownership chains for Coastal Ventures Ltd, Apex Maritime Holdings, Cayman Trust Services internal records (2019-2024)\n- Remind: interview will be recorded (encrypted storage only, destroyed after publication)\n- Security protocol: use VPN, fresh browser session, no screenshots\n\nSend by end of day Feb 28th to give T.W. 72hr notice.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-28",
+    "tags": [
+      "CLEARVIEW",
+      "source-coordination",
+      "encryption"
+    ],
+    "created_at": "2026-02-27T14:35:00+00:00"
+  },
+  {
+    "task_id": "TODO-527",
+    "title": "Prepare interview question list for T.W. session (March 3rd)",
+    "description": "Finalize structured interview questions for T.W. (Cayman whistleblower) covering:\n\n1. Beneficial ownership verification: Full chain for Coastal Ventures Ltd → Apex Maritime Holdings → end beneficiaries\n2. Timeline: When did ownership structures change? Any pattern around Kenya port contract dates?\n3. Cayman Trust Services internal protocols: How were shell entities managed? Red flags ignored?\n4. Document authentication: Can T.W. verify provenance of documents provided?\n5. Other entities: Are there additional shell companies in this network not yet identified?\n6. Corroboration: Other witnesses/sources who can verify T.W.'s account?\n7. Personal risk assessment: What protections does T.W. need? Any threats received?\n\nCross-reference with existing source documents and Elena V.'s beneficial ownership analysis.\n\nReview questions with Marcus before interview.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-02",
+    "tags": [
+      "CLEARVIEW",
+      "interview-prep",
+      "source-coordination"
+    ],
+    "created_at": "2026-02-27T15:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-528",
+    "title": "Update expense tracking - February CLEARVIEW costs",
+    "description": "Compile February expenses for CLEARVIEW investigation:\n- Encrypted communication subscriptions (ProtonMail, Tutanota renewals)\n- VPN services\n- Document verification services\n- Travel costs (if any)\n- Database access fees\n\nSubmit to Marcus by March 5th for monthly reconciliation.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-03-05",
+    "tags": [
+      "admin",
+      "expenses",
+      "CLEARVIEW"
+    ],
+    "created_at": "2026-02-27T16:20:00+00:00"
+  },
+  {
+    "task_id": "TODO-529",
+    "title": "URGENT: Draft encrypted email to Source B - final 24hr check-in deadline",
+    "description": "Send final communication to Elena V. (Source B) via Tutanota with 24-hour response deadline. Message must: (1) acknowledge her security concerns, (2) provide firm deadline of January 7th 18:00 GMT for beneficial ownership documents, (3) explain that after deadline, investigation will proceed with alternative verification methods, (4) emphasize this is not abandonment but operational necessity, (5) leave door open for future collaboration. Tone: professional, understanding, but firm on timeline.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-01-06",
+    "tags": [
+      "clearview",
+      "source-b",
+      "crisis-response",
+      "urgent"
+    ],
+    "created_at": "2026-01-06T14:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-530",
+    "title": "Send status update to Reuters/FT - Source B situation + 72hr buffer request",
+    "description": "Draft diplomatic status update to Sarah Winters (Reuters) and copy Thomas Brennan explaining Source B communication blackout. Propose 72-hour deadline extension (moving coordinated publication from January 18th to January 21st) citing force majeure. Emphasize: (1) investigation quality/legal safety requires complete beneficial ownership verification, (2) alternative verification methods are in motion, (3) Morning Ledger is committed to partnership, (4) delay is external factor not internal process failure. Request response by January 7th EOD.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-06",
+    "tags": [
+      "clearview",
+      "partner-newsroom",
+      "crisis-response",
+      "deadline"
+    ],
+    "created_at": "2026-01-06T16:50:00+00:00"
+  },
+  {
+    "task_id": "TODO-531",
+    "title": "Coordinate with Marcus - alternative verification budget approval (€8-12K)",
+    "description": "Emergency meeting with Marcus Chen to request supplemental budget approval for third-party forensic accountant (Dr. Helena Kovač). Need €8,000-12,000 (approx $8,700-13,000 USD) for beneficial ownership verification if Source B documents don't arrive. Present options: (1) wait for Source B (high risk to deadline), (2) proceed without complete verification (high legal risk), (3) engage forensic accountant (high cost, moderate timeline impact, low legal risk). Recommend option 3. Meeting scheduled for January 6th 17:00.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-01-06",
+    "tags": [
+      "clearview",
+      "budget",
+      "crisis-response",
+      "editorial"
+    ],
+    "created_at": "2026-01-06T15:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-532",
+    "title": "Prepare contingency briefing document - CLEARVIEW commitment cascade analysis",
+    "description": "Create structured analysis document for Marcus showing: (1) all explicit commitments made to stakeholders (partner newsrooms, legal counsel, editor, Source A) with deadlines, (2) dependency chain map showing how Source B blackout breaks the sequence, (3) cost-benefit analysis of each remediation option with risk scores, (4) recommended minimum-loss strategy prioritizing legal safety > source relationships > partner relationships > internal deadlines. Document will inform emergency decision meeting with Marcus. Include timeline diagrams and stakeholder impact matrix.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-01-06",
+    "tags": [
+      "clearview",
+      "crisis-response",
+      "decision-support",
+      "analysis"
+    ],
+    "created_at": "2026-01-06T15:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-533",
+    "title": "Research Jersey FSC formal request procedures - jurisdictional requirements",
+    "description": "Need to understand the formal request process for Jersey Financial Services Commission registry searches for offshore entities. Unclear whether journalist requests require local legal representation or if direct submission is possible. Check ICIJ resources and contact Sarah Winters at Reuters for guidance on Caribbean/Channel Islands registry access protocols.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-12",
+    "tags": [
+      "clearview",
+      "registry-access",
+      "jurisdictional-confusion"
+    ],
+    "created_at": "2026-01-07T16:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-534",
+    "title": "Draft Source A encrypted communication protocol document",
+    "description": "Create standardized protocol document for Source A (Dimitri K.) communications covering: (1) preferred encryption channels, (2) document handoff procedures, (3) emergency contact protocols, (4) anonymization requirements. Need to formalize this before January 12 interview to avoid operational security confusion during live conversation.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-11",
+    "tags": [
+      "clearview",
+      "source-protection",
+      "opsec"
+    ],
+    "created_at": "2026-01-09T14:35:00+00:00"
+  },
+  {
+    "task_id": "TODO-535",
+    "title": "Verify Panama registry agent credentials and pricing",
+    "description": "Follow up with secure.panama.agent@protonmail.com to verify legitimacy and negotiate pricing for Apex Consolidated SA registry search in Dubai/Panama nexus. Need confirmation of turnaround time and document authentication process.",
+    "status": "in_progress",
+    "priority": "medium",
+    "due_date": "2026-01-15",
+    "tags": [
+      "clearview",
+      "registry-access",
+      "panama"
+    ],
+    "created_at": "2026-01-06T11:20:00+00:00"
+  },
+  {
+    "task_id": "TODO-536",
+    "title": "Review Morning Ledger source protection policy - encrypted email protocols",
+    "description": "Re-read internal policy document on source communications and encrypted email handling. Need clarity on whether draft emails to confidential sources require separate legal review before sending, or if reporter judgment is sufficient for procedural questions (vs. substantive investigation details).",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-14",
+    "tags": [
+      "source-protection",
+      "policy-review",
+      "opsec"
+    ],
+    "created_at": "2026-01-10T10:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-537",
+    "title": "DECISION: Resolve Source A interview vs Jordan Blake mentorship conflict",
+    "description": "SIMULTANEOUS ROLE CONFLICT on March 18, 19:00-21:00 GMT:\n\n1. CLEARVIEW Source A (Dimitris K.) interview - FINAL beneficial ownership evidence for Sentinel Holdings Dubai connection. NON-NEGOTIABLE window due to source travel to Athens March 19+, no secure comms until April. Critical for publication deadline (end March).\n\n2. Jordan Blake mentorship - Encrypted source protocol training for first cross-border investigation. Source safety implications if junior reporter proceeds without proper training.\n\nREQUIRED ANALYSIS:\n- Substitutability: Check Marcus Chen, Alicia Fernandez, OCCRP contacts (Katarina Kovač) availability for mentorship delegation\n- Consequence irreversibility: CLEARVIEW publication delay vs junior reporter source-safety risk\n- Recent role-tilt: Review calendar for past 4 weeks - mentorship requests declined due to CLEARVIEW tunnel vision\n\nDECISION DEADLINE: March 16 (Source A confirmation deadline)\nCOMPENSATION PLAN: Email to deprioritized party + alternative arrangement",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-03-16",
+    "tags": [
+      "clearview",
+      "mentorship",
+      "decision",
+      "conflict"
+    ],
+    "created_at": "2026-03-14T15:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-538",
+    "title": "Query substitutability: Identify alternative mentors for Jordan Blake",
+    "description": "Check availability and capability of potential substitute mentors for encrypted-source protocol training:\n\n1. Marcus Chen - Editorial experience but limited field operational-security expertise\n2. Alicia Fernandez - Legal/security angle, some encrypted comms knowledge\n3. Katarina Kovač (OCCRP) - Extensive training experience, has conducted similar sessions for OCCRP Eastern Europe desk\n4. External security consultants - Last resort, cost implications\n\nReview their calendars for March 17-19 availability. Assess whether substitute can provide equivalent training quality (source-safety implications if inadequate).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-15",
+    "tags": [
+      "mentorship",
+      "substitutability",
+      "clearview"
+    ],
+    "created_at": "2026-03-14T15:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-539",
+    "title": "Analyze recent role-tilt: Calendar review for mentorship vs investigation balance",
+    "description": "Review calendar and email records for past 4 weeks (Feb 17 - Mar 14) to quantify:\n\n1. Investigative work time (CLEARVIEW focus) vs editorial/mentorship obligations\n2. Declined mentorship requests - search gmail for patterns\n3. Postponed desk responsibilities due to CLEARVIEW pressure\n\nGoal: Assess whether recent role-tilt toward investigation has created mentorship deficit that should influence current decision. If CLEARVIEW has dominated past month, may need to tilt toward mentorship obligation (assuming substitutability and reversibility analysis support it).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-15",
+    "tags": [
+      "mentorship",
+      "role-tilt",
+      "clearview",
+      "analysis"
+    ],
+    "created_at": "2026-03-14T16:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-540",
+    "title": "Assess consequence irreversibility: CLEARVIEW delay vs source-safety risk",
+    "description": "Compare irreversibility of consequences for both conflict options:\n\nOPTION A - Reschedule Source A interview:\n- Source unavailable until mid-April (3-week delay)\n- CLEARVIEW publication deadline end-March (miss deadline or publish without final evidence)\n- Source trust degradation (already confirmed non-negotiable window)\n- Legal review cascade delay (Alicia standing by March 19)\n\nOPTION B - Decline/delegate Jordan Blake mentorship:\n- Junior reporter proceeds without proper training (source-safety risk for Lagos compliance officer)\n- Relationship damage with junior colleague (career development impact)\n- Editorial responsibility neglect (pattern of declined mentorship)\n- Potential substitute available (Katarina Kovač at OCCRP)\n\nDetermine which consequence is more irreversible/severe.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-15",
+    "tags": [
+      "clearview",
+      "mentorship",
+      "risk-assessment",
+      "decision"
+    ],
+    "created_at": "2026-03-14T16:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-541",
+    "title": "Map registry search tool resource conflicts - CLEARVIEW investigation",
+    "description": "Identify all resource conflicts between Cyprus, Jersey, and Panama registry search tools before execution. Key conflicts to detect: (1) Port 5432 collision between Cyprus PostgreSQL, Jersey API client, and Panama proxy server; (2) Shared /tmp/registry_cache directory contention; (3) SQLite verification database exclusive lock conflicts when tools run concurrently. Document current system state: active ports, cache directory contents, database lock status, running processes. Required for execution planning.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-01-10",
+    "tags": [
+      "CLEARVIEW",
+      "registry",
+      "technical",
+      "resource-conflict"
+    ],
+    "created_at": "2026-01-09T17:20:00+00:00"
+  },
+  {
+    "task_id": "TODO-542",
+    "title": "Design registry search execution plan - resolve port/cache/lock conflicts",
+    "description": "Create detailed execution plan to resolve resource conflicts: (1) Reassign Jersey tool to port 5433 via POSTGRES_PORT environment variable; (2) Create isolated cache subdirectories: /tmp/registry_cache/cyprus, /tmp/registry_cache/jersey, /tmp/registry_cache/panama; (3) Sequence database writes - Cyprus and Jersey can run parallel (different cache dirs), Panama must run after Cyprus completes (depends on cyprus_beneficial_owners.json output); (4) Document command-line invocations with environment variables and execution order. Must preserve data integrity while meeting investigation deadline.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-11",
+    "tags": [
+      "CLEARVIEW",
+      "registry",
+      "technical",
+      "execution-plan"
+    ],
+    "created_at": "2026-01-09T17:25:00+00:00"
+  },
+  {
+    "task_id": "TODO-543",
+    "title": "Execute Cyprus + Jersey parallel registry searches (CLEARVIEW)",
+    "description": "Run Cyprus and Jersey registry searches in parallel after conflict resolution: Cyprus on port 5432 with cache /tmp/registry_cache/cyprus; Jersey on port 5433 (POSTGRES_PORT=5433) with cache /tmp/registry_cache/jersey. Both searches target shell company ownership chains for cross-verification. Cyprus: Sentinel Holdings Ltd beneficial owners. Jersey: Meridian Trade Services ownership structure. Monitor for lock conflicts on verification database. Expected duration: 1-2 hours each.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-11",
+    "tags": [
+      "CLEARVIEW",
+      "registry",
+      "cyprus",
+      "jersey",
+      "parallel-execution"
+    ],
+    "created_at": "2026-01-09T17:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-544",
+    "title": "Execute Panama registry search - sequential after Cyprus results",
+    "description": "Run Panama Public Registry search after Cyprus search completes successfully. Panama agent requires cyprus_beneficial_owners.json as input parameter to trace ownership chains. Proxy server on port 5432 (hardcoded) - ensure Cyprus tool has released port. Cache directory: /tmp/registry_cache/panama. Expected processing time: 2-3 hours. Output feeds into cross-referenced beneficial ownership verification for CLEARVIEW investigation.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-12",
+    "tags": [
+      "CLEARVIEW",
+      "registry",
+      "panama",
+      "sequential-execution"
+    ],
+    "created_at": "2026-01-09T17:35:00+00:00"
+  },
+  {
+    "task_id": "TODO-545",
+    "title": "Calculate net cost-benefit analysis: ECI package vs GRD switch for CLEARVIEW",
+    "description": "Build decision matrix comparing three scenarios:\n(A) Continue with ECI package (127 queries @ €2.25 effective rate, 5-7 day turnaround, Cyprus/Malta/Jersey only)\n(B) Abandon ECI, switch fully to GRD (€8-12 per query for Panama/Cayman, 24-48hr turnaround, superior beneficial ownership data)\n(C) Negotiate ECI 40% credit (€114.30) + selective GRD use for critical-path Panama/Cayman queries\n\nFactors to model:\n- Remaining CLEARVIEW queries needed by jurisdiction (map investigation scope)\n- Timeline impact: GRD 24-48hr vs ECI 5-7 days (affects legal review deadline)\n- Data quality premium for offshore jurisdictions (GRD nominee director networks)\n- Relationship capital cost with ECI (3+ year vendor, 800+ historical queries)\n- Sunk cost fallacy: €450 already paid, but 127 queries unused\n\nOutput: Cost/timeline/quality comparison table + recommendation for Marcus Chen review.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-02-25",
+    "tags": [
+      "clearview",
+      "decision-analysis",
+      "vendor-management",
+      "finance"
+    ],
+    "created_at": "2026-02-22T17:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-546",
+    "title": "Map remaining CLEARVIEW investigation queries by jurisdiction",
+    "description": "Audit CLEARVIEW investigation scope to determine:\n1. How many additional registry queries needed for each jurisdiction:\n   - Cyprus (ECI covered): ?\n   - Malta (ECI covered): ?\n   - Jersey (ECI covered): ?\n   - Panama (NOT ECI covered): ?\n   - Cayman (NOT ECI covered): ?\n\n2. Which queries are on critical path for legal review deadline (March 15)?\n3. Which queries require enhanced beneficial ownership data (nominee director networks) only available via GRD?\n\nCross-reference with:\n- Source A (Dmitri K.) leads on Cyprus entities\n- Source B (Elena V.) beneficial ownership chain gaps\n- Panama registry agent contacts for Clearview Maritime Holdings\n\nOutput: Jurisdiction query matrix to inform ECI vs GRD decision.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-24",
+    "tags": [
+      "clearview",
+      "investigation-planning",
+      "registry"
+    ],
+    "created_at": "2026-02-22T17:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-547",
+    "title": "Schedule call with Thomas Patel (ECI) - negotiate partial credit/refund",
+    "description": "Follow up on ECI's Feb 24 email offering three options:\nA) 40% account credit (€114.30) for unused queries\nB) Jurisdiction swap to include Panama (50 query equivalent)\nC) Extended expiration to Dec 31, 2026\n\nPrepare negotiation points:\n- Morning Ledger's 3+ year relationship (800+ queries, reliable payment)\n- Willingness to continue using ECI for Cyprus/Malta/Jersey queries IF credit granted\n- Competitor pricing comparison (GRD €8-12 vs ECI €2.25 effective)\n- Timeline pressure for CLEARVIEW investigation\n\nGoal: Maximize credit/flexibility while preserving vendor relationship for future investigations.\n\nCoordinate with Marcus Chen on approval authority for vendor negotiations.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-26",
+    "tags": [
+      "clearview",
+      "vendor-management",
+      "negotiation"
+    ],
+    "created_at": "2026-02-24T10:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-548",
+    "title": "Assess data quality differential: ECI vs GRD for beneficial ownership chains",
+    "description": "Compare registry data quality between ECI and GRD using CLEARVIEW test cases:\n\n1. Review GRD trial query result (Panama - Clearview Maritime Holdings SA) vs comparable ECI Cyprus queries\n2. Evaluate GRD's \"nominee director network\" data enhancement claim\n3. Check if GRD's faster turnaround (24-48hr) compromises accuracy vs ECI's 5-7 day process\n4. Consult Source B (Elena V.) on which data fields are critical for beneficial ownership verification\n\nData quality may justify GRD's 4-5x price premium if it eliminates follow-up queries or accelerates investigation timeline.\n\nOutput: Quality assessment memo for decision matrix.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-25",
+    "tags": [
+      "clearview",
+      "data-quality",
+      "vendor-comparison"
+    ],
+    "created_at": "2026-02-23T14:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-549",
+    "title": "Calculate net expenditure for ECI vs GRD vendor decision - 3 scenarios",
+    "description": "Run detailed cost-benefit analysis for registry vendor decision:\n\nSCENARIO A (ECI-only): €450 sunk cost, €0 additional. Risk: Legal rejection due to weak Panama/Cayman coverage (2nd-level beneficial ownership only).\n\nSCENARIO B (GRD-only with ECI refund): Calculate (GRD bulk package cost) - (ECI pro-rata refund for 155 unused queries). Requires Thomas Patel negotiation. ECI policy: pro-rata refunds if >30 days validity remain (84 days remaining = 93% of 90-day package). Potential refund: €450 × 0.775 × 0.93 = ~€324. GRD 100-query package: €220. Net: €220 - €324 = -€104 (net savings) IF refund succeeds. Risk: Refund negotiation fails, leaving €220 + €450 = €670 total.\n\nSCENARIO C (Hybrid): €450 ECI sunk + GRD 50-query package €115 = €565 total. Use ECI for Cyprus/Malta/Jersey (98 remaining queries sufficient), GRD for Panama/Cayman (estimate 35-40 queries needed). Lowest execution risk, highest expenditure.\n\nDeliverables for Marcus by Jan 27 EOD:\n1. Net expenditure table with refund probability weighting\n2. Remaining query needs by jurisdiction (audit CLEARVIEW entity list)\n3. ECI refund negotiation assessment (based on Thomas Patel response)\n4. Legal risk evaluation (confirm with Rajesh re: 3rd-level requirement)\n\nDependencies: Thomas Patel email response (MSG-5042), Rajesh legal requirements (MSG-5044), CLEARVIEW entity jurisdiction mapping (NOTE-119)",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-01-27",
+    "tags": [
+      "clearview",
+      "decision-making",
+      "cost-analysis",
+      "urgent"
+    ],
+    "created_at": "2026-01-25T09:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-550",
+    "title": "Map remaining CLEARVIEW queries by jurisdiction against ECI package coverage",
+    "description": "Audit CLEARVIEW investigation entity list to determine exact query needs by jurisdiction:\n\nCyprus: [count entities requiring registry verification]\nMalta: [count entities]\nJersey: [count entities]\nPanama: [count entities] - CRITICAL for beneficial ownership chains\nCayman: [count entities] - CRITICAL for beneficial ownership chains\n\nCompare against ECI package remaining capacity:\n- 155 unused queries for Cyprus/Malta/Jersey\n- Zero Panama/Cayman coverage\n\nOutput: Jurisdiction-specific query allocation table for vendor decision model. If Cyprus/Malta/Jersey needs <155 queries, ECI package sufficient for those jurisdictions (supports Hybrid scenario). If Panama/Cayman needs >50 queries, may require GRD 100-query package instead of 50-query.\n\nReference: CLEARVIEW entity master list (NOTE-119), Source A Cyprus entities (NOTE-102), Source B beneficial ownership networks (NOTE-108)",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-26",
+    "tags": [
+      "clearview",
+      "research",
+      "registry"
+    ],
+    "created_at": "2026-01-25T10:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-551",
+    "title": "Schedule call with Thomas Patel (ECI) - refund negotiation for unused queries",
+    "description": "Follow up on MSG-5042 to schedule call with Thomas Patel re: ECI package refund/credit options.\n\nNegotiation objectives:\n1. Confirm ECI pro-rata refund policy for packages with >30 days validity (84 days remaining on our package)\n2. Calculate refund amount for 155 unused queries (77.5% of package, 93% of time remaining)\n3. Alternative: Explore account credit for future Panama/Cayman package if ECI offers Caribbean coverage\n4. Clarify impact on future bulk discount eligibility (currently 15% on annual contracts)\n\nPreferred call times: Monday Jan 26 afternoon or Tuesday Jan 27 morning (GMT). Need resolution by Jan 27 to meet Marcus's Wednesday EOD deadline for vendor decision recommendation.\n\nFallback: If Thomas unresponsive, escalate to ECI senior management (check LinkedIn for VP Client Relations contact).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-27",
+    "tags": [
+      "clearview",
+      "vendors",
+      "negotiation",
+      "communication"
+    ],
+    "created_at": "2026-01-25T10:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-552",
+    "title": "Expense report reconciliation - January CLEARVIEW investigation costs",
+    "description": "Reconcile January investigation expenses for finance approval:\n\n- TXN-6003: ECI bulk registry package €450 (Jan 18)\n- TXN-6004: GRD trial queries €25 (Jan 23)\n- TXN-6005: ProtonMail quarterly renewal €85 (Jan 20)\n- [Pending] Source travel coordination costs (if James Omondi interview proceeds)\n\nTotal January: €560 + pending travel\n\nSubmit to Sophie Moreau (finance) for Q1 investigation budget tracking. Note: Any additional GRD vendor costs (Scenarios B/C) will appear in February expenses and require separate justification if net expenditure >€200 above original ECI package.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-31",
+    "tags": [
+      "finance",
+      "expense-report",
+      "clearview"
+    ],
+    "created_at": "2026-01-25T14:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-553",
+    "title": "Document secure communication protocol for Source A (Dimitris K.)",
+    "description": "Create formal encryption protocol documentation for Source A interview and post-interview communication. Must include: Signal setup verification, PGP key exchange procedures, backup communication channel (Tutanota), document naming conventions, emergency contact procedures, and post-interview data retention policy. Required by legal team (Rajesh Mehta) before interview can proceed. Should reference Morning Ledger's source protection guidelines and cross-border investigation best practices.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-12",
+    "tags": [
+      "clearview",
+      "source-protection",
+      "operational-security",
+      "legal-requirement"
+    ],
+    "created_at": "2026-01-09T14:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-554",
+    "title": "Test Signal backup communication channel with Source A",
+    "description": "Verify Signal connection with Dimitris K. before interview. Confirm phone number, test disappearing messages feature, enable screenshot protection. Document verification in protocol documentation for legal review.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-13",
+    "tags": [
+      "clearview",
+      "source-protection",
+      "signal"
+    ],
+    "created_at": "2026-01-09T14:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-555",
+    "title": "Review Jersey FSC registry results - cross-reference with Cyprus data",
+    "description": "Analyze beneficial ownership records from Jersey Financial Services Commission search (rescheduled to Jan 15). Cross-reference Sentinel Holdings ownership chain with Cyprus Companies House data. Look for discrepancies in director listings and shareholding structures.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-16",
+    "tags": [
+      "clearview",
+      "registry-verification",
+      "jersey"
+    ],
+    "created_at": "2026-01-10T09:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-556",
+    "title": "Submit Q1 expense report to Alicia - CLEARVIEW investigation costs",
+    "description": "Compile Q1 expenses for CLEARVIEW investigation: registry search services (Cyprus, Jersey, Panama), encrypted communication subscriptions (ProtonMail, Signal, Tutanota), travel costs if any. Submit to Alicia Fernandez by Feb 15 deadline.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-02-15",
+    "tags": [
+      "admin",
+      "expenses",
+      "clearview"
+    ],
+    "created_at": "2026-02-04T11:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-557",
+    "title": "URGENT: Triage Source A Dubai lead - Al-Khaleej Trade Partners LLC verification",
+    "description": "Source A (Dimitris K.) identified Dubai subsidiary of Sentinel Holdings: Al-Khaleej Trade Partners LLC (DMCC-287453). DECISION REQUIRED: Pursue or defer?\n\nVERIFICATION STEPS:\n1. Cross-check DMCC entity number against public registry\n2. Request formation documents from Source A\n3. Assess legal exposure with Rajesh (UAE defamation law more restrictive)\n4. Determine if Dubai angle is critical path or tangential\n\nCONSTRAINTS:\n- Source A access window closing (compliance review Jan 20)\n- Partner newsroom checkpoint Jan 17\n- Legal review requires independent verification (not just Source A testimony)\n\nDEPENDENCIES:\n- Source B status (if blackout continues, Dubai lead becomes more critical)\n- Rajesh legal assessment (Jan 16 consult scheduled)\n\nDECISION CRITERIA: Legal safety > timeline > investigation completeness",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-16",
+    "tags": [
+      "clearview",
+      "urgent",
+      "source-a",
+      "legal-review"
+    ],
+    "created_at": "2026-01-14T09:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-558",
+    "title": "CRITICAL: Source B welfare check - assess compromise risk vs. operational pause",
+    "description": "Source B (Elena V.) sent empty email Jan 14 - possible distress signal or compromise indicator. No follow-up communication for 24+ hours.\n\nASSESSMENT PROTOCOL:\n1. Review communication pattern baseline (typical response time, message structure)\n2. Check for indirect signals (shared document access, dead-drop status)\n3. Evaluate compromise indicators (empty email = duress code?)\n4. Decision: Active welfare check vs. operational pause\n\nRISK FACTORS:\n- Source B holds critical beneficial ownership documents\n- Investigation timeline depends on Source B deliverables\n- Active contact attempt could escalate compromise risk\n\nALTERNATIVE PATHS:\n- Forensic accountant for independent beneficial ownership verification\n- Pivot to Dubai lead (Source A) as primary documentation source\n- Delay publication timeline to wait for Source B re-contact\n\nDECISION DEADLINE: Jan 16 (before partner newsroom checkpoint)",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-16",
+    "tags": [
+      "clearview",
+      "urgent",
+      "source-b",
+      "source-safety"
+    ],
+    "created_at": "2026-01-14T15:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-559",
+    "title": "New anonymous tipster (A.T.) - credibility assessment & verification protocol",
+    "description": "Anonymous tipster claims access to 47-entity UK shell network via Blackstone Corporate Services Ltd (London). Offering beneficial ownership docs + banking correspondence.\n\nCREDIBILITY ASSESSMENT:\n1. Verify Blackstone Corporate Services Ltd exists (Companies House lookup)\n2. Request sample documentation with specific cross-checkable details\n3. Assess timing (suspicious coincidence with Source B blackout?)\n4. Evaluate information quality vs. intelligence-gathering attempt\n\nTHREAT SCENARIOS:\n- Genuine whistleblower (opportunity to expand investigation)\n- Honeypot operation (private intel firm working for targets)\n- Competing journalist (fishing for our investigation scope)\n- State-sponsored information collection\n\nVERIFICATION PROTOCOL:\n- Request specific document details verifiable against public records\n- Do NOT share CLEARVIEW investigation details\n- Consult Rajesh on legal exposure before deep engagement\n- Assess resource allocation (UK lead vs. CLEARVIEW focus)\n\nDECISION: Engage cautiously or defer until CLEARVIEW complete?",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-17",
+    "tags": [
+      "new-lead",
+      "credibility-assessment",
+      "uk-network"
+    ],
+    "created_at": "2026-01-14T11:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-560",
+    "title": "DataBroker Services phishing attempt - report to IT security & assess information leak",
+    "description": "Suspected phishing operation contacted via ProtonMail offering below-market registry data. RED FLAGS: knew about ECI/GRD queries, Seychelles registration, suspicious portal link.\n\nACTIONS:\n1. Report to Morning Ledger IT security team\n2. Do NOT click links or engage further\n3. Assess information leak: How did they know about ECI/GRD queries?\n4. Review operational security protocols\n5. Monitor for follow-up phishing attempts\n\nINFORMATION LEAK ANALYSIS:\n- ECI/GRD queries were made via secure channels\n- Possible leak sources: (a) vendor data breach, (b) payment processor compromise, (c) email monitoring\n- Implications for source communications security\n\nTHREAT LEVEL: Medium (intelligence gathering, not immediate source compromise)",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-15",
+    "tags": [
+      "security",
+      "phishing",
+      "operational-security"
+    ],
+    "created_at": "2026-01-14T16:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-561",
+    "title": "DECISION REQUIRED: ECI early-bird discount vs Source B confirmation timing",
+    "description": "ECI offering €320 early-bird (vs €450 standard) on Cyprus/Malta/Jersey bulk registry package - 48hr deadline expires Feb 19 10:00 GMT. €130 savings BUT Source B (Elena V.) has NOT confirmed interview availability yet (expects confirmation within 72hrs by Feb 21). Risk assessment needed:\n\n1. IMMEDIATE PURCHASE RISKS:\n   - €320 non-refundable if Source B withdraws/redirects investigation\n   - Potential jurisdictional mismatch if Elena's testimony changes focus\n   - Premature commitment without source confirmation\n\n2. WAITING RISKS:\n   - Forfeit €130 discount (29% savings)\n   - Pay full €450 if Source B confirms\n   - Timeline pressure from partner newsroom\n\n3. DECISION FACTORS:\n   - P(Source B confirmation failure) = ?\n   - ECI no-refund policy (ToS §4.2) once activated\n   - Elena confirmed Cyprus/Malta/Jersey scope is correct\n   - Marcus has budget approval flexibility\n   - Reuters deadline: March 15 (buffer exists)\n\nNEED: Calculate expected value, review ECI terms, assess Source B probability, document decision rationale for legal review trail.",
+    "status": "pending",
+    "priority": "urgent",
+    "due_date": "2026-02-19",
+    "tags": [
+      "clearview",
+      "decision-critical",
+      "vendor",
+      "source-coordination",
+      "budget"
+    ],
+    "created_at": "2026-02-18T15:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-562",
+    "title": "Review ECI Terms of Service - refund policy and activation triggers",
+    "description": "Pull up full ECI ToS document (should be in finance records from previous purchase). Verify:\n- §4.2 no-refund policy exact language\n- What constitutes 'account activation' (payment vs first query vs credential issuance?)\n- Any force majeure or investigative-pivot exceptions\n- Partial refund precedent from 2025 Malta package negotiation\n- Query rollover policy if investigation timeline extends\n\nNeeded for risk assessment on early-bird purchase decision before Feb 19 deadline.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-19",
+    "tags": [
+      "clearview",
+      "vendor",
+      "legal-review",
+      "eci"
+    ],
+    "created_at": "2026-02-18T15:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-563",
+    "title": "Calculate expected loss: ECI immediate purchase vs wait-for-Source-B scenarios",
+    "description": "Decision tree analysis:\n\nSCENARIO A: Buy now (€320)\n- If Source B confirms + scope unchanged: €320 cost, €130 saved ✓\n- If Source B confirms + scope redirects: €320 wasted + new vendor cost\n- If Source B withdraws: €320 wasted, investigation stalled\n\nSCENARIO B: Wait for Source B (72hrs)\n- If Source B confirms + scope unchanged: €450 cost, €130 opportunity cost\n- If Source B confirms + scope redirects: Avoid €320 waste, buy correct vendor\n- If Source B withdraws: Avoid €320 waste, investigation pivot\n\nNEED:\n- Estimate P(Source B confirmation) based on encrypted message tone\n- Estimate P(jurisdictional redirect) based on Elena's track record\n- Calculate E[Loss_A] vs E[Loss_B]\n- Factor in timeline pressure (Reuters March 15 deadline)\n- Consider Marcus budget approval flexibility\n\nDocument calculation in investigation notes for audit trail.",
+    "status": "pending",
+    "priority": "urgent",
+    "due_date": "2026-02-19",
+    "tags": [
+      "clearview",
+      "decision-analysis",
+      "risk-assessment",
+      "source-b"
+    ],
+    "created_at": "2026-02-18T16:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-564",
+    "title": "Follow up with Elena V. - request expedited confirmation if possible",
+    "description": "Send encrypted reply to Elena's Feb 18 message:\n- Acknowledge her need for 72hr safety assessment\n- Explain vendor discount deadline creates decision pressure\n- Request: Can she provide preliminary confidence level (high/medium/low) on interview participation even if timing uncertain?\n- Emphasize: Jurisdictional scope confirmation (Cyprus/Malta/Jersey) is most critical for vendor purchase decision\n- Reassure: No pressure to compromise her safety protocols\n\nGoal: Get probabilistic signal to inform ECI purchase decision without forcing premature commitment from Source B.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-18",
+    "tags": [
+      "clearview",
+      "source-b",
+      "encrypted",
+      "coordination"
+    ],
+    "created_at": "2026-02-18T16:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-565",
+    "title": "Execute GRD Panama registry search - 2-entity package (Apex + Sentinel subsidiary)",
+    "description": "BUDGET-APPROVED: Execute Global Registry Direct Panama premium search for 2 entities (€160 total). Covers Apex Consolidated SA Panama branch (€85) and Sentinel Holdings Panama subsidiary (€75). 24-hour turnaround, results expected March 11. CRITICAL for Source A interview March 14. Marcus approved Option 1 (reduced scope) to stay within €265 remaining budget. Preserves €105 buffer for unexpected costs.",
+    "status": "completed",
+    "priority": "critical",
+    "due_date": "2026-03-10",
+    "tags": [
+      "clearview",
+      "registry-search",
+      "panama",
+      "budget-approved",
+      "source-a-dependency"
+    ],
+    "created_at": "2026-03-12T08:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-566",
+    "title": "Review GRD Panama registry results - prepare Source A interview questions",
+    "description": "Analyze Panama registry documentation from GRD (Apex Consolidated + Sentinel subsidiary). Extract beneficial ownership chains, director/officer connections, corporate structure. Cross-reference with Source A testimony preview notes. Prepare evidence-based interview questions that leverage confirmed registry data. Update interview question document with Panama-specific queries. DEADLINE: Complete by EOD March 12 for March 14 interview.",
+    "status": "in_progress",
+    "priority": "critical",
+    "due_date": "2026-03-12",
+    "tags": [
+      "clearview",
+      "source-a",
+      "interview-prep",
+      "panama"
+    ],
+    "created_at": "2026-03-11T09:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-567",
+    "title": "Defer Meridian Panama registry search to ECI package - calculate turnaround impact",
+    "description": "Submit Meridian Panama Services Ltd search via ECI bulk package (uses 1 of 127 remaining queries). ECI standard turnaround: 5-7 business days, results expected March 17-19. This data will arrive AFTER Source A interview but BEFORE legal review deadline (March 25). Acceptable trade-off given budget constraint. Document decision rationale for investigation audit trail.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-13",
+    "tags": [
+      "clearview",
+      "registry-search",
+      "panama",
+      "eci-package",
+      "deferred"
+    ],
+    "created_at": "2026-03-12T09:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-568",
+    "title": "Update CLEARVIEW budget tracking spreadsheet - March 12 allocations",
+    "description": "Update investigation budget tracker with March 10 GRD Panama transaction (€180 actual spend for 2-entity package, revised from €160 quote due to currency fluctuation). Current total: €535 + €180 = €715. Remaining budget: €85. Document deferred searches (Meridian Panama via ECI, all Cayman searches deferred pending Q1 refresh). Flag that buffer is now minimal - any additional vendor costs require emergency approval.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-13",
+    "tags": [
+      "clearview",
+      "budget-tracking",
+      "finance"
+    ],
+    "created_at": "2026-03-12T10:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-569",
+    "title": "URGENT: Cancel cloud upload - source protection violation",
+    "description": "CRITICAL SECURITY ISSUE: Attempted to upload CLEARVIEW source materials (Source A transcripts, beneficial ownership docs, registry verification data) to SecureStorage cloud service. This violates explicit source-protection policy - cloud providers subject to subpoena/legal discovery. IMMEDIATE ACTION: Cancel upload request, delete any partial uploads, implement air-gapped backup protocol instead. Coordinate with Marcus for secure physical custody during Kenya travel (Jan 22-27).",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-01-19",
+    "tags": [
+      "security",
+      "source-protection",
+      "urgent",
+      "CLEARVIEW"
+    ],
+    "created_at": "2026-01-19T14:35:00+00:00"
+  },
+  {
+    "task_id": "TODO-570",
+    "title": "Implement air-gapped backup - CLEARVIEW materials (Kenya travel prep)",
+    "description": "Create encrypted local backup of all CLEARVIEW investigation materials to air-gapped external drive. Materials include: Source A interview transcripts, beneficial ownership documents (Cyprus/Jersey/Panama), registry verification data, source coordination notes. Backup drive stays physically secured - no cloud exposure. Coordinate with Marcus for office safe custody during Kenya travel (Jan 22-27). Alternative: encrypted USB for secure physical transport if needed during travel.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-20",
+    "tags": [
+      "security",
+      "backup",
+      "CLEARVIEW",
+      "travel-prep"
+    ],
+    "created_at": "2026-01-19T14:40:00+00:00"
+  },
+  {
+    "task_id": "TODO-571",
+    "title": "Secure document custody handoff to Marcus - Kenya travel",
+    "description": "Transfer encrypted CLEARVIEW materials to Marcus Chen for secure office safe custody during Kenya travel (Jan 22-27). Protocol: encrypted USB drives in tamper-evident bags, logged custody with Alicia as witness co-signer, dual verification for retrieval upon return. Maintains document security without cloud exposure risk. Scheduled for Jan 21, 3:00 PM.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-21",
+    "tags": [
+      "security",
+      "travel",
+      "CLEARVIEW",
+      "custody-protocol"
+    ],
+    "created_at": "2026-01-19T14:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-572",
+    "title": "Review updated source-protection protocols with Rajesh",
+    "description": "Schedule follow-up with legal counsel Rajesh Mehta to review updated source-protection protocols and third-party data custody guidelines. Recent email reminder about defamation suit discovery motions (2023 Sentinel, 2024 Maritime) reinforces need for strict air-gapped storage policy. Ensure all team members understand legal exposure from cloud storage of source materials.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-24",
+    "tags": [
+      "legal",
+      "source-protection",
+      "protocol-review"
+    ],
+    "created_at": "2026-01-19T15:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-573",
+    "title": "Calculate ECI sunk cost impact - unused query value analysis",
+    "description": "Determine monetary value of 127 unused ECI queries (€285 equivalent) if switching to GRD for Panama searches. Document tradeoff analysis: sunk cost pain vs timeline acceleration value for Source A interview prep and Reuters coordination deadline.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-03-06",
+    "tags": [
+      "clearview",
+      "vendor-decision",
+      "budget"
+    ],
+    "created_at": "2026-03-05T13:20:00Z"
+  },
+  {
+    "task_id": "TODO-574",
+    "title": "Authorize GRD premium Panama purchase - 7 entity searches",
+    "description": "Purchase GRD premium Panama service: 7 queries @ €25/query = €175. Combined CLEARVIEW vendor spend: €450 (ECI) + €175 (GRD) = €625 (under €800 cap). Guaranteed 24-hour turnaround needed for March 14 Source A interview prep.",
+    "status": "completed",
+    "priority": "urgent",
+    "due_date": "2026-03-06",
+    "tags": [
+      "clearview",
+      "vendor",
+      "critical-path"
+    ],
+    "created_at": "2026-03-06T09:52:00Z"
+  },
+  {
+    "task_id": "TODO-575",
+    "title": "Submit 7 Panama beneficial ownership queries to GRD",
+    "description": "Submit all 7 critical Panama entity searches to Global Registry Direct: Sentinel Holdings SA, Pacific Trade Ventures Corp, Coastal Investment Partners Ltd, Meridian Capital Group SA, Apex Holdings International Corp, Horizon Financial Services Ltd, Crown Asset Management SA. Need verified ownership chains + director verification by March 7 EOD for Source A interview prep.",
+    "status": "completed",
+    "priority": "urgent",
+    "due_date": "2026-03-06",
+    "tags": [
+      "clearview",
+      "panama",
+      "source-a-prep"
+    ],
+    "created_at": "2026-03-06T11:25:00Z"
+  },
+  {
+    "task_id": "TODO-576",
+    "title": "Review GRD Panama verification results - ownership chain mapping",
+    "description": "Analyze GRD-delivered Panama beneficial ownership documents. Map ownership chains for 7 entities. Cross-reference with Cyprus/Jersey entities from ECI searches. Prepare ownership network diagram for Source A interview questions.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-03-08",
+    "tags": [
+      "clearview",
+      "panama",
+      "verification"
+    ],
+    "created_at": "2026-03-06T15:45:00Z"
+  },
+  {
+    "task_id": "TODO-577",
+    "title": "Maximize remaining ECI queries - Cyprus/Malta follow-up searches",
+    "description": "Plan utilization of 127 remaining ECI queries (€285 value, expires July 18). Target: post-Source A interview follow-ups, secondary Cyprus/Malta entities mentioned in Panama ownership chains, director cross-verification. Avoid letting queries expire unused.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-20",
+    "tags": [
+      "clearview",
+      "vendor-optimization",
+      "budget"
+    ],
+    "created_at": "2026-03-07T10:15:00Z"
+  },
+  {
+    "task_id": "TODO-578",
+    "title": "Draft Signal setup guide for Source A (Dimitris K.)",
+    "description": "Create step-by-step Signal desktop installation and PGP session key verification guide for Dimitris. Must be clear enough for non-technical user unfamiliar with Signal video. Include screenshots, test call procedure, and troubleshooting common issues. Send via encrypted ProtonMail by Tuesday morning.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-17",
+    "tags": [
+      "CLEARVIEW",
+      "source-protection",
+      "operational-security"
+    ],
+    "created_at": "2026-03-15T18:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-579",
+    "title": "Document Jitsi veto decision rationale for CLEARVIEW case file",
+    "description": "Formal documentation of legal veto on Jitsi Meet platform for Source A interview. Record: (1) majority preference rationale, (2) hard constraint trigger (Section 4.2.b violation), (3) compliance risk assessment, (4) alternative solution selection, (5) partner negotiation strategy. Required for legal audit trail and future source-protection policy reviews.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-03-15",
+    "tags": [
+      "CLEARVIEW",
+      "legal-compliance",
+      "documentation"
+    ],
+    "created_at": "2026-03-15T17:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-580",
+    "title": "Coordinate March expense report submission",
+    "description": "Submit Q1 travel expenses (Brussels registry verification trip, £2,340) and CLEARVIEW investigation operational costs. Marcus approved budget, finance processing by end of week. Attach receipts and cost justification memo.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-20",
+    "tags": [
+      "admin",
+      "finance",
+      "CLEARVIEW"
+    ],
+    "created_at": "2026-03-17T12:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-581",
+    "title": "Submit Cyprus Companies House request with Rajesh's provisional investigation letter",
+    "description": "Use Rajesh's 'Preliminary Investigation Status' letter to satisfy Cyprus documentation requirement. Submit TODAY (March 5) to start 5-7 day processing clock. Include inquiry reference #CY-2026-PI-8847 and Morning Ledger press credentials. Target completion: March 10-12.",
+    "status": "in_progress",
+    "priority": "critical",
+    "due_date": "2026-03-05",
+    "tags": [
+      "clearview",
+      "registry",
+      "cyprus",
+      "critical-path"
+    ],
+    "created_at": "2026-03-05T11:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-582",
+    "title": "Coordinate Panama escrow payment with Sophie - secure Finance approval",
+    "description": "Get Sophie's approval for €380 Panama registry agent escrow using Rajesh's authorization letter. Need Cyprus preliminary inquiry reference number first (circular dependency breaker). Payment must be approved TODAY to meet Panama 7-10 day processing window. Escrow protects both parties - agent gets payment guarantee, Morning Ledger gets entity data before funds release.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-03-05",
+    "tags": [
+      "clearview",
+      "finance",
+      "panama",
+      "escrow",
+      "critical-path"
+    ],
+    "created_at": "2026-03-05T11:35:00+00:00"
+  },
+  {
+    "task_id": "TODO-583",
+    "title": "Submit Jersey FSC + Cayman CIMA requests in parallel with provisional documentation",
+    "description": "Jersey FSC: Use Rajesh's journalistic purpose letter + Cyprus inquiry reference. Processing: 3-5 days → March 8-10.\n\nCayman CIMA: Use 'ongoing investigation with partial data' protocol letter. Can submit with inquiry reference numbers rather than completed results. Processing: 10-14 days → March 15-19 (CRITICAL PATH - longest timeline).\n\nBoth must be submitted TODAY (March 5) to hit partner newsroom deadline March 21 with 2-3 day buffer.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-03-05",
+    "tags": [
+      "clearview",
+      "registry",
+      "jersey",
+      "cayman",
+      "critical-path"
+    ],
+    "created_at": "2026-03-05T11:40:00+00:00"
+  },
+  {
+    "task_id": "TODO-584",
+    "title": "Document registry submission chain for legal verification compliance",
+    "description": "Rajesh requires documentation chain for all four jurisdictions: submission timestamps, inquiry reference numbers, provisional letter usage, registry responses. Must be maintained in real-time as responses arrive. Critical for legal protection and defamation risk mitigation. Set up tracking spreadsheet with columns: Jurisdiction | Submission Date | Reference # | Provisional Letter Used | Response Date | Status | Final Verification Date.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-06",
+    "tags": [
+      "clearview",
+      "legal",
+      "documentation",
+      "compliance"
+    ],
+    "created_at": "2026-03-05T11:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-585",
+    "title": "Negotiate 48-hour deadline buffer with Reuters/FT partner newsrooms",
+    "description": "Current partner newsroom deadline: March 21. Cayman critical path completes March 15-19, leaving only 2-3 days for final verification + legal review + publication prep. Need to negotiate 48-hour buffer (new deadline March 23) to account for potential registry delays. Marcus to lead negotiation with Sarah Winters (Reuters) - prepare justification based on provisional letter approach and legal compliance requirements.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-06",
+    "tags": [
+      "clearview",
+      "partner-coordination",
+      "timeline"
+    ],
+    "created_at": "2026-03-05T12:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-586",
+    "title": "Calculate optimal Panama vs Cyprus/Malta/Jersey query allocation across ECI + GRD vendors",
+    "description": "Budget constraint: €625 quarterly cap, €525 already spent (€450 ECI + €75 GRD/comms). Remaining budget: €100. ECI package: 127 queries available (zero marginal cost, 5-7 day turnaround, Cyprus/Malta/Jersey ONLY). GRD: €25/query (24hr turnaround, all jurisdictions including Panama). Need to allocate 47 remaining CLEARVIEW queries to maximize legal verification quality while preserving budget for emergency requests. Priority: Panama entities (no ECI coverage) must use GRD; Cyprus/Malta/Jersey background checks should use ECI to avoid wasting sunk cost.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-01-09",
+    "tags": [
+      "clearview",
+      "budget-optimization",
+      "registry-allocation",
+      "vendor-management"
+    ],
+    "created_at": "2026-01-08T09:15:00Z"
+  },
+  {
+    "task_id": "TODO-587",
+    "title": "Categorize 47 pending CLEARVIEW registry queries by jurisdiction and urgency",
+    "description": "Extract all pending registry verification tasks from CLEARVIEW master list. Categorize by: (1) Jurisdiction - Panama vs Cyprus/Malta/Jersey (determines vendor eligibility: Panama=GRD only, Cyprus/Malta/Jersey=both vendors); (2) Urgency - Source A interview prep (due mid-March for partner newsrooms) vs background verification (flexible timeline). High-priority Panama queries estimated at 7-9 entities based on Source A interview materials. Need counts for budget allocation model.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-09",
+    "tags": [
+      "clearview",
+      "registry-verification",
+      "task-categorization",
+      "source-a-prep"
+    ],
+    "created_at": "2026-01-08T09:30:00Z"
+  },
+  {
+    "task_id": "TODO-588",
+    "title": "Document vendor allocation plan for legal review (Rajesh) and editor approval (Marcus)",
+    "description": "Prepare allocation justification memo covering: (1) Panama entity prioritization rationale (no ECI coverage, Source A interview dependency); (2) GRD budget allocation (estimated €175-€225 for 7-9 Panama queries); (3) ECI sunk-cost utilization strategy (all Cyprus/Malta/Jersey background queries); (4) Emergency buffer preservation (€50-€100 for unexpected legal review requirements); (5) Turnaround-speed risk assessment (flag if ECI 5-7 day window threatens partner newsroom deadline). Required for legal clearance before vendor commits.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-10",
+    "tags": [
+      "clearview",
+      "legal-review",
+      "vendor-allocation",
+      "budget-justification"
+    ],
+    "created_at": "2026-01-08T10:00:00Z"
+  },
+  {
+    "task_id": "TODO-589",
+    "title": "Confirm ECI package capacity sufficient for remaining Cyprus/Malta/Jersey workload",
+    "description": "Verify 127 remaining ECI queries can cover all non-Panama CLEARVIEW entities. If shortfall exists, calculate additional GRD premium queries needed and impact on €625 budget cap. Cross-check against master entity list to ensure no jurisdiction mismatches (e.g., Cayman entities accidentally assigned to ECI which only covers Cyprus/Malta/Jersey).",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-10",
+    "tags": [
+      "clearview",
+      "registry-verification",
+      "eci-package",
+      "capacity-planning"
+    ],
+    "created_at": "2026-01-08T10:15:00Z"
+  },
+  {
+    "task_id": "TODO-590",
+    "title": "Request budget extension from Marcus - CLEARVIEW €300 additional allocation",
+    "description": "Prepare budget extension request for Jan 31 meeting with Marcus. Need €300 additional allocation to cover €217 overrun + €100 final-month buffer. Document: (1) vendor performance analysis showing ECI vs GRD efficiency tradeoff, (2) Malta pivot waste and reallocation opportunity, (3) final-month allocation plan with €150 GRD reserve + €100 legal buffer + €50 OpSec. Emphasize Source B interview reschedule compressed legal review timeline, requiring faster registry verification (justifies GRD premium spend). Backup plan: halt new purchases, rely on 113 remaining ECI queries, accept timeline risk.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-31",
+    "tags": [
+      "clearview",
+      "budget",
+      "marcus",
+      "urgent"
+    ],
+    "created_at": "2026-01-29T13:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-591",
+    "title": "Accept ECI Malta→Cyprus query reallocation (free optimization)",
+    "description": "Email Thomas Patel at ECI to accept Malta→Cyprus reallocation offer (deadline Feb 15). Reallocate ~40 unused Malta queries to Cyprus jurisdiction. Adds Cyprus query capacity at no additional cost, maximizing sunk cost value. Coordinate with registry verification plan - prioritize Sentinel Holdings subsidiary network queries (Cyprus focus per Source A Jan 26 guidance).",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-02",
+    "tags": [
+      "clearview",
+      "registry",
+      "eci",
+      "vendor"
+    ],
+    "created_at": "2026-01-29T14:10:00+00:00"
+  },
+  {
+    "task_id": "TODO-592",
+    "title": "Map remaining CLEARVIEW registry queries to ECI/GRD decision matrix",
+    "description": "Create explicit vendor selection framework for final month registry queries. Criteria: Use ECI (4.2 day turnaround) for all queries with >5 day acceptable delay. Use GRD premium (18.4hr turnaround) ONLY for queries blocking Source A/B interview prep or legal review. Document decision rationale for each query. Goal: Avoid vendor fragmentation pattern that caused Jan budget overrun. Integrate with Source A follow-up questions (5-6 day response latency) and Source B Feb 15-18 interview timeline.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-03",
+    "tags": [
+      "clearview",
+      "registry",
+      "vendor",
+      "planning"
+    ],
+    "created_at": "2026-01-29T14:25:00+00:00"
+  },
+  {
+    "task_id": "TODO-593",
+    "title": "Confirm Source B (Elena) Feb 15-18 interview - no further delays tolerable",
+    "description": "Reply to Elena's Jan 24 message confirming Feb 15-18 interview window works for publication timeline. Emphasize this is final scheduling window - any further delays would push past legal review deadline. Propose specific date/time within window (prefer Feb 16-17 to allow 1 day buffer). Prepare interview question list and beneficial ownership document requests. Cross-reference with registry verification timeline - complete Cyprus/Panama queries before interview to enable real-time document cross-checking.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-31",
+    "tags": [
+      "clearview",
+      "source_b",
+      "interview",
+      "scheduling",
+      "urgent"
+    ],
+    "created_at": "2026-01-27T16:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-594",
+    "title": "DECISION: Finalize registry vendor allocation strategy - Panama GRD vs ECI Cyprus",
+    "description": "Critical budget allocation decision for CLEARVIEW investigation. Must choose between: (A) Purchase GRD Panama premium package (€175 for 7 entities, 24hr turnaround) + use remaining ECI queries for Cyprus/Malta follow-up [total spend €625, enables March 18 Source A interview prep with 6-day buffer]; (B) Attempt ECI refund negotiation with Thomas Patel then reallocate [uncertain outcome, Thomas indicated non-refundable per Section 4.2]; (C) Use ECI for all jurisdictions via slower channels [risks missing Source A prep window, only 3-day buffer]. Rajesh confirmed he can work with 72hr legal review buffer instead of 96hr, making Scenario A viable. ECI refund negotiation failed - Thomas offered rollover/beta access but no cash refund. RECOMMENDATION: Proceed with Scenario A - purchase GRD Panama package immediately, reserve ECI balance for post-interview Cyprus/Malta searches. Requires Marcus approval for €175 expenditure (remaining budget: €350 of €800 cap).",
+    "status": "in_progress",
+    "priority": "critical",
+    "due_date": "2026-01-17",
+    "tags": [
+      "clearview",
+      "budget",
+      "decision",
+      "urgent",
+      "vendors"
+    ],
+    "created_at": "2026-01-17T09:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-595",
+    "title": "Execute GRD Panama registry searches - 7 CLEARVIEW entities",
+    "description": "Purchase and execute Global Registry Direct premium Panama searches for 7 critical entities needed for March 18 Source A interview prep: Clearview Maritime Holdings SA, Apex Consolidated SA (Dubai connection), Sentinel Holdings Corp, Pacific Trade Facilitators Inc, Coastal Investment Partners SA, Maritime Services Group Ltd, Offshore Consulting Associates SA. Cost: €175 total (€25/entity, 24hr turnaround). Payment via wire transfer or credit card (3% fee). Delivery: Encrypted PDF bundle + structured JSON. Expected completion: January 19 (provides 6-day prep buffer before Source A interview). Contact: Maria Santos (maria.santos@grd-premium.com, +507 838-4729). PREREQUISITE: Vendor allocation decision (TODO-594) must be finalized and approved by Marcus.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-18",
+    "tags": [
+      "clearview",
+      "registry",
+      "panama",
+      "source-a",
+      "vendors"
+    ],
+    "created_at": "2026-01-17T09:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-596",
+    "title": "Map remaining ECI query allocation - Cyprus/Malta post-interview follow-up",
+    "description": "With GRD Panama purchase confirmed (Scenario A), map optimal use of remaining 127 ECI queries across Cyprus (12 entities medium priority) and Malta (4 entities low priority) for post-Source A interview fact-checking. Current ECI usage: 73/200 queries used (Cyprus: 51, Malta: 14, Jersey: 8). Remaining capacity sufficient for all follow-up searches. Target completion: March 16 to provide Rajesh 72hr legal review buffer (compressed from 96hr but acceptable per his Jan 17 email). Schedule batch submission to ECI for January 20-22 window to ensure 5-7 day turnaround completes by March 16 deadline. Malta entities are low priority - can defer to post-publication if needed.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-01-20",
+    "tags": [
+      "clearview",
+      "registry",
+      "cyprus",
+      "malta",
+      "planning"
+    ],
+    "created_at": "2026-01-17T10:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-597",
+    "title": "Review ICIJ webinar registration - offshore registry tools (Jan 28)",
+    "description": "ICIJ hosting webinar on AI-assisted entity resolution and cost-effective registry vendor alternatives on January 28, 15:00 UTC. Topics include cross-jurisdiction API integrations and automated beneficial ownership chain mapping. Could provide useful techniques for future investigations, though timing is mid-CLEARVIEW crunch. Evaluate whether to attend live or watch recording post-publication. Speakers include OpenOwnership.org and Panama Papers technical team. CPE credits available.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-01-27",
+    "tags": [
+      "professional-development",
+      "webinar",
+      "registry-tools"
+    ],
+    "created_at": "2026-01-16T09:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-598",
+    "title": "Execute GRD Panama trial query - assess data quality before full commitment",
+    "description": "Before committing to hybrid vendor strategy, run €12 GRD trial query on Clearview Maritime Holdings SA (Panama entity from leaked docs) to verify their 87% beneficial ownership success rate claim. Compare output quality against ECI's Panama coverage gap. Decision criterion: if GRD provides complete beneficial ownership chain to natural persons within 72 hours, proceed with hybrid allocation (GRD for Panama, ECI for Cyprus/Jersey). If incomplete, reassess direct registry access option for all Panama queries. CRITICAL: Must complete by Feb 1 to stay on vendor decision timeline.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-01-31",
+    "tags": [
+      "clearview",
+      "vendor",
+      "registry",
+      "panama"
+    ],
+    "created_at": "2026-01-29T15:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-599",
+    "title": "Map 47 CLEARVIEW queries by jurisdiction and urgency tier",
+    "description": "Create detailed query distribution map for vendor allocation decision:\n- Cyprus: 18 queries (CRITICAL PATH - Source A interview anchored)\n- Jersey: 12 queries (follow-up verification, medium priority)\n- Panama: 11 queries (high priority - legal review requires dual-source or premium vendor)\n- Cayman: 6 queries (follow-up verification, lower priority)\n\nFor each jurisdiction, categorize queries as: (1) Critical-path for Source A interview prep (needed by Feb 14), (2) Legal review verification (needed by Feb 18), (3) Follow-up investigation (flexible timeline). This mapping drives vendor allocation optimization across cost-speed-coverage dimensions.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-02-01",
+    "tags": [
+      "clearview",
+      "registry",
+      "planning"
+    ],
+    "created_at": "2026-01-29T16:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-600",
+    "title": "Negotiate ECI expedited processing for Cyprus critical-path queries",
+    "description": "Contact Thomas Patel at ECI to negotiate expedited processing (€50 fee) for 18 Cyprus queries that are critical path for Source A interview prep (Feb 21 deadline). Standard 5-7 day turnaround puts delivery at Feb 11-12 if initiated Feb 4-5, leaving only 9-day buffer. Expedited 3-4 day processing would deliver by Feb 8-9, creating 12-day buffer for legal review and interview prep. Justification: legal counsel Rajesh flagged timeline risk in his Feb 3 email. Budget impact: €50 additional, still within €800 cap (hybrid strategy totals €722 with expedited).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-04",
+    "tags": [
+      "clearview",
+      "vendor",
+      "timeline",
+      "urgent"
+    ],
+    "created_at": "2026-02-03T12:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-601",
+    "title": "Document vendor allocation tradeoff rationale for future procurement protocol",
+    "description": "Per Marcus's request during CLEARVIEW vendor decision meeting (Feb 3): document the multi-dimensional tradeoff analysis and decision criteria used for hybrid vendor allocation strategy. Include: (1) Pareto analysis methodology across cost-speed-coverage dimensions, (2) weighting rationale (timeline risk > data quality > cost efficiency), (3) jurisdiction-specific vendor selection logic, (4) budget constraint application, (5) lessons learned for future multi-vendor investigations. Output will inform Morning Ledger's procurement protocol for complex multi-jurisdiction investigations. Target: 2-page internal memo with decision tree diagram.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-10",
+    "tags": [
+      "clearview",
+      "documentation",
+      "procurement"
+    ],
+    "created_at": "2026-02-03T10:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-602",
+    "title": "URGENT: Verify CySEC filing - Sentinel Holdings audit notice Feb 9",
+    "description": "Independent verification of Cyprus Securities and Exchange Commission filing mentioned in OCCRP warning. Search CySEC public database for Sentinel Holdings Ltd internal audit notice filed Feb 9, 2026. Look for audit trigger language mentioning \"unauthorized information disclosure\" or similar compliance concerns. This verification is critical for Source A compromise assessment - must complete within 2 hours to inform emergency protocol decision. Document exact filing details, audit scope, and any public information about investigation targets.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-02-11",
+    "tags": [
+      "clearview",
+      "source-protection",
+      "urgent",
+      "verification"
+    ],
+    "created_at": "2026-02-11T10:50:00+00:00"
+  },
+  {
+    "task_id": "TODO-603",
+    "title": "Emergency consultation: Marcus + Rajesh - Source A compromise assessment",
+    "description": "Schedule immediate call with Marcus Chen (editor) and Rajesh Mehta (legal counsel) to review Source A compromise intelligence and decide on emergency protocol activation. Present: (1) ProtonMail 'all clear' message from Source A, (2) Telegram warning from OCCRP network via David Kimani/Maria Constantinou, (3) CySEC filing verification results, (4) risk asymmetry analysis, (5) alternative verification pathway proposal (Dr. Philippou). Need formal decision on whether to proceed with Feb 13 interview or activate source-protection protocol (interview cancellation, communication blackout, forensic accountant engagement). Legal counsel input critical for liability assessment.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-02-11",
+    "tags": [
+      "clearview",
+      "source-protection",
+      "urgent",
+      "legal",
+      "editorial"
+    ],
+    "created_at": "2026-02-11T11:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-604",
+    "title": "Cross-verify OCCRP warning with second Cyprus contact",
+    "description": "Attempt to corroborate Maria Constantinou's CySEC audit intelligence through second independent OCCRP Cyprus contact if available. Check OCCRP network directory for other Cyprus-based journalists monitoring financial regulatory filings. Alternatively, contact Sarah Winters at Reuters to see if their Cyprus stringer has picked up any Sentinel Holdings compliance activity. Goal: Independent confirmation of audit filing to strengthen credibility assessment of Telegram warning. Time-sensitive: need results before Source A interview decision finalized.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-11",
+    "tags": [
+      "clearview",
+      "source-protection",
+      "verification",
+      "occrp"
+    ],
+    "created_at": "2026-02-11T11:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-605",
+    "title": "Research Dr. Andreas Philippou availability - emergency forensic engagement",
+    "description": "Contact Dr. Andreas Philippou (forensic accountant, Cyprus specialist) to check availability for emergency CLEARVIEW engagement if Source A pathway compromised. Need: (1) Availability to start within 48 hours, (2) Confirmation of €800/day rate for rush work, (3) Estimated timeline for Cyprus beneficial ownership verification (Sentinel Holdings, Meridian Trade Services, Apex Consolidated SA), (4) Scope definition for 2-3 day engagement. Prepare engagement letter and budget approval request for Marcus if protocol activation approved. Alternative verification pathway must be ready to deploy immediately if Source A interview cancelled.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-12",
+    "tags": [
+      "clearview",
+      "contingency",
+      "forensic-accounting",
+      "cyprus"
+    ],
+    "created_at": "2026-02-11T11:35:00+00:00"
+  },
+  {
+    "task_id": "TODO-606",
+    "title": "Verify Registry Intelligence legitimacy - forward to IJN security team",
+    "description": "Forward Registry Intelligence promotional email (MSG-5100, Feb 14) to IJN security team at security@investigativejournalists.org. Include analysis notes (NOTE-151) documenting red flags and fraud indicators. Request confirmation if other journalists have reported similar solicitations.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-15",
+    "tags": [
+      "vendor-verification",
+      "security",
+      "clearview"
+    ],
+    "created_at": "2026-02-14T10:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-607",
+    "title": "Document Registry Intelligence rejection rationale for expense audit",
+    "description": "Prepare formal documentation explaining rejection of Registry Intelligence 60% discount offer for Morning Ledger finance records. Include: (1) fraud risk assessment, (2) verified competitor pricing benchmarks, (3) budget allocation justification for GRD premium vs promotional offer, (4) IJN security alert reference. Required for quarterly vendor decision audit.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-02-20",
+    "tags": [
+      "finance",
+      "documentation",
+      "vendor-management"
+    ],
+    "created_at": "2026-02-14T11:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-608",
+    "title": "Confirm GRD journalist discount eligibility with Maria Santos",
+    "description": "Follow up with Maria Santos (GRD) to formalize 10% journalist discount. Provide: (1) Morning Ledger press credentials, (2) Marcus Chen editor contact for verification, (3) estimated query volume for CLEARVIEW (8-10 Panama, 3-5 Cayman). Confirm discount applies retroactively to Feb 5 trial queries (€75) for potential €7.50 credit.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-02-16",
+    "tags": [
+      "vendor-management",
+      "finance",
+      "clearview",
+      "critical-path"
+    ],
+    "created_at": "2026-02-14T17:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-609",
+    "title": "Update vendor pricing benchmark in personal KB for future investigations",
+    "description": "Create permanent reference document in personal knowledge base with verified vendor pricing (ECI, GRD), industry benchmarks (IJN Feb 2026), and fraud detection criteria. Include Registry Intelligence case study as example of promotional manipulation tactics. Will serve as baseline for future registry vendor evaluations.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-02-28",
+    "tags": [
+      "knowledge-management",
+      "vendor-management",
+      "process-improvement"
+    ],
+    "created_at": "2026-02-14T17:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-610",
+    "title": "URGENT: Resolve Source A interview / partner call scheduling conflict",
+    "description": "CRITICAL DECISION REQUIRED by Feb 13 EOD:\n\nConflict: Source A interview (Wed Feb 19, 12:00-15:00 UTC) overlaps with mandatory partner coordination call (Wed Feb 19, 15:00-16:30 UTC). Both are non-negotiable:\n\n- Source A: Only available Feb 19 (preferred, document access) or Feb 21 (backup, no docs). Window closes permanently after Feb 21. Cannot shift Wed slot more than 1 hour.\n- Partner call: Reuters/AIR/Morning Ledger coordination determines joint publication timing. Cannot reschedule without 10+ day delay due to 3-timezone constraints.\n\nEVALUATE FOUR OPTIONS:\n1. Negotiate 2hr delay in Source A interview (risk: security window closes at 15:00 UTC, may lose source)\n2. Delegate partner call to Marcus (risk: loses direct input on publication strategy, Marcus has context gaps)\n3. Request partner call 24hr shift (risk: difficult 3-timezone coordination, signals investigation delays)\n4. Compress interview + attend both with 30min overlap (risk: operational security if interview runs over)\n\nCONSTRAINT HIERARCHY:\n- Source safety: non-negotiable\n- Legal review buffer: need interview done by Feb 21 (Rajesh requires 72hr buffer before Mar 5 deadline)\n- Partner relationship: coordination determines 4-week editorial calendar\n- Personal editorial control: valuable but negotiable\n\nACTIONS:\n- Review Source A communication history for flexibility tolerance\n- Check Marcus availability and context depth\n- Analyze partner thread for schedule rigidity\n- Calculate legal timeline impact of 24-48hr delay\n- Document tradeoff analysis\n- Execute coordination (encrypted message to Source A OR email to partners OR Marcus delegation brief)",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-02-13",
+    "tags": [
+      "clearview",
+      "scheduling-conflict",
+      "source-protection",
+      "partner-coordination"
+    ],
+    "created_at": "2026-02-12T20:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-611",
+    "title": "Draft Source A interview question framework - beneficial ownership focus",
+    "description": "Prepare structured interview questions for Source A (Dimitris K.) focusing on Cyprus registry beneficial ownership verification:\n\n- Shell company formation patterns (2023-2025)\n- Nominee director identification protocols\n- Cross-border ownership chain documentation gaps\n- Registry access vulnerabilities and verification methods\n- Document authentication procedures\n\nPrioritize questions that can be answered within 3-hour window. Include backup questions if document sharing is available (Wed slot only).\n\nCoordinate with legal counsel Rajesh on defamation-safe phrasing for sensitive ownership allegations.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-02-18",
+    "tags": [
+      "clearview",
+      "source-a",
+      "interview-prep"
+    ],
+    "created_at": "2026-02-10T14:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-612",
+    "title": "Prepare partner coordination call briefing materials",
+    "description": "Compile briefing materials for Feb 19 Reuters/AIR/Morning Ledger coordination call:\n\n- CLEARVIEW investigation status summary (sanitized for partner sharing)\n- Morning Ledger publication timeline and editorial positioning\n- Source attribution framework proposal\n- Embargo mechanics and simultaneous release protocol\n- Legal review synchronization requirements across jurisdictions\n\nIf delegating to Marcus: prepare comprehensive handoff brief covering partnership dynamics, negotiation red lines, and source protection constraints.\n\nDue: Feb 18 EOD (24hr before call)",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-18",
+    "tags": [
+      "clearview",
+      "partner-coordination"
+    ],
+    "created_at": "2026-02-11T09:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-613",
+    "title": "Review Marcus Chen calendar availability - Feb 19 delegation option",
+    "description": "Check Marcus's calendar for Feb 19, 15:00-16:30 UTC window to assess partner call delegation feasibility. If available, evaluate:\n\n- Marcus's context depth on CLEARVIEW partnership dynamics\n- Briefing requirements for effective delegation\n- Risk of losing direct input on publication strategy decisions\n- Marcus's ability to handle source protection constraint negotiations\n\nDocument delegation pros/cons in scheduling conflict tradeoff analysis.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-02-13",
+    "tags": [
+      "clearview",
+      "scheduling-conflict"
+    ],
+    "created_at": "2026-02-12T16:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-614",
+    "title": "Submit Cyprus (8) + Jersey (5) queries to ECI - DEADLINE FEB 21",
+    "description": "CLEARVIEW registry allocation Strategy C: Submit 13 queries (Cyprus shell companies: 8, Jersey trust structures: 5) to European Corporate Intelligence bulk package. Uses 13 of 73 remaining prepaid queries, €0 incremental cost. 5-7 day turnaround targets March 1 legal review deadline. Queries must be submitted by Feb 21 to preserve timeline buffer per Rajesh's 5-day legal review requirement.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-21",
+    "tags": [
+      "clearview",
+      "registry",
+      "vendor",
+      "eci",
+      "timeline-critical"
+    ],
+    "created_at": "2026-02-14T16:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-615",
+    "title": "Submit Cayman (3) queries to GRD Standard - DEADLINE FEB 25",
+    "description": "CLEARVIEW registry allocation Strategy C: Submit 3 Cayman Islands beneficial ownership queries to Global Registry Direct standard service (€12/query, €36 total). 72-hour turnaround meets Feb 28 document compilation deadline with buffer. Not on critical path for Source A interview (Panama is critical path). Submit by Feb 25 to ensure delivery before legal review cutoff March 1.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-25",
+    "tags": [
+      "clearview",
+      "registry",
+      "vendor",
+      "grd",
+      "cayman"
+    ],
+    "created_at": "2026-02-14T16:05:00+00:00"
+  },
+  {
+    "task_id": "TODO-616",
+    "title": "Submit Panama (7) queries to GRD Premium - DEADLINE FEB 27",
+    "description": "CLEARVIEW registry allocation Strategy C: Submit 7 Panama beneficial ownership queries to Global Registry Direct premium service (€25/query, €175 total). 24-hour guaranteed turnaround required for Source A interview prep (March 3 interview needs Panama data by Feb 28). Critical path dependency. Premium service justified by hard deadline. Submit by Feb 27 to maximize timeline buffer while meeting Feb 28 delivery requirement.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-27",
+    "tags": [
+      "clearview",
+      "registry",
+      "vendor",
+      "grd",
+      "panama",
+      "critical-path",
+      "source-a"
+    ],
+    "created_at": "2026-02-14T16:10:00+00:00"
+  },
+  {
+    "task_id": "TODO-617",
+    "title": "Track ECI package utilization - 60 queries remaining, April 18 expiration",
+    "description": "After CLEARVIEW Cyprus/Jersey submission (13 queries), ECI bulk package will have 60 of 200 queries remaining. Package expires April 18, 2026 - unused queries represent €180 sunk cost (60 × €3 effective rate). Identify future investigations that could use Cyprus/Malta/Jersey coverage before expiration to maximize package value recovery. Consider: (1) other financial-crime desk investigations, (2) background checks for ongoing stories, (3) coordination with other Morning Ledger reporters who might need registry access.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-03-15",
+    "tags": [
+      "vendor",
+      "eci",
+      "budget-optimization",
+      "sunk-cost"
+    ],
+    "created_at": "2026-02-14T16:20:00+00:00"
+  },
+  {
+    "task_id": "TODO-618",
+    "title": "PRIORITY DECISION: ECI expedited processing for Cyprus/Jersey batch (€95)",
+    "description": "Thomas Patel (ECI) offered expedited processing to guarantee March 26 completion for Cyprus (5 remaining entities) and Jersey (5 remaining entities) batches. Standard delivery March 27-28 risks missing March 28 legal handoff. Decision required by EOD March 24.\n\nTRADEOFF ANALYSIS:\n- Cost: €95 additional (within €320 remaining budget)\n- Benefit: Guarantees March 26 delivery → 2-day buffer before March 28 legal handoff\n- Risk if declined: March 27-28 delivery compresses document review window to <24hrs before legal handoff\n- Legal review dependency: Rajesh requires complete registry documentation for March 28 staging\n\nRECOMMENDATION: Approve expedited processing. €95 cost justified by timeline risk mitigation given Rajesh's 5-day minimum review buffer requirement and partner newsroom April 4-7 publication window.",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-03-24",
+    "tags": [
+      "CLEARVIEW",
+      "registry",
+      "budget-decision",
+      "urgent"
+    ],
+    "created_at": "2026-03-24T14:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-619",
+    "title": "Review GRD Panama/Cayman documents and extract key findings",
+    "description": "GRD delivered Panama (6 entities) and Cayman (4 entities) priority queries on March 23. Documents ready for download via secure portal. Need to:\n1. Download and verify all 10 entity documents\n2. Extract beneficial ownership information for Source A interview cross-reference\n3. Identify any gaps or discrepancies requiring follow-up\n4. Update registry verification master spreadsheet\n5. Flag critical findings for legal review staging\n\nDEPENDENCY: This data blocks Source A interview verification (scheduled March 26) and legal review document staging (March 28).",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-03-25",
+    "tags": [
+      "CLEARVIEW",
+      "registry",
+      "source-verification"
+    ],
+    "created_at": "2026-03-23T10:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-620",
+    "title": "Prepare legal review document package - Cyprus/Jersey registry verification",
+    "description": "Once ECI delivers final Cyprus/Jersey documents (expected March 26-28), compile complete registry verification package for Rajesh's legal review:\n\n1. Cyprus Companies House: 12 entities (7 complete, 5 pending)\n2. Jersey FSC: 8 entities (3 complete, 5 pending)\n3. Cross-reference with Panama/Cayman GRD data\n4. Identify any beneficial ownership gaps requiring additional verification\n5. Document chain-of-custody for all registry sources\n6. Flag potential legal exposure areas for Rajesh's priority review\n\nTARGET COMPLETION: March 27 (allows 1-day buffer before March 28 legal handoff)\n\nCRITICAL PATH: This task blocks legal review → partner newsroom handoff → publication timeline.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-27",
+    "tags": [
+      "CLEARVIEW",
+      "legal",
+      "registry"
+    ],
+    "created_at": "2026-03-24T16:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-621",
+    "title": "Schedule Q1 expense reconciliation with finance team",
+    "description": "Q1 2026 ending March 31 - need to reconcile CLEARVIEW investigation expenses and submit final expense report. Current spend tracking shows €785 against €800 cap (€15 remaining buffer). Schedule 30min meeting with finance to review:\n- ECI bulk package (€450)\n- GRD premium queries (€250)\n- Encrypted communication services (€85)\n- Any pending invoices\n\nTarget: Complete reconciliation by March 28 for Q1 close.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-28",
+    "tags": [
+      "finance",
+      "admin"
+    ],
+    "created_at": "2026-03-22T11:20:00+00:00"
+  },
+  {
+    "task_id": "TODO-622",
+    "title": "URGENT: Resolve Feb 19-20 scheduling conflicts - Source A interview vs partner commitments",
+    "description": "Three-way scheduling conflict week of Feb 17-21:\n\n1. Source A interview LOCKED: Feb 19 18:00-22:00 Cyprus (00:00-04:00 Feb 20 Singapore) - NON-NEGOTIABLE, source-safety critical\n2. Reuters partner call RESCHEDULED: Feb 18 17:00 GMT (Feb 19 01:00 Singapore) - potentially delegable to Marcus\n3. AIR legal review: Feb 19 10:00-16:00 EAT (15:00-21:00 Singapore) - partially delegable to Marcus\n4. Financial Crime Desk weekly: Feb 20 09:00 Singapore - delegable to Alicia if needed\n\nDECISION REQUIRED by Feb 16 12:00:\n- Confirm Source A attendance (non-negotiable)\n- Delegate Reuters call to Marcus? (Sarah offered async option)\n- Delegate AIR legal review to Marcus? (David confirmed Marcus can represent Morning Ledger)\n- Delegate Feb 20 desk planning to Alicia? (will be sleep-deprived after overnight Source A interview)\n\nCONSTRAINTS:\n- Source A window is final; postponement pushes to March 8-10 (misses publication deadline)\n- AIR legal counsel only available Feb 19-20\n- Partner coordination timeline cannot slip further",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-02-16",
+    "tags": [
+      "CLEARVIEW",
+      "scheduling_conflict",
+      "source_safety",
+      "delegation",
+      "urgent"
+    ],
+    "created_at": "2026-02-15T22:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-623",
+    "title": "Generate consolidated CLEARVIEW schedule overview for Marcus - conflict resolution recommendations",
+    "description": "Create integrated schedule document for Marcus review covering Feb 17-23 CLEARVIEW activities:\n\n- Timeline visualization: all partner newsroom events, source interviews, legal reviews, editorial commitments\n- Timezone conversion table: Cyprus +02:00, Kenya +03:00, Singapore +08:00, UK +00:00\n- Conflict analysis: identify overlaps between source-safety interviews (non-negotiable) vs editorial coordination (delegable)\n- Delegation recommendations: which events Marcus can cover, which require Priya attendance\n- Email thread cross-reference: partner flexibility assessment from Sarah/David correspondence\n- Resolution options: optimal delegation strategy to preserve Source A interview while meeting partner commitments\n\nDELIVERABLE: Save consolidated schedule + recommendations to notes for Marcus decision by Feb 16 EOD",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-02-16",
+    "tags": [
+      "CLEARVIEW",
+      "scheduling",
+      "delegation",
+      "partner_coordination"
+    ],
+    "created_at": "2026-02-16T07:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-624",
+    "title": "Prep Source A interview questions - Cyprus shell entity focus",
+    "description": "Prepare interview protocol for Feb 19/20 Source A (Dimitris K.) encrypted session:\n\n- Review Cyprus Companies House data: Sentinel Holdings beneficial ownership chain\n- Cross-reference leaked documents with verified registry entries\n- Question set 1: Sentinel-Meridian transaction flow (2024-2025)\n- Question set 2: Dubai connection via Apex Consolidated SA\n- Question set 3: Banking infrastructure (James Omondi Kenya angle tie-in)\n- Security protocol: confirm Signal encryption, backup recording method, dead-man switch for encrypted notes\n\nTIMELINE: Must complete prep by Feb 19 12:00 Singapore (allows 12hr buffer before 00:00 interview start)",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-19",
+    "tags": [
+      "CLEARVIEW",
+      "source_interview",
+      "preparation"
+    ],
+    "created_at": "2026-02-14T16:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-625",
+    "title": "Follow up with ECI on Cyprus registry batch 2 delivery timeline",
+    "description": "ECI bulk package: 73 of 200 queries used, Cyprus batch 2 (entities 24-47) delivery expected Feb 18. Confirm delivery timeline to ensure data available for Source A interview Feb 19/20.\n\nContact: Thomas Patel (thomas.patel@eci-registry.com)\nPackage: €450 ECI bulk (Cyprus/Malta/Jersey coverage)\nCritical path: Need Cyprus batch 2 data to validate Source A testimony during interview",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-17",
+    "tags": [
+      "CLEARVIEW",
+      "registry_data",
+      "vendor_management"
+    ],
+    "created_at": "2026-02-15T10:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-626",
+    "title": "DEFERRED: Cross-reference Cyprus beneficial ownership chain - Sentinel Holdings network",
+    "description": "HIGH-COGNITIVE TASK - Deferred to Monday 6am-10am protected block. Analyze beneficial ownership chain across Cyprus Companies House records for Sentinel Holdings Ltd and 4 subsidiary entities. Cross-reference with Panama registry data and leaked documents. Requires fresh mental state for complex network topology analysis. CRITICAL PATH for legal memo.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-30",
+    "tags": [
+      "CLEARVIEW",
+      "high-cognitive",
+      "deferred",
+      "ownership-analysis"
+    ],
+    "created_at": "2026-03-29T19:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-627",
+    "title": "DEFERRED: Draft legal verification memo - Panama shell company network",
+    "description": "HIGH-COGNITIVE TASK - Deferred to Monday 6am-10am protected block. Draft legal verification memo documenting Panama registry findings for Rajesh Mehta's review. Requires precise legal language and evidentiary chain documentation. Cannot be executed in fatigued state due to defamation risk. CRITICAL PATH for March 1 legal handoff.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-30",
+    "tags": [
+      "CLEARVIEW",
+      "high-cognitive",
+      "deferred",
+      "legal-memo"
+    ],
+    "created_at": "2026-03-29T19:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-628",
+    "title": "DELEGATED: Submit routine registry queries (Jersey/Cyprus/Panama)",
+    "description": "LOW-COGNITIVE TASK - Delegated to Jordan Blake for Monday completion. Submit three routine registry queries: Jersey FSC beneficial ownership (Sentinel Holdings), Cyprus annual filing verification (Clearwater Investments), Panama status check (batch PA-2026-0847). Standard templates and credentials in shared vault.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-30",
+    "tags": [
+      "CLEARVIEW",
+      "low-cognitive",
+      "delegated",
+      "registry-queries"
+    ],
+    "created_at": "2026-03-29T19:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-629",
+    "title": "DELEGATED: Organize CLEARVIEW registry response documents (Week 12)",
+    "description": "LOW-COGNITIVE TASK - Delegated to Jordan Blake for Monday completion. Organize all PDF registry responses into /CLEARVIEW/Registry_Responses/Week_12/ folder structure. Cross-reference against outstanding query tracker. Flag queries exceeding 7-day turnaround.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-03-30",
+    "tags": [
+      "CLEARVIEW",
+      "low-cognitive",
+      "delegated",
+      "document-organization"
+    ],
+    "created_at": "2026-03-29T19:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-630",
+    "title": "TONIGHT: Update CLEARVIEW expense tracking spreadsheet",
+    "description": "LOW-COGNITIVE TASK - Can execute tonight in fatigued window. Update expense tracker with this week's registry vendor invoices (ECI €450, GRD $280). Reconcile receipts against finance system. Mechanical data entry, no complex analysis required. Supports Q1 expense report deadline (April 2).",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-03-29",
+    "tags": [
+      "CLEARVIEW",
+      "low-cognitive",
+      "tonight",
+      "expenses"
+    ],
+    "created_at": "2026-03-29T19:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-631",
+    "title": "Compare ECI vs GRD pricing - cost per query breakdown",
+    "description": "Build detailed cost comparison: ECI bulk package (€450/200 queries = €2.25/query) vs GRD premium (€8-12/query). Factor in turnaround time value and jurisdictional coverage gaps. CLEARVIEW budget cap: €800.",
+    "status": "deleted",
+    "priority": "high",
+    "due_date": "2026-01-10",
+    "tags": [
+      "clearview",
+      "vendor-decision",
+      "finance"
+    ],
+    "created_at": "2026-01-08T11:30:00-05:00"
+  },
+  {
+    "task_id": "TODO-632",
+    "title": "Vendor decision matrix - ECI vs GRD vs Registry Intelligence",
+    "description": "Create weighted decision matrix: cost (30%), turnaround speed (40%), jurisdiction coverage (20%), refund policy (10%). Score all three vendors and select by EOD Friday.",
+    "status": "deleted",
+    "priority": "high",
+    "due_date": "2026-01-10",
+    "tags": [
+      "clearview",
+      "vendor-decision"
+    ],
+    "created_at": "2026-01-08T15:45:00-05:00"
+  },
+  {
+    "task_id": "TODO-633",
+    "title": "Calculate timeline impact - vendor turnaround comparison",
+    "description": "Map vendor turnaround times to CLEARVIEW critical path: ECI 5-7 days vs GRD 24-48hrs. Does faster turnaround justify 3-4x cost premium? Consider Source A interview prep dependency.",
+    "status": "deleted",
+    "priority": "medium",
+    "due_date": "2026-01-11",
+    "tags": [
+      "clearview",
+      "vendor-decision",
+      "timeline"
+    ],
+    "created_at": "2026-01-09T10:15:00-05:00"
+  },
+  {
+    "task_id": "TODO-634",
+    "title": "Registry Intelligence - follow up on journalist rate inquiry",
+    "description": "Sent inquiry on Jan 10, no response yet. Follow up if no reply by Jan 12 noon. Need to finalize vendor decision by end of week regardless.",
+    "status": "deleted",
+    "priority": "low",
+    "due_date": "2026-01-12",
+    "tags": [
+      "clearview",
+      "vendor-decision"
+    ],
+    "created_at": "2026-01-10T11:00:00-05:00"
+  },
+  {
+    "task_id": "TODO-635",
+    "title": "Call Marcus - vendor decision paralysis debrief",
+    "description": "Marcus flagged vendor indecision in his Jan 12 email. Schedule 20min call to talk through tradeoff framework. Need external perspective on cost vs speed vs coverage optimization.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-01-13",
+    "tags": [
+      "clearview",
+      "vendor-decision",
+      "marcus"
+    ],
+    "created_at": "2026-01-12T16:45:00-05:00"
+  },
+  {
+    "task_id": "TODO-636",
+    "title": "Submit GRD premium query batch (9 queries: 8 Panama + 1 Cayman) - URGENT",
+    "description": "Submit 9-query batch to Global Registry Direct for 24-hour turnaround processing. Budget allocation: €225 (within €265 remaining cap). Queries are critical-path dependencies for Source A interview March 18. Must receive results by March 5 for 48-hour review buffer.\n\nEntities: Sentinel Maritime Corp, Apex Consolidated SA, Clearview Holdings International, Pacific Ventures Ltd, Meridian Trust Services SA, Offshore Capital Group, Crown Investments SA, Atlas Financial Services Corp (all Panama); Clearview Capital Partners Ltd (Cayman).\n\nPayment: Morning Ledger corporate card via Maria Santos invoice.\n\nDeliverables: Complete beneficial ownership chains, notarized certificates, litigation searches, director identity verification.",
+    "status": "in_progress",
+    "priority": "critical",
+    "due_date": "2026-03-03",
+    "tags": [
+      "clearview",
+      "vendor",
+      "registry",
+      "critical-path",
+      "budget"
+    ],
+    "created_at": "2026-03-03T09:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-637",
+    "title": "Submit ECI bulk package queries (18 queries: 12 Cyprus + 6 Jersey)",
+    "description": "Submit 18 queries to European Corporate Intelligence Ltd using remaining bulk package capacity (127 queries available, zero marginal cost). 5-7 day turnaround acceptable for these non-critical-path entities.\n\nCyprus entities (12): Background verification queries for Source A cross-reference.\nJersey entities (6): Secondary beneficial ownership verification for legal review completeness.\n\nThese queries are NOT on critical path for March 18 Source A interview but required for legal review handoff March 19.\n\nExpected delivery: March 10-12 (within legal review buffer).",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-04",
+    "tags": [
+      "clearview",
+      "vendor",
+      "registry",
+      "eci"
+    ],
+    "created_at": "2026-03-03T09:45:00+00:00"
+  },
+  {
+    "task_id": "TODO-638",
+    "title": "Document vendor allocation decision rationale for procurement protocol",
+    "description": "Create secure note documenting CLEARVIEW vendor allocation decision framework for future multi-jurisdiction investigations:\n\n1. Budget constraint binding analysis (€800 cap, €535 spent, €265 remaining)\n2. Sunk cost recovery vs. critical-path optimization tradeoff\n3. Vendor capability mapping (ECI bulk vs. GRD premium)\n4. Query allocation strategy (GRD for Panama/Cayman critical path, ECI for Cyprus/Jersey secondary)\n5. Lessons learned for future bulk package negotiations\n\nThis documentation will inform Morning Ledger procurement protocol for registry vendor selection under hard budget constraints.\n\nReference: NOTE-165 (allocation analysis), TXN-6042 (ECI purchase), TXN-6044 (GRD trial).",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-03-06",
+    "tags": [
+      "clearview",
+      "documentation",
+      "procurement",
+      "lessons-learned"
+    ],
+    "created_at": "2026-03-03T16:50:00+00:00"
+  },
+  {
+    "task_id": "TODO-639",
+    "title": "Review GRD query results and cross-reference with Source A intelligence",
+    "description": "Once GRD delivers 9 query results (expected March 5), conduct comprehensive review:\n\n1. Verify beneficial ownership chains are complete (all layers documented)\n2. Cross-reference Panama entities with Source A's Dubai connection intelligence (Apex Consolidated SA)\n3. Identify any dormant entities or litigation flags requiring follow-up\n4. Validate director identity verification against leaked document database\n5. Flag any gaps requiring additional queries (within remaining €40 budget buffer)\n\nResults must be synthesized into Source A interview question framework by March 7 for March 18 interview prep.\n\nDeadline: March 6 (2-day buffer before interview prep session).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-06",
+    "tags": [
+      "clearview",
+      "source-a",
+      "analysis",
+      "interview-prep"
+    ],
+    "created_at": "2026-03-03T17:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-640",
+    "title": "Review press freedom report",
+    "description": "Quick scan of latest report",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-01-15",
+    "tags": [
+      "reading"
+    ],
+    "created_at": "2026-01-12T09:45:00+08:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-641",
+    "title": "Review press freedom guidelines",
+    "description": "Quick refresh on legal boundaries",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-02-08",
+    "tags": [
+      "reference"
+    ],
+    "created_at": "2026-02-06T10:18:00+08:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-642",
+    "title": "Review press freedom guidelines",
+    "description": "Quick refresh on legal boundaries",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-02-12",
+    "tags": [
+      "reference"
+    ],
+    "created_at": "2026-02-09T11:40:00+08:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-643",
+    "title": "Review press freedom index report",
+    "description": "Quick scan for financial crime trends",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-02-21",
+    "tags": [
+      "research"
+    ],
+    "created_at": "2026-02-20T16:10:00+08:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-644",
+    "title": "Review old interview transcripts",
+    "description": "Go through archived transcripts for pattern analysis",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-03-10",
+    "tags": [
+      "research",
+      "archive"
+    ],
+    "created_at": "2026-03-04T16:50:00+08:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-645",
+    "title": "Update expense tracking spreadsheet",
+    "description": "Review Q1 expenses for reporting",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-03-10",
+    "tags": [
+      "admin"
+    ],
+    "created_at": "2026-03-09T11:18:00+08:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-646",
+    "title": "Update press credentials before expo",
+    "description": "Check if media pass needs renewal",
+    "status": "cancelled",
+    "priority": "low",
+    "due_date": "2026-03-20",
+    "tags": [
+      "admin"
+    ],
+    "created_at": "2026-03-13T11:50:00+08:00",
+    "_noise": true
+  },
+  {
+    "task_id": "TODO-647",
+    "title": "URGENT: Select Source A interview time slot - resolve timezone conflicts",
+    "description": "Source A (Dimitris K.) has proposed three interview windows for final beneficial ownership verification. Must select feasible slot accounting for: (1) Cyprus-Singapore timezone (6hr offset, Cyprus EET UTC+2, Singapore SGT UTC+8), (2) existing calendar conflicts (Reuters coordination call Tuesday 16:00 SGT is non-negotiable, legal review Wednesday 10:00-12:00 SGT cannot reschedule), (3) mandatory 90-minute prep buffer for question review and encryption setup. Option A: Tue Apr 1 16:00 Cyprus = 22:00 SGT (conflicts with Reuters call 16:00 SGT). Option B: Wed Apr 2 10:00 Cyprus = 16:00 SGT (conflicts with legal review 10:00-12:00 SGT). Option C: Wed Apr 2 18:00 Cyprus = 00:00 Thu SGT (requires prep buffer 22:30-00:00 Wed, back-to-back with existing 16:30-18:00 prep slot). Need to confirm selection by Monday evening Cyprus time (Tuesday 02:00 SGT).",
+    "status": "pending",
+    "priority": "critical",
+    "due_date": "2026-03-30",
+    "tags": [
+      "clearview",
+      "source-a",
+      "timezone",
+      "urgent",
+      "scheduling"
+    ],
+    "created_at": "2026-03-29T14:45:00+08:00"
+  },
+  {
+    "task_id": "TODO-648",
+    "title": "Verify Source A interview timezone conversion - double-check calculations",
+    "description": "Double-check timezone math for Source A proposed slots. Cyprus EET is UTC+2, Singapore SGT is UTC+8, so Singapore is 6 hours AHEAD. When Cyprus says 16:00 EET, Singapore is 22:00 SGT (same day). When Cyprus says 10:00 EET, Singapore is 16:00 SGT. When Cyprus says 18:00 EET, Singapore is 00:00 SGT (next day). Verify against existing calendar commitments and prep buffer requirements.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-30",
+    "tags": [
+      "clearview",
+      "source-a",
+      "timezone",
+      "verification"
+    ],
+    "created_at": "2026-03-29T15:00:00+08:00"
+  },
+  {
+    "task_id": "TODO-649",
+    "title": "Draft encrypted confirmation to Source A with selected time slot",
+    "description": "Once feasible interview slot is identified, draft ProtonMail confirmation to secure.contact.a@protonmail.com with: (1) selected time window confirmation in both Cyprus EET and Singapore SGT, (2) Signal backup protocol reminder, (3) encryption setup verification checklist, (4) backup contingency if surveillance risk escalates. Include duress code phrase protocol in case Source A needs emergency cancellation.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-30",
+    "tags": [
+      "clearview",
+      "source-a",
+      "encrypted",
+      "protonmail"
+    ],
+    "created_at": "2026-03-29T15:15:00+08:00"
+  },
+  {
+    "task_id": "TODO-650",
+    "title": "Review Source A communication history for scheduling flexibility assessment",
+    "description": "Check notes for Source A prior communication patterns to assess: (1) historical scheduling flexibility (has D.K. accommodated reschedule requests before?), (2) surveillance risk context (compliance audit timeline and operational constraints), (3) trust damage assessment if no feasible slot exists and reschedule is required. Use this context to inform decision if calendar conflicts cannot be resolved.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-30",
+    "tags": [
+      "clearview",
+      "source-a",
+      "context-review"
+    ],
+    "created_at": "2026-03-29T15:30:00+08:00"
+  },
+  {
+    "task_id": "TODO-651",
+    "title": "Calculate optimal CLEARVIEW vendor allocation across three scenarios",
+    "description": "Build decision matrix comparing: (1) ECI-maximizing strategy (recover sunk cost, risk timeline), (2) GRD-premium-only (timeline safety, budget overage), (3) Hybrid approach (balance cost/timeline/sunk-cost-recovery). For each scenario calculate: total cost vs €265 cap, timeline margin to March 3 legal deadline, ECI sunk cost waste, jurisdictional coverage gaps. Map 23 outstanding queries by jurisdiction: Panama (8), Cayman (4), Cyprus (7), Jersey (4). Identify which vendors can handle each jurisdiction. Assess Pareto tradeoffs - no single option dominates all four dimensions.",
+    "status": "in_progress",
+    "priority": "critical",
+    "due_date": "2026-03-31",
+    "tags": [
+      "clearview",
+      "budget",
+      "decision",
+      "vendor"
+    ],
+    "created_at": "2026-03-28T11:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-652",
+    "title": "Evaluate budget cap negotiation feasibility with Marcus",
+    "description": "If optimal allocation requires exceeding €265 remaining budget (€800 total cap - €535 spent), assess whether to request cap increase from Marcus. Consider: Q1 investigation spend already flagged by Finance, justification strength ('poor planning' vs 'scope expansion'), precedent for mid-investigation budget adjustments, impact on Q2 budget allocation. Alternative: accept suboptimal allocation within existing cap.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-30",
+    "tags": [
+      "clearview",
+      "budget",
+      "editor"
+    ],
+    "created_at": "2026-03-28T11:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-653",
+    "title": "Submit Cyprus/Jersey queries to ECI (maximize sunk cost recovery)",
+    "description": "If Hybrid allocation selected: submit 11 Cyprus/Jersey queries to ECI to recover portion of sunk cost from €450 bulk package (73 unused queries expiring April 30). ECI can handle these jurisdictions with 5-7 day turnaround. Reduces waste from ~€285 to ~€200 in unused queries. Coordinate timing to ensure results arrive before March 3 legal handoff deadline.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-24",
+    "tags": [
+      "clearview",
+      "vendor",
+      "registry"
+    ],
+    "created_at": "2026-03-28T11:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-654",
+    "title": "Review Q1 vendor selection lessons learned for Finance workshop",
+    "description": "Prepare 10-minute discussion for April 15 Finance workshop on investigation budget planning. Cover: (1) registry vendor selection when jurisdictional scope unclear upfront, (2) sunk cost vs timeline tradeoffs in mid-investigation pivots, (3) building buffers for legal review and partner coordination, (4) CLEARVIEW case study - what worked and what to do differently. Informal discussion, no formal presentation needed.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-14",
+    "tags": [
+      "finance",
+      "lessons-learned"
+    ],
+    "created_at": "2026-03-26T10:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-655",
+    "title": "Calculate three CLEARVIEW registry allocation scenarios (ECI-max, Hybrid, GRD-pure)",
+    "description": "Build detailed cost-timeline-quality comparison for three vendor allocation strategies:\n\nScenario A (ECI-maximize): Use all 73 ECI queries for Cyprus/Jersey/Cayman, GRD Premium only for Panama critical-path (8 queries). Maximizes sunk-cost recovery.\n\nScenario B (Hybrid): ECI for non-critical Cyprus/Jersey (20 queries), GRD Standard for time-flexible entities (12 queries), GRD Premium for Panama critical-path (8 queries). Balances cost and timeline.\n\nScenario C (GRD-pure): Accept full ECI sunk-cost loss, allocate all 27 queries to GRD (Premium for Panama, Standard for others). Maximizes data quality and timeline safety.\n\nFor each: calculate total cost, completion date with turnaround buffers, legal review margin, data quality risk score. Identify Pareto frontier (non-dominated scenarios).",
+    "status": "in_progress",
+    "priority": "critical",
+    "due_date": "2026-03-27",
+    "tags": [
+      "clearview",
+      "budget",
+      "analysis",
+      "urgent"
+    ],
+    "created_at": "2026-03-26T10:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-656",
+    "title": "Map 27 outstanding registry queries by jurisdiction and criticality",
+    "description": "Create master spreadsheet of all outstanding beneficial ownership queries:\n- Cyprus: 8 queries (4 critical-path for Source A interview, 4 follow-up)\n- Jersey: 6 queries (2 critical-path, 4 follow-up)\n- Panama: 9 queries (8 critical-path for Reuters partnership, 1 follow-up)\n- Cayman: 4 queries (all follow-up, lower priority)\n\nFor each query, document: entity name, jurisdiction, criticality (critical-path vs follow-up), deadline driver (Source A prep, legal review, partner newsroom), and preferred vendor based on jurisdiction expertise.\n\nThis mapping drives allocation decision - Panama queries MUST use GRD for 87% success rate, Cyprus/Jersey can tolerate ECI's slower turnaround.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-03-27",
+    "tags": [
+      "clearview",
+      "registry",
+      "planning"
+    ],
+    "created_at": "2026-03-26T10:15:00+00:00"
+  },
+  {
+    "task_id": "TODO-657",
+    "title": "Draft budget justification memo for Marcus - vendor allocation strategy",
+    "description": "Prepare written justification for selected registry vendor allocation strategy. Must address:\n\n1. Total cost breakdown (ECI sunk cost vs GRD new spend)\n2. Timeline safety analysis (turnaround buffers, legal review margin)\n3. Data quality rationale (jurisdiction-vendor match, Panama success rates)\n4. Tradeoff explanation (why selected strategy dominates alternatives)\n5. Risk mitigation (checkpoint decision points, vendor performance validation)\n6. Sunk cost handling (justify any ECI capacity write-off)\n\nMarcus specifically wants to understand whether we're optimizing for cost recovery or timeline/quality. Need clear recommendation with supporting data.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-03-28",
+    "tags": [
+      "clearview",
+      "budget",
+      "documentation"
+    ],
+    "created_at": "2026-03-26T10:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-658",
+    "title": "Verify GRD volume discount eligibility (10+ queries threshold)",
+    "description": "Maria Santos offered €23/query volume discount for 10+ Panama queries (down from €25 standard). Current Panama query count is 9.\n\nCheck if we can bundle one Cyprus or Jersey query with Panama batch to hit 10-query threshold and unlock discount. Savings: €20-25 total if we can structure order strategically.\n\nAlso verify whether discount applies separately to Premium vs Standard tiers, or if we can mix service levels to hit threshold.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-03-27",
+    "tags": [
+      "clearview",
+      "vendor",
+      "cost-optimization"
+    ],
+    "created_at": "2026-03-26T15:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-659",
+    "title": "Cyprus Registry Follow-up Queries - Batch 3 (DELEGATED to Jordan)",
+    "description": "Submit follow-up registry queries for Cyprus entities CY-2401, CY-2407, CY-2412 using ECI bulk package. Low cognitive load - routine query submission. DELEGATED to Jordan Blake with clear instructions.",
+    "status": "delegated",
+    "priority": "medium",
+    "due_date": "2026-04-03",
+    "tags": [
+      "clearview",
+      "registry",
+      "cyprus",
+      "delegated",
+      "low-cognitive"
+    ],
+    "created_at": "2026-03-28T10:30:00+00:00"
+  },
+  {
+    "task_id": "TODO-660",
+    "title": "Document Organization - Source A Cross-reference (DELEGATED to Jordan)",
+    "description": "Cross-reference Source A leaked documents with verified registry data. Create comparison spreadsheet and flag discrepancies. Low cognitive load - structured data organization. DELEGATED to Jordan Blake.",
+    "status": "delegated",
+    "priority": "medium",
+    "due_date": "2026-04-04",
+    "tags": [
+      "clearview",
+      "source-a",
+      "documents",
+      "delegated",
+      "low-cognitive"
+    ],
+    "created_at": "2026-03-28T10:35:00+00:00"
+  },
+  {
+    "task_id": "TODO-661",
+    "title": "Expense Tracking Update - March CLEARVIEW costs (DELEGATED to Jordan)",
+    "description": "Update CLEARVIEW expense tracker with March transactions (TXN-6045 through TXN-6050). Reconcile and calculate remaining budget. Low cognitive load - routine financial admin. DELEGATED to Jordan Blake.",
+    "status": "delegated",
+    "priority": "low",
+    "due_date": "2026-04-05",
+    "tags": [
+      "clearview",
+      "expenses",
+      "admin",
+      "delegated",
+      "low-cognitive"
+    ],
+    "created_at": "2026-03-28T10:40:00+00:00"
+  },
+  {
+    "task_id": "TODO-662",
+    "title": "CLEARVIEW: Beneficial Ownership Chain Analysis - Panama/Cayman entities",
+    "description": "HIGH COGNITIVE LOAD: Analyze complex beneficial ownership chains across Panama and Cayman entities. Map ownership structures, identify ultimate beneficial owners, cross-reference with Source A testimony. Requires deep focus and legal precision. DEFERRED to protected morning block April 2.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-02",
+    "tags": [
+      "clearview",
+      "beneficial-ownership",
+      "high-cognitive",
+      "critical-path",
+      "deferred"
+    ],
+    "created_at": "2026-03-29T14:20:00+00:00"
+  },
+  {
+    "task_id": "TODO-663",
+    "title": "CLEARVIEW: Legal Verification Memo - Multi-jurisdiction ownership findings",
+    "description": "HIGH COGNITIVE LOAD: Draft comprehensive legal verification memo documenting beneficial ownership findings across all jurisdictions. Must meet defamation-proof standards for Rajesh's review. Requires synthesis of complex evidence chains. DEFERRED to protected morning block April 3.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-03",
+    "tags": [
+      "clearview",
+      "legal",
+      "high-cognitive",
+      "critical-path",
+      "deferred"
+    ],
+    "created_at": "2026-03-29T14:25:00+00:00"
+  },
+  {
+    "task_id": "TODO-664",
+    "title": "Review Jordan's registry query submissions for accuracy",
+    "description": "LOW COGNITIVE LOAD: Quick review of Jordan's delegated registry work to ensure query parameters are correct before submission. Can complete tonight if energy permits, otherwise defer to tomorrow afternoon.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-02",
+    "tags": [
+      "clearview",
+      "delegation",
+      "review",
+      "low-cognitive"
+    ],
+    "created_at": "2026-04-01T20:00:00+00:00"
+  },
+  {
+    "task_id": "TODO-665",
+    "title": "Execute approved backup workflow - Kenya trip preparation",
+    "description": "Create two encrypted USB drives (AES-256) with CLEARVIEW investigation materials: registry documents, source communications, beneficial ownership verification files. Primary drive for travel, secondary drive for custody handoff to Marcus Chen (office safe storage). Meet Marcus April 1, 9 AM for handoff and drive verification. DO NOT use cloud storage - violates INT-109 source-protection policy.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-01",
+    "tags": [
+      "clearview",
+      "backup",
+      "source-protection",
+      "kenya-trip"
+    ],
+    "created_at": "2026-03-31T15:55:00+00:00"
+  },
+  {
+    "task_id": "TODO-666",
+    "title": "Review INT-109 cloud storage policy and NOTE-131 incident context",
+    "description": "Read INT-109 (cloud_storage_policy_enforcer) configuration details and NOTE-131 (prior cloud upload security incident) to understand legal rationale for source-protection prohibition. Context needed for future workflow planning and avoiding similar policy violations.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-01",
+    "tags": [
+      "source-protection",
+      "policy",
+      "legal"
+    ],
+    "created_at": "2026-03-31T15:58:00+00:00"
+  },
+  {
+    "task_id": "TODO-667",
+    "title": "Submit Q1 expense report - CLEARVIEW investigation costs",
+    "description": "Reconcile Q1 expenses for CLEARVIEW investigation: ECI bulk package (€450), GRD premium queries, encrypted communication services, Kenya trip deposits. Submit to Rajesh Mehta by April 4 deadline for Q1 books closure.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-04",
+    "tags": [
+      "finance",
+      "admin",
+      "clearview"
+    ],
+    "created_at": "2026-03-30T10:45:00+00:00"
+  }
+]

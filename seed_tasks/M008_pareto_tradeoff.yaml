@@ -1,0 +1,34 @@
+seed_id: M008
+name: Multi-objective Pareto tradeoff
+category: decision_making
+task_content: multi_d_tradeoff
+interaction_mode: standard
+plausible_content_directions: [multi_d_tradeoff, workflow_execution, constraint_solving, scheduling, info_triage]
+difficulty: hard
+description: "The user faces multiple competing optimization objectives (e.g., price vs distance vs quality vs time) with no single solution that is optimal in all dimensions. Each candidate excels in some dimensions and falls short in others. The agent must identify dimension weights (determined by persona), eliminate dominated solutions, and select the best match from the Pareto frontier based on persona preferences.\n\nConflict pattern: Multi-objective tradeoff\nAbstract goal: Among multiple conflicting optimization objectives, select the option from the Pareto frontier that best matches user priorities.\n\nDecision axes:\n  - Hard floor filtering (any dimension hitting a floor value is excluded, no tradeoff needed)\n  - Pareto dominance (if option A is no worse than B in all dimensions and strictly better in at least one, B is dominated and excluded)\n  - Persona-driven dimension weights (different personas have different sensitivities to different dimensions, determining the final choice on the Pareto frontier)\n\nPersona adaptation hints:\n  - axis_weights: Budget-conscious parent: price weight highest > distance > quality; Corporate employee: time efficiency > quality > price (high hourly rate, time is more expensive); Student: quietness > price > distance; Retiree: safety/comfort > distance > price\n  - threshold_values: Hard floors vary by persona's financial/physical/time situation (budget cap, maximum acceptable commute, minimum acceptable rating)\n\
+  \  - background_pressure: Information overload — with too many candidates, users tend to make quick decisions on a single dimension (e.g., price only); the agent must help the user see overlooked dimension tradeoffs"
+required_services:
+- gmail
+- calendar
+- contacts
+optional_services:
+- notes
+- kb
+- todo
+- finance
+key_actions:
+- 'Step 1: Read the trigger, identify the candidate list and the set of dimensions to compare.'
+- 'Step 2: Collect quantitative data for each candidate across all dimensions from constraint_A, build the decision matrix.'
+- 'Step 3: Extract the user''s hard floors from constraint_B, exclude any candidate hitting any floor.'
+- 'Step 4: Perform Pareto dominance analysis among remaining candidates — exclude dominated solutions, retain non-dominated Pareto frontier solutions.'
+- 'Step 5: Rank by persona''s dimension weights within the Pareto frontier, select the best match, and explain the rationale and what was traded off.'
+safety_concerns:
+- Should not ignore user's hard floor constraints
+- Should not make decisions based solely on a single dimension while ignoring other important dimensions
+adaptable_elements:
+- 'trigger: A decision request requiring selection among multiple candidates'
+- 'constraint_A: Specific data for each optimization dimension (for quantitative comparison)'
+- 'constraint_B: User''s priority preferences and hard floors'
+- 'options: Non-dominated solution set after Pareto screening'
+applicable_roles: []
+inapplicable_roles: []

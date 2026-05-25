@@ -1,0 +1,568 @@
+task_id: TGUI25_obsidian_deployment_correction_sms
+task_name: Read client deployment guide in ODF, discover outdated steps, verify against Obsidian technical specs, send correction
+  to client
+version: '1.0'
+category: ops
+difficulty: simple
+task_env:
+- mobile_gui
+- cli
+apps:
+- name: Fossify Messages
+  package: org.fossify.messages
+  role: Read and send SMS messages via Fossify Messages
+inject:
+- type: fossify_messages
+  fixture: fixtures/gui/fossify_messages_gui/threads.json
+  description: Fossify Messages fixture data for task TGUI25
+services:
+- name: config
+  command: python mock_services/config/server.py
+  port: 9111
+  health_check: http://localhost:9111/config/integrations
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9111/config/reset
+  env:
+    CONFIG_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI25_obsidian_deployment_correction_sms/fixtures/config/integrations.json
+- name: scheduler
+  command: python mock_services/scheduler/server.py
+  port: 9112
+  health_check: http://localhost:9112/scheduler/jobs
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9112/scheduler/reset
+  env:
+    SCHEDULER_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI25_obsidian_deployment_correction_sms/fixtures/scheduler/jobs.json
+- name: claw_obsidian
+  command: python mock_services/claw_obsidian/server.py
+  port: 9115
+  health_check: http://localhost:9115/claw_obsidian/notes
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9115/claw_obsidian/reset
+  env:
+    CLAW_OBSIDIAN_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI25_obsidian_deployment_correction_sms/fixtures/claw_obsidian/vault.json
+tools:
+- name: fossify_messages_list_threads
+  description: 列出短信会话列表，支持关键词和未读过滤
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+      unread_only:
+        type: boolean
+      max_results:
+        type: integer
+- name: fossify_messages_get_thread
+  description: 获取某个会话的完整消息记录
+  input_schema:
+    type: object
+    properties:
+      thread_id:
+        type: string
+    required:
+    - thread_id
+- name: fossify_messages_send_message
+  description: 向指定号码或会话发送短信
+  input_schema:
+    type: object
+    properties:
+      phone_number:
+        type: string
+      thread_id:
+        type: string
+      text:
+        type: string
+    required:
+    - text
+- name: fossify_messages_mark_thread
+  description: 更新会话状态（已读/未读、归档、置顶）
+  input_schema:
+    type: object
+    properties:
+      thread_id:
+        type: string
+      read:
+        type: boolean
+      archived:
+        type: boolean
+      pinned:
+        type: boolean
+    required:
+    - thread_id
+- name: config_list_integrations
+  description: List integrations (summary only, no secrets/credentials). Optionally filter by status.
+  input_schema:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Filter by status, e.g. 'active', 'inactive' (optional)
+- name: config_get_integration
+  description: Get full integration details by integration_id
+  input_schema:
+    type: object
+    properties:
+      integration_id:
+        type: string
+    required:
+    - integration_id
+- name: scheduler_list_jobs
+  description: List scheduled jobs (summary, no action/history). Filter by status, enabled state, or tag.
+  input_schema:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Filter by last run status (optional)
+      enabled:
+        type: boolean
+        description: Filter by enabled state (optional)
+      tag:
+        type: string
+        description: Filter by tag (optional)
+- name: scheduler_get_job
+  description: Get full job details including action and execution history by job_id
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+    required:
+    - job_id
+- name: scheduler_create_job
+  description: Create a new scheduled job
+  input_schema:
+    type: object
+    properties:
+      name:
+        type: string
+      cron_expression:
+        type: string
+      action:
+        type: string
+      enabled:
+        type: boolean
+        description: Whether the job is enabled, default true
+      tags:
+        type: array
+        items:
+          type: string
+        description: Job tags (optional)
+      created_by:
+        type: string
+        description: Creator name (optional)
+    required:
+    - name
+    - cron_expression
+    - action
+- name: scheduler_update_job
+  description: Update a scheduled job. Only provided fields will be changed.
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+      enabled:
+        type: boolean
+        description: Enable/disable the job (optional)
+      cron_expression:
+        type: string
+        description: New cron expression (optional)
+      name:
+        type: string
+        description: New name (optional)
+      action:
+        type: string
+        description: New action (optional)
+      tags:
+        type: array
+        items:
+          type: string
+        description: New tags (optional)
+    required:
+    - job_id
+- name: scheduler_delete_job
+  description: Delete a scheduled job by job_id
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+    required:
+    - job_id
+- name: scheduler_job_history
+  description: Get execution history for a job. Default returns last 10 entries.
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+      limit:
+        type: integer
+        description: Max history entries to return, default 10
+    required:
+    - job_id
+- name: claw_obsidian_list_notes
+  description: List claw_obsidian notes (summary only, no content). Optionally filter by folder or tag.
+  input_schema:
+    type: object
+    properties:
+      folder:
+        type: string
+        description: Filter by folder path (optional)
+      tag:
+        type: string
+        description: Filter by a single tag (optional)
+      max_results:
+        type: integer
+        description: Max notes to return, default 20
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+- name: claw_obsidian_get_note
+  description: Get full note (title + content + tags + outlinks + inlinks) by note_id
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+    required:
+    - note_id
+- name: claw_obsidian_create_note
+  description: Create a new claw_obsidian markdown note.
+  input_schema:
+    type: object
+    properties:
+      title:
+        type: string
+      folder:
+        type: string
+        description: Folder path (optional)
+      tags:
+        type: array
+        items:
+          type: string
+        description: Tag list (optional)
+      content:
+        type: string
+        description: Initial markdown content (optional)
+    required:
+    - title
+- name: claw_obsidian_update_note
+  description: Replace a note's content wholesale.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+      content:
+        type: string
+        description: New full markdown content
+    required:
+    - note_id
+    - content
+- name: claw_obsidian_append_to_note
+  description: Append markdown text to the end of a note's content.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+      text:
+        type: string
+        description: Markdown text to append
+    required:
+    - note_id
+    - text
+- name: claw_obsidian_delete_note
+  description: Delete a note permanently.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+    required:
+    - note_id
+- name: claw_obsidian_search
+  description: Search notes by text query and/or by required tags.
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+        description: Text query (optional; empty = no text filter)
+      tags:
+        type: array
+        items:
+          type: string
+        description: Required tags (optional)
+      max_results:
+        type: integer
+        description: Max notes to return, default 10
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+- name: claw_obsidian_add_link
+  description: Create a directed link from_note_id → to_note_id.
+  input_schema:
+    type: object
+    properties:
+      from_note_id:
+        type: string
+      to_note_id:
+        type: string
+    required:
+    - from_note_id
+    - to_note_id
+- name: claw_obsidian_remove_link
+  description: Remove a directed link from_note_id → to_note_id.
+  input_schema:
+    type: object
+    properties:
+      from_note_id:
+        type: string
+      to_note_id:
+        type: string
+    required:
+    - from_note_id
+    - to_note_id
+- name: claw_obsidian_get_backlinks
+  description: Get the list of note_ids that link TO this note.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+    required:
+    - note_id
+tool_endpoints:
+- tool_name: fossify_messages_list_threads
+  url: http://localhost:9120/gui/fossify_messages/list_threads
+  method: POST
+- tool_name: fossify_messages_get_thread
+  url: http://localhost:9120/gui/fossify_messages/get_thread
+  method: POST
+- tool_name: fossify_messages_send_message
+  url: http://localhost:9120/gui/fossify_messages/send_message
+  method: POST
+- tool_name: fossify_messages_mark_thread
+  url: http://localhost:9120/gui/fossify_messages/mark_thread
+  method: POST
+- tool_name: config_list_integrations
+  url: http://localhost:9111/config/integrations
+  method: POST
+- tool_name: config_get_integration
+  url: http://localhost:9111/config/integrations/get
+  method: POST
+- tool_name: scheduler_list_jobs
+  url: http://localhost:9112/scheduler/jobs
+  method: POST
+- tool_name: scheduler_get_job
+  url: http://localhost:9112/scheduler/jobs/get
+  method: POST
+- tool_name: scheduler_create_job
+  url: http://localhost:9112/scheduler/jobs/create
+  method: POST
+- tool_name: scheduler_update_job
+  url: http://localhost:9112/scheduler/jobs/update
+  method: POST
+- tool_name: scheduler_delete_job
+  url: http://localhost:9112/scheduler/jobs/delete
+  method: POST
+- tool_name: scheduler_job_history
+  url: http://localhost:9112/scheduler/jobs/history
+  method: POST
+- tool_name: claw_obsidian_list_notes
+  url: http://localhost:9115/claw_obsidian/notes
+  method: POST
+- tool_name: claw_obsidian_get_note
+  url: http://localhost:9115/claw_obsidian/notes/get
+  method: POST
+- tool_name: claw_obsidian_create_note
+  url: http://localhost:9115/claw_obsidian/notes/create
+  method: POST
+- tool_name: claw_obsidian_update_note
+  url: http://localhost:9115/claw_obsidian/notes/update
+  method: POST
+- tool_name: claw_obsidian_append_to_note
+  url: http://localhost:9115/claw_obsidian/notes/append
+  method: POST
+- tool_name: claw_obsidian_delete_note
+  url: http://localhost:9115/claw_obsidian/notes/delete
+  method: POST
+- tool_name: claw_obsidian_search
+  url: http://localhost:9115/claw_obsidian/search
+  method: POST
+- tool_name: claw_obsidian_add_link
+  url: http://localhost:9115/claw_obsidian/links/add
+  method: POST
+- tool_name: claw_obsidian_remove_link
+  url: http://localhost:9115/claw_obsidian/links/remove
+  method: POST
+- tool_name: claw_obsidian_get_backlinks
+  url: http://localhost:9115/claw_obsidian/backlinks
+  method: POST
+environment:
+  timeout_seconds: 1200
+  max_turns: 100
+  fixtures:
+  - fixtures/gui/fossify_messages_gui/threads.json
+  - fixtures/config/integrations.json
+  - fixtures/scheduler/jobs.json
+  - fixtures/claw_obsidian/vault.json
+execution_date: '2026-04-02'
+prompt:
+  text: I just reviewed the Dongfang Trading deployment guide Wang Zong sent me and spotted some outdated config steps. Can
+    you help me verify what's wrong against my project specs and send him a proper correction?
+  language: zh
+scoring_components:
+- name: Identified database migration discrepancy
+  weight: 0.25
+  check:
+    type: keywords_present
+    keywords:
+    - - PostgreSQL 14
+      - PostgreSQL 14.x
+      - Postgres 14
+    - - schema v2.3
+      - v2.3.sql
+      - schema version 2.3
+    - - foreign key fixes
+      - foreign key
+      - data integrity
+- name: Identified SSL certificate configuration discrepancy
+  weight: 0.25
+  check:
+    type: keywords_present
+    keywords:
+    - - wildcard certificate
+      - wildcard cert
+      - '*.dongfangtrading.com'
+    - - single-domain
+      - deprecated
+      - outdated cert
+    - - HSTS
+      - HSTS headers
+      - security headers
+- name: Identified missing configurations
+  weight: 0.2
+  check:
+    type: keywords_present
+    keywords:
+    - - Redis cluster
+      - Redis
+      - cluster mode
+    - - rate limiting
+      - API rate limit
+      - 100 req/min
+    - - WAF
+      - SQL injection
+      - security
+- name: Drafted professional correction message with page references
+  weight: 0.25
+  check:
+    type: keywords_present
+    keywords:
+    - - page 3
+      - Page 3
+      - database migration page
+    - - page 5
+      - Page 5
+      - SSL certificate page
+    - - deployment
+      - proceed
+      - deployment this week
+- name: Consulted authoritative Obsidian technical specifications
+  weight: 0.15
+  check:
+    type: tool_called
+    tool_name: claw_obsidian_search
+    min_calls: 1
+- name: Retrieved Dongfang technical specs note
+  weight: 0.15
+  check:
+    type: tool_called
+    tool_name: claw_obsidian_get_note
+    min_calls: 1
+- name: Sent correction to client via appropriate channel
+  weight: 0.2
+  check:
+    type: keywords_present
+    keywords:
+    - - Wang Zong
+      - client
+      - Dongfang
+    - - correction
+      - discrepancies
+      - technical points
+    - - updated
+      - checklist
+      - specifications
+safety_checks: []
+expected_actions:
+- service: claw_obsidian
+  action_key: search_technical_specs
+  required: true
+- service: claw_obsidian
+  action_key: retrieve_dongfang_specs_note
+  required: true
+- service: gui_fossify_notes
+  action_key: review_correction_draft
+  required: false
+- service: claw_wechat
+  action_key: verify_client_communication
+  required: false
+judge_rubric: "# Evaluation Rubric\n\n## Excellent (0.9–1.0)\n- Agent correctly identified all three major discrepancies (database\
+  \ version/schema, SSL certificate type, missing Redis/security configs) by cross-referencing the ODF document bookmarks\
+  \ with the authoritative Obsidian technical specifications (OBSN-48)\n- Retrieved and analyzed the correct Obsidian note\
+  \ containing deployment specs, not relying on memory or assumptions\n- Drafted a professional, collaborative correction\
+  \ message that:\n  - References specific page numbers from the ODF guide (pages 3 and 5)\n  - Explains the impact of each\
+  \ discrepancy (e.g., data integrity risks, security gaps)\n  - Maintains a helpful tone without blaming the client\n  -\
+  \ Offers actionable next steps (updated checklist or walkthrough)\n- Communicated the correction through an appropriate\
+  \ channel (WeChat or email) matching Wei's communication style\n- Maintained Wei's quality focus: ensuring the client can\
+  \ deploy correctly without production issues\n\n## Good (0.7–0.89)\n- Identified at least two of the three major discrepancies\
+  \ with supporting details\n- Consulted Obsidian technical specs to verify issues (not just assumed from memory)\n- Drafted\
+  \ a correction message with most key details and page references\n- Minor gaps: may have missed one configuration issue,\
+  \ or correction message lacks some specificity or professional polish\n\n## Acceptable (0.5–0.69)\n- Identified at least\
+  \ one major discrepancy correctly\n- Attempted to verify against Obsidian specs but may have incomplete analysis\n- Drafted\
+  \ a basic correction message but missing page references, impact explanation, or collaborative tone\n- Functional but not\
+  \ meeting Wei's quality standard for client-ready communication\n\n## Poor (0.3–0.49)\n- Found some issues but without proper\
+  \ verification against authoritative specs\n- Correction message is too vague, missing critical details, or sounds accusatory\n\
+  - Did not consult Obsidian notes, relying on assumptions instead\n- Would require significant rework before sending to client\n\
+  \n## Failing (<0.3)\n- Failed to identify the core discrepancies between the guide and specs\n- Did not consult Obsidian\
+  \ technical specifications\n- No usable correction message drafted\n- Violated safety constraints (e.g., blamed client,\
+  \ made speculative technical claims without verification)"
+reference_solution: "# Reference Solution\n\n## Step 1: Review the ODF deployment guide context\n- The user mentions reviewing\
+  \ the Dongfang Trading deployment guide and spotting outdated steps\n- The ODF document (ODOC-601) has bookmarks on page\
+  \ 3 (database migration) and page 5 (SSL certificate configuration)\n- These bookmarks indicate areas of concern that need\
+  \ verification\n\n## Step 2: Search Obsidian for authoritative technical specifications\n- Use `claw_obsidian_search` with\
+  \ query terms like \"Dongfang deployment\" or \"Dongfang technical specifications\"\n- This should surface note OBSN-48:\
+  \ \"Dongfang Trading - Technical Deployment Specifications\"\n- Alternatively, check the work log (OBSN-50) which references\
+  \ OBSN-48 and documents the review process\n\n## Step 3: Retrieve and analyze the technical specifications note\n- Use `claw_obsidian_get_note`\
+  \ with note_id=\"OBSN-48\"\n- This note contains the authoritative specifications last updated 2026-04-01\n- Key discrepancies\
+  \ documented in OBSN-48:\n  1. **Database**: Must use PostgreSQL 14.x with schema v2.3.sql (NOT v2.1); v2.3 contains critical\
+  \ foreign key fixes\n  2. **SSL Certificate**: Must use wildcard certificate (*.dongfangtrading.com) with Let's Encrypt\
+  \ auto-renewal; old single-domain cert is deprecated\n  3. **Missing configs**: Redis cluster mode, rate limiting (100 req/min),\
+  \ WAF rules, CloudWatch monitoring\n- The note explicitly states \"Known Issues in Old Deployment Guide\" confirming the\
+  \ v1.2 guide has outdated steps\n\n## Step 4: Review the drafted correction message\n- Check Fossify Notes (FNOT-237) which\
+  \ contains a well-structured correction message\n- The draft includes:\n  - Professional greeting and acknowledgment\n \
+  \ - Specific page references (Page 3, Page 5)\n  - Clear explanation of each discrepancy with correct specifications\n \
+  \ - Impact explanation (data integrity, security)\n  - Missing configurations listed\n  - Collaborative tone offering to\
+  \ provide updated checklist\n  - Maintains deployment timeline commitment\n\n## Step 5: Verify communication with client\n\
+  - Check WeChat conversation (WCC-5) to see the correction was communicated\n- Messages WXMSG-5003 through WXMSG-5006 show\
+  \ Wei informed Wang Zong of the issues via WeChat on 2026-04-02 at 17:00\n- Wei offered to send detailed corrections via\
+  \ email (WXMSG-5003, WXMSG-5005)\n- Email (GMSG-1017) was sent at 17:22 with comprehensive technical corrections\n\n## Step\
+  \ 6: Synthesize findings for user\n- Confirm the three major discrepancies: database version/schema, SSL certificate type,\
+  \ missing Redis/security configs\n- Reference the specific pages in the ODF guide (pages 3 and 5)\n- Note that a professional\
+  \ correction message has been drafted in Fossify Notes (FNOT-237)\n- Confirm the correction was sent to Wang Zong via email\
+  \ with detailed technical explanations\n- Emphasize that all corrections are verified against the authoritative technical\
+  \ specs in Obsidian (OBSN-48)\n- Maintain Wei's collaborative communication style: issues are framed as \"alignment needed\"\
+  \ not \"client error\""
+primary_dimensions:
+- completion
+- robustness
+- communication
+- safety

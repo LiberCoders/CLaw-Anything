@@ -1,0 +1,191 @@
+[
+  {
+    "job_id": "JOB-701",
+    "name": "weekly_portfolio_backup",
+    "description": "Backup design portfolio files to cloud storage",
+    "cron_expression": "0 22 * * 0",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "backup_portfolio",
+    "created_by": "Carlos Rivera",
+    "tags": [
+      "backup",
+      "portfolio"
+    ],
+    "notes": "",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-702",
+    "name": "weekly_portfolio_backup",
+    "description": "Weekly backup reminder for design portfolio files",
+    "cron_expression": "0 18 * * 5",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder",
+    "created_by": "Carlos Rivera",
+    "tags": [
+      "backup",
+      "reminder"
+    ],
+    "notes": "Decided to use manual backup instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-703",
+    "name": "weekly_portfolio_backup",
+    "description": "Backup design portfolio files to cloud storage",
+    "cron_expression": "0 22 * * 0",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "backup_portfolio_files",
+    "created_by": "Carlos Rivera",
+    "tags": [
+      "backup",
+      "portfolio"
+    ],
+    "notes": "Decided manual backup is sufficient",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-704",
+    "name": "weekly_portfolio_backup_reminder",
+    "description": "Weekly reminder to backup design portfolio files to external drive",
+    "cron_expression": "0 18 * * 5",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Carlos Rivera",
+    "tags": [
+      "backup",
+      "reminder",
+      "portfolio"
+    ],
+    "notes": "Actually I already have auto-backup set up, this is redundant",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-705",
+    "name": "weekly_portfolio_backup",
+    "description": "Weekly backup of design portfolio files",
+    "cron_expression": "0 18 * * 5",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "backup_portfolio",
+    "created_by": "Carlos Rivera",
+    "tags": [
+      "backup",
+      "portfolio"
+    ],
+    "notes": "Decided to use manual backup instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-706",
+    "name": "daily_social_media_post",
+    "description": "Auto-post design work to social media",
+    "cron_expression": "0 9 * * *",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "post_to_social",
+    "created_by": "Carlos Rivera",
+    "tags": [
+      "marketing",
+      "social"
+    ],
+    "notes": "Better to post manually for authenticity",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-707",
+    "name": "promockup_training_materials_sync",
+    "description": "Weekly reminder to check and sync ProMockup Studio training materials library for new tutorials and templates",
+    "cron_expression": "0 10 * * 1",
+    "enabled": false,
+    "last_status": "disabled",
+    "last_run": "2026-02-10T10:00:00-06:00",
+    "action": "sync_training_materials",
+    "created_by": "carlos.rivera.design@gmail.com",
+    "tags": [
+      "training",
+      "software",
+      "promockup"
+    ],
+    "notes": "Disabled on March 6 after reviewing actual software usage patterns and deciding advanced features weren't needed for current client work",
+    "execution_history": [
+      {
+        "run_time": "2026-01-20T10:00:00-06:00",
+        "status": "success",
+        "duration_seconds": 15,
+        "notes": "Synced 3 new tutorial videos"
+      },
+      {
+        "run_time": "2026-01-27T10:00:00-06:00",
+        "status": "success",
+        "duration_seconds": 12,
+        "notes": "Synced 2 new template packs"
+      },
+      {
+        "run_time": "2026-02-03T10:00:00-06:00",
+        "status": "success",
+        "duration_seconds": 18,
+        "notes": "Synced 1 API documentation update"
+      },
+      {
+        "run_time": "2026-02-10T10:00:00-06:00",
+        "status": "success",
+        "duration_seconds": 10,
+        "notes": "No new materials available"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-708",
+    "name": "monthly_expense_report",
+    "description": "Monthly automated expense categorization and report generation for tax purposes",
+    "cron_expression": "0 9 1 * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-01T09:00:00-06:00",
+    "action": "generate_expense_report",
+    "created_by": "carlos.rivera.design@gmail.com",
+    "tags": [
+      "finance",
+      "taxes",
+      "monthly"
+    ],
+    "notes": "Runs first day of each month to categorize previous month's expenses",
+    "execution_history": [
+      {
+        "run_time": "2026-02-01T09:00:00-06:00",
+        "status": "success",
+        "duration_seconds": 45,
+        "notes": "Processed 23 transactions for January"
+      },
+      {
+        "run_time": "2026-03-01T09:00:00-06:00",
+        "status": "success",
+        "duration_seconds": 52,
+        "notes": "Processed 27 transactions for February"
+      }
+    ]
+  }
+]

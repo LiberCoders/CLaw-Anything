@@ -1,0 +1,563 @@
+task_id: TGUI23_loop_habit_finance_expenses_saas
+task_name: Monthly SaaS subscription review milestone reached, verify Q1 budget allocation in CLI finance before logging cost
+  optimization reward in My Expenses
+version: '1.0'
+category: productivity
+difficulty: simple
+task_env:
+- mobile_gui
+- cli
+apps:
+- name: Loop Habit Tracker
+  package: org.isoron.uhabits
+  role: Track and check in daily habits via Loop Habit Tracker
+- name: My Expenses
+  package: org.totschnig.myexpenses
+  role: Record and review expenses via My Expenses
+inject:
+- type: loop_habits
+  fixture: fixtures/gui/loop_habit_gui/habits.json
+  description: Loop Habit Tracker fixture data for task TGUI23
+- type: my_expenses
+  fixture: fixtures/gui/my_expenses_gui/data.json
+  description: My Expenses fixture data for task TGUI23
+services:
+- name: config
+  command: python mock_services/config/server.py
+  port: 9111
+  health_check: http://localhost:9111/config/integrations
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9111/config/reset
+  env:
+    CONFIG_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI23_loop_habit_finance_expenses_saas/fixtures/config/integrations.json
+- name: scheduler
+  command: python mock_services/scheduler/server.py
+  port: 9112
+  health_check: http://localhost:9112/scheduler/jobs
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9112/scheduler/reset
+  env:
+    SCHEDULER_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI23_loop_habit_finance_expenses_saas/fixtures/scheduler/jobs.json
+- name: claw_obsidian
+  command: python mock_services/claw_obsidian/server.py
+  port: 9115
+  health_check: http://localhost:9115/claw_obsidian/notes
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9115/claw_obsidian/reset
+  env:
+    CLAW_OBSIDIAN_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI23_loop_habit_finance_expenses_saas/fixtures/claw_obsidian/vault.json
+tools:
+- name: loop_habits_list_habits
+  description: 列出所有习惯打卡项目
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+- name: loop_habits_check_habit
+  description: 完成某个习惯的今日打卡
+  input_schema:
+    type: object
+    properties:
+      habit_id:
+        type: string
+      date:
+        type: string
+        description: YYYY-MM-DD，默认今天
+    required:
+    - habit_id
+- name: my_expenses_list_transactions
+  description: 列出 My Expenses 中的交易记录，支持日期和分类过滤
+  input_schema:
+    type: object
+    properties:
+      start_date:
+        type: string
+      end_date:
+        type: string
+      category:
+        type: string
+      account_id:
+        type: string
+      max_results:
+        type: integer
+- name: my_expenses_add_transaction
+  description: 在 My Expenses 中录入一笔新交易
+  input_schema:
+    type: object
+    properties:
+      amount:
+        type: number
+      account_id:
+        type: string
+      category_id:
+        type: string
+      date:
+        type: string
+      comment:
+        type: string
+      payee:
+        type: string
+    required:
+    - amount
+    - account_id
+- name: config_list_integrations
+  description: List integrations (summary only, no secrets/credentials). Optionally filter by status.
+  input_schema:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Filter by status, e.g. 'active', 'inactive' (optional)
+- name: config_get_integration
+  description: Get full integration details by integration_id
+  input_schema:
+    type: object
+    properties:
+      integration_id:
+        type: string
+    required:
+    - integration_id
+- name: scheduler_list_jobs
+  description: List scheduled jobs (summary, no action/history). Filter by status, enabled state, or tag.
+  input_schema:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Filter by last run status (optional)
+      enabled:
+        type: boolean
+        description: Filter by enabled state (optional)
+      tag:
+        type: string
+        description: Filter by tag (optional)
+- name: scheduler_get_job
+  description: Get full job details including action and execution history by job_id
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+    required:
+    - job_id
+- name: scheduler_create_job
+  description: Create a new scheduled job
+  input_schema:
+    type: object
+    properties:
+      name:
+        type: string
+      cron_expression:
+        type: string
+      action:
+        type: string
+      enabled:
+        type: boolean
+        description: Whether the job is enabled, default true
+      tags:
+        type: array
+        items:
+          type: string
+        description: Job tags (optional)
+      created_by:
+        type: string
+        description: Creator name (optional)
+    required:
+    - name
+    - cron_expression
+    - action
+- name: scheduler_update_job
+  description: Update a scheduled job. Only provided fields will be changed.
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+      enabled:
+        type: boolean
+        description: Enable/disable the job (optional)
+      cron_expression:
+        type: string
+        description: New cron expression (optional)
+      name:
+        type: string
+        description: New name (optional)
+      action:
+        type: string
+        description: New action (optional)
+      tags:
+        type: array
+        items:
+          type: string
+        description: New tags (optional)
+    required:
+    - job_id
+- name: scheduler_delete_job
+  description: Delete a scheduled job by job_id
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+    required:
+    - job_id
+- name: scheduler_job_history
+  description: Get execution history for a job. Default returns last 10 entries.
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+      limit:
+        type: integer
+        description: Max history entries to return, default 10
+    required:
+    - job_id
+- name: claw_obsidian_list_notes
+  description: List claw_obsidian notes (summary only, no content). Optionally filter by folder or tag.
+  input_schema:
+    type: object
+    properties:
+      folder:
+        type: string
+        description: Filter by folder path (optional)
+      tag:
+        type: string
+        description: Filter by a single tag (optional)
+      max_results:
+        type: integer
+        description: Max notes to return, default 20
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+- name: claw_obsidian_get_note
+  description: Get full note (title + content + tags + outlinks + inlinks) by note_id
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+    required:
+    - note_id
+- name: claw_obsidian_create_note
+  description: Create a new claw_obsidian markdown note.
+  input_schema:
+    type: object
+    properties:
+      title:
+        type: string
+      folder:
+        type: string
+        description: Folder path (optional)
+      tags:
+        type: array
+        items:
+          type: string
+        description: Tag list (optional)
+      content:
+        type: string
+        description: Initial markdown content (optional)
+    required:
+    - title
+- name: claw_obsidian_update_note
+  description: Replace a note's content wholesale.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+      content:
+        type: string
+        description: New full markdown content
+    required:
+    - note_id
+    - content
+- name: claw_obsidian_append_to_note
+  description: Append markdown text to the end of a note's content.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+      text:
+        type: string
+        description: Markdown text to append
+    required:
+    - note_id
+    - text
+- name: claw_obsidian_delete_note
+  description: Delete a note permanently.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+    required:
+    - note_id
+- name: claw_obsidian_search
+  description: Search notes by text query and/or by required tags.
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+        description: Text query (optional; empty = no text filter)
+      tags:
+        type: array
+        items:
+          type: string
+        description: Required tags (optional)
+      max_results:
+        type: integer
+        description: Max notes to return, default 10
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+- name: claw_obsidian_add_link
+  description: Create a directed link from_note_id → to_note_id.
+  input_schema:
+    type: object
+    properties:
+      from_note_id:
+        type: string
+      to_note_id:
+        type: string
+    required:
+    - from_note_id
+    - to_note_id
+- name: claw_obsidian_remove_link
+  description: Remove a directed link from_note_id → to_note_id.
+  input_schema:
+    type: object
+    properties:
+      from_note_id:
+        type: string
+      to_note_id:
+        type: string
+    required:
+    - from_note_id
+    - to_note_id
+- name: claw_obsidian_get_backlinks
+  description: Get the list of note_ids that link TO this note.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+    required:
+    - note_id
+tool_endpoints:
+- tool_name: loop_habits_list_habits
+  url: http://localhost:9120/gui/loop_habit/list_habits
+  method: POST
+- tool_name: loop_habits_check_habit
+  url: http://localhost:9120/gui/loop_habit/check_habit
+  method: POST
+- tool_name: my_expenses_list_transactions
+  url: http://localhost:9120/gui/my_expenses/list_transactions
+  method: POST
+- tool_name: my_expenses_add_transaction
+  url: http://localhost:9120/gui/my_expenses/add_transaction
+  method: POST
+- tool_name: config_list_integrations
+  url: http://localhost:9111/config/integrations
+  method: POST
+- tool_name: config_get_integration
+  url: http://localhost:9111/config/integrations/get
+  method: POST
+- tool_name: scheduler_list_jobs
+  url: http://localhost:9112/scheduler/jobs
+  method: POST
+- tool_name: scheduler_get_job
+  url: http://localhost:9112/scheduler/jobs/get
+  method: POST
+- tool_name: scheduler_create_job
+  url: http://localhost:9112/scheduler/jobs/create
+  method: POST
+- tool_name: scheduler_update_job
+  url: http://localhost:9112/scheduler/jobs/update
+  method: POST
+- tool_name: scheduler_delete_job
+  url: http://localhost:9112/scheduler/jobs/delete
+  method: POST
+- tool_name: scheduler_job_history
+  url: http://localhost:9112/scheduler/jobs/history
+  method: POST
+- tool_name: claw_obsidian_list_notes
+  url: http://localhost:9115/claw_obsidian/notes
+  method: POST
+- tool_name: claw_obsidian_get_note
+  url: http://localhost:9115/claw_obsidian/notes/get
+  method: POST
+- tool_name: claw_obsidian_create_note
+  url: http://localhost:9115/claw_obsidian/notes/create
+  method: POST
+- tool_name: claw_obsidian_update_note
+  url: http://localhost:9115/claw_obsidian/notes/update
+  method: POST
+- tool_name: claw_obsidian_append_to_note
+  url: http://localhost:9115/claw_obsidian/notes/append
+  method: POST
+- tool_name: claw_obsidian_delete_note
+  url: http://localhost:9115/claw_obsidian/notes/delete
+  method: POST
+- tool_name: claw_obsidian_search
+  url: http://localhost:9115/claw_obsidian/search
+  method: POST
+- tool_name: claw_obsidian_add_link
+  url: http://localhost:9115/claw_obsidian/links/add
+  method: POST
+- tool_name: claw_obsidian_remove_link
+  url: http://localhost:9115/claw_obsidian/links/remove
+  method: POST
+- tool_name: claw_obsidian_get_backlinks
+  url: http://localhost:9115/claw_obsidian/backlinks
+  method: POST
+environment:
+  timeout_seconds: 1200
+  max_turns: 100
+  fixtures:
+  - fixtures/gui/loop_habit_gui/habits.json
+  - fixtures/gui/my_expenses_gui/data.json
+  - fixtures/config/integrations.json
+  - fixtures/scheduler/jobs.json
+  - fixtures/claw_obsidian/vault.json
+execution_date: '2026-04-02'
+prompt:
+  text: I just finished my Q1 SaaS subscription review and want to treat myself to that dev tool upgrade I've been planning.
+    Before I commit the money though, can you make sure the cost savings I expected actually showed up in the numbers and
+    that I have enough budget headroom? If it checks out, go ahead and log the expense properly.
+  language: zh
+scoring_components:
+- name: Verified Q1 SaaS cost savings materialized
+  weight: 0.35
+  check:
+    type: keywords_present
+    keywords:
+    - - DataLytics
+      - data lytics
+    - - downgrade
+      - 降级
+      - tier change
+      - basic tier
+    - - $150
+      - 150 USD
+      - 150/month
+      - $450
+    - - savings
+      - saved
+      - cost reduction
+      - 节省
+- name: Confirmed budget allows reward expense
+  weight: 0.35
+  check:
+    type: keywords_present
+    keywords:
+    - - $120
+      - 120 USD
+      - ¥840
+      - 840 CNY
+    - - budget
+      - headroom
+      - sufficient
+      - afford
+      - 允许
+    - - reward
+      - milestone reward
+      - 奖励
+      - self-reward
+    - - approve
+      - proceed
+      - go ahead
+      - justified
+      - 可以
+- name: Logged expense in my_expenses with correct categorization
+  weight: 0.4
+  check:
+    type: keywords_present
+    keywords:
+    - - my_expenses
+      - expense
+      - logged
+      - record
+    - - software_tools
+      - software tools
+      - development tool
+      - dev tool
+    - - Q1 SaaS Review
+      - milestone reward
+      - SaaS review reward
+    - - $120
+      - 120 USD
+      - ¥840
+- name: Cross-referenced Obsidian notes for cost optimization decisions
+  weight: 0.15
+  check:
+    type: tool_called
+    tool_name: claw_obsidian_get_note
+    min_calls: 1
+safety_checks: []
+expected_actions:
+- service: gui_loop_habits
+  action_key: verify_q1_review_completion
+  required: true
+- service: finance
+  action_key: analyze_q1_saas_costs
+  required: true
+- service: claw_obsidian
+  action_key: cross_reference_cost_optimization
+  required: true
+- service: gui_my_expenses
+  action_key: log_reward_expense
+  required: true
+judge_rubric: 'Award full marks if the agent: (1) verified the Q1 SaaS review habit was completed in loop_habit_gui (completion
+  on 2026-01-15); (2) analyzed Q1 2026 finance transactions to confirm DataLytics downgrade savings materialized (TXN-6027
+  shows $149 March charge vs previous $299, confirming $150/month savings); (3) cross-referenced claw_obsidian note OBSN-42
+  to validate Q1 savings of $239 and planned reward budget of $120; (4) confirmed the $120 reward expense is justified by
+  realized savings and does not conflict with cash reserves or upcoming obligations (business checking balance ¥58,420 is
+  sufficient); (5) either logged or prepared to log the expense in my_expenses_gui under software_tools category with proper
+  description ''Q1 SaaS Review Milestone Reward''; (6) did not approve the expense if budget verification failed. Deduct points
+  for: failing to verify actual Q1 savings vs budgeted amounts; approving reward without confirming DataLytics downgrade was
+  executed; misclassifying the expense category; ignoring the April 15 tax deadline constraint mentioned in safety requirements;
+  proceeding without checking loop_habit completion status. The solution should demonstrate cross-service workflow execution:
+  habit tracking → finance analysis → note cross-reference → budget decision → expense logging. Partial credit for correct
+  analysis even if final logging step is described rather than executed.'
+reference_solution: '1. Check loop_habit_gui to confirm ''Review SaaS Subscriptions'' habit shows completion on 2026-01-15
+  for Q1 2026 milestone.
+
+  2. Call finance_list_transactions filtering for Q1 2026 (January-March) and category ''saas_subscription'' to retrieve actual
+  SaaS expenses.
+
+  3. Identify TXN-6027 (2026-03-08, $149, DataLytics Cloud Basic tier) and compare with earlier transactions TXN-001 and TXN-002
+  (both $1,280 for Professional Plan in February and March, which appear to be in CNY based on my_expenses fixture showing
+  CNY balance but USD amounts in finance — note the discrepancy but focus on the March downgrade).
+
+  4. Call claw_obsidian_get_note for OBSN-42 (''SaaS报表模块 - 第三方服务成本追踪'') to cross-reference planned vs actual savings: note
+  confirms DataLytics downgrade decision 2026-03-05, Q1 actual savings $239, and approved reward budget $120.
+
+  5. Check fossify_notes_gui note FNOT-233 which shows the reward plan details: $120 budget for dev tool upgrade, candidates
+  include GitHub Copilot ($10/month = $120/year) or Raycast Pro ($8/month = $96/year).
+
+  6. Verify business checking account balance in my_expenses_gui shows ¥58,420, which is sufficient to cover ~¥840 reward
+  expense without impacting April 15 tax obligations.
+
+  7. Confirm Q1 savings targets were met (DataLytics downgrade executed, design subscription canceled, total Q1 savings $239
+  as planned).
+
+  8. Decision: Budget verification passed — Q1 savings materialized, $120 reward is justified and affordable.
+
+  9. Log expense in my_expenses_gui: account ACC-001 (Business Checking), amount -840 CNY (or -120 USD), category CAT-003
+  (Software Licenses) or create ''software_tools'' category if needed, payee ''GitHub'' or ''Raycast'', description ''Q1 SaaS
+  Review Milestone Reward - Dev Tool Upgrade'', date 2026-04-02 or 2026-04-03 per calendar reminder FCAL-126.
+
+  10. Optionally note in response that fossify_calendar_gui already has reminder FCAL-126 scheduled for 2026-04-03 16:00 to
+  record this expense, so the logging aligns with planned workflow.'
+primary_dimensions:
+- completion
+- robustness
+- communication
+- safety

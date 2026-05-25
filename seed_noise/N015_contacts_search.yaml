@@ -1,0 +1,14 @@
+noise_id: N015
+name: "Search contacts"
+description: "Open contacts to find someone's contact info, flip through results and close"
+involved_services: [contacts]
+leaves_trace: false
+action_sequence:
+  - "Open contacts"
+  - "Search for a contact"
+  - "Browse search results"
+  - "Close contacts"
+time_preference: any
+adaptable_elements:
+  - "Type of contact to search for"
+  - "Browse duration"

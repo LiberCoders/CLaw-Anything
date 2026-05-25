@@ -1,0 +1,49 @@
+# Runner image for claw-anything + OpenHarnessExtended (trial-in-container sandbox mode).
+# Build via: scripts/build_oh_ext_image.sh
+#
+# Override registry at build time if needed:
+#   docker build --build-arg REGISTRY=docker.io -f Dockerfile.oh_ext .
+ARG REGISTRY=docker.m.daocloud.io
+FROM ${REGISTRY}/python:3.11-slim
+
+WORKDIR /opt/claw-anything
+
+# ── claw-anything ────────────────────────────────────────────────────────────
+# Install dependencies first (separate layer for better cache reuse).
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt \
+        -i https://pypi.tuna.tsinghua.edu.cn/simple \
+        --trusted-host pypi.tuna.tsinghua.edu.cn \
+        --no-cache-dir \
+    && rm /tmp/requirements.txt
+
+# Install claw-anything package (src/ + mock_services/ copied by build script).
+COPY claw-anything/pyproject.toml /opt/claw-anything/pyproject.toml
+COPY claw-anything/src /opt/claw-anything/src
+COPY claw-anything/mock_services /opt/claw-anything/mock_services
+RUN pip install -e /opt/claw-anything \
+        -i https://pypi.tuna.tsinghua.edu.cn/simple \
+        --trusted-host pypi.tuna.tsinghua.edu.cn \
+        --no-cache-dir
+
+# ── OpenHarnessExtended ──────────────────────────────────────────────────────
+# Only source files needed; node_modules / build / benchmark excluded by build script.
+COPY oh-ext/pyproject.toml /opt/oh-ext/pyproject.toml
+COPY oh-ext/README.md /opt/oh-ext/README.md
+COPY oh-ext/src /opt/oh-ext/src
+COPY oh-ext/ohmo /opt/oh-ext/ohmo
+COPY oh-ext/frontend/terminal/package.json /opt/oh-ext/frontend/terminal/package.json
+COPY oh-ext/frontend/terminal/tsconfig.json /opt/oh-ext/frontend/terminal/tsconfig.json
+COPY oh-ext/frontend/terminal/src /opt/oh-ext/frontend/terminal/src
+RUN pip install -e /opt/oh-ext \
+        -i https://pypi.tuna.tsinghua.edu.cn/simple \
+        --trusted-host pypi.tuna.tsinghua.edu.cn \
+        --no-cache-dir
+
+# ── adb ──────────────────────────────────────────────────────────────────────
+# Copy binary directly from host — no apt-get layer, same version as host.
+# Build script places the binary at <context>/adb before docker build.
+COPY adb /usr/local/bin/adb
+RUN chmod +x /usr/local/bin/adb
+
+ENTRYPOINT ["claw-anything"]

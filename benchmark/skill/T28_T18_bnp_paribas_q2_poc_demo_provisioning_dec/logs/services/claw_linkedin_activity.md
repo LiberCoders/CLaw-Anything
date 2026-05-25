@@ -1,0 +1,49 @@
+# Claw_Linkedin Activity Log
+
+| Time | Action | Reference | Duration |
+|------|--------|-----------|----------|
+| 2026-01-20 09:42:00 | open_search | - | 2s |
+| 2026-01-20 09:42:03 | enter_search_query | - | 8s |
+| 2026-01-20 09:42:12 | browse_results | - | 23s |
+| 2026-01-20 09:42:36 | close_search | - | 1s |
+| 2026-01-23 09:20:00 | open_search | - | 2s |
+| 2026-01-23 09:20:03 | search_keywords | - | 8s |
+| 2026-01-23 09:20:12 | browse_search_results | - | 25s |
+| 2026-01-23 09:20:38 | click_article | - | 2s |
+| 2026-01-23 09:20:41 | read_content | - | 180s |
+| 2026-01-23 09:23:42 | close_search | - | 1s |
+| 2026-01-30 11:47:00 | open_browser | - | 2s |
+| 2026-01-30 11:47:03 | enter_search_query | - | 4s |
+| 2026-01-30 11:47:08 | browse_results | - | 22s |
+| 2026-01-30 11:47:31 | close_browser | - | 1s |
+| 2026-02-20 10:45:00 | open_search | - | 2s |
+| 2026-02-20 10:45:03 | search_keywords | - | 8s |
+| 2026-02-20 10:45:12 | browse_results | - | 22s |
+| 2026-02-20 10:45:35 | open_article | - | 3s |
+| 2026-02-20 10:45:39 | read_content | - | 185s |
+| 2026-02-20 10:48:45 | close_search | - | 1s |
+| 2026-03-05 14:15:00 | open_search | - | 2s |
+| 2026-03-05 14:15:03 | search_keywords | - | 5s |
+| 2026-03-05 14:15:09 | browse_search_results | - | 28s |
+| 2026-03-05 14:15:38 | click_article | - | 2s |
+| 2026-03-05 14:15:41 | read_content | - | 142s |
+| 2026-03-05 14:18:04 | close_search | - | 1s |
+| 2026-03-06 11:20:00 | open_search | - | 2s |
+| 2026-03-06 11:20:03 | enter_search_keywords | - | 8s |
+| 2026-03-06 11:20:12 | browse_search_results | - | 42s |
+| 2026-03-06 11:20:55 | scroll_results | - | 18s |
+| 2026-03-06 11:21:14 | close_search | - | 1s |
+| 2026-03-18 09:42:00 | open_search | - | 2s |
+| 2026-03-18 09:42:03 | enter_search_query | - | 8s |
+| 2026-03-18 09:42:12 | browse_results | - | 35s |
+| 2026-03-18 09:42:48 | close_search | - | 1s |
+| 2026-03-19 14:15:00 | open_search | - | 2s |
+| 2026-03-19 14:15:03 | search_keywords | - | 4s |
+| 2026-03-19 14:15:08 | browse_search_results | - | 15s |
+| 2026-03-19 14:15:24 | click_article | - | 2s |
+| 2026-03-19 14:15:27 | read_content | - | 95s |
+| 2026-03-19 14:17:03 | close_search | - | 1s |
+| 2026-03-24 11:50:00 | open_search | - | 2s |
+| 2026-03-24 11:50:03 | enter_search_keywords | - | 8s |
+| 2026-03-24 11:50:12 | browse_results | - | 22s |
+| 2026-03-24 11:50:35 | close_search | - | 1s |

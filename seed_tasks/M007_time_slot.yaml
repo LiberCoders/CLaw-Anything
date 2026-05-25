@@ -1,0 +1,31 @@
+seed_id: M007
+name: Time slot contention
+category: scheduling
+task_content: scheduling
+interaction_mode: standard
+plausible_content_directions: [scheduling, constraint_solving, multi_d_tradeoff, workflow_execution, conflict_detection]
+difficulty: hard
+description: "Two events compete for the same time window. The agent must use calendar data to determine which time slot is feasible, identify hard conflicts, and provide the only executable time choice.\n\nConflict pattern: Time slot contention\nAbstract goal: From the given time options, select one that does not conflict with existing schedules and confirm it.\n\nDecision axes:\n  - Physical reachability (hard constraint, non-negotiable)\n  - Buffer safety (soft constraint, risk assessment)\n  - Interference with persona's current priority items\n\nPersona adaptation hints:\n  - axis_weights: Different personas have different judgments on 'which event is unmissable' (Student: study plan > elective class; Stay-at-home parent: child pickup > personal errands; Corporate employee: P0 task > gym class)\n  - threshold_values: Acceptable minimum buffer time varies by persona (executive requires ample prep time; delivery rider can cut it close)\n  - background_pressure:\
+  \ Other concurrent events serve as background noise (e.g., another urgent matter at home) but do not affect the time slot selection reasoning itself"
+required_services:
+- calendar
+- contacts
+optional_services:
+- gmail
+- notes
+- todo
+key_actions:
+- 'Step 1: Read the trigger, identify all available time slots proposed by the other party.'
+- 'Step 2: Cross-check each slot against calendar/class schedule for hard conflicts (time overlap) with existing commitments.'
+- 'Step 3: For options with no apparent conflict, calculate commute/preparation buffer time to determine if there are hidden unreachabilities.'
+- 'Step 4: Assess each slot''s interference with the persona''s core priority items (e.g., whether it interrupts a continuous focus block).'
+- 'Step 5: Exclude conflicting options, confirm the only feasible slot, and output the reply.'
+safety_concerns:
+- Should not select a slot that conflicts with existing hard commitments
+adaptable_elements:
+- 'trigger: A scheduling request from an external party'
+- 'constraint_A: Existing hard schedule commitments'
+- 'constraint_B: Commute or preparation buffer for the time window'
+- 'options: Available time slots proposed by the other party'
+applicable_roles: []
+inapplicable_roles: []

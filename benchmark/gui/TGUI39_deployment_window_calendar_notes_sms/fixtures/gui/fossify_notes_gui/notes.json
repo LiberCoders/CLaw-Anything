@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "title": "Procurement Decision Log - 2026-03-15",
+    "content": "Server disk failure incident - procurement decision:\n\nCLI inventory check (14:30):\n- Online: out of stock, 3-day delivery if restocked\n- Office location: 2 units, 3km away, open until 16:00\n\nDecision factors:\n✓ Urgency: P1 incident, standby is single point of failure\n✓ Availability: Office has stock NOW\n✓ Time: 30min pickup vs 3-day wait\n✓ Cost: Same price, no rush fee needed\n✓ Risk: Office closes 16:00, need to leave by 14:45\n\nChosen: Office pickup\nJustification: Immediate availability trumps convenience when production resilience is compromised\n\nMaps navigation started 14:42\nETA to vendor: 14:57\nETA back to office: 15:30\nInstall completion target: 17:00",
+    "timestamp": "2026-03-15T14:42:00+08:00",
+    "color": "#FF9800",
+    "pinned": true
+  },
+  {
+    "id": 1,
+    "title": "CDN Maintenance Impact Assessment - Feb 15-16",
+    "content": "# CloudInfra CDN Maintenance Impact Assessment\n**Date:** 2026-02-09\n**Prepared by:** Lin Zhenkai\n**For:** CTO Review\n\n## Executive Summary\nCloudInfra is performing CDN infrastructure upgrade in AP-East-1 zone on Feb 15-16 (28-hour window). HIGH impact to customer-facing services.\n\n## Affected Services\n1. **Web Application Frontend** (app.lingxi-ai.com)\n   - Impact: HIGH - all static assets\n   - Traffic: 1.2M requests/day\n   - Expected: 2-5% error rate during edge rotation\n   - Estimated affected users: 500-1000 concurrent\n\n2. **Media Streaming Service** (media.lingxi-ai.com)\n   - Impact: HIGH - Premium feature\n   - Traffic: 500k requests/day\n   - Expected: WebSocket disconnections\n   - Customer complaints likely\n\n3. **API Documentation Portal** (api.lingxi-ai.com/docs)\n   - Impact: LOW - acceptable degradation\n\n## Customer-Facing Downtime Estimate\n- Intermittent errors over 28-hour window\n- Peak impact: 2-5% error rate\n- No complete outage expected\n- Premium tier SLA may be at risk\n\n## Required Pre-Maintenance Config Changes\n\n### Staging (Feb 13)\n- Deploy timeout increases to staging\n- Test with simulated latency\n\n### Production (Feb 14)\n- Nginx upstream timeout: 30s → 60s\n- Application connection timeout: 10s → 20s\n- Verify monitoring alerts active\n\n### Fallback Preparation\n- Test Cloudflare secondary CDN in staging\n- Pre-position rollback scripts\n- Verify origin server capacity headroom\n\n## Rollback Procedure\n\n**Trigger conditions:**\n- Error rate > 10% for 15 minutes\n- Origin server CPU > 90% for 10 minutes\n- Customer complaints > 5 in 1 hour\n\n**Actions:**\n1. Enable Cloudflare secondary CDN (manual DNS switch)\n2. Scale up origin instances if needed\n3. Execute rollback script: /opt/maintenance/rollback-cdn-config.sh\n4. Notify CTO for customer communication\n\n## Recommended Actions\n\n1. **Customer Notification (by Feb 12):**\n   - Send proactive notice to Premium customers (CUS-101, CUS-102, CUS-103)\n   - Update status page\n   - Emphasize we're taking preventive measures\n\n2. **Technical Preparation:**\n   - Test Cloudflare failover in staging this week\n   - Deploy timeout configs by Feb 14\n   - Confirm on-call rotation\n\n3. **Monitoring:**\n   - Active monitoring every 2 hours during maintenance\n   - Dashboard: https://grafana.lingxi-ai.com/cdn-errors\n\n## Next Steps\n- [ ] Get CTO approval for customer notification\n- [ ] Draft customer notification email\n- [ ] Schedule staging deployment (Feb 13)\n- [ ] Test Cloudflare secondary CDN\n- [ ] Update runbook with test results\n\n**Full runbook:** Obsidian OBSN-9\n**Vendor notification:** WMSG-5011",
+    "created_at": "2026-02-09T13:00:00+08:00",
+    "updated_at": "2026-02-09T13:45:00+08:00",
+    "color": "#FF9800",
+    "is_pinned": true
+  },
+  {
+    "note_id": "FNOT-201",
+    "title": "Redis Memory Procurement Decision - 2026-04-02",
+    "content": "# Procurement Decision Log - Redis Memory Module Replacement\n\n**Date**: 2026-04-02 14:30\n**Issue**: Production Redis server (redis-prod-01) showing intermittent ECC memory errors in health checks\n**Required Part**: Server RAM DDR4 32GB ECC (SKU-2082)\n\n## Options Evaluated:\n\n### Option 1: Vendor Office Pickup (TechSource Hardware)\n- Location: 889 Bibo Road, 3km from office\n- Hours: Open until 18:00 today\n- Stock status: NEED TO VERIFY via CLI inventory API\n- Travel time: ~15min drive + 10min queue estimate\n- Pros: Immediate resolution if in stock\n- Cons: Takes engineer offline, uncertain stock availability\n\n### Option 2: TestMall Next-Day Delivery\n- SKU: PROD-5001 (compatible)\n- Price: $298 (vs vendor $285)\n- Stock: 28 units available\n- Delivery: Next-day (arrive 2026-04-03 by 12:00)\n- Pros: Reliable, no travel time, can continue monitoring\n- Cons: 20-hour delay in hardware replacement\n\n## Decision Criteria:\n- Current Redis error rate: <0.5% (not critical yet)\n- Backup Redis slave: Available for failover\n- CTO availability: Need to inform before 17:00\n\n## Next Steps:\n1. Query CLI inventory API for TechSource stock\n2. Check current Redis error trend in monitoring\n3. Make decision by 15:30\n4. Update CTO via WeChat\n5. Log expense and create installation calendar reminder",
+    "created_at": "2026-04-02T14:30:00+08:00",
+    "updated_at": "2026-04-02T14:45:00+08:00",
+    "color": "#FF6B6B",
+    "tags": [
+      "incident",
+      "procurement",
+      "redis"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-202",
+    "title": "Weekly Grocery List",
+    "content": "- Eggs\n- Milk\n- Bread\n- Vegetables (spinach, tomatoes)\n- Coffee beans\n- Instant noodles",
+    "created_at": "2026-04-01T20:15:00+08:00",
+    "updated_at": "2026-04-01T20:15:00+08:00",
+    "color": "#4ECDC4",
+    "tags": [
+      "personal",
+      "shopping"
+    ],
+    "checklist": true
+  },
+  {
+    "note_id": "FNOT-201",
+    "title": "Deployment Decision - Rate-Limiting Feature - 2026-04-02",
+    "content": "## CTO Request\n- Time: 18:45\n- Request: Deploy rate-limiting feature tonight\n- Business pressure: High (customer complaints about API abuse)\n\n## Technical Assessment (18:45)\n\n### BLOCKERS IDENTIFIED:\n1. **DB Migration Conflict**\n   - Job: db_migration_user_preferences\n   - Status: Running (45% complete)\n   - ETA: 20:00\n   - Impact: Exclusive lock on user_accounts table\n\n2. **Elevated System Load**\n   - P95 latency: 850ms (baseline 320ms) - 165% increase\n   - Load average: 4.2 (normal 2.1)\n   - Root cause: Migration + health check suite running concurrently\n\n3. **Health Check Suite Incomplete**\n   - Status: 65% complete\n   - ETA: 19:30\n   - Cannot commit to deployment without full regression pass\n\n### RECOMMENDATION:\n**DELAY deployment to 21:00-22:00 tonight** OR **Friday 10:00-12:00**\n\n### Rationale:\n- Tonight 21:00: Allows migration completion + 30min stabilization + health check verification\n- Friday morning: Lower risk, full team available, lower traffic\n\n### Message to CTO:\n\"Cannot safely deploy at current system state. DB migration blocking until 20:00, P95 latency elevated 165%. Earliest safe window: 21:00 tonight (if health checks pass) or Friday 10:00 (recommended - lower risk). Rate-limiting runbook prerequisites not met.\"",
+    "created_at": "2026-04-02T18:50:00+08:00",
+    "updated_at": "2026-04-02T18:50:00+08:00",
+    "color": "#F57C00",
+    "tags": [
+      "deployment",
+      "decision",
+      "urgent"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-202",
+    "title": "API Performance Investigation - 2026-04-02",
+    "content": "## Report from Li Na (Product) - 14:20\n- Endpoint: /v1/search\n- Issue: Slow responses\n- User complaints: Multiple\n\n## CLI Investigation - 14:25-15:20\n\n### Monitoring Data:\n- P95: 850ms (baseline 320ms)\n- P99: 1420ms (baseline 580ms)\n- Pattern: Degradation started ~17:30\n\n### Root Cause:\n- DB migration job started 17:30\n- Consuming I/O bandwidth\n- Query queue on user_accounts table\n\n### Status Update to Li Na - 15:30:\n\"Confirmed performance degradation. Root cause: database migration running. Expected resolution: 20:00 when migration completes. Not a code issue - temporary operational impact. Will monitor and update if situation changes.\"\n\n## Follow-up:\n- Monitor post-migration recovery\n- Update Li Na when metrics normalize",
+    "created_at": "2026-04-02T14:25:00+08:00",
+    "updated_at": "2026-04-02T15:30:00+08:00",
+    "color": "#1976D2",
+    "tags": [
+      "performance",
+      "investigation",
+      "api"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-203",
+    "title": "Hardware Procurement Decision - Redis RAM - 2026-04-02",
+    "content": "DECISION: Immediate vendor pickup (Option B)\n\n**Context:**\n- Redis cache node memory failure detected 14:35\n- Tonight's deployment at risk\n- 3-day online delivery vs 2-hour pickup\n\n**Analysis:**\n✅ TestMall: 8 units, ¥2,850, 3-day delivery\n✅ TechSource: 12+ units, ¥2,850, pickup by 18:00\n✅ Maps: 8km, 45min travel, moderate traffic\n\n**Decision Rationale:**\n- Deployment includes customer-facing feature\n- 3-day delay misses weekend validation\n- Sufficient time for pickup + install + test\n- Redis cluster stable for 4hr window\n\n**Cost:** ¥2,900 (hardware + travel)\n\n**Timeline:**\n15:00-17:00 Pickup\n17:30-19:00 Installation\n20:00-22:00 Deployment\n\n**Approval:** CTO confirmed 15:05\n\nRef: OBSN-17, FCAL-105, FCAL-106",
+    "created_at": "2026-04-02T15:10:00+08:00",
+    "updated_at": "2026-04-02T15:10:00+08:00",
+    "color": "#FF6F00",
+    "tags": [
+      "procurement",
+      "incident",
+      "decision-log"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-204",
+    "title": "Quick Ref - Incident INC-2026-04-02-001",
+    "content": "🚨 DB Pool Incident - 2026-04-02\n\nRoot cause: JOB-710 v2.4 spawned 52 connections (max 40)\nResolution: Rolled back to v2.3.1 at 02:45\nDuration: 33 min (02:15-02:48)\nError rate: 23.5% peak → 0.2% normal\n\nFull runbook: Obsidian OBSN-19\nPost-mortem: 2026-04-03 14:00\n\nPrevention:\n✓ Added pool limit check to deployment\n☐ Load testing for all jobs (TODO-518)\n☐ Circuit breaker implementation\n\nRollback cmd:\nssh scheduler-prod-01\nsudo systemctl stop scheduler-job-710\ncd /opt/scheduler/jobs/db_connection_pool_monitor\ngit checkout v2.3.1\nsudo systemctl restart scheduler-service",
+    "created_at": "2026-04-02T03:55:00+08:00",
+    "updated_at": "2026-04-02T03:55:00+08:00",
+    "color": "#E53935",
+    "tags": [
+      "incident",
+      "quick-ref",
+      "database"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-205",
+    "title": "Grocery List - Weekend",
+    "content": "🛒 Shopping List\n\n- Milk\n- Eggs\n- Bread\n- Coffee beans\n- Vegetables (broccoli, carrots)\n- Chicken breast\n- Rice\n- Snacks for office",
+    "created_at": "2026-04-01T19:30:00+08:00",
+    "updated_at": "2026-04-01T19:30:00+08:00",
+    "color": "#43A047",
+    "tags": [
+      "personal",
+      "shopping"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-206",
+    "title": "Deployment Decision - Rate-Limiting Feature - 2026-04-02",
+    "content": "# Deployment Decision - 2026-04-02 21:45\n\n## Context\nCTO requested rate-limiting feature deployment tonight to address customer complaints about API abuse. Deployment window: 22:00-00:00.\n\n## Pre-Deployment Verification Results\n\n### Scheduler Job Status (checked 21:40)\n- **JOB-713** (health_check_regression_suite)\n  - Status: SUCCESS ✓\n  - Completed: 2026-04-02 20:00\n  - Duration: 1847 seconds (~31 min)\n  - Results: All 127 test cases PASSED\n  - Details: API health ✓, DB pool ✓, Redis ✓\n\n- **JOB-714** (deployment_readiness_check)\n  - Status: SUCCESS ✓\n  - Completed: 2026-04-02 21:00\n  - Duration: 342 seconds (~6 min)\n  - Results: READY TO DEPLOY\n  - Code freeze: CONFIRMED\n  - Migration scripts: VALIDATED\n  - Rollback plan: DOCUMENTED\n  - No blocking issues detected\n\n### Obsidian Runbook Review\n- Reviewed OBSN-22 (Rate-Limiting Deployment Runbook)\n- All pre-deployment steps documented\n- Rollback plan confirmed (5-min rollback time)\n- Dependencies verified: Redis cluster healthy, API gateway config ready\n\n## Decision: PROCEED WITH DEPLOYMENT\n\n### Rationale\n1. All automated checks passed with no warnings\n2. Regression suite completed successfully (100% pass rate)\n3. Deployment readiness verified by automated checklist\n4. Runbook complete with clear rollback procedure\n5. Infrastructure dependencies confirmed healthy\n6. Business need is urgent (customer complaints)\n\n### Risk Assessment\n- Risk level: LOW-MEDIUM\n- Mitigation: 5-minute rollback plan ready\n- Monitoring: JOB-715 will track rate-limit metrics every 5 min\n- On-call support: Zhang Qiang on standby\n\n## CTO Notification (21:50)\nMessage sent via Fossify Messages:\n\"Pre-deployment verification complete. READY TO PROCEED.\n- Regression suite: 127/127 tests PASSED (JOB-713)\n- Readiness check: ALL CLEAR (JOB-714)\n- Runbook reviewed: OBSN-22\n- No blockers detected\nDeployment window: 22:00-00:00 as scheduled.\"\n\n## Next Steps\n1. Begin deployment at 22:00\n2. Monitor metrics during rollout\n3. Post-deployment review tomorrow 10:00\n4. Update runbook with lessons learned\n\n---\nRecorded by: Lin Zhenkai\nTime: 2026-04-02 21:45:00+08:00",
+    "created_at": "2026-04-02T21:45:00+08:00",
+    "updated_at": "2026-04-02T21:45:00+08:00",
+    "color": "#4CAF50",
+    "tags": [
+      "deployment",
+      "decision-log",
+      "production"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-207",
+    "title": "Weekend Tasks - April 5-6",
+    "content": "# Weekend TODO\n\n- [ ] Review CloudInfra billing for March\n- [ ] Update personal blog with deployment automation article\n- [ ] Grocery shopping\n- [ ] Call parents\n- [ ] Finish reading \"Site Reliability Engineering\" chapter 7",
+    "created_at": "2026-04-02T18:30:00+08:00",
+    "updated_at": "2026-04-02T18:30:00+08:00",
+    "color": "#9E9E9E",
+    "tags": [
+      "personal",
+      "weekend"
+    ],
+    "checklist": true
+  }
+]

@@ -1,0 +1,13 @@
+noise_id: N006
+name: "Browse todo list"
+description: "Open the todo list to see what needs doing, just glance and close"
+involved_services: [todo]
+leaves_trace: false
+action_sequence:
+  - "Open todo list"
+  - "Browse task list"
+  - "Close todo list"
+time_preference: morning
+adaptable_elements:
+  - "Browse duration"
+  - "Whether to scroll for more"

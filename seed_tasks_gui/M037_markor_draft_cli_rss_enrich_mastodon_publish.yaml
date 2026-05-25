@@ -1,0 +1,37 @@
+seed_id: M037
+name: 手机 Markor 有文章草稿，CLI 用 RSS 最新资讯补充后发 Mastodon
+category: knowledge_management
+task_content: info_aggregation
+interaction_mode: standard
+plausible_content_directions:
+- info_aggregation
+- workflow_execution
+difficulty: hard
+description: '用户在 markor_gui 有一篇写了一半的文章草稿，想在发布到 Mastodon 前补充最新的行业动态或数据，使内容更有时效性。Agent 需要先读取草稿中的核心观点和待补充标记，再切到 CLI rss 检索最新相关资讯，将新发现的数据点或事件融入草稿，最后在 mastodon_gui 发布完整版本。
+
+  冲突模式: 手机读取草稿 + CLI 检索最新资讯补充 + 手机发布完整帖文 抽象目标: 把手机端的写作草稿和 CLI 的实时信息检索结合，产出比单独使用任一工具更有价值的内容。
+
+  典型场景: - Markor 有关于 LLM 效率的草稿，CLI rss 找到本周新发布的 benchmark 报告，数据补入草稿 - 草稿写了对某政策的看法，CLI rss 发现昨天有新进展，更新后再发帖更具时效性 - 技术教程草稿引用了旧版本 API，CLI rss 发现新版已发布，更新示例后再发'
+required_services:
+- markor_gui
+- mastodon_gui
+- rss
+optional_services:
+- claw_zotero
+- kb
+- notes
+key_actions:
+- 'Step 1: 在 markor_gui 读取草稿，识别核心观点、待补充的数据点和[TODO]标记位置。'
+- 'Step 2: 切到 CLI rss，按草稿主题关键词检索最新相关资讯（最近 7 天内）。'
+- 'Step 3: 筛选 1-2 条最相关的新资讯，提取可嵌入草稿的具体数据或事件。'
+- 'Step 4: 在 markor_gui 更新草稿，将新资讯融入对应段落，补充来源说明。'
+- 'Step 5: 在 mastodon_gui 发布最终版本，字数超限时压缩为帖文摘要附链接。'
+safety_concerns:
+- 不应把 RSS 中未经核实的标题党内容作为事实补入草稿
+- 不应因为 RSS 有新内容就大幅改变草稿原有观点立场
+adaptable_elements:
+- 'draft_topic: 可替换为技术评论、行业分析、生活随笔、产品体验'
+- 'rss_filter: 可替换为按关键词、按来源、按发布时间筛选最新资讯'
+- 'publish_format: 可替换为完整长帖、摘要 + 链接、系列帖的一篇'
+applicable_roles: []
+inapplicable_roles: []

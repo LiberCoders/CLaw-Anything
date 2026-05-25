@@ -1,0 +1,142 @@
+[
+  {
+    "job_id": "JOB-701",
+    "name": "weekly_basel_iii_ratio_check",
+    "description": "Weekly reminder to review Basel III capital adequacy ratios for covered banks",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "deleted",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Lucia Moretti",
+    "tags": [
+      "banking",
+      "regulatory",
+      "weekly"
+    ],
+    "notes": "Decided to track manually instead of automated reminder",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-702",
+    "name": "weekly_coverage_universe_check",
+    "description": "Weekly reminder to review bank coverage universe for rating changes",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_email",
+    "created_by": "Lucia Moretti",
+    "tags": [
+      "reminder",
+      "coverage",
+      "weekly"
+    ],
+    "notes": "Decided to handle this manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-703",
+    "name": "weekly_coverage_review_reminder",
+    "description": "Weekly reminder to review bank coverage universe and update screening models",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Lucia Moretti",
+    "tags": [
+      "reminder",
+      "weekly",
+      "coverage"
+    ],
+    "notes": "Decided unnecessary - already have calendar alerts for this",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-704",
+    "name": "weekly_cet1_ratio_check",
+    "description": "Weekly reminder to review CET1 ratio trends for covered banks",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Lucia Moretti",
+    "tags": [
+      "reminder",
+      "weekly",
+      "capital_ratios"
+    ],
+    "notes": "Decided unnecessary - already tracking in spreadsheet",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-705",
+    "name": "weekly_cet1_ratio_check_reminder",
+    "description": "Weekly reminder to verify CET1 ratio calculations for covered banks",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Lucia Moretti",
+    "tags": [
+      "reminder",
+      "capital_ratios",
+      "weekly"
+    ],
+    "notes": "Decided unnecessary - already have calendar alerts for this",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-706",
+    "name": "quarterly_rating_review_reminder",
+    "description": "Reminder to review quarterly credit rating changes for European bank coverage",
+    "cron_expression": "0 9 1 */3 *",
+    "enabled": false,
+    "last_status": "deleted",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Lucia Moretti",
+    "tags": [
+      "reminder",
+      "quarterly",
+      "ratings"
+    ],
+    "notes": "Decided unnecessary - already tracked in calendar",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-707",
+    "name": "weekly_coverage_review_reminder",
+    "description": "Weekly reminder to review bank coverage notes",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Lucia Moretti",
+    "tags": [
+      "reminder",
+      "weekly",
+      "coverage"
+    ],
+    "notes": "Decided to handle this manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  }
+]

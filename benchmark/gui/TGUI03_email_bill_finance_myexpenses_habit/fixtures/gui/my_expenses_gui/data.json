@@ -1,0 +1,33 @@
+{
+  "accounts": [
+    {
+      "label": "招商信用卡尾号8888",
+      "currency": "CNY",
+      "type": "CCARD",
+      "opening_balance": 0,
+      "description": "主力信用卡",
+      "color": -3355444
+    },
+    {
+      "label": "支付宝",
+      "currency": "CNY",
+      "type": "CASH",
+      "opening_balance": 100000,
+      "description": "日常支付",
+      "color": -13388315
+    }
+  ],
+  "categories": [
+    {"label": "订阅服务", "type": "expense"},
+    {"label": "餐饮", "type": "expense"},
+    {"label": "交通", "type": "expense"},
+    {"label": "工资", "type": "income"}
+  ],
+  "payees": ["Notion.so", "腾讯视频", "Netflix", "爱奇艺"],
+  "transactions": [
+    {"account": "支付宝", "amount": -24800, "date": "2026-03-26", "category": "订阅服务", "payee": "腾讯视频", "comment": "年度会员上年同期"},
+    {"account": "招商信用卡尾号8888", "amount": -6500, "date": "2026-04-01", "category": "订阅服务", "payee": "Notion.so", "comment": "Notion月度订阅（上月）"},
+    {"account": "支付宝", "amount": -9800, "date": "2026-04-10", "category": "订阅服务", "payee": "爱奇艺", "comment": "季度会员"},
+    {"account": "招商信用卡尾号8888", "amount": 1200000, "date": "2026-04-25", "category": "工资", "payee": "所在公司", "comment": "4月工资"}
+  ]
+}

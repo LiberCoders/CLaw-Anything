@@ -1,0 +1,14 @@
+noise_id: N008
+name: "Browse RSS news"
+description: "During afternoon downtime, open the RSS reader to check industry news, browse a few items then close"
+involved_services: [rss]
+leaves_trace: false
+action_sequence:
+  - "Open RSS reader"
+  - "Refresh subscriptions"
+  - "Browse news list"
+  - "Close RSS reader"
+time_preference: afternoon
+adaptable_elements:
+  - "Browse duration"
+  - "Whether to open a specific article"

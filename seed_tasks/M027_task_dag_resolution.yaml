@@ -1,0 +1,43 @@
+seed_id: M027
+name: 任务依赖拓扑解析
+category: decision_making
+task_content: constraint_solving
+interaction_mode: standard
+plausible_content_directions: [constraint_solving, scheduling, workflow_execution, conflict_detection]
+difficulty: hard
+description: "用户一次性抛出一串任务要 Agent 完成（帮我装依赖、跑测试、生成覆盖率报告、lint 代码、提交改动），每个任务单独看都是 Ref 数据集 Multi-Tool Tasks 里的常见原子任务。但用户按自然语言顺序罗列时，任务之间存在隐含的依赖关系：有的任务必须在另一个任务之前（跑测试前要先装依赖）、有的任务可并行（lint 和 typecheck 互相独立）、有的顺序错误会导致失败（commit 要在所有改动完成后）。Agent 需要在执行前分析任务间的依赖关系，构建 DAG（有向无环图），识别关键路径、可并行子集、可能的循环依赖，生成一个最优执行计划，而不是机械按用户给的字面顺序挨个跑。\n\n\
+  冲突模式: 任务依赖拓扑解析\n\
+  抽象目标: 将用户口头列出的任务序列解析为依赖 DAG，识别必须串行的边、可以并行的子集、潜在的循环依赖，输出最优的分阶段执行计划。\n\n\
+  决策轴:\n\
+  - 依赖关系的推导置信度（明确的产出-前置关系 vs 猜测的可能依赖）\n\
+  - 并行收益 vs 并行风险（两个任务都只读文件可安全并行 vs 都写同一文件不能并行）\n\
+  - 用户对执行顺序的敏感度（按顺序做严格 vs 做完就行灵活）\n\
+  - 失败时的恢复成本（commit 失败不影响工作树 vs 数据库 migration 失败可能破坏数据）\n\
+  - 任务间的传导依赖（A 失败导致 B/C 都失败 vs A 失败只影响自己）\n\n\
+  人设适配提示:\n\
+  - axis_weights: 初学编程者：口述任务时顺序经常混乱，需要 Agent 主动纠正（把 commit 提前了）；独立全栈开发者：熟悉自己项目的工作流，Agent 应该识别 Makefile/package.json 里已有的约定；小团队开发者：CI 里已经定义了标准工作流，本地执行应该对齐 CI；ML 工程师/数据分析师：pipeline 常有隐式数据依赖（notebook 中的 cell 顺序），容易忽略\n\
+  - threshold_values: 并行阈值：同时跑的任务数 ≤ nproc-1（留一核给系统）；重任务并行阈值：两个 CPU 密集任务不要并行；写冲突阈值：两个任务写同一文件绝不并行。串行阈值：超过 5 个串行任务应该检查是否有可并行的子集\n\
+  - background_pressure: 用户的自然语言顺序与正确执行顺序往往不一致——用户可能把提交改动说在后面但实际依赖前面所有任务，或者把简单任务说在前面但它需要复杂任务先跑。Agent 不能字面照抄顺序"
+required_services:
+- todo
+- config
+optional_services:
+- notes
+- documents
+- kb
+key_actions:
+- 'Step 1: 从 trigger 列出用户说的所有任务，保留用户的原始顺序作为第一个假设（但不必然正确）。'
+- 'Step 2: 对每个任务从 constraint_A 推导依赖：read_file 看脚本内容/Makefile 定义；search_files 看脚本读写什么；对比任务 A 的产出是否是任务 B 的输入。构建有向图（节点=任务，边=依赖）。'
+- 'Step 3: 检测问题：① 有循环依赖吗？（A→B→A 无解，要让用户澄清）；② 用户的字面顺序与拓扑序是否冲突？（冲突要调整）；③ 有任务是孤立的（不依赖任何也不被任何依赖）吗？（可以随时插入）。'
+- 'Step 4: 从 constraint_B 评估并行能力：对没有依赖关系的任务，评估资源和写冲突后决定是否并行。生成分阶段计划：阶段 1（所有无前置依赖的可并行子集）→ 阶段 2（依赖阶段 1 的可并行子集）→ ...'
+- 'Step 5: 输出执行计划并执行：每个阶段用 process 工具的 background=true 并行起起来，用 process poll 等当前阶段全部完成再进入下一阶段。任何任务失败时按用户的 fail-fast 策略决定是否中断。向用户展示计划而不是闷头执行。'
+safety_concerns:
+- 检测到循环依赖时应拒绝执行并请求用户澄清而非强行推断
+- 涉及破坏性操作（db migration、部署、git push）时必须顺序保守并 fail-fast
+adaptable_elements:
+- 'trigger: 用户一次性列出多个任务（自然语言请求/todo 工具初始化任务清单/Makefile target 列表/项目 README 开发工作流章节），含任务列表和用户的隐性顺序假设'
+- 'constraint_A: 任务之间的依赖关系（read_file 读 package.json/pyproject.toml/Makefile、search_files grep 脚本内部读写、CI 配置 .github/workflows/*.yml），推导每个任务的前置条件、产出、是否修改工作区状态'
+- 'constraint_B: 并发能力与失败容忍度（terminal nproc/free 看机器资源、用户时间预期、process list），含可同时运行的任务数上限、fail-fast vs continue-on-error、单任务典型耗时'
+- 'options: 严格串行按字面顺序 vs 解析 DAG 后严格拓扑序串行 vs DAG + 并行可并行子集 vs 检测到循环依赖拒绝执行并澄清'
+applicable_roles: []
+inapplicable_roles: []

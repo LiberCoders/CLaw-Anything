@@ -1,0 +1,84 @@
+[
+  {
+    "label": "MYACC-101",
+    "accounts": [
+      {
+        "account_id": "ACC-001",
+        "name": "Company Card",
+        "type": "credit_card",
+        "currency": "CNY",
+        "balance": -15600.0,
+        "color": "#1976D2"
+      },
+      {
+        "account_id": "ACC-002",
+        "name": "Personal Alipay",
+        "type": "cash",
+        "currency": "CNY",
+        "balance": 3240.0,
+        "color": "#388E3C"
+      }
+    ],
+    "categories": [
+      {
+        "category_id": "CAT-001",
+        "name": "team_expense",
+        "type": "expense",
+        "color": "#E67C73",
+        "parent_id": null
+      },
+      {
+        "category_id": "CAT-002",
+        "name": "meals",
+        "type": "expense",
+        "color": "#F4511E",
+        "parent_id": null
+      },
+      {
+        "category_id": "CAT-003",
+        "name": "transportation",
+        "type": "expense",
+        "color": "#039BE5",
+        "parent_id": null
+      }
+    ],
+    "payees": [
+      "Haidilao Hot Pot",
+      "Starbucks",
+      "Uber",
+      "Didi Chuxing"
+    ],
+    "transactions": [
+      {
+        "transaction_id": "TXN-001",
+        "date": "2026-03-28",
+        "account_id": "ACC-001",
+        "amount": -1200.0,
+        "category_id": "CAT-001",
+        "payee": "Haidilao Hot Pot",
+        "description": "Sprint retrospective team dinner - 6 people (reconciled from finance TXN-6004, added missing ¥400). Ref: FCAL-123",
+        "status": "cleared",
+        "receipt_attached": true,
+        "tags": [
+          "Q1",
+          "sprint_retro",
+          "reconciled"
+        ]
+      },
+      {
+        "transaction_id": "TXN-002",
+        "date": "2026-03-30",
+        "account_id": "ACC-002",
+        "amount": -85.0,
+        "category_id": "CAT-003",
+        "payee": "Didi Chuxing",
+        "description": "Taxi to client meeting",
+        "status": "cleared",
+        "receipt_attached": false,
+        "tags": [
+          "transportation"
+        ]
+      }
+    ]
+  }
+]

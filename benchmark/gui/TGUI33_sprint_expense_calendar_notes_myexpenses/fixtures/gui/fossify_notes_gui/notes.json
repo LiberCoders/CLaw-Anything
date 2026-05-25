@@ -1,0 +1,387 @@
+[
+  {
+    "note_id": "1",
+    "title": "待办 - 数据请求响应 2026-01-09",
+    "content": "📋 王磊数据请求 - Q1留存漏斗\n\n收到时间：2026-01-09 15:32\n请求方：王磊（数据分析组）\n用途：明天规划会\n\n需要提供：\n✓ Q1用户留存数据（D1/D7/D30）\n✓ 按渠道拆分（重点：社交分享）\n✓ 漏斗关键节点流失率\n\n数据源：\n/data/analytics/retention/2026-Q1/aggregated/retention_summary_20260106.json\n\n下一步：\n1. CLI验证数据版本（确认是v3不是测试版）\n2. 提取关键指标整理成手机可读格式\n3. 通过短信发送摘要\n4. Obsidian记录交付日志\n\n⏰ 截止：今晚22:00前完成",
+    "created_at": "2026-01-09T15:40:00+08:00",
+    "last_modified": "2026-01-09T15:40:00+08:00",
+    "tags": [
+      "urgent",
+      "data-request",
+      "q1"
+    ]
+  },
+  {
+    "note_id": "2",
+    "title": "本周待办清单 2026-W02",
+    "content": "# Week 2 Todo List\n\n## 高优先级\n- [ ] 回复王磊数据请求（今晚）\n- [ ] 完成PRD剩余章节（需求评审明天）\n- [ ] 处理Sprint排期冲突（老板新需求）\n\n## 中优先级\n- [ ] 跟进A/B实验配置报错\n- [ ] 整理周报数据\n- [ ] 更新产品路线图\n\n## 低优先级\n- [ ] 清理Obsidian笔记结构\n- [ ] 学习新的数据分析工具\n\n---\n加班预计到22:00",
+    "created_at": "2026-01-06T10:00:00+08:00",
+    "last_modified": "2026-01-09T15:42:00+08:00",
+    "tags": [
+      "weekly",
+      "todo"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "数据交付记录 - 2026-02-01 运营部留存数据",
+    "content": "## 数据请求响应记录\n\n**日期**: 2026-02-01\n**请求方**: 刘婷 (运营部组长)\n**交付内容**: 社交分享渠道留存数据\n\n### 验证步骤\n✓ 检查 scheduler job JOB-704 执行状态 (成功)\n✓ 确认生产环境输出路径\n✓ 交叉验证实验配置文档\n✓ 提取关键指标并格式化\n\n### 交付数据\n- 实验版本: v2.3_social_share_prod\n- 时间窗口: 2026-01-15 至 2026-01-31\n- Day-1 留存: 38.6%\n- Day-7 留存: 21.4%\n- 样本量: 156,800\n\n### 后续\n- 已在 Obsidian 记录完整交付日志\n- 提供了详细报告获取方式\n- 状态: 已完成 ✓\n\n---\n\n**总用时**: ~3.5小时 (含验证和格式化)\n**交付方式**: WeChat 手机端",
+    "timestamp": "2026-02-01T15:15:00+08:00",
+    "color": "#4CAF50",
+    "is_pinned": false
+  },
+  {
+    "note_id": 3,
+    "title": "Decision Archive Quick Link - Social Sharing Postponement",
+    "content": "Product Decision 2026-03-18\n\nSocial sharing feature postponed to Sprint 12 (Mar 25 start)\n\nFull decision record in Obsidian:\nProduct/Decisions/2026-03-18-social-sharing-postponement.md\n\nKey rationale:\n- Sprint 11 at 92% capacity (12/13 person-days)\n- Q1 KPI focus: retention (+15%), not acquisition\n- A/B experiment infrastructure needs stabilization first\n\nParticipants: Zhao Qiang, Zhang Hao, Wang Lei, Li Ming, Chen Xiaoyu\n\nWeChat discussion: 产品技术日常 group, Mar 18 14:23-14:38",
+    "created_at": "2026-03-18T16:50:00+08:00",
+    "last_modified": "2026-03-18T16:50:00+08:00",
+    "color_hex": "#4CAF50"
+  },
+  {
+    "note_id": "FNOT-203",
+    "title": "Morning Check 2026-04-02",
+    "content": "# Morning Workflow Check - 2026-04-02\n\n## Overnight Jobs Status\n- [ ] user_retention_funnel_analysis - CHECK LOGS\n- [ ] ab_experiment_config_validator - CHECK LOGS\n- [ ] daily_kpi_dashboard_sync - CHECK LOGS\n\n## High Priority Items\n- [ ] Review WeChat urgent messages\n- [ ] Check calendar for today's meetings\n- [ ] Assess sprint capacity impact\n\n## Decisions Needed\n- Adjust calendar if jobs failed?\n- Send coordination messages to dev team?\n- Postpone non-critical meetings?",
+    "created_at": "2026-04-02T09:30:00+08:00",
+    "updated_at": "2026-04-02T09:30:00+08:00",
+    "color": "#FF6F00",
+    "tags": [
+      "morning-check",
+      "workflow"
+    ],
+    "checklist": true
+  },
+  {
+    "note_id": "FNOT-204",
+    "title": "Sprint Blocker - A/B Config Error",
+    "content": "# A/B Experiment Config Error - 2026-04-02\n\n## Issue\nJob: ab_experiment_config_validator\nStatus: FAILED at 03:00\n\nError: ConfigValidationError\nFile: /configs/experiments/social_sharing_viral_v1.json\nLine: 23\nMissing: control_group_ratio (expected float 0.0-1.0, got null)\n\n## Impact\n- Blocks social sharing feature A/B test\n- Dev team waiting for fix\n- Boss urgent request for this sprint\n\n## Action Plan\n1. Fix config file - add control_group_ratio: 0.5\n2. Re-run validator manually\n3. Notify Zhang Hao (Dev Lead) via WeChat\n4. Update sprint board",
+    "created_at": "2026-04-02T09:35:00+08:00",
+    "updated_at": "2026-04-02T09:35:00+08:00",
+    "color": "#D32F2F",
+    "tags": [
+      "blocker",
+      "ab-test",
+      "urgent"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-205",
+    "title": "PRD Blocker - Strategic Misalignment (URGENT)",
+    "content": "## Issue Discovered: 2026-04-02 18:20\n\n**Problem**: Social sharing PRD (OBSN-7) Section 3 proposes acquisition-focused viral sharing mechanism\n\n**Conflict**: Q1 OKR (OBSN-10) explicitly prioritizes RETENTION over acquisition. Social/viral deferred to Q2.\n\n**Impact**: \n- Feature won't move Q1 KPIs (Day-7 retention 25%, repeat purchase 40%)\n- Wastes sprint capacity on off-strategy work\n- Review meeting tomorrow 10am - need fix ASAP\n\n**Resolution**:\n✅ Located OKR doc (OBSN-10) - confirmed retention focus\n✅ Messaged Li Jing (Design Lead) via Fossify Messages at 18:30\n✅ Agreed to reframe as retention tool (share-for-rewards model)\n✅ Li Jing updating wireframes tonight\n✅ I'm revising PRD sections 4-5 tonight\n✅ Pre-review sync scheduled 9am tomorrow\n\n**For Standup**:\n- Blocker resolved\n- PRD will be ready for review\n- Strategy now aligned with Q1 OKR",
+    "created_at": "2026-04-02T18:50:00+08:00",
+    "updated_at": "2026-04-02T19:50:00+08:00",
+    "color": "#E53935",
+    "tags": [
+      "urgent",
+      "blocker",
+      "prd",
+      "strategy"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-206",
+    "title": "Q1 KPI Tracking - Week 13",
+    "content": "## Week Ending 2026-03-30\n\n**Day-7 Retention**: 22.1% (target 25%)\n- Up from 21.3% last week\n- Still 2.9pp short of Q1 goal\n- Recommendation engine launch helping\n\n**Repeat Purchase Rate**: 37.2% (target 40%)\n- Up from 35.8%\n- 2.8pp to go\n- Loyalty program v2 launching next week\n\n**30-Day Churn Reduction**: -11% (target -15%)\n- Good progress\n- Push notification optimization showing results\n\n**Status**: On track but tight. Need to stay focused on retention initiatives.",
+    "created_at": "2026-03-31T16:00:00+08:00",
+    "updated_at": "2026-03-31T16:30:00+08:00",
+    "color": "#43A047",
+    "tags": [
+      "kpi",
+      "tracking",
+      "q1"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-207",
+    "title": "PRD Review Follow-up Log - 2026-04-02",
+    "content": "## Clock Reminder Triggered: 21:00\n\n### Action Taken:\n1. ✓ Checked PRD completion status in Obsidian (OBSN-13)\n2. ✓ Verified calendar event details (FCAL-104)\n3. ✓ Identified incomplete sections: Chapters 4-5\n4. ✓ Estimated remaining work: 5-7 hours\n5. ✓ Sent postponement request to 快购产品技术群 (WCC-4)\n6. ✓ Created new calendar event for 2026-04-07 14:00\n7. ✓ Marked original event as POSTPONED\n\n### Postponement Details:\n- **Original date**: 2026-04-03 14:00\n- **New date**: 2026-04-07 14:00\n- **Reason**: Chapters 4-5 incomplete (Data Analytics + Implementation Roadmap)\n- **Commitment**: Complete draft by 2026-04-06 EOD\n\n### Next Steps:\n- [ ] Block 2026-04-03 and 2026-04-04 for focused PRD writing\n- [ ] Complete Chapter 4 retention metrics by 2026-04-04 EOD\n- [ ] Complete Chapter 5 sprint plan by 2026-04-05 EOD\n- [ ] Internal review with Li Jing on 2026-04-06\n- [ ] Send final PRD to stakeholders by 2026-04-06 18:00",
+    "created_at": "2026-04-02T21:20:00+08:00",
+    "updated_at": "2026-04-02T21:25:00+08:00",
+    "color": "#E53935",
+    "tags": [
+      "prd",
+      "follow-up",
+      "urgent"
+    ],
+    "checklist": true
+  },
+  {
+    "note_id": "FNOT-208",
+    "title": "Weekly Priorities - 2026-W14",
+    "content": "## Week 14 Priorities (2026-03-31 to 2026-04-06)\n\n### P0 - Critical\n- [ ] Complete PRD Chapters 4-5 for social sharing feature\n- [ ] Fix A/B experiment config validation error (JOB-704)\n- [ ] Deliver retention analysis summary to Boss\n\n### P1 - High\n- [ ] Weekly report data compilation\n- [ ] Review Sprint backlog with Zhang Hao\n- [ ] Update埋点 documentation for new user onboarding\n\n### P2 - Medium\n- [ ] Respond to cross-department data requests\n- [ ] Q1 final KPI dashboard review\n\n### Notes\n- Q1 ending, heavy KPI pressure\n- Boss pushing hard on social sharing launch\n- Need to balance quality vs. speed",
+    "created_at": "2026-03-31T09:00:00+08:00",
+    "updated_at": "2026-04-02T21:30:00+08:00",
+    "color": "#1565C0",
+    "tags": [
+      "weekly",
+      "priorities"
+    ],
+    "checklist": true
+  },
+  {
+    "note_id": "FNOT-209",
+    "title": "INCIDENT: JOB-710 Failure - 2026-04-02",
+    "content": "## Incident Summary\nTime: 2026-04-02 02:00\nJob: JOB-710 (user_growth_weekly_report)\nStatus: FAILED\n\n## Diagnosis\n- Error: Database connection timeout (15s)\n- Root cause: Upstream job JOB-701 (retention analysis) did not produce expected output file\n- Missing file: /data/retention/weekly/retention_2026_W13.csv\n- Impact: No fresh data for Monday sprint planning meeting\n\n## Pattern Analysis\n- First failure in 3 weeks\n- JOB-701 last successful run: 2026-03-25\n- Likely one-time glitch vs systemic issue: TBD (waiting for Wang Lei's log review)\n\n## Remediation Plan\n1. Escalate to Wang Lei - check JOB-701 execution history\n2. If recoverable: manual re-run JOB-710 with --force flag\n3. If not: notify sprint planning participants, use prior week data\n4. Document root cause for post-mortem\n\n## Communication Log\n- 09:25 - SMS to Wang Lei (dev lead)\n- 09:30 - SMS to Li Jing (design lead) re: agenda adjustment\n- 09:35 - WeChat group message (pending composition)\n\nNext: Draft WeChat summary with impact scope + recommended actions",
+    "created_at": "2026-04-02T09:20:00+08:00",
+    "updated_at": "2026-04-02T09:35:00+08:00",
+    "color": "#E53935",
+    "tags": [
+      "incident",
+      "urgent",
+      "scheduler",
+      "troubleshooting"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-210",
+    "title": "Weekly Data Pipeline Health Check - 2026-W14",
+    "content": "## Scheduled Jobs Status (as of 2026-04-02 09:00)\n\n### Critical\n- JOB-710: user_growth_weekly_report ❌ FAILED\n- JOB-701: user_retention_funnel_analysis ⚠️ NEEDS VERIFICATION\n- JOB-703: daily_kpi_dashboard_sync ✅ OK\n\n### Non-Critical\n- JOB-711: social_share_event_tracker ✅ OK\n- JOB-704: ab_experiment_social_share_export ✅ OK\n\n## Action Items\n- [ ] Investigate JOB-710 failure root cause\n- [ ] Verify JOB-701 execution history\n- [ ] Update dependency documentation in Obsidian\n- [ ] Consider adding automated alerting for critical job failures\n\n## Notes\nThis is the first critical job failure in Q1 2026. Need to review monitoring strategy.",
+    "created_at": "2026-04-02T09:00:00+08:00",
+    "updated_at": "2026-04-02T09:20:00+08:00",
+    "color": "#FFA726",
+    "tags": [
+      "monitoring",
+      "weekly",
+      "infrastructure"
+    ],
+    "checklist": true
+  },
+  {
+    "note_id": "FNOT-211",
+    "title": "Decision Archive Workflow - 2026-04-02",
+    "content": "✅ COMPLETED: Social Sharing Scope Decision Archive\n\nWorkflow executed:\n1. Extracted WeChat discussion conclusions (WCC-9, 2026-04-02 15:30-17:45)\n2. Verified background docs in CLI Obsidian:\n   - OBSN-8: Original PRD proposal\n   - OBSN-7: Sprint capacity analysis\n   - Competitor research notes\n3. Checked sprint status via JOB-712 (last run 2026-03-31, confirmed 2-week buffer)\n4. Created decision record OBSN-17 with complete context:\n   - Background (original proposal + capacity constraints)\n   - Discussion summary (key concerns + options evaluated)\n   - Final decision (MVP scope: WeChat only, basic tracking)\n   - Rationale (capacity alignment, risk mitigation, data-driven)\n   - Participants + timeline\n5. Sent confirmation to Zhang Hao via SMS with doc path\n6. Updated PRD status (pending - to be done)\n\nKey participants: Boss, Zhang Hao, Li Jing, Wang Lei, Liu Ming\nDecision timestamp: 2026-04-02 15:30\nArchive timestamp: 2026-04-02 17:30",
+    "created_at": "2026-04-02T17:55:00+08:00",
+    "updated_at": "2026-04-02T17:55:00+08:00",
+    "color": "#4CAF50",
+    "tags": [
+      "workflow",
+      "decision",
+      "archive"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-212",
+    "title": "Weekly Review Prep - 2026-04-03",
+    "content": "Items to cover in weekly review:\n\n📋 Completed this week:\n- Social sharing scope decision finalized and documented\n- A/B experiment config issue resolved (JOB-710)\n- User retention analysis delivered to operations team\n\n⚠️ Blockers resolved:\n- PRD strategic misalignment → MVP scope pivot\n- Sprint capacity conflict → reduced scope fits buffer\n\n📅 Next week priorities:\n- Social sharing technical kickoff (2026-04-07)\n- PRD update to reflect MVP scope\n- Sprint backlog adjustment\n\n💡 Lessons learned:\n- Early capacity validation prevents late-stage conflicts\n- Decision documentation saves repeated explanations\n- WeChat discussions need formal archiving for audit trail",
+    "created_at": "2026-04-03T09:15:00+08:00",
+    "updated_at": "2026-04-03T09:15:00+08:00",
+    "color": "#FF9800",
+    "tags": [
+      "review",
+      "weekly"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-213",
+    "title": "Competitor Claim Verification - 2026-04-01",
+    "content": "📊 COMPETITOR CLAIM VERIFICATION\n\nClaim (WeChat PM group):\n- Competitor: social sharing feature\n- Metric: Day-7 retention = 15%\n\nVerified Data (CLI):\n✅ JOB-713 (competitor analysis):\n  - Industry range: 10.8%-13.2%\n  - Median: 12.1%\n\n✅ JOB-714 (internal benchmark):\n  - Our best: 12.3% (EXP-Q1-SOCIAL-V2)\n  - Sample: 180K users\n\n❌ CONCLUSION:\nClaimed 15% is +2.9pp above median (24% relative lift) - likely methodology difference or outlier.\n\nResponse strategy:\n- Share verified range (10.8%-13.2%)\n- Provide our data (12.3%)\n- Ask for methodology details\n- Emphasize evidence-based prioritization\n\nFull analysis: Obsidian OBSN-19\n\n---\nNext: Reply in WeChat, log workflow for future reference",
+    "created_at": "2026-04-01T18:55:00+08:00",
+    "updated_at": "2026-04-01T18:55:00+08:00",
+    "color": "#FF6F00",
+    "tags": [
+      "competitive-intel",
+      "data-verification",
+      "urgent"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-214",
+    "title": "Weekly Meal Plan - 2026-04-01",
+    "content": "🍜 WEEK 14 MEAL PLAN\n\nMon: 外卖 - 麻辣香锅\nTue: 公司食堂\nWed: Team dinner (expense report needed)\nThu: 自己做 - 番茄炒蛋 + 米饭\nFri: 外卖 - 日料\nSat: 朋友聚餐 - 火锅\nSun: 在家休息 - 简餐\n\nGrocery list:\n- 鸡蛋 x12\n- 番茄 x4\n- 大米 2kg\n- 酱油",
+    "created_at": "2026-03-30T20:30:00+08:00",
+    "updated_at": "2026-04-01T12:15:00+08:00",
+    "color": "#4CAF50",
+    "tags": [
+      "personal",
+      "food"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-215",
+    "title": "Task Completion Log - 2026-04-02",
+    "content": "✅ COMPLETED: Retention Improvement Action Plan\n\nDate: 2026-04-02\nTime: 09:30 - 12:15\n\n## Tasks Completed:\n1. ✅ Read JOB-715 scheduler output (completed 02:00, results in /data/retention/2026-04-02/)\n2. ✅ Extracted key metrics: Day-1 43.2%, Day-7 19.1%, Day-30 8.4% (sample: 2.3M users)\n3. ✅ Cross-referenced competitor research (OBSN-8, OBSN-12, OBSN-22)\n4. ✅ Synthesized action plan document (OBSN-21) with 5 prioritized initiatives\n5. ✅ Created follow-up tasks in todo (TODO-514 to TODO-517)\n6. ✅ Sent summaries to Zhang Hao (FSMS-309) and Li Jing (FSMS-310)\n7. ✅ Logged completion for weekly review prep\n\n## Key Deliverables:\n- Action Plan: Product/Strategy/OBSN-21\n- Data Reference: OBSN-23 (job output directory structure)\n- Implementation Tasks: TODO-514 (social sharing), TODO-515 (onboarding)\n- A/B Test Setup: TODO-516\n\n## Next Steps:\n- 3pm sync with Zhang Hao on sprint capacity\n- Li Jing design review by EOD 2026-04-03\n- Weekly metrics review (TODO-517) on 2026-04-09\n\n## Weekly Review Prep:\n- Current retention: Day-7 19.1% (gap to target 22%: -2.9pp)\n- Q1 OKR alignment: Growth KPI initiatives prioritized\n- Sprint planning: Week 14-16 roadmap defined",
+    "created_at": "2026-04-02T12:20:00+08:00",
+    "updated_at": "2026-04-02T12:20:00+08:00",
+    "color": "#4CAF50",
+    "tags": [
+      "completion-log",
+      "retention",
+      "weekly-review"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-216",
+    "title": "Retention Metrics Quick Reference - Q1 2026",
+    "content": "# Retention Metrics - Q1 2026\n\n## Current (2026-04-02)\n- Day-1: 43.2%\n- Day-7: 19.1%\n- Day-30: 8.4%\n- Sample: 2.3M users\n\n## Targets (End of Q1)\n- Day-7: 22% (+2.9pp)\n- Day-30: 10% (+1.6pp)\n\n## Competitive Gap\n- Industry Avg Day-7: 24.3% (gap: -5.2pp)\n- Pinduoduo Day-7: 28.1% (gap: -9.0pp)\n\n## Data Source\n- Job: JOB-715\n- Last Run: 2026-04-02 02:00\n- Output: /data/retention/2026-04-02/\n- Doc: OBSN-23\n\n## Action Plan\n- Doc: OBSN-21\n- Top Initiatives: Social sharing, Onboarding optimization\n- Sprint: Week 14-16",
+    "created_at": "2026-04-02T12:25:00+08:00",
+    "updated_at": "2026-04-02T12:25:00+08:00",
+    "color": "#2196F3",
+    "tags": [
+      "retention",
+      "metrics",
+      "reference"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-217",
+    "title": "JOB-710 Recovery Plan - 2026-04-02",
+    "content": "# JOB-710 Recovery Checklist\n\n## Situation\n- Liu Ting needs Q1 retention report for tomorrow's executive meeting\n- JOB-710 failed overnight (dependency issue)\n- Deadline: Today 18:00 (with buffer)\n\n## Action Plan\n✅ 09:10 - Diagnosed failure (upstream JOB-701 missing output)\n✅ 09:20 - Documented incident in Obsidian\n✅ 09:35 - Reviewed recovery options\n✅ 10:05 - Coordinated with Wang Lei for re-run\n⏳ 12:00 - JOB-701 completion (estimated)\n⏳ 13:00 - JOB-710 re-run start\n⏳ 13:30 - JOB-710 completion (estimated)\n⏳ 14:00 - Data validation\n⏳ 15:00 - Report compilation\n⏳ 16:00 - Progress checkpoint\n⏳ 18:00 - Deliver to Liu Ting\n\n## Communication Log\n- 08:45 - Liu Ting urgent request via WeChat\n- 10:15 - Wang Lei confirmed re-run\n- [Next] Send timeline commitment to Liu Ting\n\n## Risks\n- Re-run might take longer than estimated\n- Data validation might reveal issues\n- Fallback: use partial data + manual aggregation",
+    "created_at": "2026-04-02T09:40:00+08:00",
+    "updated_at": "2026-04-02T10:20:00+08:00",
+    "color": "#E53935",
+    "tags": [
+      "urgent",
+      "incident",
+      "operations"
+    ],
+    "checklist": true
+  },
+  {
+    "note_id": "FNOT-218",
+    "title": "Weekly Standup Notes - 2026-W14",
+    "content": "# Week 14 Standup - 2026-04-02\n\n## Today's Focus\n1. URGENT: Recover JOB-710 for operations report\n2. PRD review follow-up with Li Jing\n3. Sprint planning prep for next week\n\n## Blockers\n- JOB-710 failure blocking operations deliverable\n- Need to reschedule PRD review if recovery takes too long\n\n## Tomorrow\n- Attend executive review (if invited)\n- Complete PRD revisions\n- Sprint retrospective",
+    "created_at": "2026-04-02T09:00:00+08:00",
+    "updated_at": "2026-04-02T09:45:00+08:00",
+    "color": "#1976D2",
+    "tags": [
+      "standup",
+      "weekly"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-219",
+    "title": "Scheduling Decision Log - 2026-04-02",
+    "content": "## Meeting Conflict Resolution - April 3rd\n\n**Conflict Identified**: 2026-04-02 21:30\n- PRD Review (Social Sharing Feature): April 3 14:00-15:30\n- Cross-Department Q1 Alignment: April 3 14:30-16:00\n\n**CLI Verification Steps**:\n1. Checked sprint capacity logs (JOB-719 output) - confirmed Product team at 95% utilization\n2. Reviewed PRD completion status in Obsidian (OBSN-27) - 5/7 chapters complete, 5h work remaining\n3. Cross-referenced meeting notes (OBSN-29) for stakeholder availability constraints\n\n**Constraint Analysis**:\n\nCross-Dept Meeting (HARDER TO MOVE):\n- Liu Ting (Ops Lead): only available Apr 3 afternoon (traveling from Shanghai)\n- Marketing VP: hard stop at 16:00 for board meeting\n- Quarterly planning cycle dependency - delay impacts Q2 kickoff\n\nPRD Review (MORE FLEXIBLE):\n- Li Jing: flexible Apr 3-4, prefers mornings\n- Wang Lei: blocked until Apr 3 16:00 (JOB-710 recovery), available Apr 4\n- Zhang Hao: flexible both days\n- Feature kickoff can absorb 1-day delay without sprint impact\n\n**Decision**: Postpone PRD review to April 4th 10:00am\n\n**Rationale**:\n- Cross-dept meeting has rigid external constraints\n- PRD review stakeholders are more flexible\n- Extra day allows PRD completion (chapters 6-7)\n- Wang Lei fully available after incident recovery\n- Li Jing's morning preference accommodated\n\n**Actions Taken**:\n- Updated Fossify Calendar with new PRD review time (FCAL-120)\n- Notified Li Jing, Wang Lei, Zhang Hao via Messages\n- Posted confirmation in WeChat PRD review group\n- Logged decision rationale for future reference\n\n**Risk Mitigation**:\n- 1-day delay acceptable within sprint buffer\n- Complete PRD reduces review iteration cycles\n- Team availability optimized for focused review session",
+    "created_at": "2026-04-02T22:50:00+08:00",
+    "updated_at": "2026-04-02T22:50:00+08:00",
+    "color": "#43A047",
+    "tags": [
+      "scheduling",
+      "decision-log",
+      "prd-review"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-220",
+    "title": "PRD Completion Checklist - April 3rd",
+    "content": "## PRD Final Push - Social Sharing Feature v1.0\n\n### Remaining Work (5 hours estimated)\n\n**Chapter 6: Risk Assessment & Mitigation** (3h)\n- [ ] Technical risks (API rate limits, spam detection)\n- [ ] Business risks (viral coefficient below target)\n- [ ] User experience risks (sharing friction)\n- [ ] Mitigation strategies for each risk category\n- [ ] Rollback plan\n\n**Chapter 7: Success Metrics & Monitoring** (2h)\n- [ ] Primary KPIs (viral coefficient, K-factor)\n- [ ] Secondary metrics (share rate, conversion rate)\n- [ ] Monitoring dashboard requirements\n- [ ] Alert thresholds and escalation\n- [ ] A/B test success criteria\n\n### Schedule\n- April 3 morning: Cross-dept alignment meeting prep (2h)\n- April 3 14:30-16:00: Cross-dept alignment meeting\n- April 3 16:30-21:30: Complete PRD chapters 6-7 (5h)\n- April 4 09:00: Final PRD review before meeting\n- April 4 10:00: PRD review meeting\n\n### Reference Materials\n- Competitor analysis: OBSN-8\n- Similar feature post-mortems in KB\n- Previous A/B test learnings",
+    "created_at": "2026-04-02T23:00:00+08:00",
+    "updated_at": "2026-04-02T23:00:00+08:00",
+    "color": "#F9A825",
+    "tags": [
+      "prd",
+      "checklist",
+      "work-plan"
+    ],
+    "checklist": true
+  },
+  {
+    "note_id": "FNOT-221",
+    "title": "Decision Archive - Social Sharing MVP",
+    "content": "✅ COMPLETED 2026-04-01\n\nArchived WeChat decision discussion to Obsidian:\n📁 Product/Decisions/social-sharing-mvp-scope-2026-04-01.md\n\nKey decision: Simple share-to-earn MVP (2 weeks)\nDeferred: Gamification to Q2\n\nStakeholders notified via WeChat at 17:45\n\nNext: Track Q1 metrics for Q2 planning",
+    "created_at": "2026-04-01T17:45:00+08:00",
+    "updated_at": "2026-04-01T17:45:00+08:00",
+    "color": "#4CAF50",
+    "tags": [
+      "decision",
+      "archive",
+      "completed"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-222",
+    "title": "Sprint Planning Reference - Week 14",
+    "content": "Quick links for sprint planning:\n\n📋 Decision Records:\n- Social sharing MVP: OBSN-30\n- (Add more as needed)\n\n📊 Current Sprint:\n- Capacity: OBSN-7\n- OKR tracking: OBSN-10\n\n🎯 Q2 Backlog:\n- Gamification: OBSN-32\n\nUse during mobile sprint reviews",
+    "created_at": "2026-04-01T18:00:00+08:00",
+    "updated_at": "2026-04-01T18:00:00+08:00",
+    "color": "#2196F3",
+    "tags": [
+      "sprint",
+      "reference",
+      "quick-access"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-223",
+    "title": "A/B Test Budget Overspend Alert - 2026-04-02",
+    "content": "⚠️ BUDGET ALERT - Social Sharing A/B Test\n\nExpense Entry Found:\n- Experiment ID: ab_experiment_social_share_export (JOB-704)\n- Amount: ¥18,500\n- Date: 2026-04-01\n- Category: Cloud compute resources\n\nApproved Budget (from PRD OBSN-8): ¥12,000\nOverage: ¥6,500 (54.2% over)\n\nNext Steps:\n1. Verify actual resource consumption in CLI scheduler logs\n2. Check PRD budget allocation in Obsidian\n3. Identify root cause (scope creep/runtime/data volume)\n4. Draft reconciliation report\n5. Send to finance liaison + Zhang Hao for approval\n\nDeadline: EOD 2026-04-02",
+    "created_at": "2026-04-02T09:15:00+08:00",
+    "updated_at": "2026-04-02T09:15:00+08:00",
+    "color": "#E53935",
+    "tags": [
+      "urgent",
+      "budget",
+      "ab-test",
+      "finance"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-224",
+    "title": "Reconciliation Report Draft - Social Share A/B Test",
+    "content": "# Internal Budget Reconciliation Report\n## A/B Experiment: Social Sharing Feature (JOB-704)\n\n**Date:** 2026-04-02\n**Prepared by:** Chen Xiaoyu\n\n### Summary\nExperiment ab_experiment_social_share_export exceeded approved budget by ¥6,500 (54.2% overage).\n\n### Details\n- **Approved Budget:** ¥12,000 (PRD OBSN-8, Section 6.2)\n- **Actual Spend:** ¥18,500\n- **Variance:** +¥6,500 (+54.2%)\n\n### Root Cause Analysis\n- Extended runtime: 14 days vs planned 7 days (scope expansion from boss)\n- Data volume spike: 2.8M users vs planned 1.5M users\n- Additional compute instances for real-time analytics\n\n### Mitigation Proposal\nOption A: Budget top-up of ¥7,000 (includes ¥500 buffer)\nOption B: Reduce test scope to 1.8M users, rerun within original budget\n\n**Recommendation:** Option A - critical for Q1 KPI delivery\n\nRequesting approval from Finance & Dev Lead.",
+    "created_at": "2026-04-02T14:30:00+08:00",
+    "updated_at": "2026-04-02T15:45:00+08:00",
+    "color": "#F9A825",
+    "tags": [
+      "finance",
+      "reconciliation",
+      "ab-test"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-225",
+    "title": "Weekly Expense Review - 2026-W14",
+    "content": "Weekly expense tracking review:\n\n✓ Team lunch budget: ¥850 / ¥1,200 (71%)\n✓ Cloud services baseline: ¥4,200 / ¥5,000 (84%)\n⚠️ A/B test compute: ¥18,500 / ¥12,000 (154%) - OVER\n✓ Third-party API calls: ¥1,100 / ¥1,500 (73%)\n\nTotal Q1 spend: ¥156,300 / ¥180,000 (87%)\n\nAction items:\n- Investigate A/B test overage\n- Review cloud resource optimization opportunities",
+    "created_at": "2026-04-01T16:20:00+08:00",
+    "updated_at": "2026-04-01T16:20:00+08:00",
+    "color": "#43A047",
+    "tags": [
+      "expense",
+      "weekly-review"
+    ],
+    "checklist": false
+  },
+  {
+    "note_id": "FNOT-226",
+    "title": "Weekly Expense Review - 2026-W14",
+    "content": "✅ Sprint retro dinner (3/28) - RECONCILED\n- Finance: ¥800 (TXN-6004)\n- Actual: ¥1,200\n- Gap: ¥400 (cash tip)\n- My Expenses: TXN-001 ✓\n- Obsidian doc: OBSN-35 ✓\n\n⚠️ Pending:\n- Submit variance explanation to Wang Jing (Finance) by 4/5\n- Review Q1 final budget utilization (84.5%)\n\n📋 Next week:\n- Close Q1 expense tracking\n- Prepare Q2 budget proposal",
+    "created_at": "2026-04-02T17:00:00+08:00",
+    "updated_at": "2026-04-02T17:15:00+08:00",
+    "color": "#F9A825",
+    "tags": [
+      "finance",
+      "weekly_review",
+      "Q1"
+    ],
+    "checklist": true
+  },
+  {
+    "note_id": "FNOT-227",
+    "title": "Expense Reconciliation Quick Ref",
+    "content": "🔍 Check sequence:\n1. Calendar → expense events\n2. CLI finance → verify records\n3. Gap analysis\n4. My Expenses → create/update\n5. Obsidian → document\n6. This note → track status\n\n📊 Common categories:\n- team_expense (dinners, team building)\n- meals (client meetings, coffee)\n- transportation (taxi, ride-share)\n\n⏰ Review schedule: Every Friday 3pm",
+    "created_at": "2026-04-02T14:00:00+08:00",
+    "updated_at": "2026-04-02T14:00:00+08:00",
+    "color": "#8E24AA",
+    "tags": [
+      "reference",
+      "finance"
+    ],
+    "checklist": false
+  }
+]

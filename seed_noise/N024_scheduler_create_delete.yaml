@@ -1,0 +1,16 @@
+noise_id: N024
+name: "Create a scheduled job then delete it"
+description: "Want to set up a recurring reminder, create the job, then decide it's unnecessary and delete it"
+involved_services: [scheduler]
+leaves_trace: true
+trace_type: "deleted_scheduled_job"
+action_sequence:
+  - "Open scheduler"
+  - "Create a new scheduled job"
+  - "Set execution time and content"
+  - "Decide it's unnecessary, delete the job"
+  - "Close scheduler"
+time_preference: any
+adaptable_elements:
+  - "Purpose of the scheduled job"
+  - "Reason for deleting"

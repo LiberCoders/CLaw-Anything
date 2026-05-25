@@ -1,0 +1,360 @@
+[
+  {
+    "label": "MYACC-101",
+    "accounts": [
+      {
+        "account_id": "ACC-001",
+        "name": "Work Procurement Card",
+        "type": "credit_card",
+        "currency": "USD",
+        "balance": 1560.01,
+        "last_updated": "2026-04-02T14:45:00+08:00"
+      }
+    ],
+    "categories": [
+      {
+        "category_id": "CAT-001",
+        "name": "hardware_procurement",
+        "type": "expense",
+        "budget_limit": 5000.0,
+        "spent_this_period": 3440.0
+      }
+    ],
+    "payees": [
+      "TestMall",
+      "TechSource Hardware Solutions",
+      "Alibaba Cloud",
+      "Dell Technologies"
+    ],
+    "transactions": [
+      {
+        "transaction_id": "EXP-001",
+        "date": "2026-04-02",
+        "amount": -289.99,
+        "currency": "USD",
+        "account_id": "ACC-001",
+        "category_id": "CAT-001",
+        "payee": "TestMall",
+        "description": "Samsung 980 PRO NVMe SSD 2TB - Order PROD-5003. Emergency procurement for production DB server. Inventory verification: SKU-2084 out of stock. Budget check: Q1 remaining $1,850. Approved per runbook OBSN-24.",
+        "tags": [
+          "hardware",
+          "production",
+          "emergency"
+        ],
+        "receipt_attached": true,
+        "reimbursable": false
+      },
+      {
+        "transaction_id": "EXP-002",
+        "date": "2026-03-15",
+        "amount": -1100.0,
+        "currency": "USD",
+        "account_id": "ACC-001",
+        "category_id": "CAT-001",
+        "payee": "TechSource Hardware Solutions",
+        "description": "Emergency disk replacement - Production incident INC-2026-03-15",
+        "tags": [
+          "hardware",
+          "incident",
+          "emergency"
+        ],
+        "receipt_attached": true,
+        "reimbursable": false
+      }
+    ]
+  },
+  {
+    "label": "MYACC-102",
+    "accounts": [
+      {
+        "id": "acc_team_budget",
+        "label": "Team Activities Budget",
+        "type": "CASH",
+        "currency": "CNY",
+        "opening_balance": 5000.0,
+        "current_balance": 2500.0,
+        "color": "#4CAF50",
+        "exclude_from_totals": false
+      }
+    ],
+    "categories": [
+      {
+        "id": "cat_team_dinner",
+        "label": "Team Dinners",
+        "parent_id": "cat_team_activities",
+        "color": "#FF9800",
+        "icon": "restaurant"
+      },
+      {
+        "id": "cat_team_activities",
+        "label": "Team Activities",
+        "parent_id": null,
+        "color": "#2196F3",
+        "icon": "group"
+      }
+    ],
+    "payees": [
+      "Haidilao Hotpot Restaurant",
+      "Xibei Restaurant",
+      "Lost Heaven Restaurant",
+      "Team Building Vendor"
+    ],
+    "transactions": [
+      {
+        "id": "txn_001",
+        "account_id": "acc_team_budget",
+        "amount": -1500.0,
+        "category_id": "cat_team_dinner",
+        "payee": "Lost Heaven Restaurant",
+        "date": "2026-04-03",
+        "memo": "Team milestone reward: 30-day deployment discipline - Planned expense",
+        "status": "pending"
+      },
+      {
+        "id": "txn_002",
+        "account_id": "acc_team_budget",
+        "amount": -1800.0,
+        "category_id": "cat_team_dinner",
+        "payee": "Haidilao Hotpot Restaurant",
+        "date": "2026-03-15",
+        "memo": "Q1 sprint completion celebration",
+        "status": "cleared"
+      }
+    ]
+  },
+  {
+    "label": "MYACC-103",
+    "accounts": [
+      {
+        "id": "acc_personal_card",
+        "label": "Personal Credit Card",
+        "currency": "CNY",
+        "balance": 8420.5
+      }
+    ],
+    "categories": [
+      {
+        "id": "cat_meals",
+        "label": "Meals",
+        "parent": null
+      },
+      {
+        "id": "cat_incident_response",
+        "label": "Incident Response",
+        "parent": "cat_meals"
+      }
+    ],
+    "payees": [
+      "Haidilao Hotpot",
+      "KFC",
+      "Luckin Coffee"
+    ],
+    "transactions": [
+      {
+        "id": "txn_incident_dinner_001",
+        "date": "2026-04-01T23:45:00+08:00",
+        "amount": -128.5,
+        "currency": "CNY",
+        "account": "acc_personal_card",
+        "category": "cat_incident_response",
+        "payee": "Haidilao Hotpot",
+        "description": "Incident response dinner - INC-2026-04-01-003 - API outage recovery",
+        "tags": [
+          "on-call",
+          "incident",
+          "reimbursable"
+        ]
+      },
+      {
+        "id": "txn_lunch_002",
+        "date": "2026-04-02T12:30:00+08:00",
+        "amount": -42.0,
+        "currency": "CNY",
+        "account": "acc_personal_card",
+        "category": "cat_meals",
+        "payee": "KFC",
+        "description": "Quick lunch during deployment window",
+        "tags": [
+          "meals"
+        ]
+      }
+    ]
+  },
+  {
+    "label": "MYACC-104",
+    "accounts": [
+      {
+        "id": "acc_company_card",
+        "label": "Company Card (USD)",
+        "currency": "USD",
+        "type": "credit_card",
+        "opening_balance": 0,
+        "current_balance": -12517.5,
+        "description": "Company credit card for infrastructure expenses"
+      }
+    ],
+    "categories": [
+      {
+        "id": "cat_cloud_infra",
+        "label": "Cloud Infrastructure",
+        "parent_id": null,
+        "type": "expense",
+        "icon": "cloud"
+      },
+      {
+        "id": "cat_infra_subscription",
+        "label": "Infrastructure Subscription",
+        "parent_id": "cat_cloud_infra",
+        "type": "expense",
+        "icon": "subscription"
+      }
+    ],
+    "payees": [
+      "CloudInfra Technologies",
+      "Alibaba Cloud",
+      "TechSource Hardware Solutions",
+      "TestMall"
+    ],
+    "transactions": [
+      {
+        "id": "txn_exp_001",
+        "date": "2026-02-03",
+        "amount": -3980.0,
+        "currency": "USD",
+        "account_id": "acc_company_card",
+        "category_id": "cat_infra_subscription",
+        "payee": "CloudInfra Technologies",
+        "description": "CloudInfra January 2026 invoice - Account #LX-AI-8834",
+        "status": "reconciled",
+        "reference": "TXN-6024"
+      },
+      {
+        "id": "txn_exp_002",
+        "date": "2026-03-05",
+        "amount": -4150.0,
+        "currency": "USD",
+        "account_id": "acc_company_card",
+        "category_id": "cat_infra_subscription",
+        "payee": "CloudInfra Technologies",
+        "description": "CloudInfra February 2026 invoice - Account #LX-AI-8834",
+        "status": "reconciled",
+        "reference": "TXN-6023"
+      },
+      {
+        "id": "txn_exp_003",
+        "date": "2026-04-02",
+        "amount": -4287.5,
+        "currency": "USD",
+        "account_id": "acc_company_card",
+        "category_id": "cat_infra_subscription",
+        "payee": "CloudInfra Technologies",
+        "description": "CloudInfra March 2026 invoice - Account #LX-AI-8834 - PENDING VERIFICATION",
+        "status": "pending",
+        "reference": "WMSG-5033"
+      }
+    ]
+  },
+  {
+    "label": "MYACC-105",
+    "accounts": [
+      {
+        "id": "acc_personal_card",
+        "label": "Personal Credit Card",
+        "type": "credit_card",
+        "currency": "CNY",
+        "balance": -1250.0
+      },
+      {
+        "id": "acc_company_reimbursement",
+        "label": "Company Reimbursement Account",
+        "type": "asset",
+        "currency": "CNY",
+        "balance": 0.0
+      }
+    ],
+    "categories": [
+      {
+        "id": "cat_team_activities",
+        "label": "Team Activities",
+        "parent_id": null,
+        "type": "expense"
+      },
+      {
+        "id": "cat_on_call_expense",
+        "label": "On-Call Incident Response",
+        "parent_id": null,
+        "type": "expense"
+      },
+      {
+        "id": "cat_meals",
+        "label": "Meals",
+        "parent_id": null,
+        "type": "expense"
+      },
+      {
+        "id": "cat_transport",
+        "label": "Transportation",
+        "parent_id": null,
+        "type": "expense"
+      }
+    ],
+    "payees": [
+      "Sichuan Restaurant - Xujiahui",
+      "Starbucks",
+      "Uber",
+      "Amazon",
+      "TechSource Hardware",
+      "TestMall"
+    ],
+    "transactions": [
+      {
+        "id": "txn_001",
+        "date": "2026-03-31",
+        "amount": 680.0,
+        "type": "expense",
+        "account_id": "acc_personal_card",
+        "category_id": "cat_on_call_expense",
+        "payee": "Sichuan Restaurant - Xujiahui",
+        "description": "Post-incident team dinner - INC-2026-03-28-DB-POOL resolution celebration. Attendees: 5 team members. Reimbursable per on-call incident response policy.",
+        "receipt_attached": false,
+        "tags": [
+          "incident_response",
+          "team_dinner",
+          "reimbursable"
+        ],
+        "status": "pending_reimbursement"
+      },
+      {
+        "id": "txn_002",
+        "date": "2026-03-29",
+        "amount": 85.0,
+        "type": "expense",
+        "account_id": "acc_personal_card",
+        "category_id": "cat_transport",
+        "payee": "Didi",
+        "description": "Late night taxi home after incident resolution (03:30 AM)",
+        "receipt_attached": false,
+        "tags": [
+          "on_call",
+          "transport"
+        ],
+        "status": "cleared"
+      },
+      {
+        "id": "txn_003",
+        "date": "2026-04-01",
+        "amount": 45.0,
+        "type": "expense",
+        "account_id": "acc_personal_card",
+        "category_id": "cat_meals",
+        "payee": "Starbucks",
+        "description": "Coffee during morning standup",
+        "receipt_attached": false,
+        "tags": [
+          "personal"
+        ],
+        "status": "cleared"
+      }
+    ]
+  }
+]

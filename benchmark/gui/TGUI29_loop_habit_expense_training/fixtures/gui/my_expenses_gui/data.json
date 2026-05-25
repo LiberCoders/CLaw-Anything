@@ -1,0 +1,183 @@
+[
+  {
+    "label": "ED_Medical_Equipment_Tracking",
+    "accounts": [
+      {
+        "id": "ACC-001",
+        "name": "ED Departmental Budget - Medical Supplies",
+        "type": "departmental",
+        "currency": "CNY",
+        "balance": 18500.0,
+        "description": "Emergency Department Q1 2026 medical supplies and equipment allocation"
+      }
+    ],
+    "categories": [
+      {
+        "id": "CAT-001",
+        "name": "Airway Management Equipment",
+        "type": "expense",
+        "parent_id": null,
+        "color": "#E53935"
+      },
+      {
+        "id": "CAT-002",
+        "name": "Monitoring Equipment",
+        "type": "expense",
+        "parent_id": null,
+        "color": "#1E88E5"
+      },
+      {
+        "id": "CAT-003",
+        "name": "Consumables",
+        "type": "expense",
+        "parent_id": null,
+        "color": "#43A047"
+      }
+    ],
+    "payees": [
+      "MedTech Surgical Supplies Co.",
+      "Emergency Medical Supplies Ltd.",
+      "Hospital Pharmacy",
+      "Equipment Maintenance Services"
+    ],
+    "transactions": [
+      {
+        "id": "TXN-001",
+        "date": "2026-03-31",
+        "amount": 12800.0,
+        "type": "expense",
+        "account_id": "ACC-001",
+        "category_id": "CAT-001",
+        "payee": "MedTech Surgical Supplies Co.",
+        "description": "Video Laryngoscope (SKU-2080) - Emergency procurement for ED airway management. Approved by Dr. Wang Li due to low stock (2 units) below minimum threshold (3 units). Order PROD-5001.",
+        "status": "cleared",
+        "reference": "PO-ED-2026-0331-001"
+      }
+    ]
+  },
+  {
+    "label": "ED_Professional_Development",
+    "accounts": [
+      {
+        "id": "MYACC-102",
+        "label": "ED_Professional_Development",
+        "type": "expense",
+        "currency": "CNY",
+        "opening_balance": 0,
+        "current_balance": -815.0,
+        "color": "#FF5722",
+        "description": "Emergency Department professional development and training expenses"
+      }
+    ],
+    "categories": [
+      {
+        "id": "CAT-201",
+        "label": "Training Materials",
+        "parent_id": null,
+        "type": "expense",
+        "color": "#FF9800"
+      },
+      {
+        "id": "CAT-202",
+        "label": "Educational Supplies",
+        "parent_id": null,
+        "type": "expense",
+        "color": "#FFC107"
+      }
+    ],
+    "payees": [
+      "Medical Education Publishing House",
+      "ED Training Supply Center",
+      "Campus Print Shop"
+    ],
+    "transactions": []
+  },
+  {
+    "label": "ED_Clinical_Training",
+    "accounts": [
+      {
+        "id": "ACC-301",
+        "label": "ED_Clinical_Training",
+        "type": "expense",
+        "currency": "CNY",
+        "balance": -3800.0,
+        "description": "Emergency Department clinical training and educational expenses"
+      }
+    ],
+    "categories": [
+      {
+        "id": "CAT-201",
+        "label": "Training Materials",
+        "type": "expense",
+        "parent_id": null
+      },
+      {
+        "id": "CAT-202",
+        "label": "Conference Registration",
+        "type": "expense",
+        "parent_id": null
+      },
+      {
+        "id": "CAT-203",
+        "label": "Educational Resources",
+        "type": "expense",
+        "parent_id": null
+      }
+    ],
+    "payees": [
+      "Medical Education Publishing House",
+      "PUMCH Training Department",
+      "Clinical Skills Center"
+    ],
+    "transactions": [
+      {
+        "id": "TXN-301",
+        "account_id": "ACC-301",
+        "amount": -1200.0,
+        "currency": "CNY",
+        "date": "2026-03-28",
+        "category_id": "CAT-201",
+        "payee": "PUMCH Training Department",
+        "description": "Sepsis Protocol Training Session - March 28, 2026 - Materials and simulation lab access for resident education (Reference: Patient scenario 床号23 septic shock case)",
+        "notes": "Training linked to M&M Conference case review from March 26. Educational activity approved by Dr. Wang for Q1 resident curriculum.",
+        "status": "cleared"
+      },
+      {
+        "id": "TXN-302",
+        "account_id": "ACC-301",
+        "amount": -850.0,
+        "currency": "CNY",
+        "date": "2026-03-15",
+        "category_id": "CAT-203",
+        "payee": "Medical Education Publishing House",
+        "description": "Sepsis management clinical guidelines and reference materials",
+        "notes": "General educational resources for department library",
+        "status": "cleared"
+      },
+      {
+        "id": "TXN-303",
+        "account_id": "ACC-301",
+        "amount": -680.0,
+        "currency": "CNY",
+        "date": "2026-03-10",
+        "category_id": "CAT-201",
+        "payee": "Clinical Skills Center",
+        "description": "Airway management workshop materials",
+        "notes": "Q1 procedural skills training",
+        "status": "cleared"
+      },
+      {
+        "id": "TXN-304",
+        "account_id": "ACC-301",
+        "amount": -1070.0,
+        "currency": "CNY",
+        "date": "2026-02-20",
+        "category_id": "CAT-202",
+        "payee": "PUMCH Training Department",
+        "description": "ATLS refresher course registration",
+        "notes": "Mandatory certification renewal",
+        "status": "cleared"
+      }
+    ]
+  }
+]

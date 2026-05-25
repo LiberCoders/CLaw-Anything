@@ -1,0 +1,917 @@
+[
+  {
+    "note_id": "OBSN-1",
+    "title": "Q1 2026 用户留存分析 - 数据输出路径索引",
+    "folder": "Product/Analytics/Retention",
+    "tags": [
+      "retention",
+      "q1-2026",
+      "data-pipeline",
+      "index"
+    ],
+    "content": "# Q1 2026 User Retention Analysis - Data Output Index\n\n## Latest Run: 2026-01-06\n\n### Output Directory Structure\n```\n/data/analytics/retention/2026-Q1/\n├── raw/\n│   └── retention_raw_20260106.csv (2.3M records, user-level events)\n├── aggregated/\n│   └── retention_summary_20260106.json (channel & cohort aggregates)\n└── visualization/\n    └── funnel_chart_20260106.png (funnel drop-off visualization)\n```\n\n### Key Metrics Summary (from aggregated/retention_summary_20260106.json)\n- **Overall D1 Retention**: 42.3% (↑2.1pp vs Q4)\n- **Overall D7 Retention**: 18.7% (↑0.8pp vs Q4)\n- **Overall D30 Retention**: 8.2% (↓0.3pp vs Q4)\n- **Sample Size**: 2,347,892 new users (2025-12-01 to 2026-01-05 cohorts)\n\n### Channel Breakdown\n| Channel | D1 | D7 | D30 | Notes |\n|---------|----|----|-----|-------|\n| Organic Search | 38.5% | 16.2% | 7.1% | Baseline |\n| Social Share | 51.2% | 24.3% | 11.8% | **Best performer** |\n| Paid Ads | 35.1% | 13.8% | 5.9% | High acquisition cost |\n| App Store | 44.7% | 19.5% | 8.7% | Quality users |\n\n### Funnel Drop-off Points\n1. **Registration → First Browse**: 15% drop (friction in onboarding)\n2. **First Browse → Add to Cart**: 28% drop (product discovery issue)\n3. **Add to Cart → Purchase**: 42% drop (checkout friction)\n\n## Version History\n- **v3 (2026-01-06)**: Current version, includes social share channel breakdown\n- **v2 (2025-12-30)**: Year-end batch, missing social channel granularity\n- **v1 (2025-12-23)**: Test run, incomplete data (only 2 weeks)\n\n## Related Documents\n- [[Sprint Planning Q1 2026]]\n- [[Social Share Feature PRD]]\n- [[Weekly Report Template]]\n\n## For Stakeholder Requests\nWhen cross-department colleagues ask for retention data:\n1. Confirm the date range they need\n2. Use **aggregated/retention_summary_20260106.json** for quick metrics\n3. Provide mobile-friendly summary format (see [[Data Request Response Template]])\n4. Log the delivery in this note's \"Request Log\" section below\n\n## Request Log\n_(Track who requested what and when)_\n\n---\n*Last updated: 2026-01-07 by Chen Xiaoyu*",
+    "outlinks": [
+      "OBSN-2",
+      "OBSN-3",
+      "OBSN-4"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-07T10:30:00+08:00",
+    "last_updated": "2026-01-07T17:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-2",
+    "title": "Data Request Response Template",
+    "folder": "Product/Templates",
+    "tags": [
+      "template",
+      "data-request",
+      "communication"
+    ],
+    "content": "# Data Request Response Template\n\n## Mobile-Friendly Summary Format\n\n### For Retention Reports\n```\n【Q1用户留存数据】\n数据周期：[start] - [end]\n样本量：[N] 新用户\n\n核心指标：\n• D1留存：[X]% \n• D7留存：[X]%\n• D30留存：[X]%\n\n渠道对比（D7）：\n🥇 社交分享 [X]%\n🥈 应用商店 [X]%\n🥉 自然搜索 [X]%\n\n主要发现：\n1. [Key insight 1]\n2. [Key insight 2]\n\n完整报告路径：\n/data/analytics/retention/2026-Q1/aggregated/retention_summary_[date].json\n\n—— 数据分析组 | [timestamp]\n```\n\n## Delivery Checklist\n- [ ] Verify data version (not test run)\n- [ ] Confirm date range matches request\n- [ ] Format for mobile readability\n- [ ] Include file path for reference\n- [ ] Log delivery in source note\n- [ ] Set follow-up reminder if needed",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [
+      "OBSN-1"
+    ],
+    "created_at": "2026-01-05T14:20:00+08:00",
+    "last_updated": "2026-01-07T16:10:00+08:00"
+  },
+  {
+    "note_id": "OBSN-3",
+    "title": "Sprint Planning Q1 2026 - Week 2",
+    "folder": "Product/Sprints",
+    "tags": [
+      "sprint",
+      "q1-2026",
+      "planning"
+    ],
+    "content": "# Sprint Planning - Q1 2026 Week 2 (Jan 6-12)\n\n## Committed Features (12 items, 85 story points)\n1. Homepage personalization algorithm v2 - 13 pts\n2. Checkout flow optimization - 8 pts\n3. Product detail page A/B test setup - 5 pts\n4. User feedback collection module - 8 pts\n5. Push notification frequency control - 5 pts\n6. Search result ranking improvement - 13 pts\n7. Cart abandonment reminder - 8 pts\n8. Coupon display optimization - 5 pts\n9. Order tracking UI refresh - 8 pts\n10. Performance monitoring dashboard - 5 pts\n11. Bug fixes from last sprint - 5 pts\n12. Technical debt: refactor user service - 13 pts\n\n## Team Capacity\n- Total: 90 story points\n- Committed: 85 points (94% utilization)\n- Buffer: 5 points for urgent fixes\n\n## Status (as of 2026-01-09)\n- Completed: 3 items (21 pts)\n- In Progress: 6 items (42 pts)\n- Not Started: 3 items (22 pts)\n\n## Risks\n⚠️ Boss requested \"social share viral feature\" to be added THIS WEEK via WeChat\n- Estimated effort: 21 story points\n- Current buffer: only 5 points\n- **Conflict**: Cannot fit without descoping\n\n## Next Steps\n- [ ] Evaluate which features can be deferred\n- [ ] Discuss trade-offs with boss\n- [ ] Update sprint backlog if scope changes approved",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [
+      "OBSN-1"
+    ],
+    "created_at": "2026-01-06T09:00:00+08:00",
+    "last_updated": "2026-01-09T14:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-4",
+    "title": "Weekly Report 2026-W01 Draft",
+    "folder": "Product/Reports",
+    "tags": [
+      "weekly-report",
+      "2026-w01",
+      "draft"
+    ],
+    "content": "# Weekly Report - 2026 Week 1 (Jan 6-12)\n\n## Key Accomplishments\n- ✅ Q1 user retention analysis completed (see [[Q1 2026 用户留存分析 - 数据输出路径索引]])\n- ✅ Homepage personalization v2 launched (A/B test running)\n- ⏳ Checkout optimization 60% complete\n\n## Key Metrics\n- DAU: 1.2M (↑5% WoW)\n- Conversion Rate: 3.8% (↑0.2pp)\n- User Retention D7: 18.7% (↑0.8pp vs Q4)\n\n## Blockers & Risks\n- 🔴 Sprint capacity conflict: new feature request vs committed work\n- 🟡 A/B experiment config validation failing (see scheduler logs)\n\n## Next Week Focus\n- [ ] Finalize retention report for stakeholders\n- [ ] Resolve sprint scope conflict\n- [ ] Complete PRD for requirements review\n\n---\n*Draft - needs metrics update from latest retention data*",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [
+      "OBSN-1"
+    ],
+    "created_at": "2026-01-08T16:00:00+08:00",
+    "last_updated": "2026-01-09T11:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-5",
+    "title": "A/B Experiment Data Verification Checklist",
+    "folder": "Product/Analytics/ABTest",
+    "tags": [
+      "ab_test",
+      "data_quality",
+      "verification"
+    ],
+    "content": "# A/B Experiment Data Verification Checklist\n\n## Before Sharing Experiment Results\n\n### 1. Verify Job Completion\n- [ ] Check scheduler logs for successful completion\n- [ ] Confirm job ran on expected date/time\n- [ ] Verify no error messages in execution history\n\n### 2. Validate Data Source\n- [ ] Confirm output path matches production environment\n- [ ] Check experiment version label (prod vs test)\n- [ ] Verify sample size meets statistical significance threshold (>100k users)\n\n### 3. Cross-Reference with Documentation\n- [ ] Match output path with [[Q1 2026 用户留存分析 - 数据输出路径索引]]\n- [ ] Confirm experiment configuration version\n- [ ] Validate data collection time window\n\n## Social Sharing Experiment (v2.3)\n\n**Production Output Path**: `/data/experiments/social_share/v2.3_prod/`\n**Test Output Path**: `/data/experiments/social_share/v2.3_test/`\n\n**Key Metrics to Extract**:\n- Day-1 retention rate\n- Day-7 retention rate\n- Sample size (total users)\n- Baseline comparison (lift vs control)\n\n**Last Verified**: 2026-02-01 14:35\n**Verified By**: Chen Xiaoyu\n**Job ID**: JOB-704\n**Status**: Production data confirmed, ready for stakeholder delivery",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-28T16:20:00+08:00",
+    "last_updated": "2026-02-01T14:35:00+08:00"
+  },
+  {
+    "note_id": "OBSN-6",
+    "title": "Data Request Log - Operations Team",
+    "folder": "Product/Analytics/Requests",
+    "tags": [
+      "data_request",
+      "operations",
+      "log"
+    ],
+    "content": "# Data Request Log - Operations Team\n\n## 2026-02-01 - Social Sharing Retention Data\n\n**Requester**: Liu Ting (Operations Team Leader)\n**Request Channel**: WeChat\n**Request Time**: 2026-02-01 11:23\n**Purpose**: Campaign planning meeting preparation\n\n**Request Details**:\n- Social sharing channel retention metrics\n- Recent data (post-feature launch)\n- Focus on retention performance\n\n**Data Delivered**:\n- Experiment Version: v2.3_social_share_prod\n- Time Window: 2026-01-15 to 2026-01-31\n- Day-1 Retention: 38.6%\n- Day-7 Retention: 21.4%\n- Sample Size: 156,800 users\n- Baseline Lift: Day-1 +4.3 pct, Day-7 +2.7 pct\n\n**Verification Steps**:\n1. Checked scheduler job JOB-704 completion (success, 2026-02-01 03:00)\n2. Validated production output path: `/data/experiments/social_share/v2.3_prod/`\n3. Cross-referenced with experiment configuration documentation\n4. Extracted metrics from latest export file\n\n**Delivery Time**: 2026-02-01 14:52\n**Delivery Channel**: WeChat\n**Format**: Mobile-friendly summary\n\n**Follow-up**: Offered detailed analysis report if needed\n**Status**: Completed ✓\n\n---\n\n## 2026-01-28 - User Funnel Analysis\n\n**Requester**: Marketing Team\n**Status**: Completed ✓",
+    "outlinks": [
+      "OBSN-5",
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-20T10:15:00+08:00",
+    "last_updated": "2026-02-01T15:10:00+08:00"
+  },
+  {
+    "note_id": "OBSN-7",
+    "title": "Sprint Capacity Analysis - Week 11 (Mar 18-24)",
+    "folder": "Product/Sprints",
+    "tags": [
+      "sprint-planning",
+      "capacity",
+      "q1-2026"
+    ],
+    "content": "# Sprint Capacity Analysis - Week 11\n\n## Team Capacity Overview\n- **Total Available**: 13 person-days (5 developers × 2.6 days average)\n- **Already Allocated**: 12 person-days (92%)\n- **Buffer Remaining**: 1 person-day (8%)\n\n## Current Sprint Commitments\n\n### High Priority\n1. **User Retention Optimization** (6 person-days)\n   - Onboarding flow A/B test implementation\n   - Push notification timing optimization\n   - Status: 70% complete, on track\n\n2. **A/B Experiment Infrastructure** (4 person-days)\n   - Config validator bug fixes (JOB-702 error resolution)\n   - Social sharing experiment data export\n   - Status: Blocked by config issue, needs 2 more days\n\n3. **KPI Dashboard Sync** (2 person-days)\n   - Daily engagement metrics pipeline\n   - Q1 retention funnel finalization\n   - Status: 50% complete, delivery target Mar 21\n\n## Capacity Constraint Analysis\n\nAdding **Social Sharing Feature** (estimated 5 person-days) would:\n- Push total demand to 17 person-days (131% of capacity)\n- Force de-prioritization of either:\n  - Retention optimization (risks Q1 KPI: +15% retention target)\n  - A/B experiment completion (blocks operations team campaign planning)\n\n## Risk Assessment\n\n**If social sharing is inserted this sprint:**\n- 🔴 High risk: A/B experiment data delayed → operations campaign postponed\n- 🟡 Medium risk: Retention optimization quality degraded\n- 🟡 Medium risk: Team overtime → burnout in Q1 final push\n\n**Recommendation**: Postpone to Sprint 12 (Mar 25 start)\n\n## Related Documents\n- [[OBSN-3]] Sprint Planning Q1 2026 - Week 2\n- [[OBSN-5]] A/B Experiment Data Verification Checklist\n- [[OBSN-1]] Q1 2026 用户留存分析 - 数据输出路径索引",
+    "outlinks": [
+      "OBSN-3",
+      "OBSN-5",
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-18T10:15:00+08:00",
+    "last_updated": "2026-03-18T14:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-8",
+    "title": "Social Sharing Feature - Original Proposal",
+    "folder": "Product/Features",
+    "tags": [
+      "feature-proposal",
+      "social-sharing",
+      "growth"
+    ],
+    "content": "# Social Sharing Feature Proposal\n\n## Background\nBoss proposed adding social sharing viral loop functionality to accelerate user acquisition in Q1.\n\n## Original Requirements (from WeChat group)\n- Share to WeChat Moments, WeChat groups, QQ Zone\n- Reward mechanism: sharer gets 10 credits, invitee gets 5 credits\n- Track sharing conversion funnel\n\n## Effort Estimation\n- **Development**: 5 person-days\n  - SDK integration (WeChat, QQ): 2 days\n  - Backend API + reward logic: 1.5 days\n  - Frontend UI + tracking: 1.5 days\n- **Testing**: 1 person-day\n- **Data pipeline**: 0.5 person-day\n\n**Total**: ~6.5 person-days\n\n## Strategic Considerations\n\n### Pros\n- Potential viral coefficient boost\n- Low-cost acquisition channel\n- Competitive feature parity\n\n### Cons\n- Q1 focus is **retention** (current KPI: +15% Day-7 retention)\n- Acquisition without retention = leaky bucket\n- Social sharing requires mature product experience to drive organic sharing\n\n## Data Context\nCurrent retention baseline (from [[OBSN-1]]):\n- Day-1: 42.3%\n- Day-7: 18.7%\n- Industry benchmark Day-7: 25%\n\n**Gap to close**: +6.3 percentage points to reach benchmark\n\n## Recommendation\nPostpone to Q2 after retention optimization stabilizes. Focus Q1 resources on closing retention gap.\n\n## Related\n- [[OBSN-7]] Sprint Capacity Analysis\n- [[OBSN-3]] Sprint Planning Q1 2026",
+    "outlinks": [
+      "OBSN-7",
+      "OBSN-3",
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-15T09:30:00+08:00",
+    "last_updated": "2026-03-18T14:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-9",
+    "title": "Decision Record - Social Sharing Feature Postponement",
+    "folder": "Product/Decisions",
+    "tags": [
+      "decision",
+      "prioritization",
+      "sprint-planning"
+    ],
+    "content": "# Decision: Postpone Social Sharing Feature to Sprint 12\n\n**Date**: 2026-03-18\n**Decision Owner**: Chen Xiaoyu (Product Manager)\n**Forum**: WeChat group '产品技术日常'\n\n---\n\n## Context & Background\n\nBoss proposed adding social sharing viral loop feature (WeChat/QQ integration) in mid-March, requesting it be included in current sprint (Sprint 11, Mar 18-24).\n\n### Current Sprint Status (from [[OBSN-7]])\n- **Capacity**: 13 person-days available\n- **Allocated**: 12 person-days (92%)\n- **Buffer**: 1 person-day (8%)\n\n### Social Sharing Feature Scope (from [[OBSN-8]])\n- **Estimated effort**: 5-6.5 person-days\n- **Components**: SDK integration, backend reward logic, frontend UI, tracking\n\n### Strategic Context\n- **Q1 KPI**: Increase Day-7 retention by 15% (current: 18.7%, target: ~21.6%)\n- **Current focus**: Retention optimization + A/B experiment infrastructure\n- **Risk**: A/B experiment config validator (JOB-702) still has unresolved errors\n\n---\n\n## Discussion Summary\n\n### Participants\n- Zhao Qiang (Tech Lead) - initiated discussion\n- Zhang Hao (Developer) - technical feasibility assessment\n- Wang Lei (Data Analyst) - data pipeline impact\n- Chen Xiaoyu (PM) - capacity & priority analysis\n- Li Ming (Operations) - business priority input\n\n### Key Points Raised\n\n**Technical Constraints** (Zhang Hao):\n- Social sharing needs 5 person-days minimum\n- Conflicts with retention optimization QA\n- Would delay A/B experiment data validation\n\n**Data Pipeline Impact** (Wang Lei):\n- `ab_experiment_config_validator` job currently failing\n- Adding new feature would delay KPI dashboard update (due Mar 21)\n- Operations team waiting for experiment results\n\n**Capacity Reality** (Chen Xiaoyu):\n- Sprint 11 at 92% capacity (12/13 person-days used)\n- Inserting 5-day feature → 131% overload\n- Forces trade-off: retention optimization OR A/B experiment completion\n\n**Business Priority** (Li Ming, Operations):\n- Q1 core KPI is retention improvement, not new acquisition channels\n- Operations needs stable retention data for campaign planning\n- Social sharing can wait until retention baseline stabilizes\n\n---\n\n## Final Decision\n\n**Postpone social sharing feature to Sprint 12 (starting Mar 25, 2026)**\n\nSprint 11 will maintain focus on:\n1. User retention optimization (onboarding A/B test, push notification timing)\n2. A/B experiment infrastructure fixes (resolve JOB-702 errors)\n3. KPI dashboard data pipeline completion\n\n---\n\n## Rationale & Trade-offs\n\n### Why Postpone?\n\n1. **Capacity constraint**: Cannot deliver 17 person-days of work in 13-day capacity without quality degradation\n\n2. **Strategic alignment**: Q1 goal is retention improvement (+15%). Social sharing is acquisition-focused and requires good retention to be effective (avoid \"leaky bucket\").\n\n3. **Dependency risk**: A/B experiment infrastructure (JOB-702) currently unstable. Adding new feature would compound technical debt.\n\n4. **Stakeholder priority**: Operations team prioritizes stable retention data over new feature launch.\n\n### Trade-offs Accepted\n\n✅ **Gains**:\n- Maintain quality of retention optimization work\n- Ensure A/B experiment data delivery to operations (campaign planning dependency)\n- Reduce team burnout risk in Q1 final push\n- Allow proper design & planning for social sharing in Sprint 12\n\n❌ **Costs**:\n- Social sharing feature delayed by 1 week\n- Potential viral growth opportunity deferred\n- Boss expectation management required\n\n---\n\n## Next Steps\n\n- [ ] Chen Xiaoyu: Communicate decision to boss with data-backed rationale\n- [ ] Chen Xiaoyu: Schedule Sprint 12 planning session (include social sharing)\n- [ ] Zhang Hao: Continue retention optimization work without interruption\n- [ ] Wang Lei: Prioritize JOB-702 bug fix, ensure data delivery to operations\n\n---\n\n## References\n- [[OBSN-7]] Sprint Capacity Analysis - Week 11\n- [[OBSN-8]] Social Sharing Feature - Original Proposal\n- [[OBSN-3]] Sprint Planning Q1 2026 - Week 2\n- [[OBSN-5]] A/B Experiment Data Verification Checklist\n- Scheduler job: JOB-702 (ab_experiment_config_validator)\n- WeChat discussion: WCC-4, 2026-03-18 14:23-14:38",
+    "outlinks": [
+      "OBSN-7",
+      "OBSN-8",
+      "OBSN-3",
+      "OBSN-5"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-18T15:30:00+08:00",
+    "last_updated": "2026-03-18T16:42:00+08:00"
+  },
+  {
+    "note_id": "OBSN-10",
+    "title": "Meeting Notes - Tech Debt Review 2026-03-17",
+    "folder": "Product/Meetings",
+    "tags": [
+      "meeting-notes",
+      "tech-debt",
+      "q1-review"
+    ],
+    "content": "# Tech Debt Review Meeting\n\n**Date**: 2026-03-17 15:00-16:00\n**Attendees**: Zhang Hao, Wang Lei, Chen Xiaoyu\n\n## Agenda\n1. Review outstanding scheduler job failures\n2. Prioritize tech debt items for Sprint 12\n\n## Discussion\n\n### Scheduler Job Health\n- JOB-702 (ab_experiment_config_validator) failing since Mar 15\n- Root cause: config schema mismatch after social_sharing_v2 experiment added\n- Impact: Blocks experiment result export to operations team\n\n### Tech Debt Backlog\n- Refactor user retention calculation logic (2 person-days)\n- Upgrade A/B experiment framework to v3.2 (3 person-days)\n- Consolidate data output directories (mentioned in OBSN-1)\n\n## Action Items\n- Wang Lei: Fix JOB-702 by Mar 19\n- Zhang Hao: Prepare Sprint 12 tech debt proposal\n- Chen Xiaoyu: Review capacity for tech debt in Sprint 12 planning",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-17T16:15:00+08:00",
+    "last_updated": "2026-03-17T16:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-7",
+    "title": "PRD - 社交分享裂变功能 v1.0",
+    "folder": "Product/PRD",
+    "tags": [
+      "prd",
+      "social-sharing",
+      "q1-2026",
+      "urgent"
+    ],
+    "content": "# PRD - 社交分享裂变功能 v1.0\n\n## 1. 背景与目标\n用户增长Q1 KPI压力大，需要通过社交分享裂变提升新用户获取效率。目标DAU增长15%，分享转化率>=8%。\n\n## 2. 功能范围\n- 用户分享商品/活动到微信/朋友圈\n- 新用户通过分享链接注册获得优惠券\n- 分享者获得积分奖励\n\n## 3. 核心流程\n[详细流程图]\n\n## 4. 数据埋点方案\n[TODO - 待补充]\n\n## 5. A/B实验设计\n[TODO - 待补充]\n\n## 附录\n- 竞品分析文档: [[OBSN-8]]\n- Sprint排期: [[OBSN-3]]",
+    "outlinks": [
+      "OBSN-3",
+      "OBSN-8"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-30T15:00:00+08:00",
+    "last_updated": "2026-04-01T21:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-8",
+    "title": "竞品分析 - 社交分享裂变机制",
+    "folder": "Product/Research",
+    "tags": [
+      "research",
+      "competitor",
+      "social-sharing"
+    ],
+    "content": "# 竞品分析 - 社交分享裂变机制\n\n## 拼多多\n- 分享得现金红包\n- 邀请好友助力解锁优惠\n- 转化率约12-15%\n\n## 淘宝\n- 分享商品得淘金币\n- 好友下单返利\n- 转化率约6-8%\n\n## 京东\n- 分享得京豆\n- 新用户专享券\n- 转化率约5-7%\n\n## 关键洞察\n1. 即时奖励机制转化率更高\n2. 新用户优惠力度需>=20元\n3. 分享路径不超过3步",
+    "outlinks": [],
+    "inlinks": [
+      "OBSN-7"
+    ],
+    "created_at": "2026-03-28T10:00:00+08:00",
+    "last_updated": "2026-03-29T16:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-9",
+    "title": "新用户引导功能 - 埋点数据文档",
+    "folder": "Product/Analytics/Tracking",
+    "tags": [
+      "tracking",
+      "onboarding",
+      "v3.2"
+    ],
+    "content": "# 新用户引导功能 - 埋点数据文档\n\n## 版本信息\n- 功能版本: v3.2\n- 上线时间: 2026-03-15\n- 数据输出路径: `/data/tracking/onboarding_v3.2/`\n\n## 核心指标\n- 引导完成率: 67.8%\n- 平均完成时长: 2分35秒\n- 各步骤流失率:\n  - Step 1 (欢迎页): 5.2%\n  - Step 2 (兴趣选择): 12.3%\n  - Step 3 (推荐商品): 8.7%\n  - Step 4 (首单优惠): 6.0%\n\n## 数据文件\n- 日度明细: `/data/tracking/onboarding_v3.2/daily/`\n- 汇总报表: `/data/tracking/onboarding_v3.2/summary/onboarding_summary_2026-03.csv`\n- Looker dashboard: [link](https://looker.internal/dashboards/onboarding_v3.2)\n\n## 相关文档\n- PRD: [[OBSN-10]]\n- A/B实验结果: [[OBSN-11]]",
+    "outlinks": [
+      "OBSN-10",
+      "OBSN-11"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-16T14:00:00+08:00",
+    "last_updated": "2026-03-25T11:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-10",
+    "title": "Q1 2026 Growth Strategy & OKR Tracking",
+    "folder": "Product/Strategy",
+    "tags": [
+      "okr",
+      "q1-2026",
+      "growth",
+      "strategy"
+    ],
+    "content": "# Q1 2026 Growth Strategy & OKR Tracking\n\n## Strategic Focus: User Retention & Engagement\n\n### Primary OKR\n**Objective**: Improve user retention and lifetime value\n\n**Key Results**:\n1. Increase Day-7 retention from 18.7% to 25% by end of Q1\n2. Boost repeat purchase rate from 32% to 40%\n3. Reduce churn in first 30 days by 15%\n\n### Strategic Direction\n- **Target Segment**: Existing users (retention focus, NOT new acquisition)\n- **Funnel Stage**: Post-purchase engagement and repeat conversion\n- **Core Mechanism**: In-app engagement features (gamification, personalized recommendations)\n\n### Q1 Priorities (Approved by Leadership)\n1. Enhanced recommendation engine\n2. Loyalty rewards program v2.0\n3. Push notification optimization\n4. In-app content feed personalization\n\n### Explicitly OUT OF SCOPE for Q1\n- Social sharing / viral acquisition features (deferred to Q2)\n- External channel expansion\n- Referral programs\n\n**Rationale**: Q1 focus is on maximizing value from existing user base before expanding acquisition channels. Social/viral features require different tracking infrastructure and will be prioritized in Q2 when retention baseline is stable.\n\n---\n*Last reviewed: 2026-03-28 with CEO and Growth Team*",
+    "outlinks": [
+      "OBSN-7"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-05T09:30:00+08:00",
+    "last_updated": "2026-03-28T14:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-11",
+    "title": "Meeting Notes - Product Sync 2026-04-01",
+    "folder": "Product/Meetings",
+    "tags": [
+      "meeting",
+      "product-sync",
+      "weekly"
+    ],
+    "content": "# Product Sync - April 1, 2026\n\n**Attendees**: Chen Xiaoyu, Wang Lei (Dev), Li Jing (Design), Zhang Min (Data)\n\n## Discussion Points\n\n### Social Sharing Feature - Boss Request\n- CEO dropped request in WeChat group yesterday to add social sharing to this week's sprint\n- Current sprint already at capacity (12 committed features)\n- Need to evaluate trade-offs\n\n### PRD Status\n- Social sharing PRD draft at 70% complete\n- Sections 4-5 still pending (user flow details, success metrics)\n- Review meeting scheduled for tomorrow (April 3)\n\n### Action Items\n- [ ] Chen: Finish PRD sections 4-5 tonight\n- [ ] Li Jing: Prepare wireframes for review\n- [ ] Wang Lei: Assess technical feasibility\n\n## Open Questions\n- How does social sharing align with Q1 retention focus?\n- Should we push to Q2 instead?\n\n*Next sync: April 8, 2026*",
+    "outlinks": [
+      "OBSN-7",
+      "OBSN-10"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-01T17:30:00+08:00",
+    "last_updated": "2026-04-01T17:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-12",
+    "title": "Competitor Analysis - Gamification Features",
+    "folder": "Product/Research",
+    "tags": [
+      "research",
+      "competitor",
+      "gamification"
+    ],
+    "content": "# Competitor Analysis - Gamification & Retention\n\n## Platform A (Leading E-commerce)\n- Daily check-in rewards: +8% DAU\n- Achievement badges: 15% boost in session length\n- Points system tied to purchases\n\n## Platform B (Social Commerce)\n- Community challenges: strong engagement\n- User-generated content integration\n- Heavy social sharing (acquisition-focused)\n\n## Key Insights\n- Gamification drives retention better than social features for established users\n- Social sharing more effective for new user acquisition\n- Mixing strategies can dilute focus\n\n## Recommendation\n- Prioritize in-app gamification for Q1 retention goals\n- Defer social/viral features to Q2 acquisition phase\n\n*Research completed: 2026-03-15*",
+    "outlinks": [
+      "OBSN-10"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-15T11:00:00+08:00",
+    "last_updated": "2026-03-15T16:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-13",
+    "title": "PRD - 社交分享裂变功能 v1.0 - Completion Checklist",
+    "folder": "Product/PRD",
+    "tags": [
+      "prd",
+      "social-sharing",
+      "review-prep"
+    ],
+    "content": "# PRD Completion Status - Social Sharing Feature v1.0\n\n## Document: PRD - 社交分享裂变功能 v1.0\n\n### Completed Sections ✓\n- Chapter 1: Background & Objectives ✓\n- Chapter 2: User Stories & Use Cases ✓\n- Chapter 3: Feature Specifications ✓\n\n### Incomplete Sections ✗\n- **Chapter 4: Data & Analytics Framework** ✗\n  - Missing: Retention funnel definition\n  - Missing: A/B experiment design\n  - Missing: Success metrics baseline\n  - Status: ~30% complete\n  - Estimated time to complete: 3-4 hours\n\n- **Chapter 5: Implementation Roadmap** ✗\n  - Missing: Sprint allocation\n  - Missing: Resource requirements\n  - Missing: Risk mitigation plan\n  - Status: ~20% complete\n  - Estimated time to complete: 2-3 hours\n\n### Review Meeting Details\n- **Scheduled**: 2026-04-03 14:00\n- **Attendees**: Li Jing (Design), Zhang Hao (Dev Lead), Wang Lei (Dev), Boss (Product VP)\n- **Location**: Conference Room A\n\n### Action Required\n- Total work remaining: 5-7 hours\n- Current date: 2026-04-02 21:00\n- **Decision**: Need to request postponement to 2026-04-04 or 2026-04-07",
+    "outlinks": [
+      "OBSN-7"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T20:30:00+08:00",
+    "last_updated": "2026-04-02T20:55:00+08:00"
+  },
+  {
+    "note_id": "OBSN-14",
+    "title": "Meeting Stakeholder Contact List - Q1 2026",
+    "folder": "Product/Reference",
+    "tags": [
+      "contacts",
+      "stakeholders",
+      "meetings"
+    ],
+    "content": "# Key Stakeholders - Product Review Meetings\n\n## Product Technical Group (快购产品技术群)\n- **WeChat Group ID**: WCC-4\n- **Primary contacts**:\n  - Boss (Product VP) - decision maker\n  - Li Jing (Design Lead) - UX/UI owner\n  - Zhang Hao (Dev Lead) - technical feasibility\n  - Wang Lei (Dev) - implementation lead\n  - Liu Ting (Operations) - business requirements\n\n## Communication Protocols\n- **PRD ready**: Send confirmation 24h before review\n- **Postponement**: Notify ASAP with specific reasons + new timeline\n- **Urgent changes**: WeChat group message + individual DM to Boss\n\n## Recent Meeting History\n- 2026-03-28: Sprint planning (all attended)\n- 2026-03-15: Retention analysis review (Boss, Li Jing, Liu Ting)\n- 2026-02-20: A/B experiment kickoff (Zhang Hao, Wang Lei)",
+    "outlinks": [],
+    "inlinks": [
+      "OBSN-13"
+    ],
+    "created_at": "2026-03-25T15:00:00+08:00",
+    "last_updated": "2026-04-01T11:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-15",
+    "title": "Scheduled Job Dependency Map - Growth Analytics",
+    "folder": "Product/Analytics/Infrastructure",
+    "tags": [
+      "infrastructure",
+      "scheduler",
+      "dependencies",
+      "troubleshooting"
+    ],
+    "content": "# Scheduled Job Dependency Map\n\n## Critical Path: Weekly Growth Report\n\n**JOB-710: user_growth_weekly_report**\n- Schedule: Every Monday 02:00\n- Upstream dependencies:\n  - JOB-701: user_retention_funnel_analysis (must complete by Sunday 23:00)\n  - JOB-703: daily_kpi_dashboard_sync (provides baseline metrics)\n- Output: `/data/growth/weekly/growth_report_YYYY_WW.csv`\n- Downstream impact:\n  - Monday 10:00 Sprint Planning meeting (MTG-7001 series)\n  - Weekly stakeholder dashboard refresh\n  - Boss's Monday morning review deck\n\n## Known Issues\n- 2026-03-18: Transient DB timeout, auto-recovered\n- 2026-04-01: **FAILURE** - upstream retention job output missing, caused cascade failure\n\n## Remediation Playbook\n1. Check `/data/retention/weekly/` for missing files\n2. Verify JOB-701 execution history in scheduler\n3. If one-time glitch: manually re-run with `scheduler run JOB-710 --force`\n4. If systemic: escalate to Wang Lei (dev lead) + notify stakeholders of data delay\n5. Document incident in [[Incident Log 2026-Q1]]",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-10"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-28T15:30:00+08:00",
+    "last_updated": "2026-04-01T08:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-16",
+    "title": "Sprint Planning Data Requirements Checklist",
+    "folder": "Product/Sprints",
+    "tags": [
+      "sprint",
+      "planning",
+      "checklist",
+      "data"
+    ],
+    "content": "# Sprint Planning Data Requirements\n\nUpdated: 2026-04-02\n\n## Pre-Meeting Data Deliverables\n\n### Must-Have (Blocker if missing)\n- [ ] Weekly growth report (JOB-710 output) - **MISSING as of 2026-04-02 09:00**\n- [x] A/B test results summary (manual export from dashboard)\n- [x] User feedback synthesis (from customer service tickets)\n\n### Nice-to-Have\n- [x] Competitor feature analysis\n- [ ] Social sharing pilot metrics (JOB-711 data)\n\n## Meeting Details\n- When: Every Monday 10:00\n- Who: Product team + Dev leads + Design\n- Agenda: Review last sprint, prioritize next sprint backlog\n\n## Escalation Protocol\nIf weekly growth report missing by Monday 09:30:\n1. Notify meeting participants via WeChat (WCC-4)\n2. Propose: proceed with prior week's data + add follow-up action item\n3. Post-meeting: investigate root cause, document in incident log",
+    "outlinks": [
+      "OBSN-15",
+      "OBSN-10"
+    ],
+    "inlinks": [
+      "OBSN-10"
+    ],
+    "created_at": "2026-03-15T11:00:00+08:00",
+    "last_updated": "2026-04-02T09:15:00+08:00"
+  },
+  {
+    "note_id": "OBSN-17",
+    "title": "Social Sharing Feature - Final Scope Decision Record",
+    "folder": "Product/Decisions",
+    "tags": [
+      "decision",
+      "social-sharing",
+      "mvp",
+      "Q1-2026"
+    ],
+    "content": "# Social Sharing Feature - Final Scope Decision Record\n\n**Decision Date**: 2026-04-02\n**Decision Maker**: Boss (CEO)\n**Participants**: Chen Xiaoyu (PM), Zhang Hao (Dev Lead), Li Jing (Design Lead), Wang Lei (Dev), Liu Ming (QA)\n\n## Background\n\n### Original Proposal\nRefer to [[OBSN-8]] - PRD v1.0 proposed comprehensive social sharing virality feature including:\n- Multi-platform sharing (WeChat, Weibo, QQ, Douyin)\n- Points reward system\n- Referral tracking dashboard\n- Advanced analytics\n\n### Sprint Capacity Analysis\nRefer to [[OBSN-7]] - Sprint Planning Q1 2026 Week 2 showed:\n- Current sprint: 12 committed features, 85% capacity utilized\n- Available buffer: ~2 person-weeks\n- Risk: Adding full scope would require cutting 3-4 existing features\n\n### Competitor Research\nRefer to competitor analysis notes - most successful implementations start with single-platform MVP and iterate based on user behavior data.\n\n## Discussion Summary (2026-03-28 to 2026-04-02)\n\n### Key Concerns Raised\n1. **Technical complexity**: Multi-platform integration requires 4-6 weeks development + testing\n2. **Resource constraint**: Q1 sprint already at 85% capacity\n3. **User validation**: No data yet on which sharing channels users prefer\n4. **Time pressure**: Boss requires delivery within current quarter\n\n### Options Evaluated\n- **Option A**: Full scope, push to Q2 (rejected - business urgency)\n- **Option B**: MVP scope, deliver in 2 weeks (selected)\n- **Option C**: Partial scope with 2 platforms (rejected - still too complex)\n\n## Final Decision\n\n### Approved Scope (MVP)\n1. **WeChat sharing only** - single platform integration\n2. **Basic virality tracking** - share count, click-through, conversion funnel\n3. **Simple reward mechanism** - fixed coupon for successful referrals (no points system)\n4. **Core analytics** - dashboard showing share performance metrics\n\n### Explicitly Excluded from MVP\n- Multi-platform sharing (Weibo, QQ, Douyin)\n- Points/gamification system\n- Advanced referral dashboard\n- A/B testing framework for share content\n\n### Timeline\n- Development: 2 weeks (2026-04-07 to 2026-04-18)\n- Testing: 3 days (2026-04-21 to 2026-04-23)\n- Release: 2026-04-25 (soft launch)\n\n## Rationale\n\n1. **Capacity alignment**: MVP scope fits within 2 person-week buffer without cutting existing features\n2. **Risk mitigation**: Single platform reduces integration complexity and testing surface\n3. **Data-driven iteration**: MVP allows us to gather real user behavior before investing in multi-platform\n4. **Business value**: Core virality loop still achievable with WeChat (80% of our user base)\n5. **Technical debt management**: Clean implementation now vs. rushed multi-platform that requires refactoring\n\n## Next Steps\n\n- [ ] Zhang Hao: Technical design doc by 2026-04-03 EOD\n- [ ] Li Jing: Design mockups (MVP scope) by 2026-04-03 EOD\n- [ ] Chen Xiaoyu: Update PRD [[OBSN-8]] to reflect MVP scope\n- [ ] Wang Lei: Sprint backlog adjustment by 2026-04-04\n- [ ] Team: Kickoff meeting 2026-04-07 10:00 AM\n\n## References\n- Original PRD: [[OBSN-8]]\n- Sprint Planning: [[OBSN-7]]\n- Competitor Analysis: [[PRD - 社交分享裂变功能 v1.0]]\n- Related A/B Test Config: JOB-704\n\n---\n*Document Owner: Chen Xiaoyu*\n*Last Updated: 2026-04-02 17:30*",
+    "outlinks": [
+      "OBSN-8",
+      "OBSN-7"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T16:30:00+08:00",
+    "last_updated": "2026-04-02T17:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-18",
+    "title": "Meeting Notes - Social Sharing Scope Discussion 2026-03-30",
+    "folder": "Product/Meetings",
+    "tags": [
+      "meeting-notes",
+      "social-sharing",
+      "scope-discussion"
+    ],
+    "content": "# Meeting Notes - Social Sharing Scope Discussion\n\n**Date**: 2026-03-30 14:00-15:30\n**Attendees**: Boss, Chen Xiaoyu, Zhang Hao, Li Jing, Wang Lei\n\n## Agenda\n1. Review original proposal complexity\n2. Assess current sprint capacity\n3. Discuss scope reduction options\n\n## Key Points\n\n### Boss's Requirements\n- Must deliver something in Q1 (by end of April)\n- Need visible virality metrics for investor demo\n- Prefer quick win over perfect solution\n\n### Technical Constraints (Zhang Hao)\n- Multi-platform SDK integration: 3-4 weeks per platform\n- Points system requires new backend service: 2 weeks\n- Current sprint buffer: only 2 person-weeks\n\n### Design Perspective (Li Jing)\n- WeChat sharing UI can be delivered in 2 days\n- Multi-platform selector adds 1 week design + testing\n- Recommend focusing on one platform for clean UX\n\n## Decisions\n- Lean toward MVP approach\n- Boss to confirm final scope by 2026-04-02\n- Team to prepare technical feasibility doc\n\n## Action Items\n- Zhang Hao: Estimate WeChat-only implementation (due 2026-04-01)\n- Chen Xiaoyu: Draft MVP scope document (due 2026-04-01)\n- Li Jing: Mockup WeChat sharing flow (due 2026-04-01)",
+    "outlinks": [],
+    "inlinks": [
+      "OBSN-17"
+    ],
+    "created_at": "2026-03-30T16:00:00+08:00",
+    "last_updated": "2026-03-30T16:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-19",
+    "title": "竞品留存数据验证 - 2026-04-01 产品经理群讨论",
+    "folder": "Product/Research/CompetitiveIntel",
+    "tags": [
+      "competitive-analysis",
+      "retention",
+      "fact-check",
+      "social-sharing"
+    ],
+    "content": "# 竞品留存数据验证 - 2026-04-01\n\n## 背景\n产品经理交流群（WCC-10）中，竞品产品经理赵明声称其社交分享裂变功能实现 **Day-7 留存 15%**。\n\n## 待验证声明\n- **竞品**: 未明确具体产品名称\n- **功能**: 社交分享裂变（三级分销+阶梯奖励）\n- **指标**: Day-7 retention = 15%\n- **时间**: 上周上线（约 2026-03-24 ~ 2026-03-31）\n\n## 验证数据源\n1. **CLI Scheduler Job**: `JOB-713` (competitor_retention_analysis)\n   - 最新执行: 2026-03-31 02:00\n   - 输出路径: `/data/competitive_analysis/retention/2026_Q1_week13.json`\n\n2. **内部基准**: `JOB-714` (internal_social_share_benchmark)\n   - 最新执行: 2026-04-01 03:00\n   - 输出路径: `/data/experiments/social_share_benchmark/2026_Q1_final.json`\n\n## 验证结果\n### 竞品数据（JOB-713 输出）\n- **社交分享功能子集** (n=4 apps):\n  - Day-7 留存范围: **10.8% - 13.2%**\n  - 中位数: **12.1%**\n- **全部竞品** (n=12 apps):\n  - Day-7 留存范围: 9.2% - 13.8%\n  - 中位数: 11.5%\n\n### 内部基准数据（JOB-714 输出）\n- **实验 ID**: EXP-2026-Q1-SOCIAL-V2\n- **样本量**: 180K users (90K treatment, 90K control)\n- **Treatment 组 Day-7 留存**: **12.3%**\n- **Control 组 Day-7 留存**: 10.1%\n- **提升**: +2.2pp (p<0.001)\n\n## 结论\n**声称的 15% Day-7 留存数据存在疑点**：\n1. 远高于行业基准中位数 12.1%（高出 +2.9pp，约 24% 相对提升）\n2. 超出观测到的竞品最高值 13.2%（高出 +1.8pp）\n3. 超出我们内部最优实验结果 12.3%（高出 +2.7pp）\n\n**可能性分析**：\n- 统计口径差异（如仅计算完成新手引导用户、排除异常值等）\n- 样本量过小导致的统计波动\n- 短期冲量活动影响（非自然留存）\n- 数据误读或夸大\n\n## 建议回复策略\n不直接质疑对方数据，而是：\n1. 提供我们内部验证的行业基准范围（10.8%-13.2%）\n2. 分享我们实验数据（12.3%）作为参考\n3. 询问统计口径和样本量细节\n4. 强调需要基于可验证数据做功能优先级决策\n\n## 后续行动\n- [ ] 在微信群回复验证结果\n- [ ] 将此验证流程记录到 Fossify Notes 供未来参考\n- [ ] 下次需求评审时引用此数据支持优先级讨论\n\n---\n**数据来源**: \n- JOB-713 execution log (2026-03-31 02:00)\n- JOB-714 execution log (2026-04-01 03:00)\n- 相关 Obsidian 文档: [[竞品分析 - 社交分享裂变机制]] (OBSN-8)",
+    "outlinks": [
+      "OBSN-8"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-01T17:15:00+08:00",
+    "last_updated": "2026-04-01T18:42:00+08:00"
+  },
+  {
+    "note_id": "OBSN-20",
+    "title": "Data Verification Workflow - Competitor Claims",
+    "folder": "Product/Templates",
+    "tags": [
+      "template",
+      "workflow",
+      "competitive-analysis",
+      "data-verification"
+    ],
+    "content": "# Data Verification Workflow - Competitor Claims\n\n## Purpose\nStandardized process for verifying competitor claims before incorporating them into product decisions or roadmap discussions.\n\n## Workflow Steps\n\n### 1. Capture Original Claim\n- Source (WeChat group, industry report, conference, etc.)\n- Specific metric claimed\n- Context (product, feature, timeframe)\n- Claimant credibility\n\n### 2. Identify Internal Data Sources\n- **Scheduler Jobs**:\n  - `JOB-713`: competitor_retention_analysis (weekly)\n  - `JOB-707`: ab_experiment_social_share_export (daily)\n  - `JOB-714`: internal_social_share_benchmark (weekly)\n- **Obsidian Notes**:\n  - Product/Research/CompetitiveIntel folder\n  - Product/Analytics/ABTest folder\n\n### 3. CLI Verification\n```bash\n# Check latest scheduler job output\nscheduler logs --job-id JOB-713 --limit 1\ncat /data/competitive_analysis/retention/2026_Q1_week13.json\n\n# Cross-reference internal benchmark\nscheduler logs --job-id JOB-714 --limit 1\ncat /data/experiments/social_share_benchmark/2026_Q1_final.json\n```\n\n### 4. Analysis Framework\n- Compare claimed metric vs. observed range\n- Calculate deviation from median/mean\n- Identify potential methodology differences\n- Assess statistical significance of deviation\n\n### 5. Response Strategy\n- **If claim verified**: Share supporting internal data, discuss implications\n- **If claim questionable**: Request methodology details, share industry baseline, avoid direct confrontation\n- **If claim contradicts data**: Provide alternative verified figures with source references\n\n### 6. Documentation\n- Create verification note in Obsidian (Product/Research/CompetitiveIntel)\n- Log in Fossify Notes for quick mobile reference\n- Link to relevant PRD or strategy documents\n\n## Example Use Cases\n- Competitor retention claims in WeChat groups → [[竞品留存数据验证 - 2026-04-01 产品经理群讨论]] (OBSN-19)\n- Industry benchmark reports\n- Conference presentation claims\n- Media coverage of competitor metrics\n\n---\n**Related Documents**:\n- [[A/B Experiment Data Verification Checklist]] (OBSN-5)\n- [[竞品分析 - 社交分享裂变机制]] (OBSN-8)",
+    "outlinks": [
+      "OBSN-19",
+      "OBSN-5",
+      "OBSN-8"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-01T18:50:00+08:00",
+    "last_updated": "2026-04-01T18:50:00+08:00"
+  },
+  {
+    "note_id": "OBSN-21",
+    "title": "Q1 2026 Retention Improvement Action Plan",
+    "folder": "Product/Strategy",
+    "tags": [
+      "retention",
+      "strategy",
+      "q1-2026",
+      "okr"
+    ],
+    "content": "# Q1 2026 Retention Improvement Action Plan\n\n**Date:** 2026-04-02\n**Author:** Chen Xiaoyu\n**Status:** Draft for Review\n\n## Executive Summary\nBased on overnight batch analysis (JOB-715, completed 2026-04-02 02:00) and competitive benchmarking research, this document outlines 5 prioritized initiatives to improve user retention in Q1 2026.\n\n## Current Metrics (as of 2026-04-02)\n- **Day-1 Retention:** 43.2% (sample: 2.3M users)\n- **Day-7 Retention:** 19.1%\n- **Day-30 Retention:** 8.4%\n- **Data Source:** JOB-715 output `/data/retention/2026-04-02/`\n\n## Competitive Benchmarks\n(Cross-referenced from [[OBSN-12]], [[OBSN-8]], [[OBSN-13]])\n- **Industry Average Day-7:** 24.3% (gap: -5.2pp)\n- **Top Competitor (Pinduoduo):** Day-7 28.1%, Day-30 12.3%\n- **Key Gap:** Social sharing mechanisms drive 15-20% incremental retention\n\n## Funnel Drop-off Analysis\n1. **Onboarding (Day 0-1):** 56.8% drop → Need gamification\n2. **First Purchase (Day 1-7):** 24.1% drop → Incentive optimization\n3. **Habit Formation (Day 7-30):** 10.7% drop → Social engagement\n\n## Prioritized Initiatives\n\n### Initiative 1: Social Sharing Gamification (Priority: HIGH)\n- **Rationale:** Competitor analysis shows 15-20% retention lift from social features (OBSN-8)\n- **Scope:** Implement friend-invite rewards, share-to-unlock discounts\n- **Target Impact:** +3.5pp Day-7 retention\n- **Q1 OKR Alignment:** Growth KPI - 25% DAU increase\n- **Sprint:** Week 14-16\n\n### Initiative 2: Onboarding Funnel Optimization (Priority: HIGH)\n- **Rationale:** 56.8% Day-1 drop is 12pp above industry average\n- **Scope:** Reduce registration steps, personalized product recommendations\n- **Target Impact:** +5pp Day-1 retention\n- **Q1 OKR Alignment:** User acquisition efficiency\n- **Sprint:** Week 14-15\n\n### Initiative 3: First-Purchase Incentive Redesign (Priority: MEDIUM)\n- **Rationale:** Day 1-7 drop-off correlates with low first-order conversion\n- **Scope:** Dynamic coupon strategy, time-limited offers\n- **Target Impact:** +2pp Day-7 retention\n- **Sprint:** Week 15-16\n\n### Initiative 4: Push Notification Personalization (Priority: MEDIUM)\n- **Rationale:** Competitor benchmarks show 30% engagement lift from ML-driven notifications\n- **Scope:** User behavior clustering, personalized send-time optimization\n- **Target Impact:** +1.5pp Day-30 retention\n- **Sprint:** Week 16-17\n\n### Initiative 5: Community Feature Pilot (Priority: LOW)\n- **Rationale:** Long-term retention driver per OBSN-13 research\n- **Scope:** User reviews, Q&A forum beta\n- **Target Impact:** +0.8pp Day-30 retention (long-tail)\n- **Sprint:** Week 17-18\n\n## Implementation Roadmap\n- **Week 14 (Apr 7-11):** Kick-off Initiative 1 & 2, design reviews\n- **Week 15 (Apr 14-18):** Development sprint, A/B test setup\n- **Week 16 (Apr 21-25):** Launch Initiative 1 & 2, monitor metrics\n- **Week 17-18:** Iterate based on data, launch Initiative 3-5\n\n## Success Metrics\n- **Primary KPI:** Day-7 retention reaches 22% by end of Q1 (current: 19.1%)\n- **Secondary KPI:** Day-30 retention reaches 10% (current: 8.4%)\n- **Leading Indicator:** Social sharing events >50K/day within 2 weeks of launch\n\n## Next Steps\n1. Review with Zhang Hao (Dev Lead) and Li Jing (Design Lead)\n2. Align with Q1 sprint capacity (TODO-513 blocker resolution needed)\n3. Set up A/B experiment tracking (reference OBSN-5 checklist)\n4. Weekly progress review in product standup\n\n---\n**Related Documents:**\n- [[OBSN-1]] - Q1 2026 用户留存分析数据输出路径索引\n- [[OBSN-8]] - 竞品分析 - 社交分享裂变机制\n- [[OBSN-12]] - Gamification Features (Competitor Research)\n- [[OBSN-13]] - Competitor Retention Benchmarks\n- [[OBSN-10]] - Q1 2026 Growth Strategy & OKR Tracking",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-8",
+      "OBSN-12",
+      "OBSN-13",
+      "OBSN-10",
+      "OBSN-5"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T09:30:00+08:00",
+    "last_updated": "2026-04-02T11:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-22",
+    "title": "Competitor Retention Benchmarks - Q1 2026 Update",
+    "folder": "Product/Research",
+    "tags": [
+      "competitor",
+      "benchmark",
+      "retention",
+      "research"
+    ],
+    "content": "# Competitor Retention Benchmarks - Q1 2026 Update\n\n**Last Updated:** 2026-03-31\n**Data Source:** JOB-716 scraper output + manual research\n\n## E-commerce Platform Benchmarks\n\n### Pinduoduo (拼多多)\n- Day-1 Retention: 51.2%\n- Day-7 Retention: 28.1%\n- Day-30 Retention: 12.3%\n- **Key Differentiator:** Group-buying social mechanics, friend-invite rewards\n\n### Taobao (淘宝)\n- Day-1 Retention: 48.7%\n- Day-7 Retention: 25.6%\n- Day-30 Retention: 11.8%\n- **Key Differentiator:** Live-streaming commerce, creator ecosystem\n\n### JD.com (京东)\n- Day-1 Retention: 45.3%\n- Day-7 Retention: 22.9%\n- Day-30 Retention: 10.2%\n- **Key Differentiator:** Logistics speed, membership program\n\n### Industry Average (Mid-tier E-commerce)\n- Day-1 Retention: 47.2%\n- Day-7 Retention: 24.3%\n- Day-30 Retention: 10.5%\n\n## Gap Analysis vs. 快购科技 (Current: Day-7 19.1%)\n- **Gap to Industry Avg:** -5.2pp\n- **Gap to Top Performer (Pinduoduo):** -9.0pp\n- **Primary Weakness:** Lack of social engagement features\n\n## Actionable Insights\n1. Social sharing mechanisms drive 15-20% incremental retention (Pinduoduo case study)\n2. Gamification (daily check-in, points) improves Day-30 retention by 8-12%\n3. Personalized push notifications increase Day-7 retention by 3-5pp\n\n---\n**Related:** [[OBSN-8]], [[OBSN-12]], [[OBSN-21]]",
+    "outlinks": [
+      "OBSN-8",
+      "OBSN-12",
+      "OBSN-21"
+    ],
+    "inlinks": [
+      "OBSN-21"
+    ],
+    "created_at": "2026-03-31T10:00:00+08:00",
+    "last_updated": "2026-03-31T15:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-23",
+    "title": "JOB-715 Output Directory Structure - 2026-04-02",
+    "folder": "Product/Analytics/Retention",
+    "tags": [
+      "retention",
+      "data",
+      "job-output"
+    ],
+    "content": "# JOB-715 Retention Analysis Output - 2026-04-02\n\n## Directory Structure\n```\n/data/retention/2026-04-02/\n├── day1/\n│   ├── cohort_summary.csv (Day-1 retention: 43.2%, sample: 2.3M)\n│   ├── funnel_dropoff.json\n│   └── segment_breakdown.csv\n├── day7/\n│   ├── cohort_summary.csv (Day-7 retention: 19.1%)\n│   ├── channel_attribution.csv\n│   └── behavior_clusters.json\n└── day30/\n    ├── cohort_summary.csv (Day-30 retention: 8.4%)\n    ├── ltv_analysis.csv\n    └── churn_reasons.json\n```\n\n## Key Metrics (for Weekly Report)\n- **Sample Size:** 2,300,000 users (cohort: 2026-03-01 to 2026-03-31)\n- **Day-1 Retention:** 43.2% (↓0.8pp vs last month)\n- **Day-7 Retention:** 19.1% (↓1.2pp vs last month)\n- **Day-30 Retention:** 8.4% (stable)\n\n## Funnel Drop-off Points\n1. Registration → First Browse: 56.8% drop\n2. First Browse → First Purchase: 24.1% drop\n3. First Purchase → Repeat Purchase (Day 7): 10.7% drop\n\n## Version Control\n- **Job Run Time:** 2026-04-02 02:00:00\n- **Pipeline Version:** v2.3.1\n- **Data Quality:** PASS (validated against OBSN-5 checklist)\n\n---\n**Use this version for:**\n- Weekly report (TODO-504)\n- Action plan data citations (OBSN-21)\n- Stakeholder communications",
+    "outlinks": [
+      "OBSN-5",
+      "OBSN-21"
+    ],
+    "inlinks": [
+      "OBSN-21"
+    ],
+    "created_at": "2026-04-02T08:15:00+08:00",
+    "last_updated": "2026-04-02T08:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-24",
+    "title": "Analytics Infrastructure - Job Dependencies Map",
+    "folder": "Product/Analytics/Infrastructure",
+    "tags": [
+      "analytics",
+      "infrastructure",
+      "dependencies",
+      "troubleshooting"
+    ],
+    "content": "# Analytics Job Dependencies Map\n\n## Weekly Growth Report Pipeline\n\n### JOB-710: user_growth_weekly_report\n- **Schedule**: Every Tuesday 2:00 AM\n- **Dependencies**:\n  - JOB-701: user_retention_funnel_analysis (must complete by Monday 11:59 PM)\n  - JOB-704: ab_experiment_social_share_export (must complete by Monday 11:59 PM)\n- **Output**: `/data/reports/growth/weekly/YYYY-Www/`\n- **Recovery Procedure**:\n  1. Check upstream job logs in `/var/log/scheduler/`\n  2. Verify input data integrity\n  3. If upstream failed: re-run upstream job first\n  4. If data missing: check path changes in config\n  5. Re-run time: ~30 min for full pipeline\n\n## Data Integrity Checks\n- Retention funnel output: `/data/analytics/retention/YYYY-Qq/funnel_summary.parquet`\n- A/B experiment output: `/data/experiments/*/results.json`\n- Weekly report output: `/data/reports/growth/weekly/YYYY-Www/consolidated_report.xlsx`\n\n## Known Issues\n- 2026-03-15: Path structure changed from `/data/analytics/retention/` to `/data/analytics/retention/YYYY-Qq/`\n- Some legacy jobs still reference old paths\n\n## Escalation Contacts\n- Data Engineering: Wang Lei (wanglei@kuaigou.com)\n- Infrastructure: Zhang Hao (zhanghao@kuaigou.com)",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-5"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-28T14:30:00+08:00",
+    "last_updated": "2026-04-01T16:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-25",
+    "title": "INCIDENT LOG - JOB-710 Failure 2026-04-02",
+    "folder": "Product/Analytics/Incidents",
+    "tags": [
+      "incident",
+      "job-failure",
+      "urgent",
+      "operations"
+    ],
+    "content": "# Incident: JOB-710 Failure - 2026-04-02\n\n## Timeline\n- **08:45**: Operations team leader Liu Ting requested Q1 retention report for executive review (tomorrow 10:00 AM)\n- **09:10**: Checked scheduler logs, discovered JOB-710 failed at 02:00 AM\n- **09:15**: Root cause identified: upstream dependency JOB-701 output file missing\n\n## Root Cause\n- **Job**: JOB-710 (user_growth_weekly_report)\n- **Error**: FileNotFoundError - Expected input `/data/analytics/retention/2026-Q1/funnel_summary.parquet` not found\n- **Upstream Job**: JOB-701 (user_retention_funnel_analysis) - need to verify status\n- **Likely Cause**: Path structure change or upstream job failure\n\n## Impact Assessment\n- **Stakeholder**: Operations team + executive leadership\n- **Deadline**: Tomorrow 10:00 AM (executive review meeting)\n- **Data Scope**: Q1 2026 retention improvement metrics\n- **Business Impact**: HIGH - executive decision-making blocked\n\n## Recovery Options\n\n### Option 1: Full Re-run (Recommended)\n- Re-run JOB-701 (retention funnel) - ~45 min\n- Re-run JOB-710 (weekly report) - ~30 min\n- **Total time**: ~90 min\n- **Risk**: Low, produces complete accurate data\n- **Delivery**: Today 18:00 (buffer for review)\n\n### Option 2: Manual Aggregation\n- Extract data from multiple partial outputs\n- Manual Excel consolidation\n- **Total time**: ~3 hours\n- **Risk**: Medium, potential for human error\n- **Delivery**: Today 20:00\n\n### Option 3: Use Previous Week + Delta\n- Use 2026-W12 report as baseline\n- Add manual delta for 2026-W13\n- **Total time**: ~1 hour\n- **Risk**: HIGH, incomplete Q1 picture\n- **Not recommended for executive review**\n\n## Mitigation Plan\n- **Chosen**: Option 1 (Full Re-run)\n- **Action Items**:\n  1. ✅ Document incident and options\n  2. ⏳ Coordinate with data engineering (Wang Lei) for re-run\n  3. ⏳ Send commitment to Liu Ting via WeChat\n  4. ⏳ Create delivery checkpoint calendar reminder\n  5. ⏳ Monitor re-run progress\n  6. ⏳ Deliver final report by 18:00\n\n## Communication Plan\n- **To Liu Ting (Operations)**: Clear timeline + risk factors + fallback\n- **To Data Engineering**: Re-run request with priority flag\n- **To Self**: Calendar checkpoint at 16:00 for progress check\n\n## Lessons Learned\n- Need automated alerting for critical job failures\n- Dependency validation should run before main job\n- Consider implementing data path versioning\n\n---\n*Created: 2026-04-02 09:20*\n*Status: IN PROGRESS*",
+    "outlinks": [
+      "OBSN-24",
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T09:20:00+08:00",
+    "last_updated": "2026-04-02T09:35:00+08:00"
+  },
+  {
+    "note_id": "OBSN-26",
+    "title": "Q1 2026 Retention Metrics - Executive Summary Template",
+    "folder": "Product/Reports",
+    "tags": [
+      "template",
+      "retention",
+      "executive",
+      "Q1"
+    ],
+    "content": "# Q1 2026 Retention Improvement Report\n## Executive Summary Template\n\n### Key Metrics\n- **Day-1 Retention**: [X]% (Target: 40%, Previous Q: [Y]%)\n- **Day-7 Retention**: [X]% (Target: 18%, Previous Q: [Y]%)\n- **Day-30 Retention**: [X]% (Target: 8%, Previous Q: [Y]%)\n- **Cohort Size**: [X]M new users\n\n### Top Initiatives Impact\n1. **Social Sharing Feature** (launched Week 8)\n   - Incremental Day-7 retention: +[X]%\n   - User adoption: [X]%\n2. **Onboarding Optimization** (A/B test)\n   - Winning variant lift: +[X]%\n   - Rollout: Week [X]\n\n### Risks & Mitigation\n- [Risk area]\n- [Mitigation plan]\n\n### Q2 Recommendations\n- [Priority 1]\n- [Priority 2]\n\n---\n*Data sources: JOB-710 output, A/B experiment results*\n*Last updated: [Date]*",
+    "outlinks": [],
+    "inlinks": [
+      "OBSN-25"
+    ],
+    "created_at": "2026-03-20T11:00:00+08:00",
+    "last_updated": "2026-03-28T15:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-27",
+    "title": "PRD - 社交分享裂变功能 v1.0 - Completion Status",
+    "folder": "Product/PRD",
+    "tags": [
+      "prd",
+      "social-sharing",
+      "status-tracking"
+    ],
+    "content": "# PRD Completion Status - Social Sharing Viral Feature v1.0\n\n## Last Updated: 2026-04-02 21:30\n\n### Completed Chapters (5/7)\n- ✅ Chapter 1: Product Overview & Business Goals\n- ✅ Chapter 2: User Stories & Use Cases\n- ✅ Chapter 3: Feature Specifications\n- ✅ Chapter 4: Data Analytics Framework (completed 2026-04-01)\n- ✅ Chapter 5: Implementation Roadmap (completed 2026-04-02)\n\n### Remaining Chapters (2/7)\n- ❌ Chapter 6: Risk Assessment & Mitigation (estimated 3 hours)\n- ❌ Chapter 7: Success Metrics & Monitoring (estimated 2 hours)\n\n## Estimated Completion Time\n- Total remaining work: ~5 hours\n- With current workload: earliest completion 2026-04-03 16:00\n- PRD review scheduled: 2026-04-03 14:00 ⚠️ CONFLICT\n\n## Decision Log\n- 2026-04-02 21:45: Evaluated minimum viable PRD for review - Chapters 1-5 cover core functionality and implementation plan\n- Option A: Request 1-day postponement to complete all chapters\n- Option B: Proceed with partial review, add Chapters 6-7 in follow-up\n\n## Cross-references\n- Sprint capacity: [[Sprint Planning Q1 2026 - Week 14]]\n- Related: [[竞品分析 - 社交分享裂变机制]]",
+    "outlinks": [
+      "OBSN-3",
+      "OBSN-8"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-01T10:00:00+08:00",
+    "last_updated": "2026-04-02T21:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-28",
+    "title": "Sprint Planning Q1 2026 - Week 14 Capacity",
+    "folder": "Product/Sprints",
+    "tags": [
+      "sprint",
+      "capacity",
+      "q1-2026"
+    ],
+    "content": "# Sprint Week 14 Capacity Analysis\n## Period: 2026-03-31 ~ 2026-04-06\n\n### Team Availability\n**Development Team**\n- Wang Lei (Dev Lead): 32h available (8h blocked for JOB-710 incident recovery)\n- Zhang Hao (Backend): 40h available\n- Li Ming (Frontend): 24h available (2 days PTO on Apr 4-5)\n\n**Design Team**\n- Li Jing (Design Lead): 40h available\n- Chen Wei (UI): 32h available\n\n**Product Team**\n- Chen Xiaoyu (PM): 40h available (heavily loaded with PRD completion + cross-dept alignment)\n\n### Committed Work\n- Social sharing feature PRD review: Apr 3 14:00 (2h meeting + 4h prep)\n- A/B experiment config fix: 8h (Wang Lei assigned)\n- User retention analysis follow-up: 6h (Chen Xiaoyu)\n- Cross-department Q1 review: Apr 3 14:30 (1.5h meeting + 3h prep)\n\n### Capacity Status\n- **Development**: 85% utilized\n- **Design**: 60% utilized\n- **Product**: 95% utilized ⚠️ OVERLOADED\n\n### Scheduling Conflicts Identified\n- Chen Xiaoyu: PRD review (Apr 3 14:00) overlaps with Cross-dept alignment (Apr 3 14:30)\n- Both meetings are high-priority and involve different stakeholder groups\n- PRD completion requires additional 5h work before review\n\n### Recommendations\n- Postpone PRD review by 1 day to Apr 4 10:00\n- Prioritize cross-dept alignment (quarterly planning cycle dependency)\n- Use Apr 3 evening to complete PRD Chapters 6-7",
+    "outlinks": [
+      "OBSN-27",
+      "OBSN-7"
+    ],
+    "inlinks": [
+      "OBSN-27"
+    ],
+    "created_at": "2026-03-31T09:00:00+08:00",
+    "last_updated": "2026-04-02T20:15:00+08:00"
+  },
+  {
+    "note_id": "OBSN-29",
+    "title": "Meeting Notes - Team Availability Q1 Final Sprint",
+    "folder": "Product/Meetings",
+    "tags": [
+      "meeting-notes",
+      "availability",
+      "sprint"
+    ],
+    "content": "# Team Availability Discussion - Q1 Final Sprint\n**Date**: 2026-04-01 16:00\n**Attendees**: Wang Lei, Li Jing, Chen Xiaoyu, Zhang Hao\n\n## Key Points\n\n### Development Team Commitments\n- Wang Lei: Leading JOB-710 incident recovery (critical scheduler failure), estimated 8h required through Apr 3\n- Zhang Hao: Available for PRD review and implementation kickoff\n- Li Ming: Taking PTO Apr 4-5 (family commitment, non-negotiable)\n\n### Design Team Commitments\n- Li Jing: Fully available, ready for PRD review anytime Apr 3-4\n- Prefers morning slots for deep review work\n\n### Stakeholder Constraints\n- Cross-department alignment meeting (Apr 3 14:30) involves:\n  - Liu Ting (Operations Lead) - traveling back from Shanghai, only available afternoon Apr 3\n  - Marketing VP - hard stop at 16:00 for board meeting\n  - Data team lead - flexible\n\n### PRD Review Stakeholder Availability\n- Li Jing: Flexible Apr 3-4, prefers mornings\n- Wang Lei: Blocked until Apr 3 16:00 (incident recovery), available Apr 4 anytime\n- Zhang Hao: Flexible both days\n\n## Conclusion\n- Cross-dept meeting has more rigid constraints (external stakeholders, quarterly cycle)\n- PRD review can be moved to Apr 4 morning without major impact\n- Chen Xiaoyu to finalize PRD Chapters 6-7 by Apr 3 evening",
+    "outlinks": [
+      "OBSN-27",
+      "OBSN-28"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-01T16:30:00+08:00",
+    "last_updated": "2026-04-01T17:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-30",
+    "title": "Decision Record - Social Sharing MVP Scope (2026-04-01)",
+    "folder": "Product/Decisions",
+    "tags": [
+      "decision",
+      "social-sharing",
+      "mvp",
+      "q1-2026"
+    ],
+    "content": "# Decision Record: Social Sharing MVP Scope\n\n**Date**: 2026-04-01\n**Decision Owner**: Chen Xiaoyu\n**Stakeholders**: Zhao Ming (Boss), Wang Lei (Dev Lead), Li Jing (Design Lead), Zhang Hao (Backend Dev)\n\n## Context\n\nDuring Q1 KPI sprint, leadership requested addition of social sharing viral feature to current iteration. Original proposal included gamification elements (leaderboards, achievement badges, social challenges). Current sprint capacity analysis ([[OBSN-7]]) shows 12 committed features with limited engineering bandwidth.\n\n## Background Research\n\n- **Competitive Analysis** ([[OBSN-8]]): Major competitors use tiered approaches - simple share-to-earn as foundation, gamification as retention layer\n- **Q1 OKR Alignment** ([[OBSN-10]]): Primary goal is user acquisition (target: +15% new user growth), secondary is engagement\n- **Sprint Capacity** ([[OBSN-7]]): 2 weeks remaining in current sprint, dev team at 95% capacity\n- **Original PRD** ([[OBSN-8]]): Proposed full-featured gamification system requiring 4-week development cycle\n\n## Options Considered\n\n### Option A: Full Gamification MVP (Original Proposal)\n- **Scope**: Share-to-earn + leaderboards + achievement system + social challenges\n- **Timeline**: 4 weeks development + 1 week testing\n- **Pros**: Complete feature set, stronger engagement hooks\n- **Cons**: Misses current sprint deadline, requires pushing 3 committed features to Q2, high technical complexity\n\n### Option B: Simple Share-to-Earn MVP (Recommended)\n- **Scope**: Core sharing flow + points reward system + basic analytics\n- **Timeline**: 2 weeks development + 3 days testing\n- **Pros**: Fits current sprint, validates core hypothesis, foundation for future iteration\n- **Cons**: Limited engagement mechanics, requires Q2 follow-up\n\n### Option C: Defer to Q2\n- **Scope**: Full feature set in Q2 Sprint 1\n- **Timeline**: 4 weeks in Q2\n- **Pros**: No sprint disruption, proper planning time\n- **Cons**: Misses Q1 growth window, competitive disadvantage\n\n## Final Decision\n\n**Selected**: Option B - Simple Share-to-Earn MVP\n\n## Rationale\n\n1. **Strategic Alignment**: Prioritizes Q1 OKR (user acquisition) over secondary engagement goals\n2. **Risk Management**: Validates core sharing behavior before investing in complex gamification\n3. **Capacity Realism**: Respects current sprint commitments and team bandwidth\n4. **Iterative Approach**: Establishes foundation for Q2 gamification enhancement based on real user data\n\n## Trade-offs Accepted\n\n- **Engagement Depth**: Initial version will have lower retention hooks compared to gamified experience\n- **Competitive Parity**: Temporarily behind competitors with full gamification systems\n- **Two-Phase Rollout**: Requires Q2 follow-up investment and potential user re-education\n\n## Implementation Timeline\n\n- **Week 1 (Apr 1-5)**: Core sharing flow + backend points system\n- **Week 2 (Apr 8-12)**: UI polish + analytics integration + testing\n- **Week 3 (Apr 15)**: Production release\n- **Q2 Sprint 1**: Gamification layer (leaderboards, achievements)\n\n## Success Metrics\n\n- Share rate: >8% of DAU\n- Viral coefficient: >0.3\n- New user acquisition via shares: +5% of total new users\n\n## Participants & Consensus\n\n- **Zhao Ming** (Boss): Approved, emphasized importance of Q2 follow-through\n- **Wang Lei** (Dev Lead): Confirmed 2-week feasibility, flagged need for analytics instrumentation\n- **Li Jing** (Design Lead): Supported phased approach, will prepare Q2 gamification research\n- **Chen Xiaoyu** (PM): Documented decision, will track metrics for Q2 planning\n\n## Related Documents\n\n- [[OBSN-8]] PRD - 社交分享裂变功能 v1.0\n- [[OBSN-8]] 竞品分析 - 社交分享裂变机制\n- [[OBSN-7]] Sprint Planning Q1 2026 - Week 2\n- [[OBSN-10]] Q1 2026 Growth Strategy & OKR Tracking\n\n## Archive Location\n\nWeChat discussion thread: 快购产品技术群, 2026-04-01 15:20-15:30\n\n---\n*Decision finalized: 2026-04-01 15:30*\n*Document created: 2026-04-01 17:30*",
+    "outlinks": [
+      "OBSN-7",
+      "OBSN-8",
+      "OBSN-10"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-01T17:30:00+08:00",
+    "last_updated": "2026-04-01T17:42:00+08:00"
+  },
+  {
+    "note_id": "OBSN-31",
+    "title": "Decision Record Template",
+    "folder": "Product/Templates",
+    "tags": [
+      "template",
+      "decision",
+      "process"
+    ],
+    "content": "# Decision Record Template\n\n**Date**: YYYY-MM-DD\n**Decision Owner**: [Name]\n**Stakeholders**: [List key participants]\n\n## Context\n[Why this decision is needed, what triggered it]\n\n## Background Research\n[Links to relevant analysis, data, prior discussions]\n\n## Options Considered\n\n### Option A: [Name]\n- **Scope**: \n- **Timeline**: \n- **Pros**: \n- **Cons**: \n\n### Option B: [Name]\n[Repeat structure]\n\n## Final Decision\n**Selected**: [Option X]\n\n## Rationale\n[Key reasons for selection]\n\n## Trade-offs Accepted\n[What we're giving up or deferring]\n\n## Implementation Timeline\n[Key milestones]\n\n## Success Metrics\n[How we'll measure success]\n\n## Participants & Consensus\n[Who agreed, any dissenting views]\n\n## Related Documents\n[Links to PRDs, analysis, meeting notes]\n\n---\n*Decision finalized: [timestamp]*\n*Document created: [timestamp]*",
+    "outlinks": [],
+    "inlinks": [
+      "OBSN-30"
+    ],
+    "created_at": "2026-04-01T17:00:00+08:00",
+    "last_updated": "2026-04-01T17:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-32",
+    "title": "Q2 Planning - Gamification Enhancement Backlog",
+    "folder": "Product/Backlog",
+    "tags": [
+      "q2",
+      "gamification",
+      "social-sharing",
+      "backlog"
+    ],
+    "content": "# Q2 Gamification Enhancement\n\n## Background\nFollowing [[OBSN-30]] decision to ship simple share-to-earn MVP in Q1, this document tracks Q2 gamification layer requirements.\n\n## Deferred Features from Q1\n\n### Leaderboards\n- Weekly/monthly ranking by share count\n- Friend-based competitive view\n- Top sharer badges\n\n### Achievement System\n- Milestone badges (10/50/100 shares)\n- Special event achievements\n- Profile showcase\n\n### Social Challenges\n- Team-based sharing goals\n- Limited-time campaigns\n- Bonus multipliers\n\n## Dependencies\n- Q1 MVP analytics data (share patterns, user segments)\n- User research on engagement motivations\n- Backend scalability for real-time leaderboards\n\n## Estimated Effort\n4 weeks development + 1 week testing\n\n## Priority\nHigh - committed in [[OBSN-30]] decision record\n\n---\n*Created: 2026-04-01*",
+    "outlinks": [
+      "OBSN-30"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-01T17:50:00+08:00",
+    "last_updated": "2026-04-01T17:50:00+08:00"
+  },
+  {
+    "note_id": "OBSN-33",
+    "title": "A/B Test Budget Reconciliation - Social Sharing Feature",
+    "folder": "Product/Analytics/ABTest",
+    "tags": [
+      "ab-test",
+      "budget",
+      "finance",
+      "reconciliation"
+    ],
+    "content": "# A/B Test Budget Reconciliation\n## Experiment: Social Sharing Feature (JOB-704)\n\n### Budget Overview\n**Approved Budget** (PRD OBSN-8, Section 6.2 - Budget Allocation):\n- Cloud compute resources: ¥12,000\n- Sample size: 1.5M users\n- Duration: 7 days\n- Test period: 2026-03-25 to 2026-04-01\n\n**Actual Spend** (verified from scheduler JOB-722 execution history):\n- Cloud compute resources: ¥18,500\n- Sample size: 2.8M users (86.7% increase)\n- Duration: 14 days (100% increase)\n- Test period: 2026-03-25 to 2026-04-08 (extended)\n\n### Variance Analysis\n- **Budget variance:** +¥6,500 (+54.2%)\n- **Root causes:**\n  1. Scope expansion: Boss requested extended test duration via WeChat (2026-03-27)\n  2. Sample size increase: Marketing team requested larger cohort for statistical significance\n  3. Real-time analytics: Added mid-test to support weekly KPI reporting\n\n### Resource Consumption Breakdown\n- Base compute (7 days, 1.5M users): ¥8,200\n- Extended runtime (additional 7 days): ¥5,800\n- Real-time analytics instances: ¥4,500\n- **Total:** ¥18,500\n\n### Mitigation Options\n**Option A: Budget Top-up (Recommended)**\n- Request additional ¥7,000 budget allocation\n- Justification: Critical for Q1 KPI delivery, test already complete\n- Approval needed: Finance liaison + Zhang Hao (Dev Lead)\n\n**Option B: Scope Reduction (Fallback)**\n- Rerun test with 1.8M users, 10-day duration\n- Estimated cost: ¥11,500 (within original budget)\n- Risk: Delays Q1 reporting by 2 weeks\n\n### Next Steps\n1. ✅ Verify scheduler logs (JOB-722)\n2. ✅ Cross-reference PRD budget (OBSN-8)\n3. ✅ Draft reconciliation report\n4. ⏳ Send report via Fossify Messages to finance + Zhang Hao\n5. ⏳ Await approval decision\n\n### References\n- PRD: [[OBSN-8]] Section 6.2\n- A/B Test Checklist: [[OBSN-5]]\n- Scheduler job: JOB-722\n- WeChat scope change request: WCC-4 (2026-03-27 message from boss)",
+    "outlinks": [
+      "OBSN-8",
+      "OBSN-5"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T10:30:00+08:00",
+    "last_updated": "2026-04-02T15:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-34",
+    "title": "Finance Approval Tracking - Q1 2026",
+    "folder": "Product/Finance",
+    "tags": [
+      "finance",
+      "approvals",
+      "tracking"
+    ],
+    "content": "# Finance Approval Tracking - Q1 2026\n\n## Pending Approvals\n\n### 2026-04-02: A/B Test Budget Overage\n- **Amount:** ¥6,500 overage (¥18,500 actual vs ¥12,000 budget)\n- **Project:** Social Sharing Feature A/B Test\n- **Status:** Reconciliation report drafted, pending submission\n- **Approvers:** Finance liaison + Zhang Hao (Dev Lead)\n- **Deadline:** 2026-04-03 EOD\n- **Reference:** [[OBSN-33]]\n\n## Approved Budget Changes (Q1)\n\n### 2026-03-15: User Retention Analysis Extension\n- **Amount:** +¥3,000\n- **Approved by:** Finance Team\n- **Reason:** Extended analysis period for Q1 report\n\n### 2026-02-20: Third-party API Quota Increase\n- **Amount:** +¥2,500\n- **Approved by:** Finance Team\n- **Reason:** Higher than expected user growth\n\n## Budget Summary Q1 2026\n- **Original allocation:** ¥180,000\n- **Approved increases:** ¥5,500\n- **Pending requests:** ¥7,000\n- **Current spend:** ¥156,300 (87% of original)\n- **Projected final:** ¥168,800 (94% utilization)",
+    "outlinks": [
+      "OBSN-33"
+    ],
+    "inlinks": [
+      "OBSN-33"
+    ],
+    "created_at": "2026-04-02T11:00:00+08:00",
+    "last_updated": "2026-04-02T14:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-35",
+    "title": "Q1 Expense Reconciliation Log",
+    "folder": "Product/Finance",
+    "tags": [
+      "finance",
+      "Q1",
+      "expense_tracking",
+      "audit"
+    ],
+    "content": "# Q1 2026 Expense Reconciliation Log\n\n## 2026-04-02 - Sprint Retrospective Dinner Reconciliation\n\n**Event**: Sprint Retrospective - Q1 Final Sprint (FCAL-123)\n**Date**: 2026-03-28\n**Location**: Haidilao Hot Pot (Sanlitun)\n**Participants**: 6 people (Chen Xiaoyu, Zhang Hao, Li Jing, Wang Lei, Liu Ting, Wang Jing)\n\n### Finance System Check\n- **CLI finance query result**: TXN-6004 found\n- **Amount recorded**: ¥800\n- **Expected amount**: ¥1,200\n- **Gap identified**: ¥400 missing\n\n### Root Cause\nFinance auto-sync only captured partial payment (credit card transaction). Cash tip payment (¥400) not recorded.\n\n### Reconciliation Action\n- Created complete expense entry in My Expenses (TXN-001)\n- Category: team_expense\n- Total amount: ¥1,200\n- Status: cleared\n- Cross-reference: TXN-6004 (finance), FCAL-123 (calendar)\n\n### Audit Trail\n- Finance system: partial record (¥800)\n- My Expenses: complete record (¥1,200)\n- Variance: ¥400 documented\n- Receipt: attached to My Expenses entry\n\n**Next action**: Submit variance explanation to finance team by 2026-04-05\n\n---\n\n## Q1 Budget Summary\n- Total team expenses: ¥8,450\n- Budget allocated: ¥10,000\n- Remaining: ¥1,550\n- Utilization: 84.5%",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-04-02T14:30:00+08:00",
+    "last_updated": "2026-04-02T16:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-36",
+    "title": "Finance Reconciliation Workflow SOP",
+    "folder": "Product/Finance",
+    "tags": [
+      "finance",
+      "SOP",
+      "workflow"
+    ],
+    "content": "# Finance Reconciliation Workflow\n\n## Standard Operating Procedure\n\n### 1. Event Completion Check\n- Review fossify_calendar_gui for completed events with expense tags\n- Extract: date, participants, estimated amount, category\n\n### 2. CLI Finance Verification\n```bash\n# Query finance system for matching transactions\nfinance query --date YYYY-MM-DD --merchant \"Merchant Name\"\n```\n\n### 3. Gap Analysis\n- Compare calendar estimate vs finance record\n- Identify: missing, partial, incorrect category, duplicate\n\n### 4. My Expenses Entry\n- Create/update with correct amount\n- Add reference to calendar event ID\n- Attach receipt if available\n- Tag appropriately for Q tracking\n\n### 5. Documentation\n- Log reconciliation in Obsidian (Product/Finance folder)\n- Note variance explanation\n- Add to weekly expense review checklist\n\n### 6. Quick Reference Note\n- Create Fossify Notes entry for weekly review\n- Include: event, amount, status, follow-up needed",
+    "outlinks": [
+      "OBSN-35"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-15T10:00:00+08:00",
+    "last_updated": "2026-04-02T14:15:00+08:00"
+  },
+  {
+    "note_id": "OBSN-37",
+    "title": "A/B Test Social Sharing - Consolidated Analysis Report",
+    "folder": "Product/Analytics/ABTest",
+    "tags": [
+      "ab_test",
+      "social_sharing",
+      "analysis",
+      "stakeholder_report"
+    ],
+    "content": "# A/B Test Social Sharing Feature - Consolidated Analysis Report\n\n**Report Date:** 2026-04-02  \n**Experiment ID:** social_sharing_v2  \n**Analyst:** Chen Xiaoyu  \n**Status:** ✅ Complete\n\n---\n\n## Executive Summary\n\nThe 14-day A/B experiment for social sharing feature concluded on 2026-04-01. **Treatment group showed 23% improvement in Day-1 retention and 18% improvement in Day-7 retention compared to control.**\n\n**Key Metrics:**\n- **Day-1 Retention:** 38.2% (treatment) vs 31.1% (control) → +7.1pp improvement\n- **Day-7 Retention:** 15.4% (treatment) vs 13.0% (control) → +2.4pp improvement\n- **Sample Size:** 2.8M users (1.4M per group)\n- **Statistical Significance:** p < 0.001\n\n**Budget Impact:**\n- Actual spend: ¥18,500 (see [[OBSN-33]])\n- Approved budget: ¥12,000\n- Overage: ¥6,500 (43% over budget) - due to extended observation window\n\n**Recommendation:** ✅ **SHIP TO PRODUCTION** - ROI positive, retention gains justify budget overage\n\n---\n\n## Experiment Configuration\n\nPer [[OBSN-5]] verification checklist:\n\n- **Hypothesis:** Adding social sharing incentives (points + leaderboard) will increase user retention by encouraging viral loops\n- **Duration:** 14 days (2026-03-18 to 2026-04-01)\n- **Sample:** 2.8M users, stratified by registration cohort\n- **Control:** Standard product experience\n- **Treatment:** Social sharing module with gamification (share → earn points → unlock rewards)\n\n**Data Source:** CLI scheduler job [[JOB-724]]\n- Output path: `/data/experiments/social_sharing_v2/results/`\n- Files: `metrics_summary.csv`, `funnel_analysis.json`, `cohort_retention.xlsx`\n\n---\n\n## Visual Evidence\n\n### Screenshot 1: Day-1 Retention Comparison\n![Day-1 Retention](file:///sdcard/DCIM/Screenshots/Screenshot_20260401_153012.jpg)\n*Captured: 2026-04-01 15:30*\n- Treatment group: 38.2%\n- Control group: 31.1%\n- Lift: +23%\n\n### Screenshot 2: Conversion Funnel Visualization\n![Conversion Funnel](file:///sdcard/DCIM/Screenshots/Screenshot_20260401_153145.jpg)\n*Captured: 2026-04-01 15:31*\n- Share button exposure: 94% (treatment)\n- Share action completion: 42%\n- Friend registration via share link: 18%\n\n### Screenshot 3: Day-7 Retention Cohort Analysis\n![Day-7 Retention](file:///sdcard/DCIM/Screenshots/Screenshot_20260401_154230.jpg)\n*Captured: 2026-04-01 15:42*\n- Treatment group: 15.4%\n- Control group: 13.0%\n- Lift: +18%\n\n---\n\n## Detailed Findings\n\n### Retention Metrics (from JOB-724 output)\n\n| Metric | Control | Treatment | Lift | p-value |\n|--------|---------|-----------|------|----------|\n| Day-1 Retention | 31.1% | 38.2% | +23% | <0.001 |\n| Day-3 Retention | 22.4% | 27.8% | +24% | <0.001 |\n| Day-7 Retention | 13.0% | 15.4% | +18% | <0.001 |\n| Day-14 Retention | 8.2% | 9.7% | +18% | <0.001 |\n\n### Engagement Metrics\n\n- **Share Rate:** 42% of treatment users shared at least once\n- **Avg Shares per User:** 2.3\n- **Viral Coefficient:** 0.76 (each user brings 0.76 new users on average)\n- **Time to First Share:** Median 8 minutes after feature exposure\n\n### Segment Analysis\n\n**By User Cohort:**\n- New users (< 7 days): +31% Day-1 retention lift\n- Mid-tier users (7-30 days): +18% Day-1 retention lift\n- Mature users (> 30 days): +12% Day-1 retention lift\n\n**By Platform:**\n- Android: +25% Day-1 retention lift\n- iOS: +21% Day-1 retention lift\n\n---\n\n## Budget Reconciliation\n\nSee [[OBSN-33]] for full budget breakdown.\n\n**Overage Root Cause:**\n- Original plan: 10-day experiment (¥12,000)\n- Actual: 14-day experiment (¥18,500)\n- Extension reason: Initial 10-day data showed borderline significance; extended 4 days to reach statistical confidence\n\n**Cost Breakdown:**\n- Infrastructure (data processing): ¥8,200\n- User incentives (points pool): ¥7,800\n- Analytics tooling: ¥2,500\n\n---\n\n## Next Steps\n\n1. ✅ **Immediate:** Share executive summary with stakeholders via WeChat (see [[FNOT-228]])\n2. 📅 **This week:** Schedule production rollout planning meeting\n3. 📋 **Follow-up:** Monitor post-launch metrics for 30 days\n4. 💰 **Finance:** Submit budget variance explanation to finance team\n\n---\n\n## Related Documents\n\n- [[OBSN-5]] - A/B Experiment Data Verification Checklist\n- [[OBSN-33]] - A/B Test Budget Reconciliation\n- [[OBSN-7]] - PRD - 社交分享裂变功能 v1.0\n- [[JOB-724]] - Scheduler job logs\n\n---\n\n**Report compiled:** 2026-04-02 16:45  \n**Stakeholder distribution:** Pending (via WeChat)",
+    "outlinks": [
+      "OBSN-5",
+      "OBSN-33",
+      "OBSN-7"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T14:30:00+08:00",
+    "last_updated": "2026-04-02T16:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-38",
+    "title": "Q1 2026 Experiment Inventory",
+    "folder": "Product/Analytics/ABTest",
+    "tags": [
+      "ab_test",
+      "inventory",
+      "q1"
+    ],
+    "content": "# Q1 2026 A/B Experiment Inventory\n\n## Completed Experiments\n\n1. **Social Sharing Feature** (social_sharing_v2)\n   - Status: ✅ Complete\n   - Duration: 2026-03-18 to 2026-04-01\n   - Result: Ship to production\n   - Report: [[OBSN-37]]\n\n2. **New User Onboarding Flow** (onboarding_v3)\n   - Status: ✅ Complete\n   - Duration: 2026-02-10 to 2026-02-24\n   - Result: Inconclusive, needs iteration\n\n3. **Checkout Button Color** (checkout_cta_color)\n   - Status: ✅ Complete\n   - Duration: 2026-01-15 to 2026-01-22\n   - Result: No significant difference\n\n## In Progress\n\n- None\n\n## Planned Q2\n\n- Personalized homepage layout\n- Push notification timing optimization\n- Referral reward structure test",
+    "outlinks": [
+      "OBSN-37"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-28T10:15:00+08:00",
+    "last_updated": "2026-04-02T16:50:00+08:00"
+  },
+  {
+    "note_id": "OBSN-39",
+    "title": "Sprint 13 Retrospective Decision Record",
+    "folder": "Product/Decisions",
+    "tags": [
+      "decision-record",
+      "sprint13",
+      "retrospective",
+      "Q1-2026"
+    ],
+    "content": "# Sprint 13 Retrospective Decision Record\n\n**Date:** 2026-04-02\n**Sprint Period:** 2026-03-18 to 2026-03-31\n**Decision Owner:** Chen Xiaoyu\n**Review Date:** 2026-04-15\n\n---\n\n## Executive Summary\n\nSprint 13 delivered strong retention improvements (+2.3% Day-1, +1.1% Day-7) and validated social sharing feature effectiveness (22% conversion lift). However, onboarding funnel degradation (18.2% drop-off at step 3, up from 14.1%) and technical debt accumulation require immediate attention in Sprint 14.\n\n---\n\n## Quantitative Performance Data\n\n### Retention Metrics (Source: JOB-726 output)\n- **Day-1 Retention:** 41.8% (+2.3% vs Sprint 12)\n- **Day-7 Retention:** 19.2% (+1.1% vs Sprint 12)\n- **Sample Size:** 2.1M users\n- **Data Path:** `/data/retrospectives/2026_Q1_Sprint13/consolidated_metrics.json`\n- **Job Run:** 2026-04-01 09:00:00 (success, 1847s duration)\n\n### A/B Test Results (Source: JOB-726, social_share_v3 experiment)\n- **Variant Performance:** 22% conversion lift vs control\n- **Sample Size:** 180K users\n- **Statistical Significance:** p < 0.01\n- **Viral Coefficient:** 1.3x\n- **Data Path:** `/data/experiments/social_sharing_v3/results_2026_03_28.csv`\n\n### Funnel Analysis (Source: JOB-726 output)\n- **Onboarding Step 3 Drop-off:** 18.2% (⚠️ increased from 14.1% Sprint 12)\n- **Overall Funnel Completion:** 67.3% (down from 71.2%)\n- **Data Path:** `/data/retention/funnel_analysis_sprint13.json`\n\n### Team Velocity\n- **Story Points Completed:** 42 (on target)\n- **Stories Carried Over:** 3 (capacity planning issue)\n\n---\n\n## Stakeholder Feedback Analysis\n\n### WeChat Retrospective Discussion (WCC-20, 2026-04-01 14:00-15:00)\n\n**Engineering (Wang Lei):**\n- ✅ Retention metrics trending positive\n- ⚠️ Technical debt: dual analytics pipelines consuming 30% extra server resources\n- 💡 Recommendation: Full migration to new pipeline by Sprint 15\n\n**Development (Zhang Hao):**\n- ✅ A/B testing infrastructure performing well\n- ✅ Social sharing feature ready for full rollout\n\n**Design (Li Jing):**\n- ⚠️ Onboarding step 3 drop-off increase is concerning\n- 💡 Recommendation: Investigate new tutorial flow design\n\n**Operations (Liu Ting):**\n- ✅ Viral coefficient (1.3x) exceeding expectations\n- ⚠️ User feedback: reward mechanism UI is confusing\n- 💡 Recommendation: Clarify when/how users earn points\n\n### Meeting Notes Reference\n- **Document:** [[FNOT-231]] Sprint 13 Retrospective Meeting Notes\n- **Attendees:** Chen Xiaoyu, Wang Lei, Zhang Hao, Li Jing, Liu Ting\n- **Duration:** 60 minutes\n\n---\n\n## Data-Backed Decisions\n\n### Decision 1: Continue social_share_v3 Full Rollout\n**Status:** ✅ APPROVED\n\n**Supporting Evidence:**\n- 22% conversion lift (statistically significant, 180K users)\n- 1.3x viral coefficient exceeding 1.2x target\n- Positive retention impact (+2.3% Day-1)\n\n**Action:** Deploy to 100% of users in Sprint 14\n**Owner:** Zhang Hao\n**Linked Task:** [[TODO-540]]\n\n### Decision 2: Prioritize Onboarding Step 3 Redesign\n**Status:** ✅ APPROVED (HIGH PRIORITY)\n\n**Supporting Evidence:**\n- Drop-off increased from 14.1% to 18.2% (28% relative increase)\n- Overall funnel completion degraded 3.9 percentage points\n- Qualitative feedback from Design team on tutorial flow issues\n\n**Evidence Gap:** Root cause analysis incomplete - need user session recordings\n\n**Action:** Conduct UX research and redesign step 3 in Sprint 14\n**Owner:** Li Jing\n**Linked Task:** [[TODO-541]]\n\n### Decision 3: Clarify Reward Mechanism UI\n**Status:** ✅ APPROVED\n\n**Supporting Evidence:**\n- Operations team qualitative feedback (user confusion)\n- No quantitative data on reward mechanism comprehension\n\n**Evidence Gap:** ⚠️ Need A/B test or user survey to quantify confusion impact\n\n**Action:** Revise UI copy and add tooltips in Sprint 14\n**Owner:** Liu Ting (content), Li Jing (design)\n**Linked Task:** [[TODO-542]]\n\n### Decision 4: Complete Analytics Pipeline Migration by Sprint 15\n**Status:** ✅ APPROVED (TECHNICAL DEBT)\n\n**Supporting Evidence:**\n- Dual pipelines consuming 30% extra server resources\n- Engineering team capacity constraint\n\n**Evidence Gap:** ⚠️ Cost-benefit analysis incomplete - need infrastructure cost projection\n\n**Action:** Allocate 8 story points in Sprint 14-15 for migration\n**Owner:** Wang Lei\n**Linked Task:** [[TODO-543]]\n\n---\n\n## Evidence Gaps & Open Questions\n\n### Gap 1: Reward Mechanism Confusion - Quantitative Impact\n**Current State:** Only qualitative feedback from Operations\n**Needed:** User survey or A/B test measuring comprehension rate\n**Action:** Schedule user research in Sprint 14\n**Owner:** Liu Ting\n\n### Gap 2: Onboarding Drop-off Root Cause\n**Current State:** Funnel metrics show problem, but no diagnostic data\n**Needed:** Session recordings, heatmaps, user interviews\n**Action:** UX research sprint (3 days)\n**Owner:** Li Jing\n\n### Gap 3: Analytics Pipeline Migration Cost-Benefit\n**Current State:** Resource consumption known (30% extra), but ROI unclear\n**Needed:** Infrastructure cost projection, performance benchmarks\n**Action:** Technical analysis document\n**Owner:** Wang Lei\n\n---\n\n## Action Items (Linked to Todo Service)\n\n1. [[TODO-540]] Deploy social_share_v3 to 100% users (Sprint 14)\n2. [[TODO-541]] Conduct onboarding step 3 UX research and redesign (Sprint 14)\n3. [[TODO-542]] Revise reward mechanism UI copy and tooltips (Sprint 14)\n4. [[TODO-543]] Complete analytics pipeline migration (Sprint 14-15)\n5. [[TODO-544]] Schedule Sprint 13 decision record review (2026-04-15)\n\n---\n\n## References\n\n### Data Sources\n- CLI Scheduler Job: JOB-726 (sprint_retrospective_metrics_aggregator)\n- Retention Data: `/data/retrospectives/2026_Q1_Sprint13/consolidated_metrics.json`\n- A/B Test Data: `/data/experiments/social_sharing_v3/results_2026_03_28.csv`\n- Funnel Data: `/data/retention/funnel_analysis_sprint13.json`\n\n### Discussion Threads\n- WeChat Group: [[WCC-20]] Sprint 13 Retrospective Discussion\n- Meeting Notes: [[FNOT-231]] Sprint 13 Retrospective Meeting Notes\n\n### Related Documents\n- [[OBSN-10]] Q1 2026 Growth Strategy & OKR Tracking\n- [[OBSN-7]] PRD - 社交分享裂变功能 v1.0\n- [[OBSN-1]] Q1 2026 用户留存分析 - 数据输出路径索引\n\n---\n\n**Next Review:** 2026-04-15 (Sprint 14 mid-point check)\n**Stakeholders Notified:** 2026-04-02 via WeChat (产品技术日常, 产品战略讨论组)",
+    "outlinks": [
+      "OBSN-10",
+      "OBSN-7",
+      "OBSN-1",
+      "TODO-540",
+      "TODO-541",
+      "TODO-542",
+      "TODO-543",
+      "TODO-544",
+      "FNOT-231",
+      "WCC-20"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T11:50:00+08:00",
+    "last_updated": "2026-04-02T14:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-40",
+    "title": "Decision Record Template - Sprint Retrospective",
+    "folder": "Product/Templates/Decisions",
+    "tags": [
+      "template",
+      "decision-record",
+      "retrospective"
+    ],
+    "content": "# Sprint Retrospective Decision Record Template\n\n**Date:** [YYYY-MM-DD]\n**Sprint Period:** [Start Date] to [End Date]\n**Decision Owner:** [Name]\n**Review Date:** [YYYY-MM-DD]\n\n---\n\n## Executive Summary\n\n[2-3 sentence summary of sprint performance and key decisions]\n\n---\n\n## Quantitative Performance Data\n\n### [Metric Category 1]\n- **Metric Name:** [Value] ([Change vs previous])\n- **Data Path:** [CLI output path]\n- **Job Run:** [Timestamp and status]\n\n### [Metric Category 2]\n...\n\n---\n\n## Stakeholder Feedback Analysis\n\n### [Source 1: WeChat/Meeting]\n**[Role/Name]:**\n- ✅ [Positive feedback]\n- ⚠️ [Concerns]\n- 💡 [Recommendations]\n\n---\n\n## Data-Backed Decisions\n\n### Decision [N]: [Title]\n**Status:** [APPROVED/DEFERRED/REJECTED]\n\n**Supporting Evidence:**\n- [Data point 1]\n- [Data point 2]\n\n**Evidence Gap:** [If any]\n\n**Action:** [What will be done]\n**Owner:** [Name]\n**Linked Task:** [[TODO-XXX]]\n\n---\n\n## Evidence Gaps & Open Questions\n\n### Gap [N]: [Title]\n**Current State:** [What we know]\n**Needed:** [What data/research is required]\n**Action:** [How to close the gap]\n**Owner:** [Name]\n\n---\n\n## Action Items\n\n1. [[TODO-XXX]] [Task description]\n2. [[TODO-XXX]] [Task description]\n\n---\n\n## References\n\n### Data Sources\n- [List CLI jobs, file paths]\n\n### Discussion Threads\n- [List WeChat groups, meeting notes]\n\n### Related Documents\n- [List Obsidian notes]\n\n---\n\n**Next Review:** [Date]\n**Stakeholders Notified:** [Date and channels]",
+    "outlinks": [],
+    "inlinks": [
+      "OBSN-39"
+    ],
+    "created_at": "2026-03-15T10:00:00+08:00",
+    "last_updated": "2026-04-01T08:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-41",
+    "title": "Q1 Retention Improvement Executive Summary - Board Meeting",
+    "folder": "Product/Reports",
+    "tags": [
+      "q1",
+      "retention",
+      "executive",
+      "board-meeting"
+    ],
+    "content": "# Q1 2026 Retention Improvement Executive Summary\n\n**Prepared for:** Board Meeting 2026-04-05\n**Author:** Chen Xiaoyu, Product Manager - User Growth\n**Date:** 2026-04-02\n\n---\n\n## Executive Overview\n\n**Q1 Achievement vs Target:**\n- **Day-1 Retention:** 42.3% (↑11% vs Q4 baseline 38.1%) ✅ **EXCEEDED TARGET**\n- **Day-7 Retention:** 28.7% (↑4.8% vs Q4 baseline 27.4%) ⚠️ **95.7% of 30% target**\n- **Overall User Growth:** +18.2% MAU growth, retention quality improved\n\n---\n\n## Top 3 Successful Initiatives\n\n### 1. Social Sharing A/B Test (Experiment ID: EXP-2026-Q1-03)\n- **Impact:** +12.4% conversion lift in viral coefficient\n- **Statistical Confidence:** p < 0.01, sample size n=18,500\n- **Mechanism:** Simplified share flow reduced friction by 2 steps\n- **Recommendation:** Full rollout approved for Q2\n\n### 2. Onboarding Optimization\n- **Impact:** Day-1 retention improved from 38.1% → 42.3%\n- **Key Change:** Personalized product recommendations in first session\n- **Data Source:** JOB-715 retention funnel analysis\n\n### 3. Re-engagement Push Campaign\n- **Impact:** Day-7 retention recovery +3.2% among lapsed users\n- **Timing:** Triggered at 72-hour inactivity threshold\n- **Cost Efficiency:** ¥0.42 per re-activated user\n\n---\n\n## Remaining Gaps & Q2 Recommendations\n\n**Gap Analysis:**\n- Day-7 retention missed 30% target by 1.3 percentage points\n- Root cause: Drop-off at Day 3-5 transition (identified in JOB-717 cohort analysis)\n\n**Q2 Priorities:**\n1. **Mid-funnel engagement boost:** Gamification layer for Day 3-5 users\n2. **Social sharing full rollout:** Scale EXP-2026-Q1-03 to 100% traffic\n3. **Retention analytics infrastructure:** Real-time cohort dashboards (reduce analysis lag from 24h to 2h)\n\n---\n\n## Data Sources\n- JOB-715: Retention funnel analysis (output: `/data/analytics/retention/q1_funnel_final.csv`)\n- JOB-717: Weekly growth report (output: `/data/analytics/growth/weekly_cohorts_q1.json`)\n- JOB-722: A/B test export (output: `/data/experiments/social_share_results_q1.parquet`)\n- JOB-729: Consolidated metrics (output: `/data/analytics/q1_reports/consolidated/`)\n\n---\n\n## Mobile Distribution Summary\n\n**Key Bullet Points for WeChat:**\n✅ Q1 Day-1 retention: 42.3% (+11% vs baseline) - EXCEEDED TARGET\n⚠️ Day-7 retention: 28.7% (95.7% of 30% target) - close but missed\n🚀 Social sharing A/B test: +12.4% lift, ready for Q2 rollout\n📊 Top gap: Day 3-5 drop-off, Q2 focus on mid-funnel engagement\n💡 Recommendation: Approve gamification initiative for Q2\n\n---\n\n**Distribution Plan:**\n- Boss (WeChat): Executive summary with 5 key bullets\n- Liu Ting (Operations): Focus on re-engagement campaign ROI\n- Wang Jing (Finance): Cost efficiency metrics + Q2 budget ask\n- Board deck: Full report attached to calendar invite\n\n**Follow-up Meeting:** 2026-04-05 14:00, Executive Conference Room",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-10"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T10:30:00+08:00",
+    "last_updated": "2026-04-02T16:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-42",
+    "title": "JOB-729 Output Directory Map - Q1 Consolidation",
+    "folder": "Product/Analytics/Retention",
+    "tags": [
+      "data-location",
+      "job-output",
+      "q1"
+    ],
+    "content": "# JOB-729 Consolidation Output Directory Map\n\n**Last Updated:** 2026-04-02 10:15\n\n## Primary Output Location\n`/data/analytics/q1_reports/consolidated/`\n\n### Key Files:\n- `metrics_summary.json` - Machine-readable metrics for dashboards\n- `executive_brief.md` - Human-readable summary (basis for OBSN-41)\n- `raw_data_references.txt` - Pointers to source job outputs\n\n## Source Job Outputs (Referenced)\n\n### JOB-715 (Retention Funnel)\n- Path: `/data/analytics/retention/q1_funnel_final.csv`\n- Key Metrics: Day-1 42.3%, Day-7 28.7%, cohort breakdown\n\n### JOB-717 (Weekly Growth Report)\n- Path: `/data/analytics/growth/weekly_cohorts_q1.json`\n- Key Metrics: Weekly MAU, cohort retention curves\n\n### JOB-722 (A/B Test Export)\n- Path: `/data/experiments/social_share_results_q1.parquet`\n- Key Metrics: Conversion lift +12.4%, confidence intervals\n\n## Usage Notes\n- For board presentations: Use `executive_brief.md` as template\n- For technical deep-dives: Reference individual job outputs\n- For mobile distribution: Extract bullet points from `executive_brief.md`",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [
+      "OBSN-41"
+    ],
+    "created_at": "2026-04-02T10:15:00+08:00",
+    "last_updated": "2026-04-02T10:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-43",
+    "title": "竞品分析 - 社交裂变留存数据验证",
+    "folder": "Product/Research",
+    "tags": [
+      "competitor",
+      "retention",
+      "validation"
+    ],
+    "content": "# Competitive Analysis - Social Sharing Retention Validation\n\n## Competitor: TestMall (Observed 2026-04-02)\n\n### Feature: Tiered Referral Reward System\n- **Mechanism**: Share product → Invite friends → Earn tiered points\n- **Reward Structure**: \n  - 1 friend = 100 points\n  - 5 friends = 800 points (60% bonus vs linear)\n- **Claimed Metrics** (from product description):\n  - Day-1 retention improvement (no specific %)\n  - Day-7 retention tracking enabled\n\n### Validation Against Internal Baseline\n\n**Internal Data (from JOB-701, JOB-715):**\n- Current Day-1 retention: 32.4%\n- Current Day-7 retention: 12.8%\n- Sample size: 240K users (Q1 2026)\n\n**Competitor Benchmark (Industry Reports):**\n- TestMall Day-1 retention: ~38-42% (estimated, Q4 2025)\n- TestMall Day-7 retention: ~15-18% (estimated)\n- **Gap**: +6-10% Day-1, +2-5% Day-7\n\n### Key Insights\n1. Tiered bonus structure creates stronger incentive than linear rewards\n2. Social proof mechanism (friend count display) drives viral coefficient\n3. Immediate reward (vs delayed) reduces drop-off\n\n### Implementation Feasibility Assessment\n- **Technical complexity**: Medium (requires social graph integration)\n- **Current sprint capacity**: 12 committed features, 85% utilization\n- **Estimated effort**: 8-10 dev days (backend + frontend + analytics)\n- **Q1 timeline**: **NOT FEASIBLE** without descoping 2-3 existing features\n- **Recommendation**: Prioritize for Q2 Sprint 1, validate with A/B test\n\n### Evidence-Based Priority\n- **Impact**: High (potential +6-10% Day-1 retention)\n- **Effort**: Medium-High\n- **Risk**: Medium (requires social platform API integration)\n- **Priority**: **P1 for Q2**, defer from current Q1 sprint\n\n---\n*Last validated: 2026-04-02 14:20*\n*Data sources: JOB-701, JOB-715, TestMall app observation*\n*Related: [[OBSN-7]], [[OBSN-10]]*",
+    "outlinks": [
+      "OBSN-7",
+      "OBSN-10"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T13:45:00+08:00",
+    "last_updated": "2026-04-02T14:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-44",
+    "title": "PRD Update Log - Social Sharing Feature v1.1",
+    "folder": "Product/PRD",
+    "tags": [
+      "prd",
+      "update",
+      "social-sharing"
+    ],
+    "content": "# PRD Update Log - Social Sharing Feature\n\n## Update: 2026-04-02 15:10\n\n### Changes to OBSN-7 (Social Sharing PRD)\n\n**Section 4.3 - Competitive Intelligence (NEW)**\n- Added validated competitor analysis from TestMall\n- Included retention benchmark comparison (internal vs competitor)\n- Documented tiered reward mechanism as best practice\n\n**Section 5.2 - Implementation Roadmap (REVISED)**\n- **Original**: Q1 Sprint 3 delivery target\n- **Revised**: Q2 Sprint 1 delivery target\n- **Rationale**: Current sprint at 85% capacity, requires 8-10 dev days, descoping 2-3 features would jeopardize committed Q1 OKRs\n\n**Section 6.1 - Success Metrics (ENHANCED)**\n- Added Day-1 retention target: +6% (from 32.4% to 38.4%)\n- Added Day-7 retention target: +3% (from 12.8% to 15.8%)\n- Added viral coefficient tracking: K > 1.2\n\n### Evidence Base\n- Internal baseline: JOB-701 output (240K users, Q1 2026)\n- Competitor data: TestMall app observation + industry reports\n- Capacity analysis: Sprint planning OBSN-6\n\n### Stakeholder Communication\n- Li Jing (Design Lead): Notified via mobile message 2026-04-02 15:30\n- Boss/WeChat group: Pending - will recommend Q2 prioritization with data-backed rationale\n\n---\n*Next: Schedule alignment meeting with dev team for Q2 Sprint 1 planning*",
+    "outlinks": [
+      "OBSN-7",
+      "OBSN-6",
+      "OBSN-43"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T15:10:00+08:00",
+    "last_updated": "2026-04-02T15:25:00+08:00"
+  },
+  {
+    "note_id": "OBSN-45",
+    "title": "Daily Standup Notes - 2026-04-02",
+    "folder": "Product/Daily",
+    "tags": [
+      "standup",
+      "daily"
+    ],
+    "content": "# Daily Standup - 2026-04-02\n\n## Completed Yesterday\n- Reviewed JOB-710 failure incident\n- Coordinated with Wang Lei on A/B config fix\n\n## Today's Focus\n- Competitor feature research (TestMall gamification)\n- PRD update with validated data\n- Mobile sync with Li Jing on design timeline\n\n## Blockers\n- None currently\n\n## Notes\n- Boss may push for Q1 delivery of social sharing feature\n- Need to prepare data-backed timeline recommendation",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-04-02T10:05:00+08:00",
+    "last_updated": "2026-04-02T10:05:00+08:00"
+  }
+]

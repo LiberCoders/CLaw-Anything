@@ -1,0 +1,33 @@
+# Runner image for claw-anything + LoopAgent (trial-in-container sandbox mode).
+# Build via: scripts/build_loop_image.sh
+#
+# Smallest of the three runner images — no OpenHarness, no adb. The LoopAgent
+# is claw-anything's native think-act-observe loop and only needs claw-anything
+# itself plus its mock_services + sandbox dependencies.
+#
+# Override registry at build time if needed:
+#   docker build --build-arg REGISTRY=docker.io -f Dockerfile.loop .
+ARG REGISTRY=docker.m.daocloud.io
+FROM ${REGISTRY}/python:3.11-slim
+
+WORKDIR /opt/claw-anything
+
+# ── claw-anything ────────────────────────────────────────────────────────────
+# Install dependencies first (separate layer for better cache reuse).
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt \
+        -i https://pypi.tuna.tsinghua.edu.cn/simple \
+        --trusted-host pypi.tuna.tsinghua.edu.cn \
+        --no-cache-dir \
+    && rm /tmp/requirements.txt
+
+# Install claw-anything package (src/ + mock_services/ copied by build script).
+COPY claw-anything/pyproject.toml /opt/claw-anything/pyproject.toml
+COPY claw-anything/src /opt/claw-anything/src
+COPY claw-anything/mock_services /opt/claw-anything/mock_services
+RUN pip install -e /opt/claw-anything \
+        -i https://pypi.tuna.tsinghua.edu.cn/simple \
+        --trusted-host pypi.tuna.tsinghua.edu.cn \
+        --no-cache-dir
+
+ENTRYPOINT ["claw-anything"]

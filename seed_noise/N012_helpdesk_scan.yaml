@@ -1,0 +1,13 @@
+noise_id: N012
+name: "Scan ticket list"
+description: "Open the ticket system to scan recent ticket statuses, make no changes, just close"
+involved_services: [helpdesk]
+leaves_trace: false
+action_sequence:
+  - "Open ticket system"
+  - "Browse ticket list"
+  - "Close ticket system"
+time_preference: midday
+adaptable_elements:
+  - "Browse duration"
+  - "Whether to filter by status"

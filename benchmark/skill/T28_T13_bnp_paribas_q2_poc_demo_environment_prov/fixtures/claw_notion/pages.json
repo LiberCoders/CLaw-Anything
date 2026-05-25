@@ -1,0 +1,2211 @@
+[
+  {
+    "page_id": "NPAG-1",
+    "title": "Allianz Q1 2026 POC - Streaming Architecture Pivot (Jan 9-12)",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "deal": "Allianz SE - €3.2M",
+      "stage": "POC Execution",
+      "priority": "Critical",
+      "decision_date": "2026-01-10"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Situation Summary"
+      },
+      {
+        "type": "paragraph",
+        "text": "On Jan 9, 2026 (3 days before POC technical kickoff), Marcus Bauer (Lead Data Engineer) sent Slack message revealing Allianz infrastructure team had deprecated their Kafka cluster in favor of batch-only Azure Event Hub setup due to unannounced cost-cutting initiative. Original real-time streaming analytics workload (€12K credit allocation, Kafka connectors scoped, architecture presented to CDO Dr. Schneider) became technically infeasible."
+      },
+      {
+        "type": "heading_1",
+        "text": "Decision Framework - Three Options Analysis"
+      },
+      {
+        "type": "heading_2",
+        "text": "Option A: Abort & Substitute"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Abort streaming workload entirely, substitute with compliant €12K alternative (e.g., Snowpark container fraud detection)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Pros: Clean break, no technical debt, full credit utilization"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Cons: Breaks CDO expectation of 'streaming' capability, requires re-scoping fraud use case, risks credibility loss"
+      },
+      {
+        "type": "heading_2",
+        "text": "Option B: Pivot to Near-Real-Time (SELECTED)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Pivot to batch-based 'near-real-time' architecture using Snowpipe + Tasks (sub-5-minute latency)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Pros: Reuses 70% of original design, preserves CDO vision, meets fraud team latency requirements, no compliance reopening, maintains timeline"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Cons: Requires narrative shift from 'streaming' to 'near-real-time', minor architecture rework"
+      },
+      {
+        "type": "heading_2",
+        "text": "Option C: Escalate for Kafka Reinstatement"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Escalate to Klaus Weber to lobby infrastructure team for Kafka reinstatement"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Pros: Preserves original architecture, no pivot needed"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Cons: 2+ week delay risk (board-level cost mandate confirmed irreversible by Klaus), internal political friction, misses kickoff deadline"
+      },
+      {
+        "type": "heading_1",
+        "text": "Decision Rationale"
+      },
+      {
+        "type": "paragraph",
+        "text": "Selected Option B based on: (1) CDO Dr. Schneider's vision for real-time fraud detection is preserved (sub-5-min latency meets business requirement per Marcus validation), (2) Timeline protection (Jan 15 kickoff maintained), (3) Compliance avoidance (no new PII processing categories, stays within €12K allocation per Emma Rousseau), (4) Technical credibility (70% design reuse, proven Snowpipe + Tasks pattern), (5) Executive alignment preservation (narrative shift to 'near-real-time' emphasizes business outcomes over mechanism)."
+      },
+      {
+        "type": "heading_1",
+        "text": "Execution Plan"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Update POC SOW documentation with Snowpipe + Tasks architecture (Arjun, due Jan 12 EOD)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Notify Marcus Bauer and Emma Rousseau via Slack Connect (completed Jan 10)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Brief Tom Harris on revised CDO narrative: 'enterprise-grade near-real-time fraud detection platform' (completed Jan 12)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Schedule Marcus technical deep-dive for fraud detection scoping (target week of Jan 13)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Fast-track Emma procurement approval (target Jan 13 EOD)"
+      },
+      {
+        "type": "heading_1",
+        "text": "Key Lessons"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Architectural flexibility under pressure: Ability to pivot quickly while preserving business outcomes is critical for POC success"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Stakeholder validation: Immediate cross-check with Klaus (irreversibility) and Marcus (technical feasibility) enabled confident decision within 24 hours"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Narrative framing: 'Near-real-time' vs 'streaming' distinction matters less to CDO than fraud detection capability delivery"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Procurement alignment: Emma's fast-track commitment was critical path enabler - early procurement engagement pays dividends"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-01-10T11:00:00+00:00",
+    "last_updated": "2026-01-12T17:00:00+00:00"
+  },
+  {
+    "page_id": "NPAG-2",
+    "title": "HSBC Q1 2026 POC - GPU Quota Optimization Under Enterprise Tier Cap",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "deal_value": "€4.2M",
+      "status": "Active - POC In Progress",
+      "close_date": "2026-03-31",
+      "decision_date": "2026-02-15"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "HSBC Q1 POC - Snowpark Container Services GPU Quota Optimization"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Decision Date**: February 15, 2026"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Context**: HSBC's Q1 analytics modernization POC includes a high-value ML inference workload for real-time fraud detection requiring Snowpark Container Services with GPU support. The ideal architecture calls for 12 GPU-enabled compute nodes (€95K credit allocation) to demonstrate production-scale throughput (10K transactions/sec, <50ms p99 latency). However, HSBC's enterprise tier contract caps GPU resource allocation at 8 nodes (€65K) without executive approval escalation."
+      },
+      {
+        "type": "heading_2",
+        "text": "Technical Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Ideal Architecture**: 12 GPU nodes, €95K\n- Target throughput: 10K transactions/sec\n- Target latency: <50ms p99\n- Full production-scale demonstration\n- €30K above enterprise tier cap"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Contract-Compliant Architecture**: 8 GPU nodes, €65K\n- Maintains model accuracy demonstration\n- Validates inference pipeline architecture\n- Showcases elastic scaling capability\n- Defers absolute throughput benchmarking\n- Zero contract escalation required"
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision: 8-Node Configuration (€65K)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Rationale**: Maximize POC impact within hard contract cap while maintaining CDO success criteria alignment."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Preserved Capabilities**:\n✓ Production-ready ML architecture (deployment, monitoring, governance)\n✓ Model accuracy and latency consistency validation\n✓ Elastic scaling demonstration (architecture can scale to 12+ nodes)\n✓ Fraud detection business case proof (ROI calculation based on model performance)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Deferred Capabilities**:\n✗ Absolute throughput benchmarking at production scale (10K TPS)\n✗ Full load testing under peak transaction volumes"
+      },
+      {
+        "type": "heading_2",
+        "text": "CDO Success Criteria Assessment"
+      },
+      {
+        "type": "paragraph",
+        "text": "**CDO Requirement**: 'Production-ready ML at scale'\n\n**8-Node Configuration Alignment**: MEETS CRITERIA with narrative adjustment\n- Focus shifts from 'production scale demo' to 'production-ready architecture with elastic scaling'\n- Emphasizes architectural confidence over absolute throughput numbers\n- Demonstrates that the platform can scale to production requirements (not that we're running at production scale in the POC)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Risk**: If competitors (Databricks, BigQuery) demonstrate higher throughput in parallel POCs, HSBC may perceive performance gap. Mitigation: HSBC's enterprise tier constraints apply equally to all vendors; procurement confirmed this."
+      },
+      {
+        "type": "heading_2",
+        "text": "Staged Expansion Plan"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Post-POC Pathway**: Q2 change order for additional 4 GPU nodes (€30K)\n\n**Feasibility**: COMMERCIALLY VIABLE\n- Tom Harris (AE) confirms change orders are standard for enterprise tier clients post-POC\n- Timeline: 3-4 weeks approval cycle once business case submitted (per Rachel Chen, procurement)\n- Trigger: POC demonstrates fraud detection ROI and model performance meets accuracy targets\n- Q2 timing aligns with HSBC's fiscal planning cycle"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Requirements for Change Order**:\n1. Business case document showing POC ROI (fraud detection cost savings)\n2. Model performance validation (accuracy, latency metrics from 8-node POC)\n3. Production scale justification (transaction volume projections)\n4. Executive sponsor sign-off (CDO or VP Data Platform)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Next Steps"
+      },
+      {
+        "type": "paragraph",
+        "text": "✓ GPU allocation approved: 8 nodes, €65K (Feb 15)\n✓ Architecture doc updated with revised demo scenarios (Feb 13)\n✓ CDO narrative aligned: 'elastic production-ready ML architecture' (Feb 15)\n□ CDO technical session (Feb 20): Position reduced-scale demo with elastic scaling emphasis\n□ Document POC results for change order business case (target: late March)\n□ Coordinate with Rachel Chen on Q2 change order submission timeline"
+      },
+      {
+        "type": "heading_2",
+        "text": "Stakeholder Communication"
+      },
+      {
+        "type": "paragraph",
+        "text": "**David Wong (VP Data Platform)**: Aligned on 8-node config and CDO narrative (email Feb 13, Slack Feb 15)\n**Tom Harris (AE)**: Confirmed commercial viability of staged expansion (email Feb 10, internal sync Feb 11)\n**Rachel Chen (Procurement)**: Confirmed contract compliance and change order pathway (Slack Feb 15)"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-02-15T17:30:00+00:00",
+    "last_updated": "2026-02-15T17:30:00+00:00"
+  },
+  {
+    "page_id": "NPAG-3",
+    "title": "Barclays Q1 2026 POC - Architecture Selection Pareto Analysis",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "deal_value": "€2.8M expansion potential",
+      "status": "Architecture Decision In Progress",
+      "deadline": "2026-03-31",
+      "priority": "Critical - Q1 Close"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Barclays Data Masking POC - Architecture Selection Framework"
+      },
+      {
+        "type": "paragraph",
+        "text": "Decision point: Feb 18-19, 2026. CDO Sarah Mitchell requested Pareto analysis of three candidate architectures for enterprise data masking and governance layer."
+      },
+      {
+        "type": "heading_2",
+        "text": "Candidate Architectures - Raw Specifications"
+      },
+      {
+        "type": "table",
+        "content": "| Option | Cost (€K) | Time-to-Prod (wks) | Complexity | Audit Readiness |\n|--------|-----------|-------------------|------------|----------------|\n| A: Snowflake Native | 85 | 2 | Moderate | Full cert |\n| B: Immuta Hybrid | 120 | 4 | High | Full cert |\n| C: Custom Python UDF | 45 | 6 | Very High | Custom framework required |"
+      },
+      {
+        "type": "heading_2",
+        "text": "Hard Floor Constraints"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Budget cap: €100K (procurement authority limit - no exec escalation available)",
+          "Deadline: March 31, 2026 (Q1 contract close, procurement freeze April 1-15)",
+          "Minimum audit-ready governance certification (FCA audit April 15, 2026)"
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Constraint Filtering - Step 1"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Option B (Immuta): ELIMINATED** - Exceeds €100K budget cap (€120K). Fails procurement constraint.\n\n**Option C (Custom Python): ELIMINATED** - Fails audit-ready certification floor. 6-week implementation + custom framework development cannot meet March 31 deadline OR regulatory requirement."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Remaining candidate: Option A (Snowflake Native)**"
+      },
+      {
+        "type": "heading_2",
+        "text": "Pareto Dominance Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "After constraint filtering, only Option A remains feasible. No Pareto frontier analysis required - Option A is the only solution meeting all hard floors."
+      },
+      {
+        "type": "heading_2",
+        "text": "Dimension Trade-Off Analysis"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "**What we gain (Option A)**: Fastest time-to-production (2 weeks), meets Q1 deadline with margin, full audit certification, within budget cap, moderate operational complexity",
+          "**What we sacrifice**: Multi-cloud portability (vs Immuta), deep customization flexibility (vs Custom UDF), €40K cost savings (vs Custom UDF if it were viable)",
+          "**Risk mitigation**: Native Snowflake integration reduces vendor coordination overhead, built-in compliance reporting satisfies FCA audit requirements"
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Competitive Positioning vs Databricks"
+      },
+      {
+        "type": "paragraph",
+        "text": "Databricks Unity Catalog proposal: €95K, 3-week implementation. Option A (Snowflake Native) advantages: €10K cost savings, 1-week faster delivery, tighter integration with existing Snowflake data platform (Barclays already has Snowflake Enterprise deployed). Competitive narrative: 'Native integration, faster delivery, lower total cost of ownership.'"
+      },
+      {
+        "type": "heading_2",
+        "text": "Recommendation"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Select Option A (Snowflake Native Masking + Governance)** - Only architecture meeting all hard constraints. Optimal across weighted dimensions: time-to-production (highest priority), audit readiness, cost discipline. Strongest competitive position vs Databricks parallel evaluation."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-02-18T10:00:00+00:00",
+    "last_updated": "2026-02-18T17:15:00+00:00"
+  },
+  {
+    "page_id": "NPAG-4",
+    "title": "Standard Chartered Q2 Expansion POC - Snowpark Python Workload Dependency Resolution",
+    "parent_page_id": "NPAG-2",
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "deal": "Standard Chartered - Q2 Expansion",
+      "stage": "POC Execution",
+      "priority": "High",
+      "created": "2026-01-06"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Workload Dependency Analysis & Execution Plan"
+      },
+      {
+        "type": "paragraph",
+        "text": "Customer-provided task list (from Anjali Kumar, Jan 3 Slack Connect):"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Deploy the inference endpoint"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Run the feature pipeline"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Load the sample dataset"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Train the fraud detection model"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Generate the performance report"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Benchmark inference latency"
+      },
+      {
+        "type": "heading_2",
+        "text": "Dependency Violations Identified"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "❌ Task 1 (Deploy endpoint) requires Task 4 (Train model) output - cannot deploy without trained model artifact"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "❌ Task 2 (Feature pipeline) requires Task 3 (Load dataset) - cannot engineer features without source data"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "❌ Task 5 (Performance report) should execute last after Task 6 (Benchmark) completes"
+      },
+      {
+        "type": "heading_2",
+        "text": "Corrected Dependency DAG"
+      },
+      {
+        "type": "code",
+        "text": "Stage 1: Data Ingestion\n  └─ Load sample dataset (2.5TB customer transaction history)\n     Duration: ~45 min | Credits: €850\n\nStage 2: Parallel Processing (no write conflicts)\n  ├─ Feature pipeline (transaction aggregations, customer segments)\n  │  Duration: ~90 min | Credits: €1,200\n  └─ Data quality validation (schema checks, null analysis)\n     Duration: ~30 min | Credits: €400\n\nStage 3: Model Training\n  └─ Train fraud detection model (XGBoost on engineered features)\n     Duration: ~120 min | Credits: €2,800 (GPU)\n\nStage 4: Deployment\n  └─ Deploy inference endpoint (Snowpark Container Services)\n     Duration: ~20 min | Credits: €300\n\nStage 5: Benchmarking\n  └─ Inference latency benchmark (10K request load test)\n     Duration: ~45 min | Credits: €950 (GPU)\n\nStage 6: Reporting\n  └─ Generate performance report (accuracy, latency, throughput)\n     Duration: ~15 min | Credits: €150"
+      },
+      {
+        "type": "heading_2",
+        "text": "Credit Consumption Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "Total POC Allocation: €65,000"
+      },
+      {
+        "type": "paragraph",
+        "text": "Workload Total: €6,650 (10.2% of allocation)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Peak GPU Concurrency Optimization: By staging training (Stage 3) and inference benchmark (Stage 5) sequentially rather than overlapping, we avoid simultaneous GPU credit consumption. Original parallel execution would have peaked at €3,750/hour; staged approach caps at €2,800/hour (25% reduction in peak credit burn rate)."
+      },
+      {
+        "type": "heading_2",
+        "text": "Parallelization Rationale"
+      },
+      {
+        "type": "paragraph",
+        "text": "Stage 2 tasks (feature pipeline + data quality validation) can run concurrently because:"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Both read from the same ingested dataset (Stage 1 output)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Feature pipeline writes to FEATURES schema; DQ validation writes to AUDIT schema (no write conflicts)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "No resource contention - different warehouse clusters"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Saves ~30 minutes vs. serial execution"
+      },
+      {
+        "type": "heading_2",
+        "text": "Next Steps"
+      },
+      {
+        "type": "to_do",
+        "text": "Sync revised plan with Anjali Kumar via Slack Connect (target: Jan 7)",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Coordinate with Tom Harris on Q1 close timeline alignment",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Provision warehouse clusters for Stage 2 parallel execution",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Set up credit consumption monitoring alerts (threshold: €7,000)",
+        "checked": false
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-01-06T17:30:00+00:00",
+    "last_updated": "2026-01-06T19:15:00+00:00"
+  },
+  {
+    "page_id": "NPAG-5",
+    "title": "Barclays Q1 2026 POC - Architecture Selection Pareto Analysis (FINAL)",
+    "parent_page_id": "NPAG-3",
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "deal_stage": "contracting",
+      "decision_date": "2026-02-18",
+      "recommended_option": "Option A with security mitigation",
+      "deal_value": "€85K",
+      "q1_close_probability": "95%"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Barclays POC Architecture Selection - Pareto Trade-off Decision"
+      },
+      {
+        "type": "paragraph",
+        "text": "Decision Context: Mid-February 2026. CDO Sarah Mitchell requested recommendation between two competing POC architectures for Q1 data platform modernization. Decision deadline: Feb 18 to preserve March 31 Q1 close target."
+      },
+      {
+        "type": "heading_2",
+        "text": "Option A: Snowflake-Native Data Masking with Governance Layer"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Cost: €85K credit allocation"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Implementation: 2 weeks (delivery by March 17, preserves Q1 close buffer)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Stakeholder Alignment: Strong CDO narrative (seamless native integration story), competitive positioning advantage vs Databricks hybrid complexity"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Risk: Security team vendor lock-in concerns (Head of Security James Patterson), requires governance transition negotiation"
+      },
+      {
+        "type": "heading_2",
+        "text": "Option B: Hybrid Approach with External Policy Engine Integration"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Cost: €72K credit allocation (€13K savings)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Implementation: 4 weeks (delivery mid-April, risks Q2 slip)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Stakeholder Alignment: Addresses security team concerns (preserves existing policy engine investment), weaker executive narrative"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Risk: Q1 revenue recognition at risk, extended competitive window for Databricks displacement, operational complexity"
+      },
+      {
+        "type": "heading_2",
+        "text": "Multi-Dimensional Trade-off Analysis"
+      },
+      {
+        "type": "table",
+        "content": {
+          "headers": [
+            "Decision Axis",
+            "Option A",
+            "Option B",
+            "Weight"
+          ],
+          "rows": [
+            [
+              "Cost",
+              "€85K",
+              "€72K (15% lower)",
+              "Low"
+            ],
+            [
+              "Time to Value",
+              "2 weeks (Q1 preserved)",
+              "4 weeks (Q2 risk)",
+              "Critical"
+            ],
+            [
+              "CDO Alignment",
+              "Strong (native story)",
+              "Moderate (hybrid complexity)",
+              "High"
+            ],
+            [
+              "Security Team Buy-in",
+              "Requires negotiation",
+              "Strong (preserves infra)",
+              "High"
+            ],
+            [
+              "Competitive Position",
+              "Advantage (Databricks weakness)",
+              "Risk (extended window)",
+              "Critical"
+            ],
+            [
+              "Q1 Revenue Risk",
+              "Low (March 31 target)",
+              "High (April slip)",
+              "Critical"
+            ],
+            [
+              "Operational Complexity",
+              "Low (single platform)",
+              "High (dual governance)",
+              "Moderate"
+            ]
+          ]
+        }
+      },
+      {
+        "type": "heading_2",
+        "text": "Recommendation: Option A with Security Mitigation Plan"
+      },
+      {
+        "type": "paragraph",
+        "text": "Rationale: Option A optimizes for the three critical decision axes (time to value, competitive positioning, Q1 revenue preservation) while accepting negotiation risk on security team alignment. The 2-week implementation timeline preserves March 31 Q1 close target, maintains competitive defense against Databricks parallel evaluation, and delivers the seamless native integration narrative that strengthens CDO executive positioning."
+      },
+      {
+        "type": "paragraph",
+        "text": "The €13K cost premium vs Option B is offset by revenue recognition certainty and reduced competitive displacement risk. Option B's 4-week delay pushes delivery to mid-April, creating Q2 slip risk that jeopardizes AE Tom Harris's quarterly forecast commitment and widens the window for Databricks to build board momentum."
+      },
+      {
+        "type": "heading_2",
+        "text": "Security Mitigation Strategy"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Phased Governance Integration Roadmap: Document 6-month transition plan from existing policy engine to Snowflake-native masking with parallel operation period"
+      },
+      {
+        "type": "numbered_list",
+        "text": "API Integration Points: Provide technical deep-dive on governance API contracts to demonstrate interoperability and exit flexibility"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Clear Exit Criteria: Define objective success metrics for transition phases with explicit rollback triggers"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Joint Governance Working Group: Establish monthly sync between Barclays security team and Snowflake governance PM to address integration challenges"
+      },
+      {
+        "type": "heading_2",
+        "text": "Commercial Implications (sync with AE Tom Harris)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Option A preserves Q1 booking (€85K credit + €320K 3-year platform license = €405K total TCV)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "March 31 close target maintained, no forecast adjustment required"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Option B would require Q2 re-commit, impacting EMEA VP pipeline visibility"
+      },
+      {
+        "type": "heading_2",
+        "text": "Stakeholder Communication Plan"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Feb 18: Present recommendation to Sarah Mitchell (CDO) with explicit trade-off rationale"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Feb 18: Parallel briefing to James Patterson (Security) on mitigation plan"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Feb 19: Joint stakeholder alignment call to confirm decision and transition roadmap"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Feb 28: Target SOW signature date"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "March 3: Implementation kickoff"
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision Outcome (Updated Feb 19)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Board approved Option A with governance transition plan. CDO Sarah Mitchell confirmed the structured trade-off analysis provided the rationale needed to navigate both executive and security stakeholder concerns. Legal drafting SOW amendments. Target signature: Feb 28. Implementation kickoff: March 3. Delivery: March 17. Q1 close preserved."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-02-14T12:00:00+00:00",
+    "last_updated": "2026-02-19T14:30:00+00:00"
+  },
+  {
+    "page_id": "NPAG-6",
+    "title": "HSBC Q1 2026 POC - Multi-Environment Resource Contention Resolution",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "deal": "HSBC Analytics Hub Modernization",
+      "status": "active",
+      "poc_value": "€65K",
+      "technical_session_date": "2026-03-04"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "POC Demo Component Inventory"
+      },
+      {
+        "type": "paragraph",
+        "text": "Critical CDO technical session scheduled for March 4, 2026 14:00 GMT - 90 minutes live demo of production-ready elastic architecture."
+      },
+      {
+        "type": "heading_2",
+        "text": "Resource Conflict Analysis"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "ML Training: Default warehouse COMPUTE_WH (X-Large GPU, €180/hr credit consumption)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Real-time Inference API: Default warehouse COMPUTE_WH (CONFLICT - same as ML training)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Streamlit Dashboard: Default port 8501 (CONFLICT - HSBC internal monitoring tool)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Jupyter Notebook: Default port 8888 (CONFLICT - HSBC data science platform)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Checkpoint Storage: Both ML training and inference writing to s3://hsbc-poc-demo/checkpoints/ (CONFLICT - data corruption risk)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Reconfiguration Plan (Approved)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Warehouse Isolation: COMPUTE_WH_ML (X-Large GPU) for training, COMPUTE_WH_INFERENCE (Medium) for API"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Port Reassignment: Streamlit → 8502, Jupyter → 8889 (confirmed available via David Wong Slack Connect channel)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Storage Partitioning: s3://hsbc-poc-demo/checkpoints/ml-training/ and s3://hsbc-poc-demo/checkpoints/inference/"
+      },
+      {
+        "type": "heading_2",
+        "text": "GPU Credit Consumption Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "Parallel execution (all 4 components running simultaneously during 90-min session):"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "ML Training: X-Large GPU warehouse, 1.5 hours = €270 credits"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Inference API: Medium warehouse, 1.5 hours = €45 credits"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Streamlit + Jupyter: Small warehouse (shared), 1.5 hours = €22 credits"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Total session cost: €337 credits (0.52% of €65K POC allocation - APPROVED)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Pre-Launch Validation Checklist"
+      },
+      {
+        "type": "checkbox",
+        "text": "Verify port 8502 available on demo host",
+        "checked": false
+      },
+      {
+        "type": "checkbox",
+        "text": "Verify port 8889 available on demo host",
+        "checked": false
+      },
+      {
+        "type": "checkbox",
+        "text": "Test warehouse isolation: confirm COMPUTE_WH_ML and COMPUTE_WH_INFERENCE can run concurrently",
+        "checked": false
+      },
+      {
+        "type": "checkbox",
+        "text": "Validate S3 path separation: test simultaneous writes to ml-training/ and inference/ subdirectories",
+        "checked": false
+      },
+      {
+        "type": "checkbox",
+        "text": "Dry-run full stack: launch all 4 components and monitor for Address already in use errors",
+        "checked": false
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-02-28T09:15:00+00:00",
+    "last_updated": "2026-03-03T16:45:00+00:00"
+  },
+  {
+    "page_id": "NPAG-7",
+    "title": "NatWest Q2 2026 POC - Vendor Selection Pareto Analysis (FINAL)",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "deal_stage": "vendor_selection",
+      "priority": "critical",
+      "deadline": "2026-04-04"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "NatWest Q2 2026 Data Lakehouse POC - Multi-Dimensional Architecture Tradeoff Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Decision Context**: NatWest Group (Tier-1 UK retail bank) requires vendor recommendation for Q2 2026 data lakehouse POC by April 4th. Three finalists (Snowflake, Databricks, Dremio) excel in different dimensions with no single dominant solution."
+      },
+      {
+        "type": "heading_2",
+        "text": "Hard Floor Constraints (Elimination Criteria)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Budget: €350K total cap (3-year TCO)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Delivery: 8-week maximum time-to-production (Q2 close requirement)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Compliance: Audit-ready governance certification (FCA June deadline)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Pareto Dominance Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Step 1 - Hard Floor Elimination**: Dremio eliminated (€420K exceeds budget cap, 12-week delivery exceeds deadline)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Step 2 - Pairwise Comparison (Snowflake vs. Databricks)**: Snowflake dominates across all client-prioritized dimensions: Cost (€180K < €280K), Time (4 weeks < 8 weeks), Compliance (high > medium), Operational Complexity (low < medium)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Priority-Weighted Scoring"
+      },
+      {
+        "type": "paragraph",
+        "text": "Client weighting: Time Urgency 40%, Regulatory Compliance 35%, Cost 25%"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Snowflake**: 10.0/10.0 | **Databricks**: 5.85/10.0"
+      },
+      {
+        "type": "heading_2",
+        "text": "Recommendation: Snowflake Native Architecture"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Rationale**: Pareto optimal solution dominating all alternatives across client-prioritized dimensions. 4-week delivery provides 50% margin vs. deadline. Out-of-box FCA compliance eliminates audit risk. €170K under budget enables reallocation."
+      },
+      {
+        "type": "heading_2",
+        "text": "Explicit Trade-offs (Capabilities Sacrificed)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Multi-cloud portability (Databricks advantage): Low impact - NatWest standardized on Azure"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Query federation flexibility (Dremio advantage): Medium impact - adds ETL complexity but POC scope focuses on new architecture"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Customization flexibility (hybrid architectures): Low impact - native architecture reduces operational burden, aligns with time priority"
+      },
+      {
+        "type": "heading_2",
+        "text": "Next Steps"
+      },
+      {
+        "type": "checkbox",
+        "text": "Sync with Tom Harris on competitive positioning (Monday 3/31)",
+        "checked": true
+      },
+      {
+        "type": "checkbox",
+        "text": "Prepare executive presentation deck (Wednesday 4/2)",
+        "checked": false
+      },
+      {
+        "type": "checkbox",
+        "text": "Deliver recommendation to Rachel Patel (Friday 4/4 4pm GMT)",
+        "checked": false
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-29T10:00:00+00:00",
+    "last_updated": "2026-04-01T18:00:00+00:00"
+  },
+  {
+    "page_id": "NPAG-8",
+    "title": "BNP Paribas Q2 2026 POC - Mid-POC Architecture Pivot (Data Residency Reversal)",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "deal_stage": "POC - Active",
+      "account": "BNP Paribas",
+      "arr_forecast": "€4.8M",
+      "quarter": "Q2 2026",
+      "priority": "critical",
+      "last_updated": "2026-03-30T18:30:00+00:00"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "POC Overview"
+      },
+      {
+        "type": "paragraph",
+        "text": "BNP Paribas Q2 modernization POC - €85K credit allocation. Original architecture: Multi-region data replication (France + UK) demonstrating cross-border analytics capabilities. CDO Jean-Pierre Laurent positioned this as strategic differentiator for European expansion strategy."
+      },
+      {
+        "type": "heading_2",
+        "text": "CRITICAL: March 30 Compliance Reversal"
+      },
+      {
+        "type": "paragraph",
+        "text": "Isabelle Moreau (Procurement) notified via Slack Connect: New CNIL directive effective March 2026 prohibits UK data residency for customer PII under French data protection regulations. Multi-region architecture (€45K of €85K POC credit) is now NON-COMPLIANT for production use."
+      },
+      {
+        "type": "heading_2",
+        "text": "Architecture Components - Multi-Region Dependencies"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Data warehouse staging layer: France (primary) + UK (replica) - €25K + €20K credit allocation"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Snowpark ML feature stores: Cross-region feature replication for model training - €8K credit"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Cross-border analytics dashboards: Real-time sync latency metrics, data lineage visualization - €12K credit"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Demo environment: Pre-configured multi-region replication with sample PII datasets - €8K setup cost"
+      },
+      {
+        "type": "heading_2",
+        "text": "Sunk Costs Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "Total sunk costs: €20K + 16 hours architecture design time"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Multi-region warehouse setup: €12K (already consumed, non-recoverable)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Demo environment configuration: €8K (partially recoverable if pivoted to France-only)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Architecture design time: 16 hours (non-recoverable)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Response Strategy Options - Cost-Benefit Analysis"
+      },
+      {
+        "type": "heading_3",
+        "text": "Option 1: Abort Multi-Region Workload"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Impact: Lose €20K credit allocation (sunk costs), lose CDO strategic alignment on cross-border analytics"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Risk: Competitive loss to Databricks who can offer France-only deployment without narrative disruption"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Benefit: Zero compliance risk, no additional re-architecture effort required"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Timeline: No delay to April 2 briefing, but weakened value proposition"
+      },
+      {
+        "type": "heading_3",
+        "text": "Option 2: Pivot to France-Only + Data Masking (RECOMMENDED)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Impact: Preserve €50K credit (60% reuse), maintain CDO narrative on 'secure cross-border analytics'"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Effort: 12-hour emergency re-architecture required, revised briefing deck needed"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Technical approach: France-only data warehouse with dynamic data masking policies for cross-border analytics simulation. Snowpark ML feature stores remain in France region. Demo shows 'policy-based cross-border access control' instead of physical replication."
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Narrative pivot: Position as 'secure cross-border analytics with compliance-first architecture' - actually stronger regulatory story than physical replication"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Timeline: Feasible within 3-day deadline if started immediately (March 30 evening)"
+      },
+      {
+        "type": "heading_3",
+        "text": "Option 3: Escalate for CNIL Exception"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Impact: Preserve original architecture, but risk 4-week delay for legal review process"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Risk: Miss Q2 close timeline, lose deal momentum, BNP legal team unlikely to pursue exception for POC stage"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Benefit: No technical re-architecture required"
+      },
+      {
+        "type": "heading_2",
+        "text": "Pivot Feasibility Assessment (Option 2)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "France region Snowpark ML support: CONFIRMED - all required ML features available in EU-West-1 region"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Data masking policy substitution: FEASIBLE - dynamic masking + row access policies can simulate cross-border access control without physical UK residency"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Demo environment reconfiguration time: Estimated 8 hours (March 31 full day) - within 3-day deadline"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Briefing deck updates: Estimated 4 hours (April 1 morning) - architecture diagrams, compliance narrative, demo walkthrough script"
+      },
+      {
+        "type": "heading_2",
+        "text": "DECISION: Pivot to France-Only + Data Masking (Option 2)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Decision made March 30, 18:30 GMT. Rationale: Preserves CDO strategic narrative, maintains Q2 timeline, actually strengthens compliance positioning vs competitors. Technical trade-offs accepted: reduced replication performance demo (no longer showing real-time sync latency), masking overhead in query performance (acceptable for POC stage). Risk mitigation: staged expansion to UK post-compliance if regulations change in future."
+      },
+      {
+        "type": "heading_2",
+        "text": "Revised Architecture - France-Only with Policy-Based Cross-Border Access"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Primary data warehouse: France region only (€50K credit reallocation)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Dynamic data masking policies: Simulate UK user access with PII masking for cross-border analytics demo"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Row access policies: Demonstrate geo-based data access control without physical replication"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Snowpark ML feature stores: France region, no change required"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Demo narrative: 'Compliance-first cross-border analytics' - policy-based access control superior to physical replication for regulated data"
+      },
+      {
+        "type": "heading_2",
+        "text": "Action Items - Immediate Execution (March 30-April 1)"
+      },
+      {
+        "type": "to_do",
+        "text": "Reconfigure demo environment to France-only architecture (March 31 full day)",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Update briefing deck with revised architecture diagrams and compliance narrative (April 1 morning)",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Send Slack message to Isabelle Moreau confirming compliance-aligned approach (March 30 evening)",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Sync with Tom Harris via workmail on revised POC scope and Q2 forecast impact (March 31 morning)",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Rehearse revised demo walkthrough and compliance narrative (April 1 afternoon)",
+        "checked": false
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-02-15T14:00:00+00:00",
+    "last_updated": "2026-03-30T18:30:00+00:00"
+  },
+  {
+    "page_id": "NPAG-9",
+    "title": "BNP Paribas Q2 2026 POC - Multi-Region Architecture Quota Constraint Optimization",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "deal_stage": "POC Active",
+      "customer": "BNP Paribas",
+      "quarter": "Q1 2026",
+      "contract_value": "€4.5M annual",
+      "risk_level": "Medium (quota constraint mitigated)"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "BNP Paribas Q2 Modernization POC - Architecture Optimization"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Deal Overview:** €4.5M annual contract opportunity. CDO Claire Dubois executive briefing Feb 26, 2026 (Paris). Core requirement: Multi-region data residency compliance demonstration (France + UK cross-border analytics)."
+      },
+      {
+        "type": "heading_2",
+        "text": "Critical Constraint: AWS Region Quota Cap"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Problem:** EMEA demo account quota = 8 clusters per region. eu-west-3 (France) has only 6 available (2 allocated to Allianz POC). Ideal architecture requires 7 France + 5 UK = 12 clusters total. Gap: Need 7 France, only 6 available."
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision: Optimize Within Quota Cap (Option 3)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Optimized Architecture:** 6 France (eu-west-3) + 5 UK (eu-west-2) = 11 clusters total. Consolidate France workloads by merging 'customer segmentation analytics' and 'transaction pattern analysis' into single cluster with sequential execution (adds ~12 min to demo flow, acceptable trade-off)."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Preserved Capabilities:** Data residency compliance (both regions), cross-border query federation, low-latency performance benchmarking, GDPR data transfer compliance demonstration."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Trade-offs:** France-side query concurrency reduced ~15% (still meets POC success criteria). Credit allocation: €41K vs. €45K (€4K buffer retained for contingency)."
+      },
+      {
+        "type": "heading_2",
+        "text": "Rejected Alternatives"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Option 1 (Abort Multi-Region):** Rejected - loses data residency differentiation Claire Dubois specifically requested. HIGH risk to CDO alignment."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Option 2 (Escalate for Quota Increase):** Rejected - VP approval = 5-7 days, pushes Feb 26 briefing into March, jeopardizes Q1 pipeline. Non-refundable Eurostar tickets wasted. HIGH timeline risk."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Option 4 (Staged Demo):** Rejected - loses cross-border analytics for Feb 26 briefing (core CDO requirement). Requires second executive session (scheduling risk). MEDIUM-HIGH risk."
+      },
+      {
+        "type": "heading_2",
+        "text": "Execution Timeline"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Feb 16: Architecture decision finalized\n- Feb 17: Commercial alignment with Tom Harris (staged expansion backup plan)\n- Feb 18-19: Provision 6 France + 5 UK clusters\n- Feb 20-24: End-to-end testing and performance validation\n- Feb 22: Briefing deck revision complete\n- Feb 26: CDO executive briefing (Paris)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Risk Mitigation"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Performance Risk:** If 6-cluster France config shows issues in testing (Feb 20-24), escalate immediately for emergency quota increase (accept timeline delay as lesser risk vs. failed demo)."
+      },
+      {
+        "type": "paragraph",
+        "text": "**CDO Positioning:** Frame as 'production-optimized multi-region architecture demonstrating elastic scaling capability' rather than compromised demo. Add transparency slide on demo environment optimization to build trust."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Backup Plan:** If CDO requests additional scale post-POC, commercial path = Q2 change order for France expansion (6→8+ clusters). Tom Harris to confirm pricing and timeline."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-02-16T14:00:00+00:00",
+    "last_updated": "2026-02-16T15:30:00+00:00"
+  },
+  {
+    "page_id": "NPAG-10",
+    "title": "BNP Paribas Q2 2026 POC - Mid-POC Architecture Pivot (Data Residency Reversal)",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "deal_name": "BNP Paribas Q2 2026 POC",
+      "customer": "BNP Paribas",
+      "stage": "active_evaluation",
+      "credit_allocation": "€45K",
+      "owner": "Arjun Menon",
+      "ae": "Tom Harris",
+      "close_date": "2026-03-31",
+      "pivot_trigger": "CNIL compliance policy reversal",
+      "pivot_date": "2026-02-14"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "BNP Paribas Q2 2026 POC - Mid-POC Architecture Pivot Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "SCENARIO: Mid-February 2026 architecture pivot triggered by hidden Slack Connect intelligence contradicting surface workflow status."
+      },
+      {
+        "type": "heading_2",
+        "text": "Surface Workflow Status (Pre-Pivot)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Calendar: Feb 26 CDO executive briefing confirmed (Paris, 10:00-12:00 CET)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "CRM: Deal stage 'active_evaluation', €45K credit allocation approved"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Finance: Multi-region architecture budget committed (€25K France + €20K UK)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Demo scope: Cross-border data residency (France + UK regions, 12 warehouse clusters)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Surface status indicated workflow was on track with no blockers."
+      },
+      {
+        "type": "heading_2",
+        "text": "Hidden Constraint Discovery"
+      },
+      {
+        "type": "paragraph",
+        "text": "SOURCE: Slack Connect #bnp-paribas-q2-modernization channel, Feb 12 14:20 CET"
+      },
+      {
+        "type": "paragraph",
+        "text": "MESSAGE: Isabelle Moreau (procurement): 'URGENT: We have a CNIL compliance issue that just surfaced in our internal policy review. Our new data governance framework (effective Feb 1) prohibits French customer data from replicating to UK warehouses due to post-Brexit data transfer restrictions. This invalidates the cross-border demo architecture.'"
+      },
+      {
+        "type": "paragraph",
+        "text": "TIMESTAMP: 48 hours before pivot decision (Feb 14), 14 days before CDO briefing (Feb 26)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Credibility Assessment"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Sender identity: Isabelle Moreau verified as procurement contact in CRM (CON-251)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Message recency: 48-hour lag = high timeliness, sufficient lead time for pivot"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "CDO office involvement: Claire Dubois (CDO) confirmed in thread: 'this is a binding policy change from our CDO office'"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Policy authority: CNIL compliance framework effective Feb 1 = authoritative, not exploratory"
+      },
+      {
+        "type": "paragraph",
+        "text": "CONCLUSION: Hidden Slack intelligence is credible and binding. Compliance reversal invalidates original cross-border architecture."
+      },
+      {
+        "type": "heading_2",
+        "text": "Architecture Pivot Decision"
+      },
+      {
+        "type": "paragraph",
+        "text": "ORIGINAL ARCHITECTURE:"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "12 warehouse clusters (7 France + 5 UK)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "€45K credit allocation (€25K France + €20K UK)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Cross-border data replication for analytics"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Narrative: 'cross-border data residency compliance'"
+      },
+      {
+        "type": "paragraph",
+        "text": "REVISED ARCHITECTURE:"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "6 warehouse clusters (France-only, Paris region)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "€45K credit allocation preserved (€25K France + €20K reallocated to extended sovereign workloads)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Zero cross-border data movement"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Narrative: 'France-sovereign data residency compliance'"
+      },
+      {
+        "type": "heading_2",
+        "text": "Trade-Off Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "OPTION A: Proceed with original cross-border architecture (REJECTED)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Risk: CNIL compliance violation during demo = deal termination"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Risk: CDO office flagged issue = zero tolerance for non-compliance"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Risk: Competitive vulnerability (Databricks could exploit compliance failure)"
+      },
+      {
+        "type": "paragraph",
+        "text": "OPTION B: Pivot to France-only architecture (SELECTED)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Benefit: Full CNIL compliance alignment"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Benefit: Stronger sovereign cloud positioning vs Databricks"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Benefit: €45K credit allocation preserved (no forecast impact)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Cost: 10-day demo environment rebuild (aggressive but feasible)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Cost: Briefing deck narrative revision required"
+      },
+      {
+        "type": "paragraph",
+        "text": "DECISION: Prioritize compliance and competitive positioning over operational complexity. Absorb 10-day rebuild risk to preserve Feb 26 briefing and Q2 close timeline."
+      },
+      {
+        "type": "heading_2",
+        "text": "Execution Plan"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Demo environment reconfiguration (Feb 14-24): Remove UK warehouse clusters, update data replication policies to France-only, reallocate €20K to extended sovereign workload demos"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Briefing deck revision (Feb 14-24): Reframe narrative from cross-border to France-sovereign, update architecture diagrams, add CNIL compliance messaging"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Stakeholder sync (Feb 14-15): Email Claire Dubois confirming revised architecture, sync Tom Harris on commercial alignment"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Demo validation (Feb 24): Final environment testing 2 days before briefing"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "CDO briefing execution (Feb 26): Deliver France-sovereign narrative in Paris"
+      },
+      {
+        "type": "heading_2",
+        "text": "Workflow Execution Summary"
+      },
+      {
+        "type": "paragraph",
+        "text": "This pivot demonstrates proactive constraint detection and resolution under information asymmetry. Hidden Slack Connect intelligence (Isabelle Moreau CNIL compliance reversal, Feb 12) contradicted surface workflow status (calendar/CRM/finance all showed 'on track'). Agent prioritized real-time customer constraint over official workflow state to avoid Feb 26 briefing failure. Architecture pivot executed 14 days before briefing with zero customer-visible disruption. Deal stage preserved, credit allocation maintained, competitive positioning strengthened. Trade-off: absorbed 10-day rebuild operational complexity to optimize for compliance, timeline integrity, and CDO alignment."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-02-14T17:00:00+00:00",
+    "last_updated": "2026-02-14T18:30:00+00:00"
+  },
+  {
+    "page_id": "NPAG-11",
+    "title": "BNP Paribas Q2 2026 POC - Multi-Region Demo Environment Credit Allocation Under EMEA Quota Constraint",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "deal_stage": "POC Architecture Planning",
+      "customer": "BNP Paribas",
+      "quarter": "Q2 2026",
+      "total_value": "€45K POC / €8M+ expansion potential",
+      "status": "Active - Quota Optimization Required"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "BNP Paribas Q2 POC - Multi-Region Architecture Quota Constraint Optimization"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Scenario**: BNP Paribas CDO office (Claire Dubois) requested multi-region data residency demonstration for Q2 modernization POC. Ideal architecture: 12 warehouse clusters (7 France eu-west-3, 5 UK eu-west-2) consuming €45K credits to showcase cross-border analytics compliance and data sovereignty controls."
+      },
+      {
+        "type": "heading_2",
+        "text": "Constraint Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Regional Quota Limits** (EMEA demo account INT-103):\n• France region (eu-west-3): €25K monthly cap\n• UK region (eu-west-2): €20K monthly cap\n• Credits NON-TRANSFERABLE between regions (billing entity separation)\n• Total nominal: €45K but must respect regional boundaries"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Competing Workload Constraint**:\n• Allianz Q1 POC consuming €12K/month in France region through end of February\n• Reduces France available capacity to €13K during overlap period (Jan-Feb)\n• Full €25K France quota available starting March 1"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Ideal Architecture Credit Split**:\n• 7 France clusters: €30K (exceeds €25K cap by €5K)\n• 5 UK clusters: €15K (within €20K cap, €5K headroom)\n• Total: €45K\n• **Problem**: France allocation exceeds regional quota by €5K"
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision Options"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Option A: Reduce France Clusters (6+5 architecture)**\n• Adjust to 6 France clusters (€25K, at cap) + 5 UK clusters (€15K)\n• Total: €40K (€5K scope reduction)\n• Pros: Single deployment phase, stays within hard caps, simpler coordination\n• Cons: Reduced technical credibility (10 vs 12 clusters), weaker data residency narrative, €5K less impressive demo scale\n• Timeline: Can deploy immediately (no Allianz conflict in March)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Option B: Staged Deployment (4+3 France phasing)**\n• Phase 1 (February): 4 France clusters (€13K available after Allianz) + 5 UK clusters (€15K) = €28K\n• Phase 2 (March): 3 additional France clusters (€12K, using freed Allianz quota) = €12K\n• Total: €40K across two phases, achieves 7+5 architecture eventually\n• Pros: Preserves ideal 12-cluster architecture, maximizes technical credibility\n• Cons: Operational complexity (two deployment waves), CDO briefing Feb 26 shows incomplete architecture (only 9 clusters), coordination overhead with BNP Paribas for phased rollout\n• Timeline Risk: Feb 26 CDO briefing is FIXED - cannot showcase full architecture at critical decision point"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Option C: Reduce Overall Scope (5+5 architecture)**\n• 5 France clusters (€20K) + 5 UK clusters (€15K) = €35K\n• Pros: Maximum headroom in both regions (€5K France buffer, €5K UK buffer), lowest operational risk\n• Cons: Significant technical credibility hit (10 clusters, symmetric split loses data residency nuance), €10K scope reduction weakens competitive positioning vs Databricks\n• Commercial Impact: May signal insufficient commitment to flagship EMEA reference deal"
+      },
+      {
+        "type": "heading_2",
+        "text": "Trade-off Analysis - Decision Axes"
+      },
+      {
+        "type": "paragraph",
+        "text": "**1. Technical Credibility of Demo**\n• Ideal: 12 clusters (7 France + 5 UK) = 100% credibility\n• Option A: 11 clusters (6+5) = 92% credibility (minor reduction)\n• Option B: 12 clusters eventual, but only 9 at Feb 26 briefing = 75% credibility at decision point\n• Option C: 10 clusters (5+5) = 83% credibility, loses regional nuance\n• Weight: HIGH (CDO decision criteria emphasizes production-grade architecture)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**2. CDO Briefing Timeline Constraint**\n• Feb 26 briefing is FIXED, non-negotiable (Claire Dubois calendar locked)\n• Option A: Full architecture ready for briefing ✓\n• Option B: Incomplete architecture at briefing (9/12 clusters) ✗\n• Option C: Full architecture ready for briefing ✓\n• Weight: CRITICAL (briefing is key decision gate, cannot be moved)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**3. Competitive Positioning (vs Databricks)**\n• Data residency is KEY differentiator in BNP Paribas evaluation\n• Option A: Strong positioning (11 clusters, clear regional split)\n• Option B: Weak positioning at briefing (incomplete demo undermines confidence)\n• Option C: Moderate positioning (10 clusters adequate but less impressive scale)\n• Weight: HIGH (Databricks parallel evaluation, must demonstrate clear advantage)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**4. Operational Complexity**\n• Option A: Low (single deployment, straightforward)\n• Option B: High (two-phase deployment, coordination overhead, risk of phase 2 delays)\n• Option C: Low (single deployment, maximum buffer)\n• Weight: MEDIUM (Arjun can manage complexity, but adds risk)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**5. Commercial Impact (Deal Risk)**\n• Option A: Low risk (preserves Q2 close timeline, strong demo)\n• Option B: Medium-high risk (incomplete briefing may delay decision, phasing adds uncertainty)\n• Option C: Medium risk (scope reduction may signal insufficient commitment)\n• Weight: HIGH (€8M+ expansion potential, flagship EMEA reference)"
+      },
+      {
+        "type": "heading_2",
+        "text": "RECOMMENDATION: Option A (6 France + 5 UK = 11 clusters, €40K)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Rationale**: Optimize for CDO briefing timeline constraint (Feb 26 fixed) and competitive positioning. The 11-cluster architecture (6 France + 5 UK) delivers 92% of ideal technical credibility while ensuring complete, production-ready demo at the critical decision gate. Staged deployment (Option B) would show incomplete architecture at briefing, undermining confidence and potentially delaying decision in competitive evaluation. The €5K scope reduction is acceptable trade-off to preserve timeline integrity and competitive strength."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Regional Allocation**:\n• France (eu-west-3): 6 warehouse clusters, €25K (at quota cap)\n• UK (eu-west-2): 5 warehouse clusters, €15K (€5K headroom)\n• Total: €40K, stays within all hard constraints"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Deployment Timeline**:\n• Week of March 3: Deploy all 11 clusters (Allianz POC concluded, France quota freed)\n• March 10-20: Technical validation and compliance documentation (Rachel Patel review)\n• Feb 26: CDO briefing with complete architecture demonstration"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Mitigation for €5K Scope Reduction**:\n• Emphasize quality over quantity in CDO narrative (11 production-grade clusters vs 12 proof-of-concept)\n• Highlight €5K headroom in UK region as buffer for expansion scenarios during demo\n• Position 6+5 split as optimized for BNP Paribas actual workload distribution (France-heavy operations)\n• Prepare expansion path narrative: 'POC architecture scales to 20+ clusters in production deployment'"
+      },
+      {
+        "type": "heading_2",
+        "text": "Next Actions"
+      },
+      {
+        "type": "paragraph",
+        "text": "• [DONE] Document trade-off analysis in Notion deal page\n• [TODO] Sync with Tom Harris (AE) on commercial implications of €5K scope reduction - confirm acceptable for Q2 forecast\n• [TODO] Update BNP Paribas Slack Connect channel with revised architecture proposal (11 clusters, explicit regional split rationale)\n• [TODO] Prepare technical memo for Jean-Pierre Laurent (Chief Architect) explaining quota constraint and optimization logic\n• [TODO] Coordinate with Rachel Patel on compliance documentation timeline for 6+5 architecture\n• [TODO] Reserve France region quota starting March 1 (post-Allianz) to prevent conflicts with other EMEA demos"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-28T14:30:00+00:00",
+    "last_updated": "2026-04-01T16:45:00+00:00"
+  },
+  {
+    "page_id": "NPAG-12",
+    "title": "Standard Chartered Q2 2026 POC - Snowpark Python Workload Staging Collision Analysis",
+    "parent_page_id": "NPAG-6",
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "account": "Standard Chartered",
+      "deal_stage": "POC",
+      "priority": "urgent",
+      "discovery_date": "2026-04-01"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Staging-Time Collision Discovery"
+      },
+      {
+        "type": "paragraph",
+        "text": "During final staging of all approved Snowpark Python workloads into shared demo environment, discovered three workloads configured to execute simultaneously at 9:00 AM SGT daily refresh, creating critical resource contention that will cause live demo failure."
+      },
+      {
+        "type": "heading_2",
+        "text": "Workload Resource Profiles"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "**Workload A - Model Training (Credit Risk)**: GPU-intensive, 2x A100 nodes required, 45-minute execution window, writes to /ml-training/credit-risk/, consumes ~40% of GPU warehouse quota"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "**Workload B - Model Training (Fraud Detection)**: GPU-intensive, 2x A100 nodes required, 35-minute execution window, writes to /ml-training/fraud/, consumes ~35% of GPU warehouse quota"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "**Workload C - Feature Engineering Pipeline**: I/O-heavy, CPU-optimized warehouse, 20-minute execution window, reads from raw data lake (15GB), writes to /feature-store/, consumes ~25% of CPU warehouse quota"
+      },
+      {
+        "type": "paragraph",
+        "text": "**COLLISION SEVERITY**: Workloads A + B both target GPU_COMPUTE_WH warehouse at 9:00 AM SGT. Combined GPU requirement (4x A100 nodes) exceeds demo environment allocation (3x A100 nodes, capped at €45K monthly quota). Workload C has different bottleneck (I/O vs GPU) but creates demo narrative flow issue: feature engineering must complete BEFORE model training to populate feature store."
+      },
+      {
+        "type": "heading_2",
+        "text": "Demo Environment Constraints"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "GPU warehouse: 3x A100 nodes max, €45K monthly quota (~75% GPU utilization ceiling)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "CPU warehouse: 8x XL nodes, €12K monthly quota"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Shared S3 staging bucket: /demo/sc-q2-poc/"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Live demo window: April 15, 2026, 10:00-11:30 AM SGT (90-minute CDO session)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Proposed Staggered Execution Schedule"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "**8:00 AM SGT**: Workload C (Feature Engineering) - must run first to populate feature store, CPU-only, no GPU conflict"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "**8:25 AM SGT**: Workload A (Credit Risk Training) - starts after feature engineering completes, uses 40% GPU quota"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "**9:15 AM SGT**: Workload B (Fraud Detection Training) - starts after Workload A completes, uses 35% GPU quota"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "**9:55 AM SGT**: All workloads complete, 5-minute buffer before 10:00 AM demo start"
+      },
+      {
+        "type": "paragraph",
+        "text": "**RATIONALE**: Staggered schedule preserves demo narrative flow (feature engineering → training → inference), avoids GPU warehouse quota exhaustion (max 40% concurrent utilization vs 75% simultaneous), and ensures all outputs ready before live demo. 5-minute buffer accommodates minor execution variance."
+      },
+      {
+        "type": "heading_2",
+        "text": "Technical Validation Checklist"
+      },
+      {
+        "type": "checkbox",
+        "text": "Verify S3 checkpoint path separation (no write conflicts)",
+        "checked": false
+      },
+      {
+        "type": "checkbox",
+        "text": "Confirm warehouse auto-suspend configured (5-minute idle timeout)",
+        "checked": false
+      },
+      {
+        "type": "checkbox",
+        "text": "Test feature store read dependency (training jobs wait for feature engineering completion)",
+        "checked": false
+      },
+      {
+        "type": "checkbox",
+        "text": "Validate GPU credit consumption under staggered schedule (dry run)",
+        "checked": false
+      },
+      {
+        "type": "checkbox",
+        "text": "Update scheduler job configs with new execution times",
+        "checked": false
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-01T14:30:00+00:00",
+    "last_updated": "2026-04-01T17:45:00+00:00"
+  },
+  {
+    "page_id": "NPAG-13",
+    "title": "EMEA FinServ Q2 2026 Pipeline - Competitive Intelligence Summary",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "quarter": "Q2 2026",
+      "region": "EMEA"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Databricks Competitive Activity - March 2026"
+      },
+      {
+        "type": "paragraph",
+        "text": "Increased Databricks activity in EMEA FinServ accounts during March 2026. Three accounts report parallel evaluations: HSBC (analytics modernization), Barclays (data platform POC), and Lloyds Banking (migration planning). Key competitive differentiators: Snowpark Container Services for GPU workloads, native data governance, and simplified operations model vs Databricks cluster management complexity."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-28T09:00:00+00:00",
+    "last_updated": "2026-03-30T16:20:00+00:00"
+  },
+  {
+    "page_id": "NPAG-14",
+    "title": "BNP Paribas Q2 2026 POC - Multi-Dimensional Architecture Trade-off Under Procurement Hard Constraint",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "deal_stage": "POC Architecture Selection",
+      "customer": "BNP Paribas",
+      "quarter": "Q2 2026",
+      "annual_contract_value": "€4.5M",
+      "poc_budget_range": "€22K-45K",
+      "decision_date": "2026-03-28",
+      "status": "Architecture Selected - Option B"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Executive Summary"
+      },
+      {
+        "type": "paragraph",
+        "text": "BNP Paribas CDO office requested Q2 data platform modernization POC with cross-border data residency compliance (France + UK regions), near-real-time analytics workloads, and €45K budget cap. Three architecture options emerged from technical discovery. Procurement flagged hard constraint: any POC exceeding €40K triggers executive board approval with 3-week delay, which would push delivery past Q1 close window and jeopardize €4.5M annual contract target."
+      },
+      {
+        "type": "heading_2",
+        "text": "Architecture Options Analysis"
+      },
+      {
+        "type": "heading_3",
+        "text": "Option A: 12-Cluster Multi-Region (EXCLUDED - Procurement Veto)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Configuration: 7 France clusters + 5 UK clusters"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Cost: €45,000"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Strengths: Optimal cross-border analytics demonstration, complete technical scope, majority preference from BNP technical team (Jean-Pierre Laurent, Rachel Patel)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Fatal Flaw: Exceeds €40K procurement threshold, triggers 3-week executive board approval delay, pushes delivery past Q1 close window"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Decision: EXCLUDED due to procurement hard constraint (Isabelle Moreau veto)"
+      },
+      {
+        "type": "heading_3",
+        "text": "Option B: 8-Cluster France-Sovereign (SELECTED)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Configuration: 8 France region clusters, all compute in France"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Cost: €28,000"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Strengths: (1) Compliant with €40K threshold - no board delay, (2) Strong France GDPR compliance story, (3) Cost advantage vs Databricks (€28K vs €35K), (4) Low delivery risk"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Trade-offs: Sacrifices UK multi-region real-time analytics demonstration, limits London trading desk use case visibility"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Competitive Positioning: Cost efficiency advantage over Databricks, strong compliance narrative compensates for reduced cross-border scope"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Decision: SELECTED based on Pareto reasoning - maximizes compliance demonstration value within hard constraint"
+      },
+      {
+        "type": "heading_3",
+        "text": "Option C: 6-Cluster Staged Expansion (Not Selected)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Configuration: 4 France + 2 UK initial, expand post-approval"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Cost: €22,000 initial (€38K total if expansion approved)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Strengths: Maximum budget flexibility, preserves expansion option for Q2"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Risks: Expansion approval uncertainty creates delivery risk, incomplete demo if expansion delays, weaker initial technical demonstration vs Option B"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Decision: Not selected - delivery risk outweighs budget flexibility advantage"
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision Rationale"
+      },
+      {
+        "type": "paragraph",
+        "text": "Selected Option B (8-cluster France-sovereign at €28K) over Option C (staged expansion) based on Pareto analysis across four criteria:"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Procurement Hard Constraint Compliance (Primary Filter): Option B stays well under €40K threshold with €12K buffer, eliminates board approval delay risk"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Cross-Border Analytics Demonstration: Option B provides strong France GDPR compliance story (actually stronger single-region narrative than multi-region for some stakeholders), trades off UK real-time demo completeness"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Competitive Positioning vs Databricks: €28K vs Databricks €35K provides 20% cost advantage, compensates for reduced scope vs Option A"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Delivery Risk: Option B has low delivery risk (no expansion approval uncertainty), Option C introduces staging risk that could impact Q2 evaluation window"
+      },
+      {
+        "type": "heading_2",
+        "text": "Stakeholder Alignment"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Technical Team (Jean-Pierre Laurent, Rachel Patel): Preferred Option A for completeness, acknowledged procurement constraint as primary decision driver, accepted Option B with documented trade-off rationale"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Procurement (Isabelle Moreau): Hard veto on Option A due to €40K threshold, approved Option B recommendation"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "CDO Office: Cross-border compliance requirements addressed through France-sovereign architecture with strong GDPR controls demonstration"
+      },
+      {
+        "type": "heading_2",
+        "text": "Regional Quota Context"
+      },
+      {
+        "type": "paragraph",
+        "text": "EMEA demo account regional quotas: France €25K cap (€12K consumed by Allianz POC, €13K available), UK €20K cap. Option A would have required €18K France + €15K UK allocation. Option B requires €28K France allocation - exceeds remaining France quota by €15K, requires quota reallocation from other regions or Q2 budget adjustment. Finance team confirmed feasibility."
+      },
+      {
+        "type": "heading_2",
+        "text": "Next Steps"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Update CRM deal stage to 'POC Architecture Finalized - Option B'"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Sync with Tom Harris on Q1 forecast impact (deal remains on track for Q2 close, €4.5M ACV target)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Schedule technical scoping session with Jean-Pierre and Rachel for Option B architecture details (week of April 1)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Prepare revised SOW for CDO office review (target: April 3-4 Paris site visit)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Lessons Learned"
+      },
+      {
+        "type": "paragraph",
+        "text": "Procurement hard constraints can override majority technical preference - critical to surface these constraints early in architecture discovery. Pareto analysis framework effective for documenting multi-dimensional trade-offs when no option dominates across all criteria. Cost positioning vs competitive threat (Databricks €35K) provided important leverage to justify reduced scope in Option B vs technically-preferred Option A."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-28T15:00:00+00:00",
+    "last_updated": "2026-03-28T17:30:00+00:00"
+  },
+  {
+    "page_id": "NPAG-15",
+    "title": "Q1 2026 EMEA FinServ Pipeline Review - Week of March 24-31",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "review_period": "2026-03-24 to 2026-03-31",
+      "quarter": "Q1 2026",
+      "status": "Active"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q1 Pipeline Status - Week Ending March 31"
+      },
+      {
+        "type": "heading_2",
+        "text": "Active POCs"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Allianz Q1 POC: On track for Q1 close, streaming architecture pivot completed, compliance documentation approved"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "HSBC Analytics Hub: GPU quota optimization resolved, demo environment stable, Q1 close forecast high confidence"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Barclays Data Platform: Architecture selection finalized (Pareto analysis completed), POC kickoff scheduled April 2"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "BNP Paribas Q2 POC: Architecture decision completed March 28 (Option B selected), procurement constraint resolved, on track for Q2 close (€4.5M ACV)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Key Wins This Week"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "BNP Paribas architecture trade-off resolved under procurement hard constraint - Option B (France-sovereign €28K) selected, keeps Q2 deal on track"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Standard Chartered Q2 expansion planning progressing, Snowpark Python workload dependencies mapped"
+      },
+      {
+        "type": "heading_2",
+        "text": "Risks & Blockers"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "EMEA demo account France region quota constraint (€13K remaining after Allianz consumption) - may impact Q2 multi-POC concurrency, monitoring closely"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-29T10:00:00+00:00",
+    "last_updated": "2026-03-29T16:00:00+00:00"
+  },
+  {
+    "page_id": "NPAG-16",
+    "title": "Q1 2026 Weekly POC Acceleration Plan - Week of March 31 (Q1 Close Sprint)",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "quarter": "Q1 2026",
+      "week": "March 31 - April 6",
+      "status": "active",
+      "deal_stage": "POC execution / Q1 close sprint"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q1 Pipeline Execution Framework - Week of March 31"
+      },
+      {
+        "type": "paragraph",
+        "text": "Critical week: Q1 close sprint with three active POCs requiring final technical validation and executive readiness. Barclays architecture selection decision due April 4, HSBC GPU optimization demo scheduled April 3, BNP Paribas compliance documentation review April 2."
+      },
+      {
+        "type": "heading_2",
+        "text": "Active POC Milestones - Current Week"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "**Barclays Q1 Close** (CUS-101): Architecture selection decision April 4. Sarah Mitchell (CDO) requires final technical validation of native masking vs. Immuta hybrid. Prep: battlecard comparison, FCA audit-readiness documentation, cost-benefit analysis refresh.",
+          "**HSBC GPU Optimization** (CUS-103): Competitive response to Databricks threat. David Wong demo April 3 at 14:00 GMT. Prep: GPU quota allocation validation, performance benchmark refresh, multi-environment contention resolution verification.",
+          "**BNP Paribas Compliance Demo** (CUS-140): Data residency architecture pivot follow-up. Claire Dubois compliance review April 2 at 10:00 CET. Prep: multi-region architecture documentation, GDPR compliance checklist, credit allocation optimization under EMEA quota constraint."
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Calendar Availability Analysis - Next 7 Days"
+      },
+      {
+        "type": "paragraph",
+        "text": "Scanned calendar EVT-301 through EVT-384. Identified prep blocks: Mon March 31 (09:00-11:00, 15:00-17:00), Tue April 1 (08:00-10:00, 14:00-16:00), Wed April 2 (13:00-15:00). Conflicts: Thu April 3 HSBC demo overlaps with Standard Chartered follow-up (resolved: delegated SC to Tom Harris). Fri April 4 Barclays decision call blocks afternoon prep time."
+      },
+      {
+        "type": "heading_2",
+        "text": "Todo Completion Status - Gap Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "Reviewed TODO-501 through TODO-605. Critical gaps identified: (1) Barclays battlecard not updated since Feb 15 - needs Databricks competitive refresh. (2) HSBC GPU demo environment validation pending - last check Jan 28. (3) BNP Paribas compliance documentation incomplete - missing GDPR data flow diagrams. (4) No KB article exists for multi-region architecture patterns under EMEA quota constraints - need to create reference doc."
+      },
+      {
+        "type": "heading_2",
+        "text": "Executable Task Breakdown - This Week"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "**CRITICAL - Mon March 31 09:00-11:00**: Validate HSBC GPU demo environment (KB-402 reference). Success criteria: GPU quota allocation confirmed, performance benchmarks run successfully, no resource contention with other EMEA demos.",
+          "**CRITICAL - Mon March 31 15:00-17:00**: Refresh Barclays architecture battlecard with Databricks competitive positioning (KB-405 Pareto framework). Success criteria: Cost comparison updated, FCA audit-readiness comparison documented, time-to-production trade-offs clear.",
+          "**HIGH - Tue April 1 08:00-10:00**: Complete BNP Paribas GDPR compliance documentation (data flow diagrams, residency validation). Success criteria: Claire Dubois review-ready documentation, all PII handling documented, multi-region architecture compliance verified.",
+          "**HIGH - Tue April 1 14:00-16:00**: Create KB article for multi-region architecture patterns under EMEA quota constraints. Success criteria: Reference architecture documented, credit allocation optimization playbook, reusable for future BNP/Deutsche Bank deals.",
+          "**MEDIUM - Wed April 2 13:00-15:00**: Prepare Barclays CDO executive briefing deck for April 4 decision call. Success criteria: Architecture recommendation clear, ROI analysis updated, risk mitigation plan documented.",
+          "**MEDIUM - Thu April 3 morning**: Final HSBC demo dry-run with David Wong. Success criteria: Demo flow validated, GPU performance metrics confirmed, competitive response talking points rehearsed."
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Deal Stage Progression Alignment"
+      },
+      {
+        "type": "paragraph",
+        "text": "Barclays (POC → Commercial): Architecture decision unlocks €2.8M expansion discussion. HSBC (POC → Competitive Defense): GPU demo must neutralize Databricks threat to preserve €1.9M pipeline. BNP Paribas (POC → Compliance Validation): Documentation review gates April 15 procurement approval for €3.2M deal."
+      },
+      {
+        "type": "heading_2",
+        "text": "Cross-Reference: KB Articles Leveraged"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "KB-402: Snowpark Python Real-Time Inference - Reference Architecture (HSBC GPU optimization)",
+          "KB-403: Multi-Component POC Demo - Resource Contention Prevention Playbook (HSBC demo validation)",
+          "KB-405: Multi-Dimensional Vendor Selection - Pareto Analysis Framework (Barclays battlecard refresh)",
+          "KB-406 (NEW): Multi-Region Architecture Patterns Under EMEA Quota Constraints (BNP Paribas compliance, Deutsche Bank future reference)"
+        ]
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-30T18:30:00+00:00",
+    "last_updated": "2026-03-31T08:15:00+00:00"
+  },
+  {
+    "page_id": "NPAG-17",
+    "title": "Deutsche Bank Q2 2026 POC - Data Residency & Snowpark Governance Scoping",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Arjun Menon",
+      "quarter": "Q2 2026",
+      "account": "Deutsche Bank",
+      "deal_stage": "Pre-POC scoping",
+      "executive_sponsor": "Dr. Heinrich Schneider (CDO)"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Deutsche Bank Q2 2026 POC - Initial Scoping"
+      },
+      {
+        "type": "paragraph",
+        "text": "Following February 19 executive dinner with Dr. Schneider (referenced in Allianz deal context), Deutsche Bank expressed interest in Q2 POC focused on data residency compliance and Snowpark governance for regulatory reporting workloads. Initial scoping call scheduled for April 8, 2026."
+      },
+      {
+        "type": "heading_2",
+        "text": "Key Requirements (Preliminary)"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Multi-region data residency: EU data must remain in Frankfurt region, UK data in London region",
+          "Snowpark governance: Python UDF approval workflow for regulatory compliance",
+          "Cross-region analytics: Consolidated reporting across EU/UK entities without data movement",
+          "BaFin audit-readiness: Full lineage and access logging for German financial regulator"
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Technical Preparation Tasks"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Draft technical memo on data residency architecture patterns (leverage BNP Paribas learnings from NPAG-15)",
+          "Document Snowpark governance framework with approval workflow examples",
+          "Prepare reference architecture for cross-region secure data sharing",
+          "Research BaFin-specific audit requirements vs. FCA (Barclays) and GDPR (BNP Paribas)"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "NOTE: This is noise/context record - actual scoping work will begin post-Q1 close sprint."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-28T14:20:00+00:00",
+    "last_updated": "2026-03-28T14:20:00+00:00"
+  },
+  {
+    "page_id": "NPAG-18",
+    "title": "BNP Paribas Q2 2026 POC - Multi-Region Demo Environment Credit Allocation Under EMEA Quota Constraint",
+    "parent_page_id": "NPAG-10",
+    "database_id": null,
+    "properties": {
+      "customer": "BNP Paribas",
+      "deal_stage": "POC - Technical Validation",
+      "sa_owner": "Arjun Menon",
+      "ae_owner": "Tom Harris",
+      "constraint_type": "resource_quota",
+      "decision_date": "2026-03-27",
+      "status": "in_progress"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "BNP Paribas Q2 2026 POC - Multi-Region Architecture Quota Constraint Optimization"
+      },
+      {
+        "type": "paragraph",
+        "text": "Decision framework for resolving EMEA regional quota constraints blocking ideal 12-cluster multi-region demo environment for BNP Paribas CDO briefing (April 8, 2026)."
+      },
+      {
+        "type": "heading_2",
+        "text": "Constraint Context"
+      },
+      {
+        "type": "paragraph",
+        "text": "BNP Paribas Q2 POC requires multi-region demo (France + UK) to demonstrate cross-border data residency compliance. Ideal architecture: 12 warehouse clusters (7 France, 5 UK) = €45K total. EMEA demo account regional quotas are non-transferable and constrained:"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "France region: €25K cap, €12K consumed by Allianz POC (through March 31), €8.5K baseline ops → €4.5K available (vs €30K needed)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "UK region: €20K cap, €8.5K consumed by HSBC POC → €11.5K available (vs €15K needed)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Critical bottleneck: France region €13K shortage blocks 7-cluster France architecture"
+      },
+      {
+        "type": "heading_2",
+        "text": "Strategy Evaluation"
+      },
+      {
+        "type": "heading_3",
+        "text": "Strategy A: Provision 11-cluster hybrid NOW (degraded fidelity)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Architecture: 6 France clusters + 5 UK clusters = €40K. Fits current quota, preserves 3-week prep timeline. Risk: 6-cluster France may not tell complete sovereignty story. Checkpoint at April 5 rehearsal to validate narrative fidelity."
+      },
+      {
+        "type": "heading_3",
+        "text": "Strategy B: Wait for Allianz completion, provision full 12-cluster (compressed timeline)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Architecture: 7 France + 5 UK = €45K. Unlocked after Allianz POC releases €12K France quota April 1. Demo fidelity preserved but prep timeline compressed to 10 days. Risk: rehearsal quality suffers, no fallback if timeline issues emerge."
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision: Strategy A with Rehearsal Checkpoint"
+      },
+      {
+        "type": "paragraph",
+        "text": "Selected Strategy A: provision 11-cluster hybrid immediately, set checkpoint at demo rehearsal (April 5). If rehearsal validates core compliance narrative (data residency controls, cross-border analytics, audit trails), proceed with April 8 briefing. If critical gaps exposed, escalate for emergency quota reallocation or briefing postponement."
+      },
+      {
+        "type": "heading_2",
+        "text": "Rationale"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Preserves 3-week prep timeline with full rehearsal cycle"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Fits current quota constraints without VP escalation"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Checkpoint provides decision gate before customer exposure"
+      },
+      {
+        "type": "numbered_list",
+        "text": "6-cluster France likely sufficient for core sovereignty narrative"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Customer-facing narrative positions as France-sovereign focus vs constraint"
+      },
+      {
+        "type": "heading_2",
+        "text": "Forecast Impact"
+      },
+      {
+        "type": "paragraph",
+        "text": "Per Tom Harris: €40K vs €45K scope reduction acceptable from forecast perspective, still within €2.8M annual deal range. Emergency quota reallocation theoretically possible but requires VP approval + 72hr lead time (not reliable fallback for April 8 briefing)."
+      },
+      {
+        "type": "heading_2",
+        "text": "Customer-Facing Narrative"
+      },
+      {
+        "type": "paragraph",
+        "text": "If 11-cluster path chosen, position 6-cluster France architecture as intentional France-sovereign focus: 'We've optimized the demo to emphasize France-domiciled data processing patterns, which align with your board's sovereignty mandate. The 6 core France clusters demonstrate the complete compliance story: PII processing, analytics, fraud detection, regulatory reporting, masking, and audit trails.'"
+      },
+      {
+        "type": "heading_2",
+        "text": "Action Items"
+      },
+      {
+        "type": "to_do",
+        "text": "Provision 11-cluster demo environment by April 3 (Arjun)",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Prepare technical architecture diagram for JP Laurent by April 2 (Arjun)",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Demo rehearsal checkpoint April 5 - validate architecture fidelity (Arjun + Tom)",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Document rehearsal findings and architecture validation (Arjun)",
+        "checked": false
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-27T11:00:00+00:00",
+    "last_updated": "2026-03-27T16:30:00+00:00"
+  }
+]

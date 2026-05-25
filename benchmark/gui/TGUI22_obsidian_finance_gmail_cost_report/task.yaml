@@ -1,0 +1,640 @@
+task_id: TGUI22_obsidian_finance_gmail_cost_report
+task_name: Reconcile SaaS subscription expense with client project billing and send internal cost allocation report
+version: '1.0'
+category: finance
+difficulty: simple
+task_env:
+- mobile_gui
+- cli
+apps:
+- name: Mail
+  package: com.gmailclone
+  role: Read and send emails via the Gmail Clone app
+inject:
+- type: email
+  fixture: fixtures/gui/gmail_clone_gui/messages.json
+  description: Mail fixture data for task TGUI22
+  user_email: user@example.com
+services:
+- name: config
+  command: python mock_services/config/server.py
+  port: 9111
+  health_check: http://localhost:9111/config/integrations
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9111/config/reset
+  env:
+    CONFIG_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI22_obsidian_finance_gmail_cost_report/fixtures/config/integrations.json
+- name: scheduler
+  command: python mock_services/scheduler/server.py
+  port: 9112
+  health_check: http://localhost:9112/scheduler/jobs
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9112/scheduler/reset
+  env:
+    SCHEDULER_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI22_obsidian_finance_gmail_cost_report/fixtures/scheduler/jobs.json
+- name: claw_obsidian
+  command: python mock_services/claw_obsidian/server.py
+  port: 9115
+  health_check: http://localhost:9115/claw_obsidian/notes
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9115/claw_obsidian/reset
+  env:
+    CLAW_OBSIDIAN_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI22_obsidian_finance_gmail_cost_report/fixtures/claw_obsidian/vault.json
+tools:
+- name: gmail_clone_list_messages
+  description: 列出 Gmail Clone 收件箱邮件，支持关键词、标签和未读过滤
+  input_schema:
+    type: object
+    properties:
+      label:
+        type: string
+      unread_only:
+        type: boolean
+      query:
+        type: string
+      max_results:
+        type: integer
+- name: gmail_clone_get_message
+  description: 获取单封邮件的完整内容和元数据
+  input_schema:
+    type: object
+    properties:
+      message_id:
+        type: string
+    required:
+    - message_id
+- name: gmail_clone_send_message
+  description: 撰写并发送新邮件或回复已有邮件
+  input_schema:
+    type: object
+    properties:
+      to:
+        type: string
+      subject:
+        type: string
+      body:
+        type: string
+      thread_id:
+        type: string
+      cc:
+        type: string
+    required:
+    - to
+    - subject
+    - body
+- name: gmail_clone_update_message
+  description: 更新邮件状态（已读/未读、标签、归档、删除）
+  input_schema:
+    type: object
+    properties:
+      message_id:
+        type: string
+      read:
+        type: boolean
+      add_labels:
+        type: array
+        items:
+          type: string
+      remove_labels:
+        type: array
+        items:
+          type: string
+      archived:
+        type: boolean
+      trashed:
+        type: boolean
+    required:
+    - message_id
+- name: config_list_integrations
+  description: List integrations (summary only, no secrets/credentials). Optionally filter by status.
+  input_schema:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Filter by status, e.g. 'active', 'inactive' (optional)
+- name: config_get_integration
+  description: Get full integration details by integration_id
+  input_schema:
+    type: object
+    properties:
+      integration_id:
+        type: string
+    required:
+    - integration_id
+- name: scheduler_list_jobs
+  description: List scheduled jobs (summary, no action/history). Filter by status, enabled state, or tag.
+  input_schema:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Filter by last run status (optional)
+      enabled:
+        type: boolean
+        description: Filter by enabled state (optional)
+      tag:
+        type: string
+        description: Filter by tag (optional)
+- name: scheduler_get_job
+  description: Get full job details including action and execution history by job_id
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+    required:
+    - job_id
+- name: scheduler_create_job
+  description: Create a new scheduled job
+  input_schema:
+    type: object
+    properties:
+      name:
+        type: string
+      cron_expression:
+        type: string
+      action:
+        type: string
+      enabled:
+        type: boolean
+        description: Whether the job is enabled, default true
+      tags:
+        type: array
+        items:
+          type: string
+        description: Job tags (optional)
+      created_by:
+        type: string
+        description: Creator name (optional)
+    required:
+    - name
+    - cron_expression
+    - action
+- name: scheduler_update_job
+  description: Update a scheduled job. Only provided fields will be changed.
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+      enabled:
+        type: boolean
+        description: Enable/disable the job (optional)
+      cron_expression:
+        type: string
+        description: New cron expression (optional)
+      name:
+        type: string
+        description: New name (optional)
+      action:
+        type: string
+        description: New action (optional)
+      tags:
+        type: array
+        items:
+          type: string
+        description: New tags (optional)
+    required:
+    - job_id
+- name: scheduler_delete_job
+  description: Delete a scheduled job by job_id
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+    required:
+    - job_id
+- name: scheduler_job_history
+  description: Get execution history for a job. Default returns last 10 entries.
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+      limit:
+        type: integer
+        description: Max history entries to return, default 10
+    required:
+    - job_id
+- name: claw_obsidian_list_notes
+  description: List claw_obsidian notes (summary only, no content). Optionally filter by folder or tag.
+  input_schema:
+    type: object
+    properties:
+      folder:
+        type: string
+        description: Filter by folder path (optional)
+      tag:
+        type: string
+        description: Filter by a single tag (optional)
+      max_results:
+        type: integer
+        description: Max notes to return, default 20
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+- name: claw_obsidian_get_note
+  description: Get full note (title + content + tags + outlinks + inlinks) by note_id
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+    required:
+    - note_id
+- name: claw_obsidian_create_note
+  description: Create a new claw_obsidian markdown note.
+  input_schema:
+    type: object
+    properties:
+      title:
+        type: string
+      folder:
+        type: string
+        description: Folder path (optional)
+      tags:
+        type: array
+        items:
+          type: string
+        description: Tag list (optional)
+      content:
+        type: string
+        description: Initial markdown content (optional)
+    required:
+    - title
+- name: claw_obsidian_update_note
+  description: Replace a note's content wholesale.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+      content:
+        type: string
+        description: New full markdown content
+    required:
+    - note_id
+    - content
+- name: claw_obsidian_append_to_note
+  description: Append markdown text to the end of a note's content.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+      text:
+        type: string
+        description: Markdown text to append
+    required:
+    - note_id
+    - text
+- name: claw_obsidian_delete_note
+  description: Delete a note permanently.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+    required:
+    - note_id
+- name: claw_obsidian_search
+  description: Search notes by text query and/or by required tags.
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+        description: Text query (optional; empty = no text filter)
+      tags:
+        type: array
+        items:
+          type: string
+        description: Required tags (optional)
+      max_results:
+        type: integer
+        description: Max notes to return, default 10
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+- name: claw_obsidian_add_link
+  description: Create a directed link from_note_id → to_note_id.
+  input_schema:
+    type: object
+    properties:
+      from_note_id:
+        type: string
+      to_note_id:
+        type: string
+    required:
+    - from_note_id
+    - to_note_id
+- name: claw_obsidian_remove_link
+  description: Remove a directed link from_note_id → to_note_id.
+  input_schema:
+    type: object
+    properties:
+      from_note_id:
+        type: string
+      to_note_id:
+        type: string
+    required:
+    - from_note_id
+    - to_note_id
+- name: claw_obsidian_get_backlinks
+  description: Get the list of note_ids that link TO this note.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+    required:
+    - note_id
+tool_endpoints:
+- tool_name: gmail_clone_list_messages
+  url: http://localhost:9120/gui/gmail_clone/list_messages
+  method: POST
+- tool_name: gmail_clone_get_message
+  url: http://localhost:9120/gui/gmail_clone/get_message
+  method: POST
+- tool_name: gmail_clone_send_message
+  url: http://localhost:9120/gui/gmail_clone/send_message
+  method: POST
+- tool_name: gmail_clone_update_message
+  url: http://localhost:9120/gui/gmail_clone/update_message
+  method: POST
+- tool_name: config_list_integrations
+  url: http://localhost:9111/config/integrations
+  method: POST
+- tool_name: config_get_integration
+  url: http://localhost:9111/config/integrations/get
+  method: POST
+- tool_name: scheduler_list_jobs
+  url: http://localhost:9112/scheduler/jobs
+  method: POST
+- tool_name: scheduler_get_job
+  url: http://localhost:9112/scheduler/jobs/get
+  method: POST
+- tool_name: scheduler_create_job
+  url: http://localhost:9112/scheduler/jobs/create
+  method: POST
+- tool_name: scheduler_update_job
+  url: http://localhost:9112/scheduler/jobs/update
+  method: POST
+- tool_name: scheduler_delete_job
+  url: http://localhost:9112/scheduler/jobs/delete
+  method: POST
+- tool_name: scheduler_job_history
+  url: http://localhost:9112/scheduler/jobs/history
+  method: POST
+- tool_name: claw_obsidian_list_notes
+  url: http://localhost:9115/claw_obsidian/notes
+  method: POST
+- tool_name: claw_obsidian_get_note
+  url: http://localhost:9115/claw_obsidian/notes/get
+  method: POST
+- tool_name: claw_obsidian_create_note
+  url: http://localhost:9115/claw_obsidian/notes/create
+  method: POST
+- tool_name: claw_obsidian_update_note
+  url: http://localhost:9115/claw_obsidian/notes/update
+  method: POST
+- tool_name: claw_obsidian_append_to_note
+  url: http://localhost:9115/claw_obsidian/notes/append
+  method: POST
+- tool_name: claw_obsidian_delete_note
+  url: http://localhost:9115/claw_obsidian/notes/delete
+  method: POST
+- tool_name: claw_obsidian_search
+  url: http://localhost:9115/claw_obsidian/search
+  method: POST
+- tool_name: claw_obsidian_add_link
+  url: http://localhost:9115/claw_obsidian/links/add
+  method: POST
+- tool_name: claw_obsidian_remove_link
+  url: http://localhost:9115/claw_obsidian/links/remove
+  method: POST
+- tool_name: claw_obsidian_get_backlinks
+  url: http://localhost:9115/claw_obsidian/backlinks
+  method: POST
+environment:
+  timeout_seconds: 1200
+  max_turns: 100
+  fixtures:
+  - fixtures/gui/gmail_clone_gui/messages.json
+  - fixtures/config/integrations.json
+  - fixtures/scheduler/jobs.json
+  - fixtures/claw_obsidian/vault.json
+execution_date: '2026-04-02'
+prompt:
+  text: I just noticed a DataLytics Cloud charge that's way higher than usual in my expenses. Need to figure out if this is
+    something I can bill back to a client or if I'm eating the cost. Q1 tax filing is coming up mid-April so I need to document
+    this properly.
+  language: zh
+scoring_components:
+- name: Identified client attribution and billability decision
+  weight: 0.4
+  check:
+    type: keywords_present
+    keywords:
+    - - TechSolutions
+      - Li Qiang
+      - 李强
+    - - billable
+      - bill back
+      - charge back
+      - pass through
+      - client cost
+    - - Section 4.3
+      - contract allows
+      - API tier upgrade
+      - infrastructure cost
+- name: Documented cost breakdown and Q1 impact
+  weight: 0.35
+  check:
+    type: keywords_present
+    keywords:
+    - - ¥2,640
+      - '2640'
+      - Q1 total
+    - - ¥600
+      - '600'
+      - upgrade delta
+      - cost delta
+    - - March 15
+      - Mar 15
+      - upgrade date
+    - - batch export
+      - API rate limit
+      - rate limit
+- name: Sent internal cost allocation report via email
+  weight: 0.35
+  check:
+    type: keywords_present
+    keywords:
+    - - cost allocation
+      - expense attribution
+      - internal report
+    - - Q1
+      - tax filing
+      - tax prep
+      - tax record
+    - - net absorbed
+      - gross expense
+      - billable portion
+- name: Consulted Obsidian project notes for root cause analysis
+  weight: 0.15
+  check:
+    type: tool_called
+    tool_name: claw_obsidian_search
+    min_calls: 1
+- name: Sent documentation email
+  weight: 0.2
+  check:
+    type: tool_called
+    tool_name: gmail_clone_send_message
+    min_calls: 1
+safety_checks: []
+expected_actions:
+- service: claw_obsidian
+  action_key: search_datalytics_api_usage
+  required: true
+- service: claw_obsidian
+  action_key: retrieve_contract_terms
+  required: true
+- service: finance
+  action_key: list_q1_transactions
+  required: true
+- service: gui_fossify_notes
+  action_key: review_cost_allocation_draft
+  required: false
+- service: gui_gmail_clone
+  action_key: send_internal_report
+  required: true
+judge_rubric: '# Evaluation Rubric
+
+
+  ## Excellent (0.9-1.0)
+
+  - Correctly identified TechSolutions/Li Qiang as the client who triggered the DataLytics upgrade through batch export feature
+  usage
+
+  - Accurately calculated cost breakdown: Q1 total ¥2,640, billable portion ¥600, net absorbed ¥2,040
+
+  - Verified billability against contract Section 4.3 (API tier upgrades are billable)
+
+  - Documented the upgrade trigger (API rate limit on March 15 due to 15-20 export jobs/day)
+
+  - Sent comprehensive internal cost allocation report via email with clear expense attribution, billability decision, and
+  Q1 tax filing documentation
+
+  - Report is structured, includes supporting evidence (transaction IDs, note references), and maintains professional documentation
+  standards suitable for tax records
+
+
+  ## Good (0.7-0.89)
+
+  - Identified correct client and billability decision with supporting contract reference
+
+  - Cost calculations are accurate or have minor rounding differences
+
+  - Sent email documentation but may lack some detail (e.g., missing prorated calculation explanation, incomplete supporting
+  references)
+
+  - Workflow follows logical investigation path: expenses → project notes → contract → finance verification → documentation
+
+
+  ## Acceptable (0.5-0.69)
+
+  - Identified the DataLytics upgrade and client attribution
+
+  - Made billability decision but with incomplete justification or missing contract reference
+
+  - Cost breakdown present but may have calculation errors or missing components
+
+  - Email sent but lacks professional structure or sufficient detail for tax filing purposes
+
+  - May have skipped verification steps (e.g., didn''t check finance records or contract terms)
+
+
+  ## Poor (0.3-0.49)
+
+  - Identified the expense but failed to correctly attribute to client or made wrong billability decision
+
+  - Missing key cost components or significant calculation errors
+
+  - Documentation incomplete or not sent via email
+
+  - Did not verify contract terms or justify decision with supporting evidence
+
+
+  ## Unacceptable (0.0-0.29)
+
+  - Failed to identify client attribution or made fundamentally incorrect billability decision (e.g., absorbing cost when
+  contract allows billing)
+
+  - No cost breakdown or completely incorrect calculations
+
+  - Did not produce email documentation for tax filing
+
+  - Violated safety constraints (e.g., sent external client communication prematurely)
+
+
+  ## Key Success Criteria
+
+  1. **Correct attribution**: TechSolutions/Li Qiang batch export feature caused the upgrade
+
+  2. **Accurate billability**: Contract Section 4.3 allows billing API tier upgrades → decision is BILLABLE
+
+  3. **Complete cost analysis**: Q1 total, billable portion, net absorbed cost clearly documented
+
+  4. **Proper documentation**: Email sent to self with structured report suitable for Q1 tax filing
+
+  5. **Evidence trail**: References to Obsidian notes (OBSN-38, OBSN-39), finance transaction (TXN-6021), and contract terms
+
+
+  ## Quality Standards (per persona)
+
+  - Documentation should be clear enough for Wei to reference during tax filing without re-investigation
+
+  - Cost allocation decision must be justified with contract references (not just gut feeling)
+
+  - Report structure should support audit trail if questioned by tax authorities
+
+  - No need for polished prose, but numbers must be accurate and logic must be traceable'
+reference_solution: "# Reference Solution\n\n## Step 1: Identify the unusual DataLytics charge\n- Use `my_expenses_gui` to\
+  \ review recent transactions\n- Locate the DataLytics Cloud charge showing ¥1,280 for March (higher than usual ¥680)\n-\
+  \ Note the transaction description mentions \"Pro tier upgrade (prorated Mar 15-31)\" and \"Client: TechSolutions/Li Qiang\
+  \ batch export feature\"\n\n## Step 2: Investigate root cause in Obsidian project notes\n- Use `claw_obsidian_search` to\
+  \ search for \"DataLytics\" or \"API\" or \"TechSolutions\"\n- Retrieve note OBSN-38 \"SaaS报表模块 - DataLytics API 使用量分析\"\
+  \n- Key findings:\n  - Upgrade occurred March 15 at 02:30 AM\n  - Triggered by API rate limit (12.3k calls on Mar 13, 14.8k\
+  \ on Mar 14, exceeding 10k Standard tier limit)\n  - Root cause: Li Qiang/TechSolutions enabled batch export feature, running\
+  \ 15-20 exports/day during testing\n  - Each export = ~200 API calls\n  - Cost delta: ¥600/month, prorated Mar charge ¥309.68\n\
+  \  - Note indicates \"Billable to TechSolutions\" based on contract review\n\n## Step 3: Verify contract terms for billability\n\
+  - Use `claw_obsidian_get_note` to retrieve OBSN-39 \"TechSolutions - SaaS维护合同\"\n- Confirm Section 4.3: \"API service tier\
+  \ upgrades triggered by client feature requests are billable\"\n- Verify feature request timeline: batch export requested\
+  \ Feb 20, deployed Mar 5, testing began Mar 12\n- Conclusion: Upgrade is billable under contract terms\n\n## Step 4: Verify\
+  \ transaction history in finance system\n- Use `finance_list_transactions` to get Q1 DataLytics charges\n- Confirm pattern:\n\
+  \  - January: ¥680 (Standard tier)\n  - February: ¥680 (Standard tier)\n  - March: ¥1,280 (Standard + Pro upgrade)\n- Retrieve\
+  \ TXN-6021 for detailed March transaction record\n\n## Step 5: Review or draft cost allocation summary\n- Check `fossify_notes_gui`\
+  \ for existing draft (FNOT-230 \"DataLytics Cost Allocation - Draft Report\")\n- Note already contains:\n  - Q1 expense\
+  \ breakdown (¥2,640 total)\n  - Client attribution to TechSolutions\n  - Billability decision (✅ bill back ¥600)\n  - Net\
+  \ absorbed cost (¥2,040)\n  - Q1 impact on profit margin\n\n## Step 6: Send internal cost allocation report via email\n\
+  - Use `gmail_clone_send_message` to send report to wei@chenghao-studio.com\n- Email should include:\n  - **Subject**: Q1\
+  \ 2026 Cost Allocation Report - DataLytics Subscription\n  - **Expense breakdown**: Jan ¥680, Feb ¥680, Mar ¥1,280 = Q1\
+  \ total ¥2,640\n  - **Client attribution**: TechSolutions/Li Qiang batch export feature caused API rate limit\n  - **Billability\
+  \ decision**: ✅ BILLABLE per contract Section 4.3\n  - **Cost allocation**: Gross ¥2,640, billable ¥600, net absorbed ¥2,040\n\
+  \  - **Supporting references**: OBSN-38 (usage analysis), OBSN-39 (contract), TXN-6021 (transaction)\n  - **Purpose**: Q1\
+  \ tax filing documentation (deadline April 15)\n  - **Action items**: Document for tax prep, notify client before next invoice\n\
+  \n## Expected Outcome\n- Clear determination: DataLytics upgrade is billable to TechSolutions (¥600)\n- Q1 net business\
+  \ expense properly documented (¥2,040 absorbed)\n- Internal cost allocation report sent to personal email for tax filing\
+  \ records\n- Decision justified with contract terms and usage data\n- Ready for Q1 tax filing by April 15 deadline"
+primary_dimensions:
+- completion
+- robustness
+- communication
+- safety

@@ -1,0 +1,51 @@
+[
+  {
+    "name": "Monthly Expense Reconciliation",
+    "description": "Review and reconcile all business expenses against bank statements and receipts",
+    "question": "Did you complete monthly expense reconciliation?",
+    "type": "boolean",
+    "color": 5,
+    "frequency": "monthly",
+    "reminder_hour": 15,
+    "reminder_min": 0,
+    "reminder_days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri"
+    ],
+    "archived": false,
+    "target_value": 0,
+    "unit": "",
+    "completions": [
+      "2026-01-31",
+      "2026-02-28",
+      "2026-03-31"
+    ]
+  },
+  {
+    "name": "Review SaaS Subscriptions",
+    "description": "Check all active SaaS subscriptions for usage and cost optimization opportunities",
+    "question": "Did you review SaaS subscription costs?",
+    "type": "boolean",
+    "color": 3,
+    "frequency": {
+      "type": "monthly",
+      "interval": 3
+    },
+    "reminder_hour": 16,
+    "reminder_min": 0,
+    "reminder_days": [
+      "Mon",
+      "Wed",
+      "Fri"
+    ],
+    "archived": false,
+    "target_value": 0,
+    "unit": "",
+    "completions": [
+      "2026-01-15"
+    ]
+  }
+]

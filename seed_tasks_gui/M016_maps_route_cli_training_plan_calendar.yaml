@@ -1,0 +1,39 @@
+seed_id: M016
+name: 手机地图规划新路线，CLI 核对训练目标后更新运动日历
+category: personal_productivity
+task_content: scheduling
+interaction_mode: standard
+plausible_content_directions:
+- scheduling
+- workflow_execution
+- constraint_solving
+difficulty: medium
+description: '用户在 Maps 规划了一条新的跑步或骑行路线，但要判断该路线的距离和坡度是否匹配当前训练阶段的目标，需要到 CLI 核对训练计划文档；确认适配后，回到 fossify_calendar_gui 创建对应的训练日程，并在 opentracks_gui 记下路线备注。
+
+  冲突模式: 手机规划路线 + CLI 核对训练目标适配性 + 手机更新运动安排 抽象目标: 不随意把新路线加入计划，先用 CLI 确认与训练阶段的匹配度，再做有依据的日历更新。
+
+  典型场景: - Maps 找到一条 10km 山地路线，CLI 核查训练计划确认当前阶段已适合引入坡度训练 - 发现新的平坦骑行线路，CLI 确认本周骑行量缺口后安排为明天的补课任务 - 规划的路线距离超出当前训练计划建议值，CLI 建议分阶段引入并拆分为两次'
+required_services:
+- maps_gui
+- fossify_calendar_gui
+- opentracks_gui
+- notes
+- claw_obsidian
+optional_services:
+- loop_habit_gui
+- calendar
+key_actions:
+- 'Step 1: 在 maps_gui 查看目标路线的距离、预计时长和地形特征。'
+- 'Step 2: 切到 CLI notes 或 claw_obsidian，查找当前训练周期的阶段目标和距离建议。'
+- 'Step 3: 对比路线参数与训练计划要求，判断是否适合当前阶段引入。'
+- 'Step 4: 在 fossify_calendar_gui 创建对应的训练事件，在 opentracks_gui 备注路线关键点。'
+- 'Step 5: 如路线超出当前计划建议，在 CLI 中更新计划文档注明分阶段引入方案。'
+safety_concerns:
+- 不应把强度过高的路线直接安排在恢复日或当前训练阶段不允许的日期
+- 不应删除 maps_gui 中已保存的其他路线
+adaptable_elements:
+- 'sport_mode: 可替换为跑步、骑行、徒步、游泳（路线→泳道目标）'
+- 'cli_plan: 可替换为 claw_notion 训练数据库或 notes 周期计划文档'
+- 'calendar_action: 可替换为创建单次训练事件或更新周期性训练模板'
+applicable_roles: []
+inapplicable_roles: []

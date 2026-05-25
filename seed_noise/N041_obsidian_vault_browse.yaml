@@ -1,0 +1,15 @@
+noise_id: N041
+name: "Browse Obsidian vault"
+description: "Open Obsidian vault to look through notes in a folder, open one note to re-read it, then close"
+involved_services: [claw_obsidian]
+leaves_trace: false
+action_sequence:
+  - "List notes in a folder"
+  - "Open one note to read"
+  - "Follow a link to a related note (optional)"
+  - "Close"
+time_preference: any
+adaptable_elements:
+  - "Which folder to browse"
+  - "Whether to follow backlinks"
+  - "Whether to search by tag"

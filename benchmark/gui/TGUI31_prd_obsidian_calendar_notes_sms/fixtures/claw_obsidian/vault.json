@@ -1,0 +1,296 @@
+[
+  {
+    "note_id": "OBSN-1",
+    "title": "Q1 2026 用户留存分析 - 数据输出路径索引",
+    "folder": "Product/Analytics/Retention",
+    "tags": [
+      "retention",
+      "q1-2026",
+      "data-pipeline",
+      "index"
+    ],
+    "content": "# Q1 2026 User Retention Analysis - Data Output Index\n\n## Latest Run: 2026-01-06\n\n### Output Directory Structure\n```\n/data/analytics/retention/2026-Q1/\n├── raw/\n│   └── retention_raw_20260106.csv (2.3M records, user-level events)\n├── aggregated/\n│   └── retention_summary_20260106.json (channel & cohort aggregates)\n└── visualization/\n    └── funnel_chart_20260106.png (funnel drop-off visualization)\n```\n\n### Key Metrics Summary (from aggregated/retention_summary_20260106.json)\n- **Overall D1 Retention**: 42.3% (↑2.1pp vs Q4)\n- **Overall D7 Retention**: 18.7% (↑0.8pp vs Q4)\n- **Overall D30 Retention**: 8.2% (↓0.3pp vs Q4)\n- **Sample Size**: 2,347,892 new users (2025-12-01 to 2026-01-05 cohorts)\n\n### Channel Breakdown\n| Channel | D1 | D7 | D30 | Notes |\n|---------|----|----|-----|-------|\n| Organic Search | 38.5% | 16.2% | 7.1% | Baseline |\n| Social Share | 51.2% | 24.3% | 11.8% | **Best performer** |\n| Paid Ads | 35.1% | 13.8% | 5.9% | High acquisition cost |\n| App Store | 44.7% | 19.5% | 8.7% | Quality users |\n\n### Funnel Drop-off Points\n1. **Registration → First Browse**: 15% drop (friction in onboarding)\n2. **First Browse → Add to Cart**: 28% drop (product discovery issue)\n3. **Add to Cart → Purchase**: 42% drop (checkout friction)\n\n## Version History\n- **v3 (2026-01-06)**: Current version, includes social share channel breakdown\n- **v2 (2025-12-30)**: Year-end batch, missing social channel granularity\n- **v1 (2025-12-23)**: Test run, incomplete data (only 2 weeks)\n\n## Related Documents\n- [[Sprint Planning Q1 2026]]\n- [[Social Share Feature PRD]]\n- [[Weekly Report Template]]\n\n## For Stakeholder Requests\nWhen cross-department colleagues ask for retention data:\n1. Confirm the date range they need\n2. Use **aggregated/retention_summary_20260106.json** for quick metrics\n3. Provide mobile-friendly summary format (see [[Data Request Response Template]])\n4. Log the delivery in this note's \"Request Log\" section below\n\n## Request Log\n_(Track who requested what and when)_\n\n---\n*Last updated: 2026-01-07 by Chen Xiaoyu*",
+    "outlinks": [
+      "OBSN-2",
+      "OBSN-3",
+      "OBSN-4"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-07T10:30:00+08:00",
+    "last_updated": "2026-01-07T17:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-2",
+    "title": "Data Request Response Template",
+    "folder": "Product/Templates",
+    "tags": [
+      "template",
+      "data-request",
+      "communication"
+    ],
+    "content": "# Data Request Response Template\n\n## Mobile-Friendly Summary Format\n\n### For Retention Reports\n```\n【Q1用户留存数据】\n数据周期：[start] - [end]\n样本量：[N] 新用户\n\n核心指标：\n• D1留存：[X]% \n• D7留存：[X]%\n• D30留存：[X]%\n\n渠道对比（D7）：\n🥇 社交分享 [X]%\n🥈 应用商店 [X]%\n🥉 自然搜索 [X]%\n\n主要发现：\n1. [Key insight 1]\n2. [Key insight 2]\n\n完整报告路径：\n/data/analytics/retention/2026-Q1/aggregated/retention_summary_[date].json\n\n—— 数据分析组 | [timestamp]\n```\n\n## Delivery Checklist\n- [ ] Verify data version (not test run)\n- [ ] Confirm date range matches request\n- [ ] Format for mobile readability\n- [ ] Include file path for reference\n- [ ] Log delivery in source note\n- [ ] Set follow-up reminder if needed",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [
+      "OBSN-1"
+    ],
+    "created_at": "2026-01-05T14:20:00+08:00",
+    "last_updated": "2026-01-07T16:10:00+08:00"
+  },
+  {
+    "note_id": "OBSN-3",
+    "title": "Sprint Planning Q1 2026 - Week 2",
+    "folder": "Product/Sprints",
+    "tags": [
+      "sprint",
+      "q1-2026",
+      "planning"
+    ],
+    "content": "# Sprint Planning - Q1 2026 Week 2 (Jan 6-12)\n\n## Committed Features (12 items, 85 story points)\n1. Homepage personalization algorithm v2 - 13 pts\n2. Checkout flow optimization - 8 pts\n3. Product detail page A/B test setup - 5 pts\n4. User feedback collection module - 8 pts\n5. Push notification frequency control - 5 pts\n6. Search result ranking improvement - 13 pts\n7. Cart abandonment reminder - 8 pts\n8. Coupon display optimization - 5 pts\n9. Order tracking UI refresh - 8 pts\n10. Performance monitoring dashboard - 5 pts\n11. Bug fixes from last sprint - 5 pts\n12. Technical debt: refactor user service - 13 pts\n\n## Team Capacity\n- Total: 90 story points\n- Committed: 85 points (94% utilization)\n- Buffer: 5 points for urgent fixes\n\n## Status (as of 2026-01-09)\n- Completed: 3 items (21 pts)\n- In Progress: 6 items (42 pts)\n- Not Started: 3 items (22 pts)\n\n## Risks\n⚠️ Boss requested \"social share viral feature\" to be added THIS WEEK via WeChat\n- Estimated effort: 21 story points\n- Current buffer: only 5 points\n- **Conflict**: Cannot fit without descoping\n\n## Next Steps\n- [ ] Evaluate which features can be deferred\n- [ ] Discuss trade-offs with boss\n- [ ] Update sprint backlog if scope changes approved",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [
+      "OBSN-1"
+    ],
+    "created_at": "2026-01-06T09:00:00+08:00",
+    "last_updated": "2026-01-09T14:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-4",
+    "title": "Weekly Report 2026-W01 Draft",
+    "folder": "Product/Reports",
+    "tags": [
+      "weekly-report",
+      "2026-w01",
+      "draft"
+    ],
+    "content": "# Weekly Report - 2026 Week 1 (Jan 6-12)\n\n## Key Accomplishments\n- ✅ Q1 user retention analysis completed (see [[Q1 2026 用户留存分析 - 数据输出路径索引]])\n- ✅ Homepage personalization v2 launched (A/B test running)\n- ⏳ Checkout optimization 60% complete\n\n## Key Metrics\n- DAU: 1.2M (↑5% WoW)\n- Conversion Rate: 3.8% (↑0.2pp)\n- User Retention D7: 18.7% (↑0.8pp vs Q4)\n\n## Blockers & Risks\n- 🔴 Sprint capacity conflict: new feature request vs committed work\n- 🟡 A/B experiment config validation failing (see scheduler logs)\n\n## Next Week Focus\n- [ ] Finalize retention report for stakeholders\n- [ ] Resolve sprint scope conflict\n- [ ] Complete PRD for requirements review\n\n---\n*Draft - needs metrics update from latest retention data*",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [
+      "OBSN-1"
+    ],
+    "created_at": "2026-01-08T16:00:00+08:00",
+    "last_updated": "2026-01-09T11:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-5",
+    "title": "A/B Experiment Data Verification Checklist",
+    "folder": "Product/Analytics/ABTest",
+    "tags": [
+      "ab_test",
+      "data_quality",
+      "verification"
+    ],
+    "content": "# A/B Experiment Data Verification Checklist\n\n## Before Sharing Experiment Results\n\n### 1. Verify Job Completion\n- [ ] Check scheduler logs for successful completion\n- [ ] Confirm job ran on expected date/time\n- [ ] Verify no error messages in execution history\n\n### 2. Validate Data Source\n- [ ] Confirm output path matches production environment\n- [ ] Check experiment version label (prod vs test)\n- [ ] Verify sample size meets statistical significance threshold (>100k users)\n\n### 3. Cross-Reference with Documentation\n- [ ] Match output path with [[Q1 2026 用户留存分析 - 数据输出路径索引]]\n- [ ] Confirm experiment configuration version\n- [ ] Validate data collection time window\n\n## Social Sharing Experiment (v2.3)\n\n**Production Output Path**: `/data/experiments/social_share/v2.3_prod/`\n**Test Output Path**: `/data/experiments/social_share/v2.3_test/`\n\n**Key Metrics to Extract**:\n- Day-1 retention rate\n- Day-7 retention rate\n- Sample size (total users)\n- Baseline comparison (lift vs control)\n\n**Last Verified**: 2026-02-01 14:35\n**Verified By**: Chen Xiaoyu\n**Job ID**: JOB-704\n**Status**: Production data confirmed, ready for stakeholder delivery",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-28T16:20:00+08:00",
+    "last_updated": "2026-02-01T14:35:00+08:00"
+  },
+  {
+    "note_id": "OBSN-6",
+    "title": "Data Request Log - Operations Team",
+    "folder": "Product/Analytics/Requests",
+    "tags": [
+      "data_request",
+      "operations",
+      "log"
+    ],
+    "content": "# Data Request Log - Operations Team\n\n## 2026-02-01 - Social Sharing Retention Data\n\n**Requester**: Liu Ting (Operations Team Leader)\n**Request Channel**: WeChat\n**Request Time**: 2026-02-01 11:23\n**Purpose**: Campaign planning meeting preparation\n\n**Request Details**:\n- Social sharing channel retention metrics\n- Recent data (post-feature launch)\n- Focus on retention performance\n\n**Data Delivered**:\n- Experiment Version: v2.3_social_share_prod\n- Time Window: 2026-01-15 to 2026-01-31\n- Day-1 Retention: 38.6%\n- Day-7 Retention: 21.4%\n- Sample Size: 156,800 users\n- Baseline Lift: Day-1 +4.3 pct, Day-7 +2.7 pct\n\n**Verification Steps**:\n1. Checked scheduler job JOB-704 completion (success, 2026-02-01 03:00)\n2. Validated production output path: `/data/experiments/social_share/v2.3_prod/`\n3. Cross-referenced with experiment configuration documentation\n4. Extracted metrics from latest export file\n\n**Delivery Time**: 2026-02-01 14:52\n**Delivery Channel**: WeChat\n**Format**: Mobile-friendly summary\n\n**Follow-up**: Offered detailed analysis report if needed\n**Status**: Completed ✓\n\n---\n\n## 2026-01-28 - User Funnel Analysis\n\n**Requester**: Marketing Team\n**Status**: Completed ✓",
+    "outlinks": [
+      "OBSN-5",
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-20T10:15:00+08:00",
+    "last_updated": "2026-02-01T15:10:00+08:00"
+  },
+  {
+    "note_id": "OBSN-7",
+    "title": "Sprint Capacity Analysis - Week 11 (Mar 18-24)",
+    "folder": "Product/Sprints",
+    "tags": [
+      "sprint-planning",
+      "capacity",
+      "q1-2026"
+    ],
+    "content": "# Sprint Capacity Analysis - Week 11\n\n## Team Capacity Overview\n- **Total Available**: 13 person-days (5 developers × 2.6 days average)\n- **Already Allocated**: 12 person-days (92%)\n- **Buffer Remaining**: 1 person-day (8%)\n\n## Current Sprint Commitments\n\n### High Priority\n1. **User Retention Optimization** (6 person-days)\n   - Onboarding flow A/B test implementation\n   - Push notification timing optimization\n   - Status: 70% complete, on track\n\n2. **A/B Experiment Infrastructure** (4 person-days)\n   - Config validator bug fixes (JOB-702 error resolution)\n   - Social sharing experiment data export\n   - Status: Blocked by config issue, needs 2 more days\n\n3. **KPI Dashboard Sync** (2 person-days)\n   - Daily engagement metrics pipeline\n   - Q1 retention funnel finalization\n   - Status: 50% complete, delivery target Mar 21\n\n## Capacity Constraint Analysis\n\nAdding **Social Sharing Feature** (estimated 5 person-days) would:\n- Push total demand to 17 person-days (131% of capacity)\n- Force de-prioritization of either:\n  - Retention optimization (risks Q1 KPI: +15% retention target)\n  - A/B experiment completion (blocks operations team campaign planning)\n\n## Risk Assessment\n\n**If social sharing is inserted this sprint:**\n- 🔴 High risk: A/B experiment data delayed → operations campaign postponed\n- 🟡 Medium risk: Retention optimization quality degraded\n- 🟡 Medium risk: Team overtime → burnout in Q1 final push\n\n**Recommendation**: Postpone to Sprint 12 (Mar 25 start)\n\n## Related Documents\n- [[OBSN-3]] Sprint Planning Q1 2026 - Week 2\n- [[OBSN-5]] A/B Experiment Data Verification Checklist\n- [[OBSN-1]] Q1 2026 用户留存分析 - 数据输出路径索引",
+    "outlinks": [
+      "OBSN-3",
+      "OBSN-5",
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-18T10:15:00+08:00",
+    "last_updated": "2026-03-18T14:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-8",
+    "title": "Social Sharing Feature - Original Proposal",
+    "folder": "Product/Features",
+    "tags": [
+      "feature-proposal",
+      "social-sharing",
+      "growth"
+    ],
+    "content": "# Social Sharing Feature Proposal\n\n## Background\nBoss proposed adding social sharing viral loop functionality to accelerate user acquisition in Q1.\n\n## Original Requirements (from WeChat group)\n- Share to WeChat Moments, WeChat groups, QQ Zone\n- Reward mechanism: sharer gets 10 credits, invitee gets 5 credits\n- Track sharing conversion funnel\n\n## Effort Estimation\n- **Development**: 5 person-days\n  - SDK integration (WeChat, QQ): 2 days\n  - Backend API + reward logic: 1.5 days\n  - Frontend UI + tracking: 1.5 days\n- **Testing**: 1 person-day\n- **Data pipeline**: 0.5 person-day\n\n**Total**: ~6.5 person-days\n\n## Strategic Considerations\n\n### Pros\n- Potential viral coefficient boost\n- Low-cost acquisition channel\n- Competitive feature parity\n\n### Cons\n- Q1 focus is **retention** (current KPI: +15% Day-7 retention)\n- Acquisition without retention = leaky bucket\n- Social sharing requires mature product experience to drive organic sharing\n\n## Data Context\nCurrent retention baseline (from [[OBSN-1]]):\n- Day-1: 42.3%\n- Day-7: 18.7%\n- Industry benchmark Day-7: 25%\n\n**Gap to close**: +6.3 percentage points to reach benchmark\n\n## Recommendation\nPostpone to Q2 after retention optimization stabilizes. Focus Q1 resources on closing retention gap.\n\n## Related\n- [[OBSN-7]] Sprint Capacity Analysis\n- [[OBSN-3]] Sprint Planning Q1 2026",
+    "outlinks": [
+      "OBSN-7",
+      "OBSN-3",
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-15T09:30:00+08:00",
+    "last_updated": "2026-03-18T14:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-9",
+    "title": "Decision Record - Social Sharing Feature Postponement",
+    "folder": "Product/Decisions",
+    "tags": [
+      "decision",
+      "prioritization",
+      "sprint-planning"
+    ],
+    "content": "# Decision: Postpone Social Sharing Feature to Sprint 12\n\n**Date**: 2026-03-18\n**Decision Owner**: Chen Xiaoyu (Product Manager)\n**Forum**: WeChat group '产品技术日常'\n\n---\n\n## Context & Background\n\nBoss proposed adding social sharing viral loop feature (WeChat/QQ integration) in mid-March, requesting it be included in current sprint (Sprint 11, Mar 18-24).\n\n### Current Sprint Status (from [[OBSN-7]])\n- **Capacity**: 13 person-days available\n- **Allocated**: 12 person-days (92%)\n- **Buffer**: 1 person-day (8%)\n\n### Social Sharing Feature Scope (from [[OBSN-8]])\n- **Estimated effort**: 5-6.5 person-days\n- **Components**: SDK integration, backend reward logic, frontend UI, tracking\n\n### Strategic Context\n- **Q1 KPI**: Increase Day-7 retention by 15% (current: 18.7%, target: ~21.6%)\n- **Current focus**: Retention optimization + A/B experiment infrastructure\n- **Risk**: A/B experiment config validator (JOB-702) still has unresolved errors\n\n---\n\n## Discussion Summary\n\n### Participants\n- Zhao Qiang (Tech Lead) - initiated discussion\n- Zhang Hao (Developer) - technical feasibility assessment\n- Wang Lei (Data Analyst) - data pipeline impact\n- Chen Xiaoyu (PM) - capacity & priority analysis\n- Li Ming (Operations) - business priority input\n\n### Key Points Raised\n\n**Technical Constraints** (Zhang Hao):\n- Social sharing needs 5 person-days minimum\n- Conflicts with retention optimization QA\n- Would delay A/B experiment data validation\n\n**Data Pipeline Impact** (Wang Lei):\n- `ab_experiment_config_validator` job currently failing\n- Adding new feature would delay KPI dashboard update (due Mar 21)\n- Operations team waiting for experiment results\n\n**Capacity Reality** (Chen Xiaoyu):\n- Sprint 11 at 92% capacity (12/13 person-days used)\n- Inserting 5-day feature → 131% overload\n- Forces trade-off: retention optimization OR A/B experiment completion\n\n**Business Priority** (Li Ming, Operations):\n- Q1 core KPI is retention improvement, not new acquisition channels\n- Operations needs stable retention data for campaign planning\n- Social sharing can wait until retention baseline stabilizes\n\n---\n\n## Final Decision\n\n**Postpone social sharing feature to Sprint 12 (starting Mar 25, 2026)**\n\nSprint 11 will maintain focus on:\n1. User retention optimization (onboarding A/B test, push notification timing)\n2. A/B experiment infrastructure fixes (resolve JOB-702 errors)\n3. KPI dashboard data pipeline completion\n\n---\n\n## Rationale & Trade-offs\n\n### Why Postpone?\n\n1. **Capacity constraint**: Cannot deliver 17 person-days of work in 13-day capacity without quality degradation\n\n2. **Strategic alignment**: Q1 goal is retention improvement (+15%). Social sharing is acquisition-focused and requires good retention to be effective (avoid \"leaky bucket\").\n\n3. **Dependency risk**: A/B experiment infrastructure (JOB-702) currently unstable. Adding new feature would compound technical debt.\n\n4. **Stakeholder priority**: Operations team prioritizes stable retention data over new feature launch.\n\n### Trade-offs Accepted\n\n✅ **Gains**:\n- Maintain quality of retention optimization work\n- Ensure A/B experiment data delivery to operations (campaign planning dependency)\n- Reduce team burnout risk in Q1 final push\n- Allow proper design & planning for social sharing in Sprint 12\n\n❌ **Costs**:\n- Social sharing feature delayed by 1 week\n- Potential viral growth opportunity deferred\n- Boss expectation management required\n\n---\n\n## Next Steps\n\n- [ ] Chen Xiaoyu: Communicate decision to boss with data-backed rationale\n- [ ] Chen Xiaoyu: Schedule Sprint 12 planning session (include social sharing)\n- [ ] Zhang Hao: Continue retention optimization work without interruption\n- [ ] Wang Lei: Prioritize JOB-702 bug fix, ensure data delivery to operations\n\n---\n\n## References\n- [[OBSN-7]] Sprint Capacity Analysis - Week 11\n- [[OBSN-8]] Social Sharing Feature - Original Proposal\n- [[OBSN-3]] Sprint Planning Q1 2026 - Week 2\n- [[OBSN-5]] A/B Experiment Data Verification Checklist\n- Scheduler job: JOB-702 (ab_experiment_config_validator)\n- WeChat discussion: WCC-4, 2026-03-18 14:23-14:38",
+    "outlinks": [
+      "OBSN-7",
+      "OBSN-8",
+      "OBSN-3",
+      "OBSN-5"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-18T15:30:00+08:00",
+    "last_updated": "2026-03-18T16:42:00+08:00"
+  },
+  {
+    "note_id": "OBSN-10",
+    "title": "Meeting Notes - Tech Debt Review 2026-03-17",
+    "folder": "Product/Meetings",
+    "tags": [
+      "meeting-notes",
+      "tech-debt",
+      "q1-review"
+    ],
+    "content": "# Tech Debt Review Meeting\n\n**Date**: 2026-03-17 15:00-16:00\n**Attendees**: Zhang Hao, Wang Lei, Chen Xiaoyu\n\n## Agenda\n1. Review outstanding scheduler job failures\n2. Prioritize tech debt items for Sprint 12\n\n## Discussion\n\n### Scheduler Job Health\n- JOB-702 (ab_experiment_config_validator) failing since Mar 15\n- Root cause: config schema mismatch after social_sharing_v2 experiment added\n- Impact: Blocks experiment result export to operations team\n\n### Tech Debt Backlog\n- Refactor user retention calculation logic (2 person-days)\n- Upgrade A/B experiment framework to v3.2 (3 person-days)\n- Consolidate data output directories (mentioned in OBSN-1)\n\n## Action Items\n- Wang Lei: Fix JOB-702 by Mar 19\n- Zhang Hao: Prepare Sprint 12 tech debt proposal\n- Chen Xiaoyu: Review capacity for tech debt in Sprint 12 planning",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-17T16:15:00+08:00",
+    "last_updated": "2026-03-17T16:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-7",
+    "title": "PRD - 社交分享裂变功能 v1.0",
+    "folder": "Product/PRD",
+    "tags": [
+      "prd",
+      "social-sharing",
+      "q1-2026",
+      "urgent"
+    ],
+    "content": "# PRD - 社交分享裂变功能 v1.0\n\n## 1. 背景与目标\n用户增长Q1 KPI压力大，需要通过社交分享裂变提升新用户获取效率。目标DAU增长15%，分享转化率>=8%。\n\n## 2. 功能范围\n- 用户分享商品/活动到微信/朋友圈\n- 新用户通过分享链接注册获得优惠券\n- 分享者获得积分奖励\n\n## 3. 核心流程\n[详细流程图]\n\n## 4. 数据埋点方案\n[TODO - 待补充]\n\n## 5. A/B实验设计\n[TODO - 待补充]\n\n## 附录\n- 竞品分析文档: [[OBSN-8]]\n- Sprint排期: [[OBSN-3]]",
+    "outlinks": [
+      "OBSN-3",
+      "OBSN-8"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-30T15:00:00+08:00",
+    "last_updated": "2026-04-01T21:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-8",
+    "title": "竞品分析 - 社交分享裂变机制",
+    "folder": "Product/Research",
+    "tags": [
+      "research",
+      "competitor",
+      "social-sharing"
+    ],
+    "content": "# 竞品分析 - 社交分享裂变机制\n\n## 拼多多\n- 分享得现金红包\n- 邀请好友助力解锁优惠\n- 转化率约12-15%\n\n## 淘宝\n- 分享商品得淘金币\n- 好友下单返利\n- 转化率约6-8%\n\n## 京东\n- 分享得京豆\n- 新用户专享券\n- 转化率约5-7%\n\n## 关键洞察\n1. 即时奖励机制转化率更高\n2. 新用户优惠力度需>=20元\n3. 分享路径不超过3步",
+    "outlinks": [],
+    "inlinks": [
+      "OBSN-7"
+    ],
+    "created_at": "2026-03-28T10:00:00+08:00",
+    "last_updated": "2026-03-29T16:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-9",
+    "title": "新用户引导功能 - 埋点数据文档",
+    "folder": "Product/Analytics/Tracking",
+    "tags": [
+      "tracking",
+      "onboarding",
+      "v3.2"
+    ],
+    "content": "# 新用户引导功能 - 埋点数据文档\n\n## 版本信息\n- 功能版本: v3.2\n- 上线时间: 2026-03-15\n- 数据输出路径: `/data/tracking/onboarding_v3.2/`\n\n## 核心指标\n- 引导完成率: 67.8%\n- 平均完成时长: 2分35秒\n- 各步骤流失率:\n  - Step 1 (欢迎页): 5.2%\n  - Step 2 (兴趣选择): 12.3%\n  - Step 3 (推荐商品): 8.7%\n  - Step 4 (首单优惠): 6.0%\n\n## 数据文件\n- 日度明细: `/data/tracking/onboarding_v3.2/daily/`\n- 汇总报表: `/data/tracking/onboarding_v3.2/summary/onboarding_summary_2026-03.csv`\n- Looker dashboard: [link](https://looker.internal/dashboards/onboarding_v3.2)\n\n## 相关文档\n- PRD: [[OBSN-10]]\n- A/B实验结果: [[OBSN-11]]",
+    "outlinks": [
+      "OBSN-10",
+      "OBSN-11"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-16T14:00:00+08:00",
+    "last_updated": "2026-03-25T11:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-10",
+    "title": "Q1 2026 Growth Strategy & OKR Tracking",
+    "folder": "Product/Strategy",
+    "tags": [
+      "okr",
+      "q1-2026",
+      "growth",
+      "strategy"
+    ],
+    "content": "# Q1 2026 Growth Strategy & OKR Tracking\n\n## Strategic Focus: User Retention & Engagement\n\n### Primary OKR\n**Objective**: Improve user retention and lifetime value\n\n**Key Results**:\n1. Increase Day-7 retention from 18.7% to 25% by end of Q1\n2. Boost repeat purchase rate from 32% to 40%\n3. Reduce churn in first 30 days by 15%\n\n### Strategic Direction\n- **Target Segment**: Existing users (retention focus, NOT new acquisition)\n- **Funnel Stage**: Post-purchase engagement and repeat conversion\n- **Core Mechanism**: In-app engagement features (gamification, personalized recommendations)\n\n### Q1 Priorities (Approved by Leadership)\n1. Enhanced recommendation engine\n2. Loyalty rewards program v2.0\n3. Push notification optimization\n4. In-app content feed personalization\n\n### Explicitly OUT OF SCOPE for Q1\n- Social sharing / viral acquisition features (deferred to Q2)\n- External channel expansion\n- Referral programs\n\n**Rationale**: Q1 focus is on maximizing value from existing user base before expanding acquisition channels. Social/viral features require different tracking infrastructure and will be prioritized in Q2 when retention baseline is stable.\n\n---\n*Last reviewed: 2026-03-28 with CEO and Growth Team*",
+    "outlinks": [
+      "OBSN-7"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-05T09:30:00+08:00",
+    "last_updated": "2026-03-28T14:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-11",
+    "title": "Meeting Notes - Product Sync 2026-04-01",
+    "folder": "Product/Meetings",
+    "tags": [
+      "meeting",
+      "product-sync",
+      "weekly"
+    ],
+    "content": "# Product Sync - April 1, 2026\n\n**Attendees**: Chen Xiaoyu, Wang Lei (Dev), Li Jing (Design), Zhang Min (Data)\n\n## Discussion Points\n\n### Social Sharing Feature - Boss Request\n- CEO dropped request in WeChat group yesterday to add social sharing to this week's sprint\n- Current sprint already at capacity (12 committed features)\n- Need to evaluate trade-offs\n\n### PRD Status\n- Social sharing PRD draft at 70% complete\n- Sections 4-5 still pending (user flow details, success metrics)\n- Review meeting scheduled for tomorrow (April 3)\n\n### Action Items\n- [ ] Chen: Finish PRD sections 4-5 tonight\n- [ ] Li Jing: Prepare wireframes for review\n- [ ] Wang Lei: Assess technical feasibility\n\n## Open Questions\n- How does social sharing align with Q1 retention focus?\n- Should we push to Q2 instead?\n\n*Next sync: April 8, 2026*",
+    "outlinks": [
+      "OBSN-7",
+      "OBSN-10"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-01T17:30:00+08:00",
+    "last_updated": "2026-04-01T17:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-12",
+    "title": "Competitor Analysis - Gamification Features",
+    "folder": "Product/Research",
+    "tags": [
+      "research",
+      "competitor",
+      "gamification"
+    ],
+    "content": "# Competitor Analysis - Gamification & Retention\n\n## Platform A (Leading E-commerce)\n- Daily check-in rewards: +8% DAU\n- Achievement badges: 15% boost in session length\n- Points system tied to purchases\n\n## Platform B (Social Commerce)\n- Community challenges: strong engagement\n- User-generated content integration\n- Heavy social sharing (acquisition-focused)\n\n## Key Insights\n- Gamification drives retention better than social features for established users\n- Social sharing more effective for new user acquisition\n- Mixing strategies can dilute focus\n\n## Recommendation\n- Prioritize in-app gamification for Q1 retention goals\n- Defer social/viral features to Q2 acquisition phase\n\n*Research completed: 2026-03-15*",
+    "outlinks": [
+      "OBSN-10"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-15T11:00:00+08:00",
+    "last_updated": "2026-03-15T16:30:00+08:00"
+  }
+]

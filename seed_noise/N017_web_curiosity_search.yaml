@@ -1,0 +1,14 @@
+noise_id: N017
+name: "Quick curiosity search"
+description: "During a work break, a random question pops up, do a quick search, glance at results and close"
+involved_services: [web]
+leaves_trace: false
+action_sequence:
+  - "Open search"
+  - "Enter keywords and search"
+  - "Browse search results"
+  - "Close search"
+time_preference: any
+adaptable_elements:
+  - "Search keywords and topic"
+  - "Whether to click into a specific result"

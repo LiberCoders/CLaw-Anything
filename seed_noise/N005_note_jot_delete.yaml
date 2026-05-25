@@ -1,0 +1,16 @@
+noise_id: N005
+name: "Jot a note then delete it"
+description: "Open the notepad, quickly write something down, think twice and delete it"
+involved_services: [notes]
+leaves_trace: true
+trace_type: "deleted_note"
+action_sequence:
+  - "Open notepad"
+  - "Create a new note"
+  - "Edit content"
+  - "Delete the note"
+  - "Close notepad"
+time_preference: any
+adaptable_elements:
+  - "Note content topic"
+  - "Reason for deleting"

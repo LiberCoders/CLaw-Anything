@@ -1,0 +1,95 @@
+[
+  {
+    "label": "ED_Medical_Equipment_Tracking",
+    "accounts": [
+      {
+        "id": "ACC-001",
+        "name": "ED Departmental Budget - Medical Supplies",
+        "type": "departmental",
+        "currency": "CNY",
+        "balance": 18500.0,
+        "description": "Emergency Department Q1 2026 medical supplies and equipment allocation"
+      }
+    ],
+    "categories": [
+      {
+        "id": "CAT-001",
+        "name": "Airway Management Equipment",
+        "type": "expense",
+        "parent_id": null,
+        "color": "#E53935"
+      },
+      {
+        "id": "CAT-002",
+        "name": "Monitoring Equipment",
+        "type": "expense",
+        "parent_id": null,
+        "color": "#1E88E5"
+      },
+      {
+        "id": "CAT-003",
+        "name": "Consumables",
+        "type": "expense",
+        "parent_id": null,
+        "color": "#43A047"
+      }
+    ],
+    "payees": [
+      "MedTech Surgical Supplies Co.",
+      "Emergency Medical Supplies Ltd.",
+      "Hospital Pharmacy",
+      "Equipment Maintenance Services"
+    ],
+    "transactions": [
+      {
+        "id": "TXN-001",
+        "date": "2026-03-31",
+        "amount": 12800.0,
+        "type": "expense",
+        "account_id": "ACC-001",
+        "category_id": "CAT-001",
+        "payee": "MedTech Surgical Supplies Co.",
+        "description": "Video Laryngoscope (SKU-2080) - Emergency procurement for ED airway management. Approved by Dr. Wang Li due to low stock (2 units) below minimum threshold (3 units). Order PROD-5001.",
+        "status": "cleared",
+        "reference": "PO-ED-2026-0331-001"
+      }
+    ]
+  },
+  {
+    "label": "ED_Professional_Development",
+    "accounts": [
+      {
+        "id": "MYACC-102",
+        "label": "ED_Professional_Development",
+        "type": "expense",
+        "currency": "CNY",
+        "opening_balance": 0,
+        "current_balance": -815.0,
+        "color": "#FF5722",
+        "description": "Emergency Department professional development and training expenses"
+      }
+    ],
+    "categories": [
+      {
+        "id": "CAT-201",
+        "label": "Training Materials",
+        "parent_id": null,
+        "type": "expense",
+        "color": "#FF9800"
+      },
+      {
+        "id": "CAT-202",
+        "label": "Educational Supplies",
+        "parent_id": null,
+        "type": "expense",
+        "color": "#FFC107"
+      }
+    ],
+    "payees": [
+      "Medical Education Publishing House",
+      "ED Training Supply Center",
+      "Campus Print Shop"
+    ],
+    "transactions": []
+  }
+]

@@ -1,0 +1,14 @@
+noise_id: N027
+name: "Look up a product price"
+description: "Someone asks about a product's price, quickly open inventory to check, close after viewing"
+involved_services: [inventory]
+leaves_trace: false
+action_sequence:
+  - "Open inventory system"
+  - "Search for a product"
+  - "View product details and price"
+  - "Close inventory system"
+time_preference: any
+adaptable_elements:
+  - "Type of product queried"
+  - "Whether stock quantity was also checked"

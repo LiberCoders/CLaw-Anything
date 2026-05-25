@@ -1,0 +1,16 @@
+noise_id: N007
+name: "Create a todo then cancel"
+description: "Think of something to do, create a todo, then reconsider and cancel/delete it"
+involved_services: [todo]
+leaves_trace: true
+trace_type: "cancelled_todo"
+action_sequence:
+  - "Open todo list"
+  - "Create a new todo"
+  - "Fill in content"
+  - "Cancel and delete the todo"
+  - "Close todo list"
+time_preference: any
+adaptable_elements:
+  - "Todo content topic"
+  - "Reason for cancelling"

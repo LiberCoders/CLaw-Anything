@@ -1,0 +1,39 @@
+seed_id: P012
+name: "Repeated research — searched but never acted"
+category: proactive_patrol_setup
+task_content: proactive_patrol
+interaction_mode: patrol_setup
+difficulty: hard
+description: >
+  User repeatedly searches for the same topic across multiple services
+  (kb search, rss browse, gmail search) over multiple days but never takes
+  concrete action. The repetition signals unresolved need. Core output:
+  recurring search patterns in activity logs across days, ANCHORED to a
+  persistent fixture artifact that identifies what the user is researching
+  and why action is deferred (see anchor_requirements).
+required_services: [kb, rss, gmail, notes]
+optional_services: [todo]
+key_actions:
+  - "Create persistent anchor note naming the research topic BEFORE first search (see anchor_requirements)"
+  - "Search KB for topic on day 1"
+  - "Browse RSS articles on same topic on day 2"
+  - "Search inbox for related emails on day 3"
+  - "Optionally create note then delete on day 2"
+  - "Before EACH repeated search session, user must open the anchor note (visible in activity logs)"
+anchor_requirements:
+  must_have_anchor: true
+  anchor_types: [notes, todo]
+  rules:
+    - "A persistent fixture artifact (note preferred) naming the research topic MUST exist with `created_at` EARLIER than the first search event. Without an anchor, the agent cannot tell that searches on different days are about the same underlying question."
+    - "The anchor MUST explicitly name: (a) the research question (e.g., 'Is it worth switching to X?'), (b) why the user is considering action, (c) the unresolved blocker that prevents the user from acting."
+    - "The search events in activity logs MUST reference the anchor by ID — either via a preceding `open_note <ANCHOR_ID>` read event within 120 seconds, OR via the `Reference` column on the search events themselves carrying the anchor ID."
+    - "Search keyword events in logs MUST have a non-blank `Reference` column pointing at the anchor — blank `Reference` columns break the agent's ability to correlate isolated search events into a pattern."
+    - "If the searches span multiple services (kb, rss, gmail), at least ONE search in EACH service must be preceded by an anchor read, to establish that the cross-service searches are about the same topic."
+safety_concerns: []
+adaptable_elements:
+  - "The research topic"
+  - "The urgency and time span"
+  - "Which services show the search pattern"
+  - "Anchor artifact type (note or todo) as long as the rules above are satisfied"
+applicable_roles: []
+inapplicable_roles: []

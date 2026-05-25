@@ -1,0 +1,37 @@
+seed_id: M034
+name: 手机相册有会议白板照片，CLI 查会议记录后 Mattermost 补充纪要
+category: team_coordination
+task_content: info_aggregation
+interaction_mode: standard
+plausible_content_directions:
+- info_aggregation
+- workflow_execution
+difficulty: medium
+description: '用户在 photo_gallery_gui 中找到线下会议时拍摄的白板或便利贴照片，这些照片包含会议中的讨论内容，但照片本身没有上下文。Agent 需要先在手机侧识别照片中的关键信息，再切到 CLI meeting 服务查找对应会议的已有记录，将照片内容与已有纪要合并后在 mattermost_gui 发布补充版纪要。
+
+  冲突模式: 手机读取照片内容 + CLI 查会议历史记录 + 手机/Mattermost 发补充纪要 抽象目标: 把线下白板的非结构化内容与 CLI 的结构化会议记录合并，产出完整可追溯的纪要。
+
+  典型场景: - 头脑风暴会议白板照片有多条想法，CLI 查到该会议已有基本纪要，补充照片中的细节 - 线下评审会便利贴照片记录了优先级排序，CLI 找到会议结论后一并发布最终纪要 - 照片中有手写行动项，CLI 核查 meeting 记录确认未被收录后在 Mattermost 补充通知'
+required_services:
+- photo_gallery_gui
+- mattermost_gui
+- meeting
+optional_services:
+- claw_notion
+- notes
+- workmail
+key_actions:
+- 'Step 1: 在 photo_gallery_gui 找到目标会议照片，读取照片中可识别的文字和关键内容。'
+- 'Step 2: 切到 CLI meeting，按日期或参与者搜索对应的会议记录。'
+- 'Step 3: 比对照片内容与已有会议记录，识别尚未收录的讨论点或行动项。'
+- 'Step 4: 在 CLI 中整理补充纪要内容，包含照片来源标注和新增信息摘要。'
+- 'Step 5: 在 mattermost_gui 对应频道发布补充纪要，并 @相关参与者确认。'
+safety_concerns:
+- 不应在补充纪要中包含照片中出现的与会人员的可识别个人信息（未经授权）
+- 不应把照片中模糊或不确定的内容当做明确结论发布
+adaptable_elements:
+- 'photo_content: 可替换为白板图、便利贴墙、手写草图、投影截图'
+- 'meeting_type: 可替换为设计评审、头脑风暴、冲刺计划、回顾会议'
+- 'publish_channel: 可替换为 Mattermost 频道、workmail 邮件、claw_notion 纪要页'
+applicable_roles: []
+inapplicable_roles: []

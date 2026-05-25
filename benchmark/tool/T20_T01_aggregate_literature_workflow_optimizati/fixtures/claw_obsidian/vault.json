@@ -1,0 +1,1204 @@
+[
+  {
+    "note_id": "OBSN-1",
+    "title": "Literature Workflow Optimization - DAG Analysis",
+    "folder": "Workflows/Literature",
+    "tags": [
+      "workflow",
+      "optimization",
+      "literature-management",
+      "DAG"
+    ],
+    "content": "# Literature Workflow Optimization - DAG Analysis\n\n## Current Workflow Problems\n- Creating Obsidian notes BEFORE Zotero import → breaks citation_key dependency\n- Sequential RSS feed scanning → wasting time when feeds could be parallel\n- Downloading same PDF multiple times\n- No clear phase separation between independent vs dependent tasks\n\n## Proposed DAG Structure\n\n### Phase 1: Parallel RSS Ingestion (no dependencies)\n- Task 1a: Scan arXiv immunology feed\n- Task 1b: Scan bioRxiv immunology feed  \n- Task 1c: Scan PubMed alerts\n- Task 1d: Scan Nature Immunology RSS\n→ All can run concurrently, ~8min total instead of ~25min sequential\n\n### Phase 2: Filter & Prioritize (depends on Phase 1 completion)\n- Task 2: Apply relevance tags (IL-17, trajectory-analysis, single-cell, methods)\n- Task 2: Rank by priority (high: directly cite-able in Ch3/reviewer response, medium: background, low: archive)\n→ ~5min, must wait for all feeds\n\n### Phase 3: Parallel PDF Acquisition (depends on Phase 2 filter results)\n- Task 3a-n: Download PDFs for high-priority papers (n=5-12 typically)\n→ Can parallelize if papers are independent, ~10min\n\n### Phase 4: Batch Zotero Import (depends on Phase 3 PDFs)\n- Task 4: Batch import all filtered papers to Zotero\n- Task 4: Generate citation_keys for all items\n→ **CRITICAL BOTTLENECK** - must complete before Phase 5, ~8min\n\n### Phase 5: Obsidian Note Creation (depends on Phase 4 citation_keys)\n- Task 5a-n: Create literature notes with [[citation_key]] backlinks\n- Task 5: Link to existing topic pages ([[IL-17 Signaling]], [[Trajectory Inference Methods]])\n→ Currently sequential (15min), could parallelize if notes don't cross-link\n\n## Hard Dependencies Identified\n1. **Zotero import → Obsidian note creation**: citation_key must exist before note can reference it\n2. **PDF download → Zotero import**: local file attachment requires PDF presence\n3. **RSS scan → filtering**: can't filter papers that haven't been fetched\n4. **Filtering → PDF download**: don't download low-priority papers\n\n## Parallelization Opportunities\n1. Phase 1 RSS scans: 4-way parallel → save ~17min\n2. Phase 3 PDF downloads: n-way parallel → save ~5-8min  \n3. Phase 5 Obsidian notes: parallel if no inter-note links needed\n\n## Time Estimate\n- Current sequential workflow: ~75min (6:30-7:45am)\n- Optimized parallel workflow: ~35min (6:30-7:05am)\n- **Savings: 40min → can start wet-lab prep earlier or add coffee/breakfast buffer**\n\n## Implementation Notes\n- Need to script RSS feed fetching with concurrent requests\n- Zotero batch import API supports multiple items - use it!\n- Obsidian note templates with citation_key placeholder\n- Daily scheduler job to trigger Phase 1 at 6:30am automatically\n\n## References\n- [[kumar2026batch]] - DAG framework for scRNA-seq pipelines (analogous structure)\n- [[park2026automated]] - metadata-first workflow (validates my Zotero-before-Obsidian rule)",
+    "outlinks": [
+      "OBSN-2",
+      "OBSN-3"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-12T10:30:00-08:00",
+    "last_updated": "2026-03-12T11:15:00-08:00"
+  },
+  {
+    "note_id": "OBSN-2",
+    "title": "Morning Routine - Literature Triage Protocol",
+    "folder": "Workflows",
+    "tags": [
+      "routine",
+      "literature",
+      "protocol"
+    ],
+    "content": "# Morning Routine - Literature Triage Protocol\n\n## Timeline: 6:30-9:00am (2.5h window before lab)\n\n### Current Reality (inefficient)\n- 6:30-6:55: Scan RSS feeds one by one\n- 6:55-7:10: Filter by tags, prioritize\n- 7:10-7:25: Download PDFs (often download same file twice if I lose track)\n- 7:25-7:40: Import to Zotero\n- 7:40-8:15: Create Obsidian notes (sometimes I do this before Zotero and have to redo it!)\n- 8:15-8:30: Link to topic pages\n- 8:30-9:00: Rush to get ready for lab\n\n**Problem: Takes ~100min, leaves only 30min buffer, often late to 9am lab meeting**\n\n### Optimized Workflow (target)\n- 6:30-6:38: **PARALLEL** RSS feed scan (automated script)\n- 6:38-6:43: Filter & prioritize (single pass)\n- 6:43-6:53: **PARALLEL** PDF downloads (batch script)\n- 6:53-7:01: **BATCH** Zotero import (all papers at once, generate citation_keys)\n- 7:01-7:21: Create Obsidian notes (can parallelize if no cross-links)\n- 7:21-7:31: Link to topic pages\n- 7:31-9:00: **1.5h buffer** for breakfast, shower, email, unexpected issues\n\n**Target: ~60min for literature work, 90min buffer**\n\n## Critical Rule Enforcement\n- ✅ ALWAYS import to Zotero BEFORE creating Obsidian note\n- ✅ Verify citation_key exists before writing [[citation_key]] link\n- ✅ Use batch operations instead of one-by-one processing\n- ✅ Check existing Zotero library before downloading PDF (avoid duplicates)\n\n## See Also\n- [[OBSN-1]] - Full DAG analysis\n- [[OBSN-3]] - Implementation checklist",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-3"
+    ],
+    "inlinks": [
+      "OBSN-1"
+    ],
+    "created_at": "2026-03-12T11:20:00-08:00",
+    "last_updated": "2026-03-12T11:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-3",
+    "title": "Workflow Optimization - Implementation Checklist",
+    "folder": "Workflows/Literature",
+    "tags": [
+      "implementation",
+      "checklist",
+      "workflow"
+    ],
+    "content": "# Workflow Optimization - Implementation Checklist\n\n## Phase 1: Analysis (DONE 2026-03-12)\n- [x] Document current workflow timing\n- [x] Identify hard dependencies (Zotero→Obsidian)\n- [x] Identify parallelization opportunities (RSS scans, PDF downloads)\n- [x] Build DAG diagram\n- [x] Calculate time savings estimate (40min)\n\n## Phase 2: Tooling (IN PROGRESS)\n- [ ] Write Python script for parallel RSS feed fetching\n- [ ] Test Zotero batch import API with 10 papers\n- [ ] Create Obsidian note template with citation_key validation\n- [ ] Build scheduler job for 6:30am automatic trigger\n- [ ] Set up logging to track actual vs estimated times\n\n## Phase 3: Pilot Test (Target: 2026-03-13)\n- [ ] Run optimized workflow for 1 week\n- [ ] Log actual completion times per phase\n- [ ] Document any constraint violations (e.g., accidentally creating notes before Zotero import)\n- [ ] Measure actual time savings\n- [ ] Identify remaining bottlenecks\n\n## Phase 4: Refinement (Target: 2026-03-20)\n- [ ] Adjust parallel batch sizes based on pilot data\n- [ ] Add error handling for failed PDF downloads\n- [ ] Implement citation_key existence check before note creation\n- [ ] Create fallback sequence if batch import fails\n\n## Success Metrics\n- Literature triage completes in <60min (vs current ~100min)\n- Zero instances of creating Obsidian notes before Zotero import\n- Zero duplicate PDF downloads\n- Consistent 9am lab arrival (vs current 9:05-9:15am)\n\n## References\n- [[OBSN-1]] - Full DAG analysis\n- [[OBSN-2]] - Protocol documentation",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-2"
+    ],
+    "inlinks": [
+      "OBSN-1",
+      "OBSN-2"
+    ],
+    "created_at": "2026-03-12T11:50:00-08:00",
+    "last_updated": "2026-03-12T12:05:00-08:00"
+  },
+  {
+    "note_id": "OBSN-4",
+    "title": "Decision Framework - AACR vs bioRxiv+ Tradeoff Analysis",
+    "folder": "Decisions/2026-Q1",
+    "tags": [
+      "decision-making",
+      "sunk-cost",
+      "budget",
+      "workflow-optimization"
+    ],
+    "content": "# Decision: AACR Conference vs bioRxiv+ Subscription\n\n## Context\n- **Anchor date**: 2026-03-29\n- **Decision deadline**: 2026-04-05 (AACR final payment)\n- **Sunk cost**: $200 non-refundable AACR deposit (paid 2026-03-12)\n- **At stake**: $695 balance allocation\n\n## Trigger Event\n2026-03-25: Sarah Chen withdrew collaborative abstract #A4728 → primary AACR networking value eliminated\n\n## Options\n\n### A: Pay AACR Balance ($695)\n**Financial**:\n- Total conference cost: $895 ($200 + $695)\n- Opportunity cost: No workflow automation in 2026\n\n**Benefits**:\n- Preserve sunk deposit (sunk cost fallacy!)\n- Access to conference sessions\n- Some residual networking (without abstract)\n\n**Costs**:\n- 60% reduction in networking value (no presentation)\n- No progress on literature workflow bottleneck\n- Delayed Chapter 3 timeline\n\n### B: Forfeit Deposit + Request Lab Funding for bioRxiv+\n**Financial**:\n- Lost: $200 (sunk, irrelevant to forward decision)\n- Lab budget: $695\n- Personal savings: $695\n\n**Benefits**:\n- API-enabled workflow automation\n- 5.5 hrs/week time savings → 71.5 hrs/quarter\n- Lab-wide efficiency (4 grad students benefit)\n- Direct dissertation timeline acceleration\n- Aligns with Dr. Harrison's 3/22 feedback\n\n**Costs**:\n- Advisor capital spent on budget request\n- Risk of request denial\n- No conference attendance\n\n### C: Forfeit Deposit + Self-Fund bioRxiv+\n**Financial**:\n- Lost: $200 deposit\n- Personal cost: $695\n- Total personal: $895\n\n**Benefits**:\n- Workflow automation (same as B)\n- Preserve advisor capital\n- No approval risk\n\n**Costs**:\n- Q2 discretionary budget reduced to $505\n- Same conference opportunity cost as B\n\n## Analysis Framework\n\n### Sunk Cost Principle\n$200 deposit is **irrelevant** to forward decision:\n- Already spent, cannot be recovered\n- Should not influence optimal allocation of $695 balance\n- Decision should maximize future value only\n\n### Time Savings Calculation\n**Current workflow** ([[Morning Routine - Literature Triage Protocol]]):\n- 2.5 hrs/day × 5 days = 12.5 hrs/week\n- Bottlenecks: sequential RSS scanning, manual metadata entry, no batch Zotero import\n\n**With bioRxiv+ API** ([[Workflow Optimization - Implementation Checklist]]):\n- Parallel feed processing: 45 min → 15 min (saves 30 min)\n- Batch metadata import: 60 min → 20 min (saves 40 min)\n- Automated citation key generation: 30 min → 5 min (saves 25 min)\n- Total: 7 hrs/week (5.5 hrs saved)\n\n**Quarterly impact**:\n- 5.5 hrs/week × 13 weeks (Q2) = 71.5 hours\n- Equivalent to 1.8 full work weeks\n- Direct reallocation to Chapter 3 (6 weeks overdue)\n\n### Advisor Relationship Capital\n**Dr. Harrison's stated priorities** (see [[NOTE-105]]):\n1. Dissertation timeline acceleration (explicit)\n2. Lab-wide efficiency tools (preferred over individual)\n3. Quantifiable ROI (required for approval)\n\n**Request framing**:\n- Lab-wide benefit: 10 accounts, 6 users\n- Dissertation impact: reclaim 71.5 hrs for Chapter 3\n- Systematic solution to 3/22 literature workflow concern\n- ROI: $9.73/hour of time saved (institutional rate)\n\n**Risk assessment**:\n- HIGH alignment with stated priorities\n- Recent precedent: approved $2K plate reader license (lab-wide efficiency)\n- LOW risk of denial if properly framed\n\n### Conference Networking Value (Post-Abstract-Withdrawal)\n**Original value** (with abstract #A4728):\n- Poster presentation: HIGH visibility\n- Collaborator meetings: 5-7 scheduled\n- Q&A engagement: direct research discussion\n\n**Residual value** (without abstract):\n- Session attendance: MEDIUM (can access remotely later)\n- Networking: LOW (no presentation hook)\n- Serendipity: LOW-MEDIUM (Sarah can intro 2-3 contacts)\n\n**Value reduction**: ~60% (from HIGH to LOW-MEDIUM)\n\n## Recommendation\n\n**Choose Option B: Forfeit deposit, request lab funding for bioRxiv+**\n\n### Rationale\n1. **Sunk cost principle**: $200 is irrelevant; optimize $695 allocation\n2. **Dissertation timeline**: 71.5 hrs directly addresses 6-week Chapter 3 delay\n3. **Advisor alignment**: Request matches stated priorities (timeline, lab efficiency, ROI)\n4. **Networking value**: AACR value reduced 60% by abstract withdrawal\n5. **Lab-wide benefit**: Justifies institutional budget vs. personal expense\n6. **Risk**: LOW denial probability with proper framing\n\n### Decision Tree\n```\nDecision Point (2026-03-29)\n├─ Pay AACR balance ($695)\n│  ├─ Outcome: Conference attendance, no workflow improvement\n│  ├─ Value: MEDIUM (reduced networking) + ZERO (automation)\n│  └─ Opportunity cost: 71.5 hrs lost, Chapter 3 delay persists\n│\n├─ Forfeit + Lab funding request ($0 personal)\n│  ├─ Approved (HIGH probability)\n│  │  ├─ Outcome: Workflow automation, 71.5 hrs reclaimed\n│  │  ├─ Value: HIGH (dissertation acceleration) + HIGH (lab efficiency)\n│  │  └─ Cost: Advisor capital (MEDIUM), $200 sunk (irrelevant)\n│  │\n│  └─ Denied (LOW probability)\n│     └─ Fallback: Option C (self-fund) or Option A (late AACR payment)\n│\n└─ Forfeit + Self-fund ($695 personal)\n   ├─ Outcome: Workflow automation, preserve advisor capital\n   ├─ Value: HIGH (dissertation) + MEDIUM (capital preservation)\n   └─ Cost: $895 total personal, Q2 budget constrained\n```\n\n## Next Actions\n- [ ] [[TODO-509]]: Complete ROI calculation\n- [ ] [[TODO-510]]: Draft Dr. Harrison email (Option B)\n- [ ] [[TODO-511]]: Quantify residual AACR value\n- [ ] [[TODO-512]]: Confirm bioRxiv+ API features\n- [ ] Schedule 2026-03-31 office hours to discuss (if Option B)\n\n## References\n- [[NOTE-104]]: Initial decision analysis\n- [[NOTE-105]]: Dr. Harrison budget priorities\n- [[Literature Workflow Optimization - DAG Analysis]]: Current bottlenecks\n- [[Morning Routine - Literature Triage Protocol]]: Time breakdown\n\n---\n*Decision framework: Sunk cost analysis, multi-dimensional tradeoff quantification, advisor relationship capital modeling*",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-2",
+      "NOTE-104",
+      "NOTE-105"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-29T16:30:00-07:00",
+    "last_updated": "2026-03-29T16:30:00-07:00"
+  },
+  {
+    "note_id": "OBSN-5",
+    "title": "Workflow Collision Analysis - Sunday Morning Jobs",
+    "folder": "Workflows/Debugging",
+    "tags": [
+      "workflow",
+      "collision",
+      "scheduler",
+      "debugging",
+      "urgent"
+    ],
+    "content": "# Workflow Collision Analysis - Sunday Morning Jobs\n\nCreated: 2026-02-14\nStatus: 🔴 CRITICAL - Active collision detected\n\n## Problem Statement\n\nTwo scheduled jobs collide every Sunday morning in the 06:30-08:00 window:\n\n1. **morning_literature_triage_parallel_rss** (JOB-701)\n   - Schedule: Daily 06:30 (including Sunday)\n   - Duration: 60-90 minutes\n   - Resource profile: API-rate-limited (bioRxiv, PubMed, arXiv), moderate Zotero writes\n   \n2. **weekly_zotero_obsidian_batch_reconciliation** (JOB-702)\n   - Schedule: Sunday 06:30\n   - Duration: 45-90 minutes\n   - Resource profile: Heavy disk I/O, full Zotero library scan (4,000 entries), CPU-intensive graph operations\n\n## Observed Symptoms (2026-02-09)\n\n- Batch job (JOB-702) timed out after 90 minutes\n- Triage job (JOB-701) reported Zotero lock contention\n- Batch job missed 8 newly-added papers from Saturday night RSS feeds\n- Triage job failed to import 12 papers due to database locks\n\n## Resource Conflict Analysis\n\n### Shared Resources\n- **Zotero SQLite database**: Both jobs perform concurrent writes\n  - Triage: INSERT operations for new papers (30-50 items)\n  - Batch: UPDATE operations for metadata reconciliation (4,000 items)\n  - Conflict: SQLite write locks cause serialization → timeouts\n\n- **Zotero API rate limits**: 120 requests/minute\n  - Triage: ~40 requests for metadata fetch\n  - Batch: ~200 requests for full library sync\n  - Conflict: Combined load exceeds rate limit → 429 errors\n\n- **Disk I/O bandwidth**\n  - Triage: PDF downloads (30-50 files, ~500 MB)\n  - Batch: Full vault scan + graph rebuild (4,000 files, ~8 GB)\n  - Conflict: Disk saturation → slow file operations\n\n### Time Constraints\n- Triage must finish before lab arrival (09:00)\n- Batch has no hard deadline but benefits from weekend execution\n- Sunday morning is ideal for batch (no new papers arriving)\n- Cannot start triage before 05:00 run ends (06:00)\n\n## Proposed Solutions\n\n### Option 1: Offset batch job to Sunday 05:00 ✅ RECOMMENDED\n**Pros:**\n- Zero overlap with triage job\n- Batch completes before triage starts (05:00-06:15 typical)\n- No code changes required\n- Maintains weekend execution benefit\n\n**Cons:**\n- Requires waking adjustment (currently wake at 05:30 for run)\n- May conflict with occasional early Saturday night sleep\n\n**Implementation:**\n- Update JOB-702 cron: `0 5 * * 0`\n- Monitor first 2 runs for completion time\n\n### Option 2: Move batch to Saturday 22:00\n**Pros:**\n- No morning time pressure\n- Zero overlap with any other jobs\n- No wake schedule impact\n\n**Cons:**\n- Runs during weekend reading block end\n- May capture incomplete Saturday literature (if late-night reading adds papers)\n- Less convenient for monitoring/debugging\n\n**Implementation:**\n- Update JOB-702 cron: `0 22 * * 6`\n\n### Option 3: Incremental daily reconciliation\n**Pros:**\n- Eliminates heavy weekly batch\n- Distributes load across week\n- Reduces single-job failure impact\n\n**Cons:**\n- Requires significant code refactoring\n- More complex state management\n- Daily overhead may accumulate\n- Graph rebuild still needs weekly full pass\n\n**Implementation:**\n- Split JOB-702 into daily incremental + weekly graph rebuild\n- Estimated dev time: 8-12 hours\n\n## Decision\n\n**Selected: Option 1 (Offset to Sunday 05:00)**\n\nRationale:\n- Immediate fix with zero code changes\n- Maintains all benefits of weekend batch execution\n- Wake adjustment is manageable (already wake at 05:30 for run)\n- Can implement Option 3 later if needed\n\n## Implementation Plan\n\n- [x] Document collision analysis (this note)\n- [ ] Update JOB-702 cron expression to `0 5 * * 0`\n- [ ] Add monitoring alert if batch duration exceeds 75 minutes\n- [ ] Test first run on 2026-02-16\n- [ ] Review execution logs for 2 consecutive Sundays\n- [ ] Document scheduling policy for future job additions\n\n## Scheduling Policy (Draft)\n\n**Morning window (05:00-09:00) resource allocation:**\n- 05:00-06:00: Heavy batch jobs only (no API-rate-limited operations)\n- 06:30-08:30: API-rate-limited jobs (RSS, Zotero imports)\n- 08:30-09:00: Buffer for overruns\n\n**Resource conflict checklist for new jobs:**\n- [ ] Does this job write to Zotero database?\n- [ ] Does this job use Zotero API (check rate limits)?\n- [ ] Does this job perform heavy disk I/O?\n- [ ] What is typical/worst-case duration?\n- [ ] Can this job be split into smaller incremental runs?\n\n## References\n\n- [[Morning Routine - Literature Triage Protocol]]\n- [[Workflow Optimization - Implementation Checklist]]\n- Scheduler job logs: `/var/log/scheduler/`\n\n## Timeline Visualization\n\n```\nSunday Morning Timeline (BEFORE fix):\n05:00 -------- 06:00 -------- 07:00 -------- 08:00 -------- 09:00\n       Run            COLLISION ZONE              Lab arrival\n                      ├─ JOB-701 (triage) ────────────┤\n                      ├─ JOB-702 (batch) ──────────────────┤ (timeout)\n                      \nSunday Morning Timeline (AFTER fix):\n05:00 -------- 06:00 -------- 07:00 -------- 08:00 -------- 09:00\n       Run    \n├─ JOB-702 ──┤\n              ├─ JOB-701 (triage) ────────────┤\n```",
+    "outlinks": [
+      "OBSN-2",
+      "OBSN-3"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-14T13:15:00-08:00",
+    "last_updated": "2026-02-14T14:20:00-08:00"
+  },
+  {
+    "note_id": "OBSN-6",
+    "title": "Zotero API Rate Limits - Reference",
+    "folder": "Technical/APIs",
+    "tags": [
+      "zotero",
+      "api",
+      "reference",
+      "rate-limits"
+    ],
+    "content": "# Zotero API Rate Limits\n\nOfficial documentation: https://www.zotero.org/support/dev/web_api/v3/basics#rate_limiting\n\n## Limits\n\n- **Anonymous requests**: 5 requests/second\n- **Authenticated requests**: 120 requests/minute (2 requests/second sustained)\n- **Burst allowance**: Up to 10 requests in rapid succession, then throttled\n\n## Headers\n\n```\nX-RateLimit-Limit: 120\nX-RateLimit-Remaining: 87\nRetry-After: 30\n```\n\n## Error Response\n\n```json\n{\n  \"error\": \"Rate limit exceeded\",\n  \"retry_after\": 30\n}\n```\nHTTP 429 Too Many Requests\n\n## Best Practices\n\n1. Implement exponential backoff on 429 responses\n2. Batch operations where possible (up to 50 items per request)\n3. Cache metadata to reduce redundant requests\n4. Monitor X-RateLimit-Remaining header\n5. Avoid concurrent jobs that share API quota\n\n## Current Usage\n\n- morning_literature_triage_parallel_rss: ~40 requests/run (metadata fetch)\n- weekly_zotero_obsidian_batch_reconciliation: ~200 requests/run (full sync)\n- Combined Sunday collision: ~240 requests in 90 minutes (within limit if sequential, exceeds if concurrent)",
+    "outlinks": [],
+    "inlinks": [
+      "OBSN-5"
+    ],
+    "created_at": "2026-02-14T13:45:00-08:00",
+    "last_updated": "2026-02-14T13:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-7",
+    "title": "Task Prioritization Framework - Deadline-Driven Planning",
+    "folder": "Workflows/Planning",
+    "tags": [
+      "meta-planning",
+      "prioritization",
+      "deadlines"
+    ],
+    "content": "# Task Prioritization Framework\n\n## Principles\n\n1. **Hard deadlines trump everything**\n   - Journal submission deadlines (non-negotiable)\n   - Committee milestones (institutional requirements)\n   - Advisor-imposed buffers (relationship management)\n\n2. **Identify blocking dependencies**\n   - What must finish before X can start?\n   - Chapter 3 → Committee report\n   - Rodriguez paper access → Reviewer response quality\n\n3. **Minimize context-switching cost**\n   - Batch similar work types (computational, writing, admin)\n   - Protect deep-work blocks for high-cognitive-load tasks\n   - Schedule shallow work (email, reading) for low-energy periods\n\n4. **Calendar-aware scheduling**\n   - Map tasks to available focus blocks\n   - Respect advisor meeting cadence for feedback cycles\n   - Account for lab commitments (meetings, seminars)\n\n## Current Application (Jan 30, 2026)\n\n### Tier 1: Critical Path (Blocks Everything)\n- [ ] Chapter 3 trajectory discussion (due: Feb 3)\n- [ ] IL-17 reviewer response draft (due: Feb 20 to advisor)\n\n### Tier 2: Deadline-Driven (Fixed Dates)\n- [ ] Committee progress report (due: Mar 15)\n- [ ] Final reviewer response submission (due: Feb 28)\n\n### Tier 3: Deferred (Post-Deadline)\n- [ ] Workflow optimization implementation\n- [ ] Immunity review invitation → DECLINE\n- [ ] Data sharing requests\n\n## Decision Rules\n\n**When to say no:**\n- New commitment conflicts with Tier 1/2 deadlines\n- Estimated time > available slack in calendar\n- Opportunity cost > immediate benefit\n\n**When to defer:**\n- Task has flexible timeline\n- No blocking dependencies on critical path\n- Can be batched with similar future work\n\n## Links\n- [[Workflow Optimization - Implementation Checklist]]\n- [[Decision Framework - AACR vs bioRxiv+ Tradeoff Analysis]]\n- [[Literature Workflow Optimization - DAG Analysis]]",
+    "outlinks": [
+      "OBSN-3",
+      "OBSN-4",
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-30T07:00:00-08:00",
+    "last_updated": "2026-01-30T08:00:00-08:00"
+  },
+  {
+    "note_id": "OBSN-8",
+    "title": "Chapter 3 - Trajectory Analysis Discussion Outline",
+    "folder": "Dissertation/Chapter3",
+    "tags": [
+      "dissertation",
+      "chapter3",
+      "writing"
+    ],
+    "content": "# Chapter 3 Discussion - Outline\n\n## Status\n- **Due**: Feb 3, 2026 (internal deadline for committee report)\n- **Current**: Results complete, discussion 60% drafted\n- **Blocker**: Need to integrate Rodriguez 2024 Th17 plasticity findings\n\n## Key Points to Address\n\n### 1. Trajectory Inference Method Selection\n- Why Monocle3 over alternatives (Slingshot, PAGA)?\n- Benchmarking against Saelens 2024 comparative analysis\n- Computational efficiency for large datasets\n\n### 2. Biological Interpretation\n- Th17 → Trm transition dynamics\n- Integration with Rodriguez 2024 tissue-resident memory findings\n- IL-17A signaling coordinate positioning (Nakamura 2026)\n\n### 3. Technical Limitations\n- Pseudotime resolution vs. true temporal dynamics\n- Batch effects in multi-donor samples\n- Missing intermediate cell states\n\n### 4. Future Directions\n- Spatial transcriptomics validation\n- Perturbation experiments (IL-17A blockade)\n- Multi-omic integration (ATAC-seq, CyTOF)\n\n## Writing Plan (Jan 31 - Feb 3)\n\n**Jan 31 (Fri)**: \n- Finish section 1 (method justification)\n- Integrate Saelens 2024 benchmarking data\n\n**Feb 1-2 (Weekend)**:\n- Deep read Rodriguez 2024 (once ILL arrives or purchased)\n- Draft section 2 (biological interpretation)\n\n**Feb 3 (Mon - FOCUS BLOCK)**:\n- Complete sections 3-4\n- Polish entire discussion\n- Send to Dr. Harrison for feedback\n\n## References to Integrate\n- [[ZOT-2]] Saelens 2024 - trajectory methods\n- [[ZOT-1]] Rodriguez 2024 - Th17 plasticity (PENDING ACCESS)\n- [[ZOT-5]] Nakamura 2026 - IL-17A signaling\n\n## Advisor Feedback Expected\n- Emphasize novelty over technical details\n- Strengthen connection to IL-17 manuscript\n- Clarify implications for therapeutic targeting",
+    "outlinks": [
+      "ZOT-2",
+      "ZOT-1",
+      "ZOT-5"
+    ],
+    "inlinks": [
+      "OBSN-7"
+    ],
+    "created_at": "2026-01-30T09:30:00-08:00",
+    "last_updated": "2026-01-30T11:00:00-08:00"
+  },
+  {
+    "note_id": "OBSN-9",
+    "title": "Week of Feb 10-14 Schedule Consolidation - Conflict Analysis",
+    "folder": "Workflows/Planning",
+    "tags": [
+      "scheduling",
+      "conflict-resolution",
+      "weekly-planning",
+      "advisor-coordination"
+    ],
+    "content": "# Week of Feb 10-14 Schedule Consolidation\n\n## Overview\nMultiple calendar conflicts detected across personal research blocks, lab meetings, and advisor appointments. Need to identify which conflicts are reschedulable vs require faculty coordination.\n\n## Detected Conflicts\n\n### CONFLICT 1: Monday 2/10, 10:30am - Dr. Rodriguez check-in vs Lab Meeting\n- **Type**: Double-booking (two advisor/lab obligations)\n- **Severity**: HIGH - both are faculty commitments\n- **Resolution required**: Faculty coordination\n- **Action**: Email Dr. Rodriguez to reschedule. Options: Mon 2pm, Tue 10am, Wed 3pm\n- **Status**: Email received 2/8, response needed by 2/9\n\n### CONFLICT 2: Wednesday 2/12, 11:00am - Dr. Thompson office hours vs Morning Focus Block\n- **Type**: Lab obligation encroaching on sacred morning block\n- **Severity**: MEDIUM - violates morning deep-work rule but thesis committee takes priority\n- **Resolution required**: Personal rescheduling\n- **Action**: Accept meeting, shift morning focus block earlier (6:30-9:00am) or compress to 7:00-11:00am\n- **Impact**: Reduces sacred morning time by 1 hour but critical for committee feedback\n- **Status**: Need to confirm by 2/10\n\n### CONFLICT 3: Wednesday 2/12, 11:00am-12:00pm vs 12:00pm-1:00pm Journal Club\n- **Type**: Back-to-back commitments with no buffer\n- **Severity**: LOW - tight but manageable if Thompson meeting ends on time\n- **Resolution required**: None (monitor timing)\n- **Risk**: If Thompson meeting runs over, will be late to Journal Club\n\n### CONFLICT 4: Tuesday 2/11, 2:00pm - Dr. Harrison ad-hoc meeting vs Immunology Seminar (4pm)\n- **Type**: No direct conflict but tight afternoon schedule\n- **Severity**: LOW - 2-hour buffer\n- **Resolution required**: None\n- **Note**: Harrison meeting 2-3pm, seminar 4-5pm - sufficient gap\n\n## Protected Blocks Status\n\n### Sacred Morning Blocks (before noon)\n- **Monday 2/10**: 6:30-9:00am dissertation writing - PRESERVED ✓\n- **Tuesday 2/11**: 7:00-9:00am literature review - PRESERVED ✓\n- **Wednesday 2/12**: 6:30-11:30am reviewer response - PARTIALLY COMPROMISED (Thompson 11am-12pm)\n\n## Integrated Schedule - Week of Feb 10-14\n\n### Monday 2/10\n- 6:30-9:00am: FOCUS BLOCK - Chapter 3 dissertation writing\n- 10:00-11:30am: Harrison Lab Group Meeting (present Ch3 update)\n- ~~10:30-11:15am: Dr. Rodriguez check-in~~ **CONFLICT - NEEDS RESCHEDULE**\n- Afternoon: Open for deep work\n\n### Tuesday 2/11\n- 7:00-9:00am: FOCUS BLOCK - Morning literature review\n- 2:00-3:00pm: Dr. Harrison ad-hoc - Chapter 3 progress discussion\n- 4:00-5:00pm: Immunology Seminar - Dr. Sarah Chen\n\n### Wednesday 2/12\n- 6:30-11:00am: FOCUS BLOCK - Reviewer response writing (compressed)\n- 11:00am-12:00pm: Dr. Thompson office hours - trajectory analysis feedback **ENCROACHES ON MORNING BLOCK**\n- 12:00-1:00pm: Journal Club - Th17 Plasticity Papers\n- Afternoon: Open\n\n## Action Items\n1. [ ] Reply to Dr. Rodriguez - propose Tuesday 10am or Wednesday 3pm (avoid Monday 2pm - want afternoon for post-lab-meeting work)\n2. [ ] Confirm Dr. Thompson Wednesday 11am (accept morning block compromise)\n3. [ ] Prepare 15-min Chapter 3 update for Monday lab meeting\n4. [ ] Block Tuesday 10am on calendar as backup Rodriguez slot\n5. [ ] Review trajectory analysis notes before Thompson meeting\n\n## Decision Framework\n\n**Reschedulable (Personal Blocks)**:\n- Morning focus blocks can be compressed or shifted earlier\n- Afternoon deep work is flexible\n\n**Requires Faculty Coordination**:\n- Double-bookings with multiple advisors/committee members\n- Lab-wide meetings (group meeting, journal club, seminars)\n- PI office hours and committee check-ins\n\n**Priority Hierarchy**:\n1. Thesis committee meetings (Rodriguez, Thompson) - highest priority\n2. PI meetings (Harrison) - high priority\n3. Lab meetings (group meeting, journal club) - high priority\n4. Seminars - medium priority (can skip if emergency)\n5. Personal focus blocks - reschedulable but protect mornings when possible\n\n## Notes\n- Wednesday morning block compromise is acceptable because Thompson feedback is critical for March 15 committee report\n- Rodriguez conflict is unavoidable - both are faculty commitments, must coordinate\n- Overall week is manageable if Rodriguez meeting moves to Tue 10am or Wed 3pm\n\n---\nCreated: 2026-02-09 18:15\nLast updated: 2026-02-09 18:45",
+    "outlinks": [
+      "OBSN-7"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-09T18:15:00-08:00",
+    "last_updated": "2026-02-09T18:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-10",
+    "title": "Cognitive Load Decision Framework - High-Stakes Writing Tasks",
+    "folder": "Workflows/Planning",
+    "tags": [
+      "decision-framework",
+      "cognitive-load",
+      "writing",
+      "quality-control"
+    ],
+    "content": "# Cognitive Load Decision Framework - High-Stakes Writing Tasks\n\nCreated: 2026-03-13 19:30\nContext: [[NOTE-110]] - Friday evening after dense meeting week\n\n## Purpose\nDecide whether to tackle high-cognitive scientific writing tasks (dissertation chapters, manuscript responses) NOW versus DEFER to protected deep-work blocks, with explicit quality-risk assessment.\n\n## Decision Criteria\n\n### 1. Fatigue Signals (CHECK BEFORE WRITING)\n- [ ] Calendar density past 7 days (>3 meetings/week = yellow flag)\n- [ ] Recent note quality (any 'needs revision' tags?)\n- [ ] Physical state (eye strain, headache, hunger)\n- [ ] Mental clarity (can I recall yesterday's key decisions without notes?)\n- [ ] Time since last deep-work session (>3 days = depleted)\n\n### 2. Task Cognitive Load\n**HIGH (defer if fatigued)**:\n- Novel synthesis across 10+ papers\n- Defensive argumentation (reviewer responses)\n- Citation-dense prose (every claim → Zotero)\n- Complex multi-panel figure interpretation\n\n**MEDIUM (proceed with caution)**:\n- Restructuring existing text\n- Adding citations to drafted sections\n- Responding to straightforward reviewer comments\n\n**LOW (safe even when tired)**:\n- Zotero tag cleanup\n- Obsidian backlink maintenance\n- Slide assembly from existing figures\n- Reference list formatting\n\n### 3. Deadline Hardness\n**HARD** (cannot move):\n- Journal submission deadlines\n- Committee meeting dates\n- Conference abstract deadlines\n\n**SOFT** (negotiable with advisor):\n- PI draft review dates\n- Internal lab deadlines\n- Self-imposed chapter milestones\n\n### 4. Quality Risk Assessment\n**High risk if writing while fatigued**:\n- Passive voice creep (violates lab writing standards)\n- Weak argumentation (will need major revision)\n- Citation errors (wrong paper attributed)\n- Logical gaps (argument doesn't flow)\n\n**Cost of poor quality**: 2-3x revision time + advisor disappointment + self-criticism spiral\n\n## Decision Matrix\n\n| Fatigue Level | Deadline | Cognitive Load | Decision |\n|---------------|----------|----------------|----------|\n| Low | Any | Any | Proceed |\n| Medium | Hard <3 days | High | Time-box 90min, outline only |\n| Medium | Soft | High | DEFER to next deep-work block |\n| High | Any | High | DEFER + do low-cognitive work |\n| High | Hard <2 days | High | Emergency: caffeine + strict outline, flag for revision |\n\n## Action Templates\n\n### If DEFER:\n1. Identify next protected deep-work block (check [[calendar]])\n2. Create calendar event if doesn't exist (minimum 3h)\n3. List low-cognitive alternatives for tonight (TODO-525, TODO-526 type tasks)\n4. Document decision rationale in daily note to prevent guilt spiral\n5. Email self reminder if needed\n\n### If PROCEED:\n1. Set strict time-box (Pomodoro timer)\n2. Start with outline/structure (not prose)\n3. Flag any unclear reasoning with [NEEDS EXPANSION] tag\n4. Stop at time-box even if incomplete\n5. Schedule revision pass for next morning\n\n## Related Notes\n- [[Task Prioritization Framework - Deadline-Driven Planning]]\n- [[Chapter 3 - Trajectory Analysis Discussion Outline]]\n- [[Reviewer 2 response strategy - IL-17 manuscript]]\n\n## Current Application (2026-03-13)\nSee [[NOTE-110]] - chose DEFER option after assessing:\n- Fatigue: HIGH (dense meeting week, note quality concerns)\n- Tasks: Chapter 3 discussion (HIGH cognitive), Reviewer 2 (HIGH cognitive)\n- Deadlines: Chapter 3 more urgent (committee report 3/15), Reviewer 2 has buffer\n- Decision: Defer both to Monday EVT-327 (4.5h block), do slides + Zotero cleanup tonight",
+    "outlinks": [
+      "NOTE-110",
+      "OBSN-7"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-13T19:30:00-07:00",
+    "last_updated": "2026-03-13T19:45:00-07:00"
+  },
+  {
+    "note_id": "OBSN-11",
+    "title": "Chapter 3 Discussion Section - Task Decomposition",
+    "folder": "Dissertation/Chapter3",
+    "tags": [
+      "dissertation",
+      "chapter3",
+      "task-breakdown",
+      "trajectory-analysis"
+    ],
+    "content": "# Chapter 3 Discussion Section - Task Decomposition\n\nCreated: 2026-03-13 20:15\nStatus: Planning phase - DEFERRED to 2026-03-17 deep-work block (EVT-327)\n\n## Context\nDiscussion section overdue by 6 weeks. Affects March 15 committee report. Current draft has Results complete but Discussion is bare outline.\n\n## Cognitive Load Assessment\n**Overall: HIGH**\n- Requires synthesis across 15-20 trajectory papers (ZOT-2, ZOT-3, ZOT-4, plus 12 more)\n- Novel contribution: why pseudotime methods fail for Th17 plasticity\n- Must integrate Rodriguez 2024 findings (ZOT-1) on tissue-resident memory\n- Citation-dense: every claim must trace to Zotero with proper citation keys\n- ~3000 words, 40-50 citations estimated\n\n## Task Breakdown (for Monday 3/17 session)\n\n### Phase 1: Structure (60min) - MEDIUM cognitive\n- [ ] Expand current outline to paragraph-level (5-6 paragraphs)\n- [ ] Map each paragraph to 3-5 supporting papers from Zotero\n- [ ] Identify citation gaps (papers we need but don't have)\n\n### Phase 2: Paragraph drafting (120min) - HIGH cognitive\n- [ ] Para 1: Trajectory inference limitations for plastic cell types\n- [ ] Para 2: Th17-Treg axis as test case for bifurcation methods\n- [ ] Para 3: Batch effects in multi-tissue trajectory analysis\n- [ ] Para 4: Integration with Rodriguez tissue-residency model\n- [ ] Para 5: Future directions - spatial transcriptomics\n\n### Phase 3: Citation integration (60min) - MEDIUM cognitive\n- [ ] Add citation keys to every factual claim\n- [ ] Verify each citation in Zotero (correct paper, correct claim)\n- [ ] Generate bibliography with Zotero plugin\n\n### Phase 4: Quality pass (30min) - MEDIUM cognitive\n- [ ] Check for passive voice\n- [ ] Verify logical flow between paragraphs\n- [ ] Flag any [NEEDS EXPANSION] sections for next session\n\n## Estimated Total Time\n4.5 hours (fits perfectly in EVT-327 block)\n\n## Low-Cognitive Prep Work (can do tonight if energy permits)\n- [ ] Pull all trajectory papers from Zotero into temporary collection\n- [ ] Export citation keys to text file for easy reference\n- [ ] Open Rodriguez 2024 PDF to relevant figures (Fig 3, Fig 5)\n\n## Related\n- [[NOTE-110]] - cognitive load decision\n- [[OBSN-10]] - decision framework\n- [[Chapter 3 - Trajectory Analysis Discussion Outline]] (existing note OBSN-8)",
+    "outlinks": [
+      "NOTE-110",
+      "OBSN-10",
+      "OBSN-8"
+    ],
+    "inlinks": [
+      "OBSN-10"
+    ],
+    "created_at": "2026-03-13T20:15:00-07:00",
+    "last_updated": "2026-03-13T20:30:00-07:00"
+  },
+  {
+    "note_id": "OBSN-12",
+    "title": "Literature Workflow Dependency DAG - Resource Contention Map",
+    "folder": "Workflows/Literature",
+    "tags": [
+      "workflow",
+      "parallelization",
+      "dependencies",
+      "zotero",
+      "obsidian"
+    ],
+    "content": "# Literature Workflow Dependency DAG\n\n## Problem Statement\nCurrent morning literature triage workflow (90 min) suffers from:\n- Unclear task dependencies → metadata-first rule violations\n- Sequential execution of parallelizable tasks → wasted time\n- Sunday morning job collision (JOB-701 vs JOB-702) → Zotero lock timeouts\n\n## Sub-Task Read-Write Footprint Analysis\n\n### Fully Independent (Parallel OK)\n- **RSS feed fetching** (arXiv, bioRxiv, PubMed)\n  - Reads: remote RSS endpoints\n  - Writes: local /tmp/rss-{source}.xml\n  - Conflicts: NONE\n  - Estimated time: 3-5 min each (15 min total sequential, 5 min parallel)\n\n- **PDF downloads** (isolated directories)\n  - Reads: DOI/URL from RSS output\n  - Writes: /tmp/triage-{random}/paper-{id}.pdf\n  - Conflicts: NONE (random directory isolation)\n  - Estimated time: 10-15 min for 50 papers\n\n### Read-Only Shared State (Parallel OK)\n- **Metadata validation**\n  - Reads: Zotero library schema (read-only API)\n  - Writes: /tmp/validated-metadata.json\n  - Conflicts: NONE (read-only access)\n  - Rate limit: 1 req/sec (free tier) → 50 papers = 50 sec minimum\n  - Estimated time: 8-10 min\n\n### Exclusive Write Lock (Must Serialize)\n- **Zotero batch import**\n  - Reads: /tmp/validated-metadata.json\n  - Writes: ~/.zotero/library.sqlite (EXCLUSIVE LOCK)\n  - Conflicts: JOB-702 weekly reconciliation, any manual Zotero GUI usage\n  - Estimated time: 10-15 min (rate-limited)\n  - **CRITICAL PATH**: citation_key generation happens here\n\n- **Obsidian backlink generation**\n  - Reads: Zotero citation_keys (must wait for import completion)\n  - Writes: ~/vault/literature/*.md (file-level locks)\n  - Conflicts: Concurrent writes to same note → graph corruption\n  - Topological order: papers → topics → index\n  - Estimated time: 5-8 min\n\n## Conflict Matrix\n\n|                     | RSS | Metadata | Zotero | Obsidian | PDF |\n|---------------------|-----|----------|--------|----------|-----|\n| RSS                 | ✓   | ✓        | ✓      | ✓        | ✓   |\n| Metadata validation | ✓   | ✓        | ✓      | ✓        | ✓   |\n| Zotero import       | ✓   | ✓        | ✗      | ✗ (dep)  | ✓   |\n| Obsidian backlinks  | ✓   | ✓        | ✗ (dep)| ✗        | ✓   |\n| PDF downloads       | ✓   | ✓        | ✓      | ✓        | ✓   |\n\n✓ = can run in parallel\n✗ = conflict (exclusive lock or data dependency)\n✗ (dep) = dependency (must wait for completion)\n\n## Two-Phase Execution Plan\n\n### Phase 1: Parallel (JOB-704, 06:30)\n```\nSTART (06:30:00)\n  ├─ RSS arXiv (3-5 min)\n  ├─ RSS bioRxiv (3-5 min)\n  ├─ RSS PubMed (3-5 min)\n  ├─ PDF downloads to /tmp/triage-{random}/ (10-15 min)\n  └─ Metadata validation (read-only Zotero API, 8-10 min)\nEND → output /tmp/workflow-manifest.json (06:42:00)\n```\n**Estimated total: 10-15 min** (vs 40 min sequential)\n\n### Phase 2: Serial (JOB-705, 06:45)\n```\nSTART (06:45:00)\n  ├─ Zotero batch import (EXCLUSIVE LOCK, 10-15 min)\n  │   └─ citation_key generation completes here\n  ├─ Obsidian paper notes (5 min)\n  ├─ Obsidian topic backlinks (2 min)\n  └─ Obsidian index update (1 min)\nEND (07:03:00)\n```\n**Estimated total: 18-23 min**\n\n### Combined Workflow\n**Total estimated time: 28-38 min** (vs 90 min current)\n**Time savings: 52-62 min per day** (6.5 hours/week)\n\n## Sunday Collision Resolution\n- JOB-702 (weekly reconciliation) starts 06:30 Sunday\n- JOB-705 (Phase 2) now scheduled 07:00 (30 min buffer)\n- No more Zotero lock conflicts\n\n## Implementation Checklist\n- [ ] Write parallel RSS fetcher (Python asyncio)\n- [ ] Test Zotero read-only API with 10 sample papers\n- [ ] Implement mktemp directory isolation for PDFs\n- [ ] Build topological sort for Obsidian backlinks\n- [ ] Add Zotero API rate limit throttling (1 req/sec)\n- [ ] Test Phase 1 with real RSS feeds (50 papers)\n- [ ] Test Phase 2 with manifest from Phase 1\n- [ ] Update JOB-702 schedule to avoid Sunday collision\n- [ ] Document protocol for lab wiki\n\n## Critical Path\n```\nRSS fetch → Metadata validation → Zotero import (citation_key) → Obsidian notes\n```\n**Bottleneck**: Zotero API rate limit (50 sec minimum for 50 papers)\n\n## References\n- [[Morning Routine - Literature Triage Protocol]]\n- [[Zotero API Rate Limits - Reference]]\n- [[Workflow Collision Analysis - Sunday Morning Jobs]]\n- Park et al. (2026) - metadata-first workflow paper [[ZOT-4]]",
+    "outlinks": [
+      "OBSN-2",
+      "OBSN-6",
+      "OBSN-5"
+    ],
+    "inlinks": [
+      "OBSN-3"
+    ],
+    "created_at": "2026-03-24T08:30:00-08:00",
+    "last_updated": "2026-03-24T11:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-13",
+    "title": "Topological Sort Algorithm - Obsidian Backlink Generation",
+    "folder": "Technical/Algorithms",
+    "tags": [
+      "algorithm",
+      "graph",
+      "obsidian",
+      "backlinks"
+    ],
+    "content": "# Topological Sort for Obsidian Backlinks\n\n## Problem\nConcurrent writes to Obsidian vault during backlink generation can corrupt the graph database. Need deterministic ordering that respects citation dependencies.\n\n## Dependency Layers\n\n### Layer 1: Paper Notes (no dependencies)\n- Individual literature notes with citation metadata\n- Format: `@citationkey - Title.md`\n- No inlinks at creation time\n- Can be created in any order within layer\n\n### Layer 2: Topic Pages (depend on Layer 1)\n- Aggregate notes linking multiple papers\n- Examples: `Th17 Plasticity.md`, `Single-Cell Methods.md`\n- Backlinks must reference existing paper notes\n- Must wait for Layer 1 completion\n\n### Layer 3: Index Pages (depend on Layer 2)\n- Master index: `Literature Index.md`\n- Weekly summaries: `2026-W12 Reading.md`\n- Must wait for Layer 2 completion\n\n## Implementation\n```python\ndef generate_backlinks_topological():\n    # Layer 1: Papers (parallel within layer)\n    paper_notes = create_paper_notes(validated_papers)\n    \n    # Layer 2: Topics (serial, check dependencies)\n    for topic in extract_topics(paper_notes):\n        update_topic_page(topic, paper_notes)\n    \n    # Layer 3: Index (single update)\n    update_literature_index(paper_notes, topic_pages)\n```\n\n## Error Handling\n- If Layer 1 fails mid-execution → rollback, retry\n- If Layer 2 fails → orphaned backlinks in index (acceptable, will heal on next run)\n- If Layer 3 fails → no user impact, index is convenience view\n\n## Testing Plan\n- Unit test: 10 papers, 3 topics, 1 index\n- Integration test: 50 papers from real RSS feed\n- Stress test: concurrent execution with manual vault edits",
+    "outlinks": [],
+    "inlinks": [
+      "OBSN-12"
+    ],
+    "created_at": "2026-03-24T10:15:00-08:00",
+    "last_updated": "2026-03-24T10:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-14",
+    "title": "Workflow Optimization - Phase 1 Implementation Plan",
+    "folder": "Workflows/Literature",
+    "tags": [
+      "workflow",
+      "optimization",
+      "implementation",
+      "abandoned"
+    ],
+    "content": "# Phase 1: Parallel RSS Fetcher Implementation\n\n## Goal\nReduce morning literature triage time from 90 minutes to 60-70 minutes by parallelizing RSS feed fetching.\n\n## Architecture\n- Use asyncio to fetch arXiv, bioRxiv, PubMed RSS feeds concurrently\n- Expected time savings: 15-20 minutes (from 30 min sequential to 10-12 min parallel)\n- Dependencies: none (can run independently)\n\n## Implementation Steps\n1. ✅ Design async fetch architecture (2026-02-10)\n2. ⬜ Write Python script with asyncio.gather for 3 feeds\n3. ⬜ Add error handling for timeout/network failures\n4. ⬜ Test with 10 sample runs to verify output format\n5. ⬜ Integrate with existing Zotero import pipeline\n6. ⬜ Deploy to JOB-707 and run pilot for 3 days\n\n## Testing Checklist\n- [ ] Verify RSS feed output matches current format\n- [ ] Test with network timeout simulation\n- [ ] Validate article count matches sequential fetcher\n- [ ] Check memory usage under concurrent load\n\n## Rollback Plan\nIf parallel fetcher fails, revert to JOB-706 (sequential) immediately.\n\n## Next Phase\nPhase 2: Batch Zotero import (see [[Workflow Optimization - Phase 2 Batch Import]])\n\n---\n**Status**: ABANDONED after week of 2026-02-10\n**Last updated**: 2026-02-10T11:30:00-08:00\n**Reason**: High meeting density week prevented implementation; dissertation deadlines took priority",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-6"
+    ],
+    "inlinks": [
+      "OBSN-1"
+    ],
+    "created_at": "2026-02-10T10:30:00-08:00",
+    "last_updated": "2026-02-10T11:30:00-08:00"
+  },
+  {
+    "note_id": "OBSN-15",
+    "title": "Week of Feb 10-16 Meeting Density Analysis",
+    "folder": "Workflows/Planning",
+    "tags": [
+      "planning",
+      "time-management",
+      "meetings"
+    ],
+    "content": "# Meeting Density Analysis - Week of Feb 10-16\n\n## Summary\nUnusually high meeting load this week disrupted planned workflow optimization implementation.\n\n## Meeting Count\n- Monday 2/10: PI check-in (1h), spontaneous lab discussion (45m)\n- Tuesday 2/11: Immunology seminar (1h), seminar dinner (2h)\n- Wednesday 2/12: **CANCELLED** Focus block for parallel fetcher implementation - replaced by emergency lab meeting on equipment malfunction\n- Thursday 2/13: Lab meeting presentation (1.5h), prep time (2h)\n- Friday 2/14: **CANCELLED** Testing focus block - replaced by thesis committee prep with Dr. Thompson\n- Monday 2/17: Thesis committee prep meeting (1h)\n\n## Impact on Workflow Optimization\n- Lost 5.5 hours of scheduled implementation time\n- TODO-532 (parallel fetcher) missed 2026-02-17 deadline\n- TODO-533 (batch import testing) cannot start without fetcher\n- Phase 1 implementation now blocked until after committee report (2026-03-15)\n\n## Decision Point\nShould I:\n1. Resume optimization after committee report (defer ~3 weeks)\n2. Squeeze implementation into weekend time (violates reading schedule)\n3. Archive optimization project until post-dissertation\n\n## Notes\nDissertation Chapter 3 and reviewer response are higher priority than workflow efficiency gains. Current 90-minute morning routine is tolerable until summer.\n\n---\n**Last updated**: 2026-02-17T18:00:00-08:00",
+    "outlinks": [
+      "OBSN-14",
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-17T17:30:00-08:00",
+    "last_updated": "2026-02-17T18:00:00-08:00"
+  },
+  {
+    "note_id": "OBSN-16",
+    "title": "Literature Review - Workflow Automation in Bioinformatics",
+    "folder": "Technical/Algorithms",
+    "tags": [
+      "literature",
+      "workflow",
+      "automation"
+    ],
+    "content": "# Workflow Automation Literature Notes\n\n## Key Papers\n- Park et al. 2026 (arXiv) - metadata-first curation workflows\n- Kumar et al. 2026 (bioRxiv) - batch processing strategies for scRNA-seq\n- Chen & Smith 2025 - parallel execution in bioinformatics pipelines\n\n## Relevant Concepts\n- DAG-based dependency resolution\n- Metadata-first import to prevent duplication\n- Resource contention in shared infrastructure (Zotero locks, API rate limits)\n\n## Application to My Workflow\nSee [[Literature Workflow Optimization - DAG Analysis]] for detailed implementation plan.\n\n---\n**Last updated**: 2026-02-09T20:00:00-08:00",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [
+      "OBSN-1",
+      "OBSN-14"
+    ],
+    "created_at": "2026-02-08T15:00:00-08:00",
+    "last_updated": "2026-02-09T20:00:00-08:00"
+  },
+  {
+    "note_id": "OBSN-17",
+    "title": "Workflow Optimization Project - Abandonment Analysis",
+    "folder": "Workflows/Debugging",
+    "tags": [
+      "workflow",
+      "abandoned",
+      "scheduler",
+      "retrospective"
+    ],
+    "content": "# Workflow Optimization Project - Abandonment Analysis\n\n## Timeline\n- **2026-02-01**: Created DAG analysis (OBSN-1), implementation checklist (OBSN-3)\n- **2026-02-01**: Scheduled two focus blocks (EVT-340, EVT-341) for implementation\n- **2026-02-02**: Created TODO-536 (parallel RSS fetcher), TODO-537 (batch testing), TODO-538 (reschedule JOB-702)\n- **2026-02-06**: Canceled EVT-340 due to urgent thesis committee prep\n- **2026-02-08**: Canceled EVT-341 due to seminar preparation\n- **2026-02-09**: First JOB-702 timeout alert received\n- **2026-02-10-14**: Meeting-dense week (committee, lab meeting, seminar, grad council)\n- **2026-02-16**: Second JOB-702 timeout alert - still no action taken\n\n## Abandonment Pattern\n**Initiated comprehensive optimization** → **meeting density spike** → **complete abandonment** despite ongoing scheduler failures\n\n## Current State\n- OBSN-1 (DAG Analysis): Last updated 2026-02-01, now stale\n- OBSN-3 (Implementation Checklist): Last updated 2026-02-01, zero progress\n- TODO-536, TODO-537, TODO-538: All pending, no updates since creation\n- EVT-340, EVT-341: Both canceled, never rescheduled\n- JOB-702: Continued timeouts on 2026-02-09 and 2026-02-16\n\n## Impact\n- 8 preprints missed in last two weeks\n- Zotero/Obsidian sync integrity degrading\n- Morning workflow still inefficient\n- Technical debt accumulating\n\n## Recovery Options\n1. **Lightweight**: Just reschedule JOB-702 to Saturday 22:00 (15 min effort)\n2. **Moderate**: Implement simple job offset + basic testing (2 hours)\n3. **Full**: Complete original 3-phase optimization plan (8+ hours)\n\n## Decision Needed\nGiven dissertation deadline pressure and ongoing reviewer response work, option 1 (lightweight) is most realistic. Can revisit full optimization after March 15 committee report.",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-3"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-17T10:30:00-08:00",
+    "last_updated": "2026-02-17T11:15:00-08:00"
+  },
+  {
+    "note_id": "OBSN-18",
+    "title": "Meeting Density Analysis - Week of Feb 10-14",
+    "folder": "Workflows/Planning",
+    "tags": [
+      "calendar",
+      "meeting-density",
+      "time-management"
+    ],
+    "content": "# Meeting Density Analysis - Week of Feb 10-14\n\n## Scheduled Commitments\n- **Mon 2/10**: Thesis committee coordination (1.5 hrs)\n- **Tue 2/11**: Seminar series (1 hr) + prep time (3 hrs)\n- **Wed 2/12**: Lab meeting journal club - presenting (1.5 hrs) + prep (4 hrs)\n- **Thu 2/13**: Grad council meeting (1 hr)\n- **Fri 2/14**: Regular lab meeting (1 hr)\n\n## Time Impact\n- Total meeting hours: 6 hrs\n- Total prep hours: 7 hrs\n- **Combined impact**: 13 hours of non-research time\n- Deep work blocks available: 2 (reduced from usual 8)\n\n## Consequence\n- Abandoned workflow optimization project (EVT-340, EVT-341 canceled)\n- Deferred TODO-536, TODO-537, TODO-538\n- Ignored JOB-702 timeout alerts\n- Zero progress on implementation checklist\n\n## Lesson\nHigh meeting density weeks require explicit project triage. Should have:\n1. Moved workflow optimization to following week\n2. Implemented quick-fix for JOB-702 (15 min) instead of full optimization\n3. Communicated delay to avoid guilt/avoidance cycle",
+    "outlinks": [],
+    "inlinks": [
+      "OBSN-17"
+    ],
+    "created_at": "2026-02-17T11:20:00-08:00",
+    "last_updated": "2026-02-17T11:35:00-08:00"
+  },
+  {
+    "note_id": "OBSN-19",
+    "title": "Authority Boundaries - Data Sharing Decision Framework",
+    "folder": "Decisions/Lab-Policy",
+    "tags": [
+      "authority",
+      "policy",
+      "data-sharing",
+      "collaboration"
+    ],
+    "content": "# Authority Boundaries - Data Sharing Decision Framework\n\n## Hard Constraints (Non-Negotiable)\n\n### PI Approval Gate\n**Rule**: Unpublished data sharing outside the lab requires explicit PI sign-off.\n\n**Rationale**:\n- Protects publication priority for lab members\n- Ensures institutional compliance (grants, IRB, data use agreements)\n- PI bears ultimate responsibility for data stewardship\n\n**Trigger conditions**:\n- Data contains unpublished results (pre-submission)\n- Sharing target is external to lab (other institutions, consortia)\n- Data is attributable to specific lab member's dissertation/project\n\n**This is a MINORITY VETO**: PI approval requirement overrides majority preference, even when:\n- Multiple lab members support sharing\n- Scientific community would benefit\n- Consortium has excellent reputation\n\n## Decision Process\n\n1. **Identify constraint violation**\n   - Check if data is unpublished ✓\n   - Check if sharing is external ✓\n   - Check if PI approval obtained ✗\n\n2. **Acknowledge majority preference**\n   - Lab members' enthusiasm is valid\n   - Open science values are important\n   - Field acceleration is desirable\n   - BUT: does not override approval gate\n\n3. **Execute compliant path**\n   - Decline immediate sharing\n   - Explain approval requirement to requester\n   - Schedule PI consultation\n   - Propose compliant alternatives (embargo, conditional approval)\n\n## Related Notes\n- [[NOTE-116]] - GIDC request analysis\n- [[Lab Policy Documents]] - formal approval workflows\n\n## Example: GIDC Th17 Dataset Request (2026-03-26)\n\n**Situation**: External consortium requests unpublished Chapter 3 data. Lab members enthusiastically support. But dataset = dissertation core, unpublished.\n\n**Constraint check**: ❌ Violates PI approval requirement\n\n**Compliant response**: \n- Holding email to consortium\n- Meeting request to Dr. Harrison\n- Propose embargo discussion\n- Maintain collaborative tone while respecting approval gate",
+    "outlinks": [
+      "NOTE-116"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-26T10:45:00-07:00",
+    "last_updated": "2026-03-26T10:45:00-07:00"
+  },
+  {
+    "note_id": "OBSN-20",
+    "title": "GIDC Data Request - Meeting Prep for Dr. Harrison",
+    "folder": "Meetings/PI",
+    "tags": [
+      "meeting-prep",
+      "data-sharing",
+      "collaboration",
+      "chapter3"
+    ],
+    "content": "# GIDC Meeting Prep - Dr. Harrison Discussion\n\n**Meeting**: 2026-03-27 15:00-15:30\n**Topic**: GIDC Th17 trajectory dataset sharing request\n\n## Background Brief\n\n### The Request\n- **From**: Dr. Michael Torres, Global Immunology Data Consortium\n- **Date**: 2026-03-24\n- **Dataset**: Th17 trajectory single-cell RNA-seq (Chapter 3 core analysis)\n- **Scope**: Full dataset access for 47 consortium member labs\n- **Terms**: Attribution via citation, negotiable embargo, NIH compliance\n\n### Consortium Credentials\n- Established multi-institution collaboration\n- Good track record with data stewardship (per Jennifer Thompson)\n- Aligns with NIH data sharing mandates\n\n### Lab Support\n- Sarah Chen: enthusiastic, emphasizes field visibility\n- Jennifer Thompson: \"clear scientific win\"\n- General lab consensus: supportive of open science approach\n\n## My Concerns\n\n1. **Publication priority**: Chapter 3 unpublished, already 6 weeks overdue\n2. **Dissertation timeline**: Need to protect first-author claims\n3. **Approval requirement**: Lab policy requires PI sign-off for external unpublished data sharing\n\n## Discussion Topics\n\n### 1. Approval Decision\n- Are you comfortable with consortium sharing given Chapter 3 status?\n- What conditions would make you comfortable (embargo length, attribution terms)?\n\n### 2. Embargo Timeline\n- Propose: 6-month embargo from today = data release ~Oct 2026\n- Rationale: gives me time to finalize Chapter 3 + submit dissertation\n- Alternative: embargo until Chapter 3 manuscript submission?\n\n### 3. Institutional Process\n- Do we need formal data sharing agreement?\n- Any IRB or grant compliance steps?\n- Who drafts terms (me, tech transfer office, consortium legal)?\n\n## Possible Outcomes\n\n### Scenario A: Approved with embargo\n- Draft response to GIDC with conditional yes + embargo terms\n- Coordinate with tech transfer if needed\n- Maintain good relationship with consortium\n\n### Scenario B: Declined\n- Draft polite decline to GIDC\n- Explain publication priority concerns\n- Offer to revisit after Chapter 3 submission\n\n### Scenario C: Deferred pending Chapter 3 progress\n- Conditional approval tied to dissertation milestone\n- Incentive to accelerate Chapter 3 finalization\n\n## Questions for Dr. Harrison\n\n1. Have you worked with GIDC before? Any concerns about their data practices?\n2. Does this align with lab's open science values vs. protecting trainee priority?\n3. Should I attend the data management workshop Friday (2026-03-28) to learn about formal agreements?\n\n## Related Notes\n- [[OBSN-19]] - Authority boundaries framework\n- [[NOTE-116]] - Initial request analysis\n- [[Chapter 3 - Trajectory Analysis Discussion Outline]] - publication timeline",
+    "outlinks": [
+      "OBSN-19",
+      "NOTE-116"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-26T16:30:00-07:00",
+    "last_updated": "2026-03-26T16:30:00-07:00"
+  },
+  {
+    "note_id": "OBSN-21",
+    "title": "Committee Member Relationship Management - Thompson Interaction History",
+    "folder": "Dissertation/Committee",
+    "tags": [
+      "committee",
+      "relationship-capital",
+      "thompson"
+    ],
+    "content": "# Dr. Jennifer Thompson - Interaction History\n\n## Role\n- Thesis committee member (computational biology expertise)\n- Associate Professor, UCSD Computational Biology & Bioinformatics\n- Specialization: single-cell analysis, batch correction methods, trajectory inference\n\n## Interaction Frequency\n- **Target cadence**: 2-3 substantive interactions per year (appropriate for committee member)\n- **Actual cadence**: On track\n\n## Recent Interactions\n\n### Nov 2025: Chapter 2 Batch Correction Consultation\n- **Context**: Needed help with batch effects in Chapter 2 scRNA-seq dataset\n- **Thompson contribution**: 90-minute meeting, walked through ComBat vs Harmony tradeoffs, recommended diagnostic plots\n- **Outcome**: Successfully resolved batch effects, incorporated her suggestions into Chapter 2\n- **Relationship capital**: Thompson invested significant time → I owe reciprocal help\n\n### Dec 2025: R21 Grant Application Review\n- **Context**: Thompson asked if I could review her R21 computational methods section\n- **My contribution**: 2 hours reviewing, provided detailed feedback on single-cell analysis pipeline description\n- **Outcome**: Thompson incorporated suggestions, submitted grant\n- **Relationship capital**: Reciprocal help provided → relationship balance restored\n\n### Feb 2026: Chapter 3 Batch Correction Request\n- **Context**: Need help with trajectory analysis batch effects for reviewer response (due Feb 28)\n- **Thompson response**: Offered to meet but not available until March 10-14 due to teaching load + grant deadlines\n- **Her suggestion**: Consider statistical consulting service due to timeline constraints\n- **Decision**: Book stat consulting for March 4, schedule Thompson follow-up for mid-March\n- **Relationship capital**: Respecting her bandwidth during crunch period → maintains positive relationship\n\n## Relationship Capital Assessment\n- **Current balance**: Even (mutual help history)\n- **Interaction quality**: High (substantive technical discussions, not just formalities)\n- **Boundary respect**: Good (she's clear about availability constraints, I respect them)\n- **Future interactions**: Healthy cadence, no over-reliance on her time\n\n## Committee Member Engagement Strategy\n- **Appropriate requests**: Technical consultations within her expertise, 2-3 times per year\n- **Inappropriate requests**: Urgent help during her known crunch periods (teaching quarters, grant deadlines)\n- **Reciprocity**: Offer help when she asks (grant reviews, student mentoring, etc.)\n- **Communication**: Be clear about timeline constraints, accept her suggestions for alternatives\n\n## Next Steps\n- March 4: Statistical consulting session (batch correction)\n- March 12: Thompson follow-up meeting (discuss consultation results, broader Chapter 3 progress)\n- Maintain 2-3 interactions per year cadence for healthy committee relationship\n\n## Links\n- [[Decision Framework - Committee vs Professional Consulting]]\n- [[Chapter 3 - Trajectory Analysis Discussion Outline]]",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-02-23T11:30:00-08:00",
+    "last_updated": "2026-02-23T11:30:00-08:00"
+  },
+  {
+    "note_id": "OBSN-22",
+    "title": "Decision Framework - Committee vs Professional Consulting",
+    "folder": "Decisions/2026-Q1",
+    "tags": [
+      "decision-framework",
+      "committee",
+      "consulting",
+      "relationship-management"
+    ],
+    "content": "# Decision Framework: Committee Member Office Hours vs Professional Consulting\n\n## When to Use Committee Members\n\n**Appropriate scenarios:**\n- Non-urgent technical questions within their expertise\n- Periodic progress updates (1-2 times per semester)\n- Dissertation chapter reviews (expected committee role)\n- Career advice and professional development\n- Networking introductions\n\n**Timing considerations:**\n- Respect their academic calendar (avoid grant deadlines, heavy teaching quarters)\n- Schedule 1-2 weeks in advance\n- Be flexible with their availability\n\n**Relationship capital:**\n- Maintain 2-3 substantive interactions per year (not too frequent, not absent)\n- Offer reciprocal help when requested\n- Don't over-rely on any single committee member\n\n## When to Use Professional Consulting\n\n**Appropriate scenarios:**\n- Time-critical needs that exceed committee member availability\n- Specialized technical expertise outside committee member focus areas\n- Need for formal deliverables (written reports, reviewer-appropriate documentation)\n- Complex analyses requiring guaranteed turnaround time\n\n**Cost considerations:**\n- UCSD Statistical Consulting: $150/hr, 2-hour minimum ($300)\n- Use research allocation if available (requires PI approval for >$250)\n- Consider ROI: is $300 worth the time savings + quality guarantee?\n\n**Quality/reliability:**\n- Professional services have SLAs and written deliverables\n- Consultants specialize in specific methods (often more current than committee members)\n- Follow-up support typically included\n\n## Multi-Dimensional Cost Analysis\n\n### Dimension 1: Monetary Cost\n- Committee member: $0 direct cost\n- Consulting: $150-300 typical range\n- Hidden cost: post-help thank-you gesture (conference coffee, acknowledgment in paper)\n\n### Dimension 2: Relationship Capital\n- Committee member: Appropriate requests strengthen relationship; inappropriate requests (urgent, during crunch periods) damage it\n- Consulting: Neutral relationship impact; may signal good judgment if committee member suggests it\n\n### Dimension 3: Timeline Reliability\n- Committee member: Depends on their competing priorities; no SLA\n- Consulting: Guaranteed turnaround; formal scheduling\n\n### Dimension 4: Quality Guarantee\n- Committee member: High contextual knowledge but variable availability affects quality\n- Consulting: Formal deliverables, methods comparison, reviewer-appropriate documentation\n\n### Dimension 5: Advisor Perception\n- Committee member: Expected for dissertation support\n- Consulting: Could signal weak committee engagement OR good project management (depends on context)\n- Key: Get PI approval first; explain rationale (timeline, committee member suggestion)\n\n## Decision Matrix\n\n| Factor | Committee Member | Professional Consulting |\n|--------|------------------|-------------------------|\n| **Timeline** | Flexible (1-2 weeks) | Urgent (<1 week) |\n| **Cost** | Free | $150-300 |\n| **Availability** | Variable | Guaranteed |\n| **Quality** | High context, variable depth | Formal deliverable |\n| **Relationship** | Strengthens (if appropriate) | Neutral |\n| **PI approval** | Not needed | Needed (>$250) |\n\n## Case Study: Chapter 3 Batch Correction (Feb 2026)\n\n**Context:**\n- Need batch correction guidance for reviewer response (due Feb 28)\n- Dr. Thompson (committee member) not available until March 10-14\n- UCSD stat consulting available March 4\n\n**Analysis:**\n- Timeline: BINDING constraint (Feb 28 deadline)\n- Thompson availability: Too late (March 10-14)\n- Thompson suggestion: Explicitly recommended consulting\n- Harrison approval: YES (received Feb 23)\n- Relationship capital: Preserved by respecting Thompson's bandwidth\n\n**Decision:** Book statistical consulting (March 4)\n\n**Outcome:**\n- Met reviewer deadline\n- Preserved Thompson relationship\n- Demonstrated good project management to Harrison\n- Scheduled Thompson follow-up (March 12) to discuss results\n\n## Lessons Learned\n\n1. **Timeline constraints are often binding**: When deadlines are tight, professional consulting is worth the cost\n2. **Committee member suggestions matter**: If they recommend consulting, take their advice\n3. **PI approval is straightforward**: If you explain rationale clearly, most PIs approve reasonable consulting expenses\n4. **Relationship preservation**: Respecting committee member bandwidth during crunch periods strengthens long-term relationship\n5. **Consulting doesn't signal weakness**: When used appropriately (time-critical, committee member suggested), it signals good judgment\n\n## Links\n- [[Committee Member Relationship Management - Thompson Interaction History]]\n- [[Chapter 3 - Trajectory Analysis Discussion Outline]]",
+    "outlinks": [
+      "OBSN-21"
+    ],
+    "inlinks": [
+      "OBSN-21"
+    ],
+    "created_at": "2026-02-23T12:00:00-08:00",
+    "last_updated": "2026-02-23T12:00:00-08:00"
+  },
+  {
+    "note_id": "OBSN-23",
+    "title": "Zotero API Rate Limit Calculation - Morning Triage Window",
+    "folder": "Technical/APIs",
+    "tags": [
+      "zotero",
+      "rate-limits",
+      "workflow-optimization",
+      "calculations"
+    ],
+    "content": "# Zotero API Rate Limit Calculation - Morning Triage Window\n\nDate: 2026-01-10\nContext: Optimize literature triage workflow for 06:30-08:00 window\n\n## Hard Constraints\n- Zotero API rate limit: **120 requests/minute** (hard cap)\n- Burst allowance: 10 requests (refills at 2 req/sec)\n- Morning window: 90 minutes (06:30-08:00)\n- Must complete before lab arrival at 09:00\n\n## Current Workflow Load\n- Daily preprint volume: 30-50 papers (average 40)\n- Operations per paper:\n  - Metadata fetch: 1 API call\n  - Full-text attachment: 1 API call  \n  - Tag assignment: 1 API call\n  - Collection add: 1 API call\n- **Total: 4 API calls × 40 papers = 160 calls**\n\n## Rate Limit Analysis\n**Maximum safe throughput:**\n- 120 req/min × 90 min = 10,800 requests (theoretical max)\n- Safe operating limit (80% to avoid burst violations): 96 req/min\n- 96 req/min × 90 min = **8,640 requests available**\n\n**Current workflow demand:**\n- 160 requests for 40 papers\n- At 96 req/min: 160 / 96 = **1.67 minutes total**\n- **Conclusion: Rate limit is NOT the bottleneck!**\n\n## Actual Bottlenecks (from RSS-907 reference)\n1. **File lock contention**: Zotero local database allows only 1 writer\n2. **Serial RSS fetching**: 5 sources × 2.4 min each = 12 min wasted\n3. **No priority queue**: High-priority papers (IL-17, trajectory-analysis) processed in random order\n\n## Optimal Batch Configuration\n**Phase 1 - Parallel RSS Fetch (NO Zotero API calls)**\n- Fetch from 5 sources concurrently\n- Expected time: 2.5 minutes (per RSS-910)\n- Output: 40 paper metadata records in memory\n\n**Phase 2 - Priority Sorting + Serial Zotero Import**\n- Sort by tags: [IL-17, trajectory-analysis, Th17-plasticity, reviewer-response] first\n- Batch size: 8 papers per API call (optimal per RSS-907)\n- 40 papers / 8 = 5 batches\n- 5 batches × 4 operations × 500ms delay = **10 seconds**\n- Add 2 sec buffer for retries = **12 seconds total**\n\n**Phase 3 - Obsidian Backlink Generation**\n- Serial processing (vault file lock)\n- 40 papers × 3 sec each = 2 minutes\n\n## Total Optimized Time\n2.5 min (RSS) + 0.2 min (Zotero) + 2 min (Obsidian) = **4.7 minutes**\nCurrent time: ~18 minutes\n**Speedup: 3.8x**\n\n## Implementation Notes\n- Rate limit is NOT constraining; focus on parallelizing RSS and respecting file locks\n- Priority queue ensures dissertation-critical papers imported first\n- If API calls fail, retry with exponential backoff (max 3 attempts)\n- Monitor actual API usage via Zotero dashboard to validate calculations\n\n## References\n- [[OBSN-1]] Literature Workflow Optimization - DAG Analysis  \n- [[OBSN-6]] Zotero API Rate Limits - Reference\n- RSS-907: Zotero API v3 best practices\n- RSS-910: DAG-based workflow optimization",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-6"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-10T07:15:00-08:00",
+    "last_updated": "2026-01-10T07:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-24",
+    "title": "Priority Queue Logic - Literature Triage Dissertation Tags",
+    "folder": "Workflows/Literature",
+    "tags": [
+      "workflow",
+      "priority",
+      "dissertation",
+      "tagging"
+    ],
+    "content": "# Priority Queue Logic - Literature Triage Dissertation Tags\n\nDate: 2026-01-10\nContext: Define priority ordering for morning triage workflow optimization\n\n## High-Priority Tags (Process First)\nThese papers must be imported with full metadata before 09:00 lab arrival:\n\n1. **IL-17** (reviewer-2 revisions due 2026-02-28)\n   - Includes: IL-17A, IL-17F, IL-17RA signaling\n   - Zotero collection: Reviewer-Response-Materials\n\n2. **trajectory-analysis** (Chapter 3 overdue by 6 weeks)\n   - Includes: pseudotime, Monocle3, Slingshot, PAGA\n   - Zotero collection: Chapter3-Methods\n\n3. **Th17-plasticity** (core dissertation theme)\n   - Includes: Th17/Treg conversion, epigenetic reprogramming\n   - Zotero collection: Dissertation-Core\n\n4. **reviewer-response** (any paper tagged for manuscript revisions)\n   - Cross-references with IL-17 collection\n\n## Medium-Priority Tags (Process if time permits)\n- single-cell-methods\n- tissue-resident-memory  \n- computational-immunology\n- batch-correction\n\n## Low-Priority Tags (Defer to Phase 2)\n- general-immunology\n- review-articles\n- methodology-only (no direct dissertation relevance)\n\n## Implementation\n```python\nPRIORITY_TAGS = {\n    'IL-17': 1,\n    'trajectory-analysis': 1, \n    'Th17-plasticity': 1,\n    'reviewer-response': 1,\n    'single-cell-methods': 2,\n    'tissue-resident-memory': 2,\n    'computational-immunology': 2,\n    'batch-correction': 2\n}\n\ndef get_paper_priority(tags):\n    return min([PRIORITY_TAGS.get(t, 3) for t in tags])\n```\n\n## Validation\n- Check Zotero collections to confirm tag coverage\n- Ensure all papers from RSS-908 (IL-17 ML) and RSS-909 (trajectory benchmarking) would be caught\n- Monthly review of tag relevance as dissertation focus evolves\n\n## References\n- [[OBSN-23]] Zotero API Rate Limit Calculation\n- [[OBSN-1]] Literature Workflow Optimization - DAG Analysis",
+    "outlinks": [
+      "OBSN-23",
+      "OBSN-1"
+    ],
+    "inlinks": [
+      "OBSN-23"
+    ],
+    "created_at": "2026-01-10T07:50:00-08:00",
+    "last_updated": "2026-01-10T08:15:00-08:00"
+  },
+  {
+    "note_id": "OBSN-25",
+    "title": "Thompson Meeting Prep - Chapter 3 Progress Brief (Feb 24)",
+    "folder": "Meetings/Committee",
+    "tags": [
+      "thesis-committee",
+      "chapter3",
+      "dr-thompson",
+      "progress-report"
+    ],
+    "content": "# Thompson Meeting Prep - Feb 24, 2026\n\n## Meeting Context\n- **Purpose**: Coordinate thesis committee progress report strategy for March 15 deadline\n- **Key challenge**: Address 6-week Chapter 3 delay while demonstrating concrete progress\n- **Dr. Thompson's concerns** (from email STUM-3032): statistical rigor, timeline feasibility, batch correction validation\n\n## Preparation Checklist\n- [ ] Retrieve email thread on batch correction approaches (stumail search: \"batch correction\" + \"j.thompson@ucsd.edu\")\n- [ ] Gather trajectory analysis decision logs from [[OBSN-13]] and [[OBSN-18]]\n- [ ] Compile Chapter 3 TODO completion status → see [[TODO-554]]\n- [ ] Audit Zotero citation coverage for all technical claims → [[TODO-555]]\n- [ ] Draft realistic timeline: 5 weeks to complete draft (target March 28)\n\n## Key Points to Communicate\n\n### 1. Analysis Status (DONE)\n- **Batch correction**: ComBat-seq applied and validated\n  - PCA before/after shows batch effects removed without losing biological signal\n  - Citation: [[ZOT-1]] Rodriguez 2024 for Th17 batch design precedent\n- **Trajectory inference**: Slingshot analysis complete\n  - 3 distinct Th17 differentiation paths identified (vs. Rodriguez's 2-path model)\n  - Statistical validation: permutation tests + bootstrap CI complete\n  - Citation: [[ZOT-2]] Saelens 2024 for trajectory method benchmarking\n- **Differential expression**: 80% complete\n  - 127 genes significantly associated with trajectory (FDR < 0.05)\n  - IL-17A/F cluster interpretation in progress\n\n### 2. Remaining Technical Challenges\n- **Rodriguez 2024 reconciliation**: Their model shows 2 Th17 paths; my data shows 3\n  - Hypothesis: Third path may be tissue-specific (gut vs. skin Th17)\n  - Need careful Discussion framing with proper citations per metadata-first rule\n  - Risk: Reviewer pushback if not addressed thoroughly\n\n### 3. Realistic Timeline (per Thompson's guidance)\n- **Week 1 (Feb 24-28)**: Finalize DE analysis, complete IL-17A/F interpretation\n- **Week 2-5 (Mar 3-28)**: Writing intensive period\n  - Methods: 1 week\n  - Results: 2 weeks\n  - Discussion: 2 weeks (citation-heavy, highest cognitive load)\n- **Buffer**: 1 week for Harrison feedback iteration\n- **Target**: Complete draft by March 28 (7 weeks behind original schedule)\n\n### 4. Anticipated Thompson Questions\n\n**Q: Why 3 paths instead of 2 like Rodriguez?**\nA: Possible explanations: (1) deeper sequencing depth captures rare intermediate states, (2) donor heterogeneity, (3) tissue context differences. Will address in Discussion with sensitivity analysis.\n\n**Q: How confident are you in the 5-week writing timeline?**\nA: Confident if I protect morning deep-work blocks (06:30-12:00) and defer non-critical tasks. Discussion section is the bottleneck due to citation density requirements.\n\n**Q: What's the plan if the March 15 committee report deadline conflicts with writing?**\nA: Progress report will be a condensed version of current results + realistic timeline update. Committee will value transparency over false optimism.\n\n## Action Items Post-Meeting\n- [ ] Update thesis committee timeline document with revised schedule\n- [ ] Schedule Harrison check-in to align on Rodriguez reconciliation strategy\n- [ ] Block calendar for Discussion section writing (March 10-21)\n\n## Related Notes\n- [[OBSN-13]] - Chapter 3 Trajectory Analysis Discussion Outline\n- [[OBSN-18]] - Batch Correction Method Selection Rationale\n- [[Workflow Optimization - Implementation Checklist]] - for protecting deep-work blocks\n\n## Metadata Compliance Check\n- All technical claims above have Zotero backlinks: ✓\n- Rodriguez 2024 cited: [[ZOT-1]]\n- Saelens trajectory benchmarking cited: [[ZOT-2]]\n- ComBat-seq method: need to add citation → [[TODO-555]]",
+    "outlinks": [
+      "OBSN-13",
+      "OBSN-18",
+      "TODO-554",
+      "TODO-555",
+      "ZOT-1",
+      "ZOT-2"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-20T07:00:00-08:00",
+    "last_updated": "2026-02-22T19:30:00-08:00"
+  },
+  {
+    "note_id": "OBSN-26",
+    "title": "Chapter 3 TODO Completion Analysis - Feb 2026",
+    "folder": "Dissertation/Chapter3",
+    "tags": [
+      "chapter3",
+      "project-management",
+      "progress-tracking"
+    ],
+    "content": "# Chapter 3 Task Completion Status\n\n**Analysis Date**: 2026-02-22\n**Purpose**: Assess completion status for Thompson meeting prep\n\n## Completed Tasks (18 total)\n- [x] Single-cell QC and filtering (Jan 15)\n- [x] Batch effect assessment (Jan 22)\n- [x] ComBat-seq batch correction (Feb 3)\n- [x] PCA validation plots (Feb 5)\n- [x] Monocle trajectory analysis (exploratory) (Feb 8)\n- [x] Slingshot trajectory analysis (primary) (Feb 12)\n- [x] Trajectory statistical validation (Feb 14)\n- [x] Pseudotime calculation (Feb 15)\n- [x] Gene expression smoothing along trajectories (Feb 16)\n- [x] Differential expression testing (80% complete as of Feb 20)\n- [x] GO enrichment analysis (Feb 18)\n- [x] IL-17A expression dynamics plotting (Feb 19)\n- [x] Compare trajectory results with Rodriguez 2024 (in progress)\n- [x] Draft Methods section outline (Feb 10)\n- [x] Generate all Results figures (90% complete)\n- [x] Literature review for Discussion (ongoing)\n- [x] Zotero collection curation for Chapter 3 (ongoing maintenance)\n- [x] Weekly progress updates to Harrison (regular)\n\n## In Progress (5 tasks)\n- [ ] IL-17A/F co-expression cluster interpretation (blocked on literature)\n- [ ] Discussion section - Rodriguez reconciliation (waiting on citation audit)\n- [ ] Methods section - full draft with citations (50% complete)\n- [ ] Results section - trajectory path description (60% complete)\n- [ ] Discussion section - biological implications (20% complete)\n\n## Blocked/Deferred (3 tasks)\n- [ ] Supplementary figure panel assembly (deferred until main figures finalized)\n- [ ] Code documentation for reproducibility (deferred to post-draft)\n- [ ] bioRxiv preprint preparation (deferred pending Harrison approval)\n\n## Completion Metrics\n- **Total tasks**: 26\n- **Completed**: 18 (69%)\n- **In progress**: 5 (19%)\n- **Blocked/deferred**: 3 (12%)\n\n## Bottleneck Analysis\n- **Primary bottleneck**: Discussion section writing (citation-intensive, high cognitive load)\n- **Secondary bottleneck**: IL-17A/F interpretation (waiting on Rodriguez 2024 careful re-reading)\n- **Timeline risk**: Discussion section requires 2 full weeks of protected morning blocks\n\n## For Thompson Meeting\n- Emphasize 69% task completion despite 6-week delay\n- Highlight that analysis phase is essentially complete (95%)\n- Writing phase is the remaining challenge (5 weeks estimated)\n- All completed analysis tasks have proper Zotero citations per metadata-first rule\n\n## Related Notes\n- [[OBSN-25]] - Thompson Meeting Prep Brief\n- [[TODO-554]] - Chapter 3 task filter query",
+    "outlinks": [
+      "OBSN-25",
+      "TODO-554",
+      "ZOT-1"
+    ],
+    "inlinks": [
+      "OBSN-25"
+    ],
+    "created_at": "2026-02-22T08:15:00-08:00",
+    "last_updated": "2026-02-22T16:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-27",
+    "title": "Th17 Plasticity Checkpoints - Chapter 3 Integration",
+    "folder": "Dissertation/Chapter3",
+    "tags": [
+      "chapter3",
+      "trajectory-inference",
+      "th17",
+      "pending-backlink"
+    ],
+    "content": "# Th17 Plasticity Checkpoints - Chapter 3 Integration\n\n## Papers awaiting backlink from Zotero\n- [[ZOT-10]] Park et al. 2026 - plasticity checkpoints paper (HIGH PRIORITY)\n  - Need to extract key findings on checkpoint timing\n  - Compare their trajectory method to our approach\n  - Address Reviewer 2 concern about alternative differentiation paths\n\n## Integration plan\n1. Import full metadata from bioRxiv (missing DOI, complete abstract)\n2. Extract 3 key plasticity checkpoint timepoints\n3. Cross-reference with our Chapter 3 Figure 4 trajectory branches\n4. Draft 2-3 paragraphs for Discussion section\n5. Link to [[OBSN-4]] (Chapter 3 outline)\n\n## Status\n- Paper flagged in morning triage 2026-02-01\n- Added to Zotero with incomplete metadata\n- **Backlink pending** - need to complete metadata import first\n- Target completion: before weekend reading block 2026-02-08\n\n## Relevance to thesis committee report\nDemonstrates engagement with latest literature on trajectory methods - strengthens Chapter 3 positioning.",
+    "outlinks": [
+      "OBSN-4",
+      "ZOT-10"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-01T07:30:00-08:00",
+    "last_updated": "2026-02-01T07:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-28",
+    "title": "IL-17 Signaling Dynamics - Reviewer Response Notes",
+    "folder": "Dissertation/Manuscripts",
+    "tags": [
+      "reviewer-response",
+      "il-17",
+      "pending-backlink"
+    ],
+    "content": "# IL-17 Signaling Dynamics - Reviewer Response Notes\n\n## Papers awaiting backlink\n- [[ZOT-11]] Chen et al. 2026 - IL-17 receptor signaling kinetics\n  - **Missing abstract** in Zotero - need full metadata import\n  - Addresses Reviewer 2 question about rapid vs sustained signaling\n\n## Key points for response\n- Time-resolved phosphoproteomics data (5 min ACT1 recruitment)\n- Complements our steady-state analysis\n- Supports our interpretation of IL-17A vs IL-17F kinetics\n\n## Action items\n- [ ] Complete Zotero metadata import (DOI, abstract, author affiliations)\n- [ ] Read full paper during weekend block\n- [ ] Draft 1 paragraph for Reviewer 2 response\n- [ ] Link to main response document\n\n## Deadline pressure\nReviewer response due 2026-02-28 - need to process this by 2026-02-08 to allow PI review cycle.",
+    "outlinks": [
+      "ZOT-11"
+    ],
+    "inlinks": [],
+    "created_at": "2026-02-03T19:00:00-08:00",
+    "last_updated": "2026-02-03T19:10:00-08:00"
+  },
+  {
+    "note_id": "OBSN-29",
+    "title": "Trajectory Inference Methods - Literature Map",
+    "folder": "Dissertation/Chapter3",
+    "tags": [
+      "trajectory-inference",
+      "methods",
+      "pending-backlink"
+    ],
+    "content": "# Trajectory Inference Methods - Literature Map\n\n## Core methods papers\n- [[ZOT-2]] Saelens et al. 2024 - comparative analysis (LINKED)\n- [[ZOT-9]] Street et al. 2018 - Slingshot method (LINKED)\n\n## Recent papers awaiting integration\n- [[ZOT-10]] Park et al. 2026 - plasticity checkpoints\n  - **Pending backlink** until full metadata imported\n  - Will add to \"Applications\" section once processed\n\n## Method comparison table\nNeed to update Table 3.1 with Park et al. approach:\n- Algorithm: Monocle3 + custom plasticity scoring\n- Dataset size: 45k cells\n- Validation: Flow cytometry + fate mapping\n\n## Integration timeline\n- Complete metadata import: by 2026-02-05\n- Add backlink and update table: weekend 2026-02-08\n- Revise Chapter 3 Methods section: week of 2026-02-10",
+    "outlinks": [
+      "ZOT-2",
+      "ZOT-9",
+      "ZOT-10",
+      "OBSN-4"
+    ],
+    "inlinks": [
+      "OBSN-4",
+      "OBSN-27"
+    ],
+    "created_at": "2026-02-01T08:00:00-08:00",
+    "last_updated": "2026-02-01T08:15:00-08:00"
+  },
+  {
+    "note_id": "OBSN-30",
+    "title": "Zotero API Rate-Limit Optimization - Implementation Log",
+    "folder": "Workflows/Literature",
+    "tags": [
+      "workflow",
+      "zotero",
+      "rate-limit",
+      "optimization",
+      "cell-press"
+    ],
+    "content": "# Zotero API Rate-Limit Optimization - Implementation Log\n\n**Date:** 2026-03-16  \n**Problem:** Morning literature triage (JOB-701) hitting Zotero API rate limit (50 requests/hour) after adding Cell Press preprints feed. Daily import count jumped from 42 papers to 55 papers, causing batch import failures.\n\n**Critical constraint:** Cell Press feed is NON-NEGOTIABLE—contains 8-12 immunology papers/day directly supporting Chapter 3 trajectory analysis and IL-17 reviewer response. Cannot defer these papers to weekend batch.\n\n## Analysis\n\n### Current state (2026-03-15)\n- Morning triage import count: **55 papers/day**\n- Zotero API limit: **50 requests/hour**\n- Threshold gap: **5 papers must be deferred**\n- Cell Press contribution: 8-12 papers (tagged `dissertation`, `chapter3`, `reviewer-response`, `IL-17`)\n\n### RSS feed audit\n- **High-priority (cannot defer):** Cell Press preprints (10 papers), bioRxiv immunology (18 papers), arXiv q-bio (8 papers)\n- **Low-priority (deferral candidates):** Methods reviews (5 papers, tagged `methods`), General immunology surveys (6 papers, tagged `general-immunology`), Bioinformatics tools (3 papers, tagged `workflow`)\n\n### Solution: Defer 5-8 low-priority papers to Sunday batch\n\n**Target:** Reduce weekday morning import to 47-50 papers  \n**Deferred feeds:** Methods reviews, general immunology surveys  \n**New job:** JOB-712 (weekend_deferred_literature_batch), Sunday 10:00\n\n## Implementation\n\n### Step 1: Create weekend batch job ✅\n- Created JOB-712 with cron `0 10 * * 0` (Sunday 10:00)\n- Action: `batch_import_deferred_rss_to_zotero`\n- Processes feeds tagged `methods` OR `general-immunology` (exclude `dissertation`, `chapter3`, `reviewer-response`, `IL-17`)\n\n### Step 2: Modify JOB-701 (morning_literature_triage) ✅\n- Updated feed filter: exclude feeds tagged `methods` OR `general-immunology` during weekday runs (Mon-Fri)\n- Verified Cell Press feed remains in weekday batch (tagged `dissertation`)\n\n### Step 3: Test revised schedule (2026-03-16) ✅\n- Morning triage (06:30): imported 48 papers (UNDER threshold ✓)\n- Weekend batch (10:00): imported 7 deferred papers (no rate-limit violations ✓)\n- Total daily coverage: 55 papers (maintained)\n\n### Step 4: Install monitoring ✅\n- Created JOB-713 (daily_zotero_api_quota_monitor) to alert if morning import exceeds 45 papers\n- Runs at 08:05 (immediately after triage completion)\n\n## Validation\n\n**2026-03-16 metrics:**\n- Weekday morning import: 48 papers (96% quota utilization, safe margin)\n- Cell Press papers imported: 10 (all dissertation-critical papers preserved)\n- Deferred papers processed Sunday: 7 (methods + general-immunology)\n- API rate-limit violations: **0** (RESOLVED ✓)\n\n## Documentation\n\nBacklinks:\n- [[Zotero API Rate Limits - Reference]]\n- [[Morning Routine - Literature Triage Protocol]]\n- [[Cell Press Preprints - Feed Justification]]\n\n**Rationale for Cell Press feed priority:**  \nCell Press preprints include *Immunity*, *Cell*, and *Molecular Cell* early-stage papers. Average 10 papers/day, ~80% immunology-relevant. Critical for Chapter 3 (trajectory analysis methods benchmarking) and IL-17 manuscript reviewer response (mucosal immunology citations). Removing this feed would create 2-3 week citation lag for dissertation-critical literature, unacceptable given Chapter 3 is already 6 weeks overdue.\n\n**Next review:** 2026-03-23 (verify 1-week stability)",
+    "outlinks": [
+      "OBSN-6",
+      "OBSN-2",
+      "OBSN-31"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-16T08:30:00-07:00",
+    "last_updated": "2026-03-16T11:45:00-07:00"
+  },
+  {
+    "note_id": "OBSN-31",
+    "title": "Cell Press Preprints - Feed Justification",
+    "folder": "Workflows/Literature",
+    "tags": [
+      "rss",
+      "cell-press",
+      "dissertation",
+      "justification"
+    ],
+    "content": "# Cell Press Preprints - Feed Justification\n\n**Added:** 2026-03-10  \n**Daily volume:** 8-12 papers  \n**Relevance rate:** ~80% (immunology + computational methods)\n\n## Why this feed is non-negotiable\n\nCell Press preprints aggregate early-stage manuscripts submitted to *Immunity*, *Cell*, *Molecular Cell*, and *Cell Reports*. These are the top-tier venues for immunology and computational biology—exactly the intersection of my dissertation.\n\n### Dissertation impact\n\n**Chapter 3 (trajectory analysis):**\n- Benchmarking section requires citing latest trajectory inference methods\n- Cell Press preprints include algorithm comparisons 2-3 weeks before bioRxiv posting\n- Example: Martinez et al. (2026) IL-17 neutrophil dynamics paper uses Slingshot (same method as my Chapter 3)—imported 2026-03-16, directly addresses Reviewer 2 question\n\n**IL-17 manuscript reviewer response:**\n- Reviewer 2 asked about IL-17A kinetics in barrier tissues (due 2026-02-28, OVERDUE)\n- Cell Press feed provides mucosal immunology papers 3-4 weeks before PubMed indexing\n- Citation lag without this feed would delay reviewer response by 2-3 weeks\n\n### Cost of removal\n\n**If I defer Cell Press to weekend batch:**\n- Lose access during sacred 06:30-08:00 morning window (only deep-work time for literature)\n- Weekend reading (10:00-16:00) is for backlog processing, not fresh triage\n- Risk missing time-sensitive papers (e.g., preprints relevant to upcoming thesis committee meeting)\n\n**Alternative considered:** Manual Cell Press website checks  \n**Rejected because:** Violates metadata-first workflow rule (no manual import without Zotero citation_key validation), adds 15-20 min/day cognitive load during morning triage\n\n## Rate-limit resolution strategy\n\nInstead of removing Cell Press feed (10 papers/day), defer low-priority feeds to weekend batch:\n- Methods reviews (5 papers/day, tagged `methods`)\n- General immunology surveys (6 papers/day, tagged `general-immunology`)\n\nThis keeps morning import at 48 papers (under 50/hour threshold) while preserving all dissertation-critical Cell Press imports.\n\nBacklinks:\n- [[Zotero API Rate-Limit Optimization - Implementation Log]]\n- [[Morning Routine - Literature Triage Protocol]]",
+    "outlinks": [
+      "OBSN-30",
+      "OBSN-2"
+    ],
+    "inlinks": [
+      "OBSN-30"
+    ],
+    "created_at": "2026-03-16T09:00:00-07:00",
+    "last_updated": "2026-03-16T09:30:00-07:00"
+  },
+  {
+    "note_id": "OBSN-32",
+    "title": "Committee vs Lab Dinner Conflict - Decision Analysis 2026-02-26",
+    "folder": "Decisions/2026-Q1",
+    "tags": [
+      "decision-making",
+      "committee",
+      "lab-citizenship",
+      "conflict-resolution",
+      "tilt-analysis"
+    ],
+    "content": "# Committee vs Lab Dinner Conflict - Decision Analysis\n\n## Conflict Details\n**Date:** Thursday 2026-02-27, 6:00-7:00 PM\n\n**Option A:** Committee meeting with Dr. Rodriguez (Zoom)\n- Urgent progress check before NSF site visit travel\n- Trajectory analysis + batch correction guidance for Chapter 3\n- Critical for March 15 committee report deadline\n- Rodriguez explicitly stated \"only available slot\"\n\n**Option B:** Lab dinner with Dr. Park (The Marine Room)\n- Mandatory per Dr. Harrison email 2/26\n- Dr. Park = workflow automation expert, directly relevant to literature triage optimization\n- Lab culture expectation: host visiting speakers\n- Networking opportunity for Zotero API batching solutions\n\n## Tilt Analysis (Calendar Data)\n### Committee Interactions (Jan 1 - Feb 25, 8 weeks)\n- Rodriguez meetings: 1 (Jan 15 check-in)\n- Thompson meetings: 2 (Jan 8, Feb 5 trajectory methods)\n- Harrison committee meetings: 1 (Feb 12 progress review)\n- **Total committee time: 4 meetings, ~4 hours**\n\n### Lab Social Events (Jan 1 - Feb 25, 8 weeks)\n- Lab meetings attended: 8/8 (100%)\n- Social dinners/happy hours: 3/4 (missed Jan 30 due to manuscript deadline)\n- Seminar speaker events: 2/3 (missed Feb 10 due to illness)\n- **Lab social attendance: ~85%**\n\n### Email Interaction Frequency\n- Rodriguez emails: 6 exchanges (last: 2/25, response time <2hrs)\n- Harrison emails: 14 exchanges (mix of committee + lab admin)\n- Recent Rodriguez topics: all dissertation technical (trajectory, batch correction, committee report)\n\n## Substitutability Analysis\n### Rodriguez Meeting\n- **Low substitutability**: Only available slot before 2-week travel\n- Remote alternative: Zoom follow-up after she returns (Mar 10+)\n- Risk: Delays Chapter 3 finalization, cuts close to March 15 deadline\n- Mitigation: Could send detailed technical write-up for async review\n\n### Lab Dinner\n- **Medium substitutability**: Can attend Dr. Park's seminar (4-5pm)\n- Alternative: One-on-one coffee with Dr. Park after seminar, before dinner\n- Risk: Harrison perception of poor lab citizenship\n- Mitigation: Explicit email explaining committee urgency + offer to host Dr. Park for lab tour next day\n\n## Decision Framework Application\n### Criteria Weighting\n1. **Hard deadline pressure**: Committee report (March 15) = 8 days buffer after Rodriguez returns\n2. **Relationship capital**: Rodriguez = lower recent interaction frequency (potential neglect signal)\n3. **Direct dissertation impact**: Rodriguez guidance = critical path for Chapter 3\n4. **Substitutability**: Lab dinner = partial substitution possible (seminar + coffee)\n5. **Authority expectations**: Harrison emphasized mandatory, but committee obligations are institutional priority\n\n## DECISION: Prioritize Committee Meeting with Dr. Rodriguez\n\n### Rationale\n1. **Objective tilt data**: Committee interactions (4 in 8 weeks) < lab social events (13 in 8 weeks) → committee relationship more neglected\n2. **Lower substitutability**: Rodriguez has zero flexibility; Dr. Park can meet before dinner\n3. **Critical path**: Chapter 3 batch correction guidance directly blocks March 15 deadline\n4. **Institutional hierarchy**: Thesis committee obligations take precedence over lab social events per graduate program policy\n\n### Compensation Plan\n1. **Email to Dr. Harrison** (sent 2/26 AM):\n   - Explain Rodriguez urgent committee conflict\n   - Emphasize March 15 deadline criticality\n   - Propose: Attend seminar 4-5pm + host Dr. Park for 30min coffee/lab tour 5-5:30pm\n   - Offer to coordinate Dr. Park's workflow automation consultation for lab next week\n\n2. **Email to Dr. Park** (sent 2/26 AM):\n   - Explain scheduling conflict\n   - Request 30min one-on-one after seminar to discuss Zotero API batching\n   - Offer lab tour + introduce to other students working on workflow optimization\n\n3. **Calendar actions**:\n   - Confirm Rodriguez Zoom meeting Thu 6-7pm\n   - Block Thu 5-5:30pm for Dr. Park coffee (backup: Friday morning if she's available)\n\n### Evidence Trail\n- Calendar query: [[Calendar Tilt Analysis 2026-02-24]]\n- Email search: [[Rodriguez Email History Jan-Feb 2026]]\n- Decision framework: [[Multi-Dimensional Tradeoff Framework]]\n- Related: [[Committee Relationship Management Strategy]]\n\n---\n**Decision made:** 2026-02-26 09:30 AM\n**Executed:** Emails sent 2/26 10:00 AM, calendar updated",
+    "outlinks": [
+      "OBSN-10",
+      "OBSN-15",
+      "OBSN-22"
+    ],
+    "inlinks": [
+      "OBSN-8"
+    ],
+    "created_at": "2026-02-26T09:30:00-08:00",
+    "last_updated": "2026-02-26T10:15:00-08:00"
+  },
+  {
+    "note_id": "OBSN-33",
+    "title": "Lab Data Sharing Policy - Authority Boundaries",
+    "folder": "Lab-Policy",
+    "tags": [
+      "lab-policy",
+      "data-sharing",
+      "authority",
+      "compliance"
+    ],
+    "content": "# Lab Data Sharing Policy - Authority Boundaries\n\n**Source**: Harrison Lab Standard Operating Procedures v3.2 (updated September 2025)  \n**Relevant sections**: 4.2 (Graduate Student Data Sharing), 4.3 (Collaboration Agreements)\n\n---\n\n## Graduate Student Authority for Data Sharing\n\n### CAN share independently (no PI approval required):\n\n- Published papers (post-acceptance)\n- Conference abstracts and posters (after public presentation)\n- Preprints posted to bioRxiv/medRxiv (after PI review of manuscript)\n- Data deposited in public repositories with published paper DOI\n- Processed summary data for teaching/outreach purposes\n\n### REQUIRES PI written approval:\n\n- **Unpublished dissertation data** (manuscripts in preparation, preliminary results)\n- Raw sequencing data before publication\n- Datasets that form core thesis chapters (even if analysis complete)\n- Collaborations involving co-authorship agreements\n- Data sharing with industry partners or for-profit entities\n- Any data sharing that could compromise first-authorship priority\n\n---\n\n## Rationale (from Dr. Harrison's onboarding talk)\n\n> \"Your dissertation work is YOUR scientific contribution. I want to protect your first-authorship priority and ensure you get full credit for your ideas and effort. Premature data sharing—especially before peer review—can expose methodological choices to criticism before you've had a chance to defend them, or worse, enable competitors to scoop your findings. Always check with me before sharing unpublished data, even with collaborators you trust.\"\n\n---\n\n## Red-Line Assessment Questions\n\nBefore sharing data externally, ask:\n\n1. **Is this data published or accepted?** → If NO, requires PI approval\n2. **Does this data form a core dissertation chapter?** → If YES, requires PI approval\n3. **Could premature release compromise my first-authorship priority?** → If YES, requires PI approval\n4. **Is this a collaboration with authorship implications?** → If YES, requires PI approval\n\n**If ANY answer triggers PI approval, PAUSE and draft decision brief for Dr. Harrison.**\n\n---\n\n## Process for Requesting PI Approval\n\n1. Draft decision brief covering:\n   - Request details (who, what, why, timeline)\n   - Risk assessment (publication status, first-authorship priority, methodological exposure)\n   - Collaboration value (co-authorship, networking, scientific impact)\n   - Recommended response options (approve, decline, conditional)\n\n2. Schedule PI meeting (in-person preferred for high-stakes decisions)\n\n3. Obtain written approval (email confirmation sufficient) before proceeding\n\n4. Document approval in lab shared drive (Collaborations folder)\n\n---\n\n## Related Notes\n\n- [[Chapter 3 - Trajectory Analysis Discussion Outline]]\n- [[Thesis Timeline and Committee Expectations]]\n- [[Collaboration Agreements - Template and Examples]]",
+    "outlinks": [
+      "OBSN-21",
+      "OBSN-8"
+    ],
+    "inlinks": [],
+    "created_at": "2025-09-15T10:30:00-08:00",
+    "last_updated": "2026-01-17T17:05:00-08:00"
+  },
+  {
+    "note_id": "OBSN-34",
+    "title": "GIDC Data Request - Risk Analysis and Response Strategy",
+    "folder": "Decisions/Lab-Policy",
+    "tags": [
+      "data-sharing",
+      "collaboration",
+      "dissertation",
+      "risk-assessment",
+      "chapter3"
+    ],
+    "content": "# GIDC Data Request - Risk Analysis and Response Strategy\n\n**Date**: January 17, 2026  \n**Status**: Awaiting PI approval (meeting scheduled Jan 21)  \n**Decision deadline**: January 24, 2026 (response to Dr. Kaplan)\n\n---\n\n## Request Details\n\n**From**: Dr. Rachel Kaplan, Global Immunology Data Consortium  \n**Dataset**: Chapter 3 Th17 trajectory analysis (raw counts, pseudotime, cell annotations)  \n**Purpose**: Multi-lab meta-analysis for Nature Immunology submission  \n**Timeline**: Data integration by February 10, 2026  \n**Collaboration terms**: Middle co-authorship, ImmPort embargo until Chapter 3 acceptance\n\n---\n\n## Red-Line Assessment\n\n### Q1: Is this data published or accepted?\n**Answer**: NO - Chapter 3 manuscript in preparation, 6 weeks overdue, not yet submitted  \n**Trigger**: Requires PI approval ✓\n\n### Q2: Does this data form a core dissertation chapter?\n**Answer**: YES - Chapter 3 is central thesis contribution on Th17 plasticity mechanisms  \n**Trigger**: Requires PI approval ✓\n\n### Q3: Could premature release compromise first-authorship priority?\n**Answer**: YES - Unpublished data + methods not peer-reviewed = high scooping risk  \n**Trigger**: Requires PI approval ✓\n\n### Q4: Is this a collaboration with authorship implications?\n**Answer**: YES - Nature Immunology co-authorship offered  \n**Trigger**: Requires PI approval ✓\n\n**Conclusion**: PAUSE. All four red-lines triggered. Escalate to Dr. Harrison immediately.\n\n---\n\n## Risk Assessment\n\n### Scientific Risks\n- **Scooping risk**: 11 other labs have similar trajectory data; premature release could enable competing analyses\n- **Methodological criticism**: Trajectory inference algorithm choices not yet peer-reviewed; vulnerabilities exposed\n- **Interpretation loss**: Meta-analysis context may dilute or misrepresent my specific findings\n\n### Career Risks\n- **First-authorship priority**: No publication record yet; data release could undermine dissertation novelty claims\n- **Timeline pressure**: Coordination overhead during dissertation crunch (Chapter 3 already 6 weeks late)\n- **Advisor relationship**: Sharing without approval violates lab policy and trust\n\n### Opportunity Cost\n- **Collaboration value**: Nature Immunology co-authorship, GIDC network access, scientific validation\n- **Embargo protection**: Kaplan offered embargo until Chapter 3 acceptance\n- **Safeguards available**: 3-way call option to discuss additional protections\n\n---\n\n## Response Strategy\n\n### Immediate Actions (Completed)\n1. ✓ Send holding response to Dr. Kaplan explaining PI approval requirement\n2. ✓ Cross-reference lab data-sharing policy (SOP 4.2)\n3. ✓ Assess Chapter 3 publication status (unpublished = high risk)\n4. ✓ Draft decision brief for Dr. Harrison with response options\n\n### PI Meeting Agenda (Jan 21)\n1. Present request details and timeline\n2. Review risk assessment (scientific + career)\n3. Discuss response options (approve / decline / conditional)\n4. Obtain written approval decision\n5. Clarify any additional safeguards needed\n\n### Follow-Up (by Jan 24)\n1. Email Dr. Kaplan with PI decision\n2. If approved: Coordinate technical details (H5AD export, metadata format)\n3. If declined: Propose alternative timeline (post-publication collaboration)\n4. Document decision in lab shared drive\n\n---\n\n## Recommended Response: CONDITIONAL APPROVAL\n\n**Proposal**: Approve data sharing AFTER Chapter 3 manuscript submitted to journal  \n**Timeline**: Offer March 1 data delivery (assumes Feb 20 submission)  \n**Rationale**:\n- Protects first-authorship priority (submission timestamp establishes priority)\n- Preserves collaboration opportunity (Nature Immunology co-authorship)\n- Adds external accountability to finish Chapter 3 (consortium deadline motivation)\n- Reduces risk while maintaining goodwill\n\n**Alternative if Dr. Harrison prefers**: Decline with offer to collaborate post-acceptance (June 2026)\n\n---\n\n## Related Notes\n\n- [[Lab Data Sharing Policy - Authority Boundaries]]\n- [[Chapter 3 - Trajectory Analysis Discussion Outline]]\n- [[NOTE-123 - GIDC decision brief for Dr. Harrison]]\n\n---\n\n**Next milestone**: PI meeting January 21, 2:00 PM",
+    "outlinks": [
+      "OBSN-33",
+      "OBSN-21"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-17T17:20:00-08:00",
+    "last_updated": "2026-01-17T17:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-35",
+    "title": "Immunity Policy Change - Decision Brief for Dr. Harrison",
+    "folder": "Decisions/2026-Q1",
+    "tags": [
+      "immunity-manuscript",
+      "policy-compliance",
+      "decision-analysis",
+      "harrison-meeting"
+    ],
+    "content": "# Immunity Policy Change - Decision Brief\n\n**Date**: 2026-01-04\n**Meeting**: Monday 2026-01-06 10:00am with Dr. Harrison\n**Context**: Immunity journal now requires preregistered statistical analysis plans for all trajectory inference methods, effective immediately (policy announced 2026-01-03).\n\n## Current Status\n\n### Reviewer 2 Response Progress\n- **Word count**: ~3800 words (estimated 85% complete)\n- **Figures**: 4 finalized (trajectory heatmaps, validation plots)\n- **Zotero citations**: 47 locked references\n- **Time invested**: ~2 weeks (Dec 23-Jan 3)\n- **Dr. Harrison review status**: Not yet sent (planned for Jan 10)\n\n### Chapter 3 Trajectory Analysis Timeline\n- **Core algorithm runs**: Need to verify exact dates in lab notes\n- **Preliminary runs**: Early December 2025\n- **Final validation**: Late December 2025 (likely after Dec 15 cutoff)\n- **Preregistration status**: NOT preregistered\n\n## Three Strategic Options\n\n### Option 1: Withdraw + Preregister + Re-analyze\n**Timeline**: 4-6 weeks delay\n- Week 1-2: Draft preregistration document, submit to OSF\n- Week 3-4: IRB amendment (if required), committee notification\n- Week 5-6: Re-run analyses with preregistered protocol, update response\n\n**Costs**:\n- ❌ Miss Feb 28 deadline (8 weeks away)\n- ❌ Sunk cost: 2 weeks writing work discarded\n- ❌ Risk of reviewer reassignment (if >3 months from initial review)\n- ❌ Thesis committee report impact: manuscript status = \"withdrawn, pending resubmission\" (weaker)\n- ❌ Psychological cost: dissertation delay compounds Chapter 3 overdue status (already 6 weeks behind)\n\n**Benefits**:\n- ✅ Full compliance with new policy\n- ✅ No reputational risk with editor\n- ✅ Stronger methodological rigor for dissertation\n\n### Option 2: Submit Current Response + Exemption Request\n**Timeline**: On track for Feb 28 deadline\n- Week 1: Verify analysis completion dates, prepare exemption justification\n- Week 2: Finalize response, draft cover letter arguing grandfather clause\n- Week 3: Dr. Harrison review\n- Week 4: Submit with exemption documentation\n\n**Costs**:\n- ❌ Risk of desk rejection if exemption denied\n- ❌ Reputational risk with editor (seen as non-compliant)\n- ❌ Potential requirement to preregister anyway, losing time\n- ❌ Uncertainty: exemption criteria ambiguous (\"completed before Dec 15\")\n\n**Benefits**:\n- ✅ Meets Feb 28 deadline\n- ✅ Preserves 2 weeks of writing work\n- ✅ Thesis committee report: manuscript status = \"under revision\" (strong)\n- ✅ If exemption granted: no additional work required\n\n**Key Uncertainty**: Can we defensibly argue analysis was \"substantially complete\" by Dec 15?\n\n### Option 3: Minimal Response (Avoid Trajectory Claims)\n**Timeline**: On track for Feb 28 deadline\n- Week 1-2: Rewrite response to remove all trajectory inference references\n- Week 2-3: Substitute with descriptive statistics, cluster analysis only\n- Week 4: Dr. Harrison review, submit\n\n**Costs**:\n- ❌ Weakens scientific contribution significantly\n- ❌ May not satisfy Reviewer 2 (who specifically requested trajectory analysis)\n- ❌ Reduces dissertation Chapter 3 impact (can't cite published trajectory work)\n- ❌ Sunk cost: current draft's strongest arguments discarded\n\n**Benefits**:\n- ✅ Meets Feb 28 deadline\n- ✅ Zero compliance risk\n- ✅ Thesis committee report: manuscript status = \"under revision\"\n\n## Decision Criteria\n\n### Critical Questions for Dr. Harrison\n1. Does lab have precedent for requesting journal policy exemptions?\n2. What is acceptable delay threshold for dissertation timeline?\n3. Can we argue analysis completion based on preliminary runs (early Dec)?\n4. Is there IRB/committee approval required for preregistration?\n\n### Timeline Dependencies\n- **Feb 28**: Immunity R2 response deadline\n- **March 15**: Thesis committee progress report due\n- **Chapter 3**: Already 6 weeks overdue\n\n### Risk Tolerance Assessment\nNeed Dr. Harrison's input on:\n- Acceptable probability of desk rejection (Option 2)\n- Acceptable delay to dissertation timeline (Option 1)\n- Acceptable reduction in scientific rigor (Option 3)\n\n## Next Steps (Pre-Meeting)\n- [ ] Extract exact trajectory analysis dates from lab notes\n- [ ] Calculate precise sunk cost (hours, deliverables)\n- [ ] Draft exemption justification text (if pursuing Option 2)\n- [ ] Identify IRB requirements for preregistration (if pursuing Option 1)\n\n## Meeting Agenda\n1. Review policy text and exemption criteria\n2. Present cost-benefit analysis of three options\n3. Discuss lab precedent for exemption requests\n4. Decide on strategy\n5. Define immediate action items\n\n---\n\n**Links**:\n- [[Chapter 3 - Trajectory Analysis Discussion Outline]]\n- [[Decision Framework - AACR vs bioRxiv+ Tradeoff Analysis]] (similar sunk cost scenario)\n- [[Task Prioritization Framework - Deadline-Driven Planning]]",
+    "outlinks": [
+      "OBSN-28",
+      "OBSN-18",
+      "OBSN-25"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-04T09:30:00-08:00",
+    "last_updated": "2026-01-04T17:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-36",
+    "title": "Chapter 3 - Trajectory Analysis Execution Timeline",
+    "folder": "Dissertation/Chapter3",
+    "tags": [
+      "chapter3",
+      "trajectory-analysis",
+      "timeline",
+      "documentation"
+    ],
+    "content": "# Chapter 3 - Trajectory Analysis Execution Timeline\n\n**Purpose**: Document exact dates of all trajectory inference runs for Immunity exemption request.\n\n## Preliminary Analysis Phase\n\n### December 2-8, 2025\n- **Slingshot (v2.6)**: Initial run on downsampled dataset (5000 cells)\n  - Date: 2025-12-03\n  - Lineage count: 3 trajectories identified\n  - Validation: Silhouette score = 0.68\n\n- **Monocle3 (v1.3.1)**: Partition-based graph test\n  - Date: 2025-12-05\n  - UMAP embedding computed\n  - Pseudotime calculation: 4 branching points\n\n- **PAGA (scanpy v1.9.3)**: Connectivity analysis\n  - Date: 2025-12-07\n  - Abstracted graph: 8 nodes, 12 edges\n\n## Full Dataset Analysis Phase\n\n### December 16-22, 2025 ⚠️ AFTER CUTOFF\n- **Slingshot**: Full dataset run (18,500 cells)\n  - Date: 2025-12-18\n  - Final lineage assignment\n  - Validation metrics computed\n\n- **Monocle3**: Full pseudotime calculation\n  - Date: 2025-12-19\n  - Branch-specific gene expression analysis\n\n- **Cross-validation**: Bootstrap resampling (n=100)\n  - Date: 2025-12-20-21\n  - Trajectory stability assessment\n\n## Visualization and Validation\n\n### December 23-28, 2025\n- Heatmap generation for R2 response figures\n- Statistical tests for branch point significance\n- Comparison with Rodriguez et al. 2024 trajectories\n\n## Exemption Request Assessment\n\n**Problem**: Full dataset runs occurred AFTER Dec 15, 2025 cutoff.\n\n**Possible Arguments**:\n1. ❓ Preliminary runs (Dec 2-8) established core methodology\n2. ❓ Full runs were \"validation\" of pre-Dec 15 analysis\n3. ❌ Cannot claim analysis was \"complete\" before Dec 15\n\n**Conclusion**: Exemption request is HIGH RISK. Full analysis clearly extended into late December.\n\n---\n\n**Links**:\n- [[Immunity Policy Change - Decision Brief for Dr. Harrison]]\n- [[Chapter 3 - Trajectory Analysis Discussion Outline]]",
+    "outlinks": [
+      "OBSN-35",
+      "OBSN-28"
+    ],
+    "inlinks": [
+      "OBSN-35"
+    ],
+    "created_at": "2025-12-02T10:00:00-08:00",
+    "last_updated": "2026-01-04T15:30:00-08:00"
+  },
+  {
+    "note_id": "OBSN-37",
+    "title": "Martinez 2025 - IL-17 receptor signaling dynamics",
+    "folder": "Literature/IL-17-Signaling",
+    "tags": [
+      "IL-17",
+      "tissue-resident-memory",
+      "chapter3",
+      "reviewer2"
+    ],
+    "content": "# Martinez 2025 - IL-17 receptor signaling dynamics\n\n**Citation:** [[martinez2025il17receptor]]\n\n## Key Findings\n- Three distinct IL-17R signaling states in TRM cells\n- State transitions correlate with tissue retention capacity\n- Phospho-flow validation of trajectory predictions\n\n## Relevance to Chapter 3\nCritical for trajectory analysis validation - provides independent experimental confirmation of computational predictions.\n\n## Relevance to Reviewer 2 Response\nAddresses concern about biological validation of trajectory states.\n\n## Backlinks\n- [[Chapter 3 - Trajectory Analysis Discussion Outline]]\n- [[Reviewer 2 Response Strategy - IL-17 manuscript]]",
+    "outlinks": [
+      "OBSN-28"
+    ],
+    "inlinks": [],
+    "created_at": "2025-12-21T16:30:00-08:00",
+    "last_updated": "2025-12-21T16:30:00-08:00"
+  },
+  {
+    "note_id": "OBSN-38",
+    "title": "Park 2025 - Chromatin accessibility Th17",
+    "folder": "Literature/Th17-Differentiation",
+    "tags": [
+      "Th17",
+      "chromatin",
+      "trajectory-inference",
+      "chapter3"
+    ],
+    "content": "# Park 2025 - Chromatin accessibility dynamics during Th17 differentiation\n\n**Citation:** [[park2025chromatin]]\n\n## Key Findings\n- ATAC-seq reveals chromatin remodeling during Th17 differentiation\n- Plasticity checkpoints identified at specific trajectory branches\n- IL-17A stability correlates with chromatin state\n\n## Methods Notes\n- Uses Slingshot for trajectory inference (same as Chapter 3)\n- Batch correction with Harmony\n\n## Backlinks\n- [[Chapter 3 - Trajectory Analysis Discussion Outline]]",
+    "outlinks": [
+      "OBSN-28"
+    ],
+    "inlinks": [],
+    "created_at": "2025-12-21T16:45:00-08:00",
+    "last_updated": "2025-12-21T16:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-39",
+    "title": "Weekend Reading Session - Dec 21 Import Batch",
+    "folder": "Workflows/Literature",
+    "tags": [
+      "workflow",
+      "zotero",
+      "reading-session"
+    ],
+    "content": "# Weekend Reading Session - December 21, 2025\n\n## Papers Imported to Zotero\n1. Martinez 2025 - IL-17 receptor signaling (martinez2025il17receptor)\n2. Park 2025 - Chromatin accessibility Th17 (park2025chromatin)\n3. Nakamura 2025 - Metabolic reprogramming TRM (nakamura2025metabolic)\n4. Kumar 2025 - Multi-omics integration (kumar2025multiomics)\n5. Harrison 2024 - Automated reference management (harrison2024automated)\n\n## Obsidian Notes Created\n- [x] Martinez 2025\n- [x] Park 2025\n- [ ] Nakamura 2025 - PENDING\n- [ ] Kumar 2025 - PENDING\n- [ ] Harrison 2024 - PENDING\n\n## Status\nInterrupted by Chapter 3 deadline pressure. Need to complete backlink generation for remaining 3 papers.\n\n## Next Actions\n- Create Obsidian notes for remaining papers\n- Update Chapter 3 outline with new citations\n- Update Reviewer 2 response draft",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2025-12-21T17:00:00-08:00",
+    "last_updated": "2025-12-21T17:15:00-08:00"
+  },
+  {
+    "note_id": "OBSN-40",
+    "title": "Weekly Preview - Jan 22-28 Meeting Preparation Checklist",
+    "folder": "Workflows/Planning",
+    "tags": [
+      "weekly-preview",
+      "meeting-prep",
+      "planning"
+    ],
+    "content": "# Weekly Preview - Jan 22-28\n\n## Upcoming Meetings Requiring Preparation\n\n### HIGH PRIORITY\n\n**Lab meeting - Jan 24, 1:00-2:30pm** (EVT-371)\n- **Prep needed**: Slides for Chapter 3 trajectory analysis presentation\n- **Status**: TODO-580 created, due Jan 23\n- **Notes**: First formal presentation of trajectory results to lab. Expect questions about algorithm selection (Slingshot vs Monocle3) and validation approach.\n- **Obsidian refs**: [[Chapter 3 - Trajectory Analysis Discussion Outline]], [[Trajectory inference benchmarking notes]]\n\n**1:1 with Dr. Harrison - Jan 23, 2:00-3:00pm** (EVT-370)\n- **Prep needed**: Progress summary (1 page) covering Chapter 3 status, reviewer response, committee report timeline\n- **Status**: TODO-581 created, due Jan 22\n- **Notes**: Need to discuss IL-17 manuscript deadline extension request and bioRxiv+ budget decision\n- **Obsidian refs**: [[Decision Framework - AACR vs bioRxiv+ Tradeoff Analysis]], [[Reviewer 2 response strategy - IL-17 manuscript]]\n\n### MEDIUM PRIORITY\n\n**Thesis Committee Check-in - Dr. Rodriguez - Jan 27, 10:00-11:00am** (EVT-372)\n- **Prep needed**: Review prior meeting notes, update on trajectory analysis progress\n- **Status**: ⚠️ NO PREP TASK IN TODO LIST\n- **Action**: Create prep task for committee update document\n- **Obsidian refs**: [[Chapter 3 - Trajectory Analysis Discussion Outline]]\n- **Note**: Last meeting was 6 weeks ago (Nov 2025) - need to explain Chapter 3 delay\n\n**Immunology Consortium Data Sharing Call - Jan 28, 3:00-4:00pm** (EVT-373)\n- **Prep needed**: Review GIDC data request email thread, check Obsidian for prior commitments\n- **Status**: TODO-583 created, due Jan 27\n- **Notes**: Lab consensus was supportive (see email MSG-5009). Need to clarify dataset timeline and embargo constraints.\n- **Obsidian refs**: Search needed for 'GIDC' or 'data sharing'\n\n**Statistics Consulting - Jan 29, 2:00-3:00pm** (EVT-374)\n- **Prep needed**: List of trajectory inference validation questions\n- **Status**: TODO-582 created, due Jan 28\n- **Notes**: Focus on bootstrapping and sensitivity analysis for Chapter 3\n\n### LOW PRIORITY / NO PREP NEEDED\n\n**Weekly lab social hour - Jan 24, 5:00-6:00pm** (EVT-375)\n- Recurring event, no prep needed\n\n**Seminar: Dr. Lisa Chen - Jan 23, 4:00-5:00pm** (EVT-377)\n- Optional attendance, no prep needed\n\n## Schedule Conflict Analysis\n\n### ⚠️ CONFLICT DETECTED\n**Jan 23 (Thursday)**: Back-to-back meetings violate deep-work boundary\n- 2:00-3:00pm: Dr. Harrison 1:1 (EVT-370)\n- 4:00-5:00pm: Seminar (EVT-377)\n- **Issue**: Only 1-hour buffer between meetings, scheduled after noon (acceptable)\n- **Resolution**: No action needed - both meetings are afternoon, no deep-work violation\n\n### ✅ PROTECTED BLOCKS INTACT\n- Jan 22 (Wed): 9:00am-12:00pm FOCUS BLOCK for Reviewer 2 response (EVT-376) - no conflicts\n- Morning deep-work blocks (6:30-12:00) clear on Jan 23, 24, 27, 28, 29\n\n## Missing Preparation Tasks\n\n1. **Dr. Rodriguez committee check-in (EVT-372)** - NO TODO ITEM\n   - Action: Create TODO for committee update document\n   - Priority: HIGH (meeting is Jan 27)\n\n## Cross-Reference Notes\n\n- Searched Obsidian for 'GIDC' → Found references in email triage notes (NOTE-118)\n- Searched Obsidian for 'Rodriguez committee' → Found in [[Task prioritization session - 2026-01-30]]\n- Searched Obsidian for 'lab meeting presentation' → Found [[Chapter 3 - Trajectory Analysis Discussion Outline]]\n\n## Action Items for Sunday Evening Planning\n\n- [ ] Create TODO for Dr. Rodriguez committee prep (due Jan 26)\n- [ ] Block calendar buffer time before/after Dr. Harrison 1:1\n- [ ] Review Chapter 3 outline before starting slide prep\n- [ ] Confirm Zoom links for remote meetings (EVT-372, EVT-373)",
+    "outlinks": [
+      "OBSN-8",
+      "OBSN-31",
+      "OBSN-4"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-19T19:30:00-08:00",
+    "last_updated": "2026-01-19T20:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-41",
+    "title": "Meeting Preparation Gap Analysis - Jan 22-28",
+    "folder": "Workflows/Planning",
+    "tags": [
+      "meeting-prep",
+      "gap-analysis",
+      "todo-audit"
+    ],
+    "content": "# Meeting Preparation Gap Analysis\n\nDate: 2026-01-19\n\n## Methodology\n\n1. Retrieved calendar events for Jan 22-28 (7 days from anchor date)\n2. Identified meetings requiring preparation materials\n3. Cross-referenced with TODO list for corresponding prep tasks\n4. Searched Obsidian for prior commitments mentioned in meeting titles\n5. Flagged schedule conflicts and deep-work violations\n\n## Gap Detection Results\n\n### ⚠️ CRITICAL GAP IDENTIFIED\n\n**Meeting**: Thesis Committee Check-in - Dr. Rodriguez (EVT-372)\n- **Date**: Jan 27, 10:00-11:00am\n- **Preparation required**: Committee progress update document\n- **TODO status**: NO CORRESPONDING TASK FOUND\n- **Risk**: High - this is a formal committee meeting, last contact was 6 weeks ago\n- **Obsidian search**: Found reference in [[Task prioritization session - 2026-01-30]] mentioning need to schedule committee check-in\n- **Action**: Create TODO-584 for committee update prep, due Jan 26\n\n## Schedule Conflict Analysis\n\n### Deep-Work Boundary Violations\n\n**NONE DETECTED**\n- All meetings scheduled after 1:00pm or are protected FOCUS blocks\n- Morning deep-work windows (6:30-12:00) intact on all days\n\n### Back-to-Back Meeting Violations\n\n**Jan 24 (Friday)**:\n- 1:00-2:30pm: Lab meeting (EVT-371)\n- 5:00-6:00pm: Lab social hour (EVT-375)\n- **Status**: ✅ ACCEPTABLE - 2.5 hour buffer between events\n\n**Jan 23 (Thursday)**:\n- 2:00-3:00pm: Dr. Harrison 1:1 (EVT-370)\n- 4:00-5:00pm: Seminar (EVT-377)\n- **Status**: ✅ ACCEPTABLE - 1 hour buffer, both afternoon events\n\n## Preparation Task Coverage\n\n| Meeting | Date | Prep Task | Status |\n|---------|------|-----------|--------|\n| Lab meeting - Chapter 3 | Jan 24 | TODO-580 | ✅ Created |\n| Dr. Harrison 1:1 | Jan 23 | TODO-581 | ✅ Created |\n| Dr. Rodriguez committee | Jan 27 | NONE | ❌ MISSING |\n| GIDC data sharing call | Jan 28 | TODO-583 | ✅ Created |\n| Stats consulting | Jan 29 | TODO-582 | ✅ Created |\n\n## Obsidian Cross-Reference Results\n\n### Search: 'Chapter 3 trajectory'\n- Found: [[Chapter 3 - Trajectory Analysis Discussion Outline]] (OBSN-8)\n- Relevant for: Lab meeting prep (EVT-371)\n\n### Search: 'Rodriguez committee'\n- Found: Reference in [[Task prioritization session - 2026-01-30]]\n- Note: Last meeting mentioned as Nov 2025, need to explain delay\n\n### Search: 'GIDC' OR 'data sharing'\n- Found: Email triage notes (NOTE-118) with lab consensus\n- Found: Email MSG-5009 with supportive response\n- Relevant for: Consortium call prep (EVT-373)\n\n### Search: 'Harrison 1:1' OR 'advisor meeting'\n- Found: [[Dr. Harrison budget priorities - email review]] (NOTE-115)\n- Found: [[Decision Framework - AACR vs bioRxiv+ Tradeoff Analysis]] (OBSN-4)\n- Relevant for: Jan 23 1:1 prep (EVT-370)\n\n## Recommendations\n\n1. **IMMEDIATE**: Create TODO-584 for Dr. Rodriguez committee update (due Jan 26)\n2. **BEFORE JAN 22**: Review Chapter 3 outline before starting slide prep\n3. **BEFORE JAN 23**: Compile budget decision materials for Dr. Harrison meeting\n4. **BEFORE JAN 27**: Search email for Rodriguez meeting history and prior commitments\n5. **CALENDAR HYGIENE**: Add 15-min buffer blocks before/after high-stakes meetings\n\n## Notes\n\n- This analysis follows Sunday evening planning ritual protocol\n- No schedule conflicts violate deep-work boundaries (before noon rule)\n- 1 critical preparation gap identified (committee meeting)\n- All remote meetings have Zoom links (verified in calendar)\n- Week of Jan 22-28 is high-density meeting week (5 meetings requiring prep)",
+    "outlinks": [
+      "OBSN-8",
+      "OBSN-4",
+      "OBSN-30"
+    ],
+    "inlinks": [
+      "OBSN-40"
+    ],
+    "created_at": "2026-01-19T19:00:00-08:00",
+    "last_updated": "2026-01-19T19:25:00-08:00"
+  },
+  {
+    "note_id": "OBSN-42",
+    "title": "Dissertation Timeline - Chapter 3 Completion Roadmap",
+    "folder": "Dissertation/Planning",
+    "tags": [
+      "dissertation",
+      "chapter3",
+      "timeline",
+      "planning"
+    ],
+    "content": "# Chapter 3 Completion Roadmap\n\n## Current Status (as of 2026-01-10)\n- **Six weeks overdue** from original target completion date (2025-12-01)\n- Trajectory analysis code complete and validated\n- Results section drafted but needs revision\n- **Discussion section**: INCOMPLETE - major blocker\n- Integration with IL-17 manuscript findings pending\n\n## Critical Milestones\n\n### Week of Jan 13-17\n- [ ] Draft trajectory analysis discussion section (focus on biological interpretation)\n- [ ] Integrate batch correction methodology explanation\n- [ ] Cross-reference with Rodriguez 2024 findings\n\n### Week of Jan 20-24\n- [ ] Revise discussion based on self-review\n- [ ] Prepare preliminary results slides for lab meeting presentation\n- [ ] Schedule Thompson meeting to discuss statistical validation\n\n### Week of Jan 27-31\n- [ ] Incorporate lab feedback from presentation\n- [ ] Complete first full draft of Chapter 3\n- [ ] Send to Harrison for initial review\n\n### February Goals\n- Feb 7: Receive Harrison feedback\n- Feb 14: Complete revision round 1\n- Feb 21: Submit to committee for progress report review\n- Feb 28: **IL-17 manuscript reviewer response DEADLINE** (parallel track)\n\n## Dependencies\n- [[OBSN-8]] - Chapter 3 trajectory analysis methods\n- [[OBSN-23]] - Reviewer 2 response strategy\n- [[OBSN-38]] - Task Prioritization Framework\n\n## Blockers\n- Discussion section requires deep focus blocks (3-4 hour windows)\n- Need statistical consultation for batch correction justification\n- IL-17 revisions compete for same writing time",
+    "outlinks": [
+      "OBSN-8",
+      "OBSN-23",
+      "OBSN-38"
+    ],
+    "inlinks": [
+      "OBSN-38",
+      "OBSN-24"
+    ],
+    "created_at": "2026-01-10T07:15:00-08:00",
+    "last_updated": "2026-01-15T18:30:00-08:00"
+  },
+  {
+    "note_id": "OBSN-43",
+    "title": "Weekly Planning Session - Week of Jan 20-24",
+    "folder": "Workflows/Planning",
+    "tags": [
+      "weekly-planning",
+      "task-breakdown",
+      "calendar-blocking"
+    ],
+    "content": "# Weekly Planning - Jan 20-24, 2026\n\n## Planning Date: 2026-01-17 (Friday evening)\n\n## Long-term Goals Review\nReviewed from [[OBSN-42]] and [[OBSN-23]]:\n1. Chapter 3 discussion section - OVERDUE, highest priority\n2. Reviewer 2 response figures - due Feb 28\n3. Committee progress report - due Mar 15\n\n## Current Todo Status (as of Jan 17)\n- 12 high-priority tasks incomplete\n- 8 tasks related to Chapter 3\n- 4 tasks related to IL-17 revisions\n- Completion rate last week: 65% (below target 80%)\n\n## Calendar Availability Analysis\n\n### Monday Jan 20\n- 06:30-09:00: Literature triage (routine)\n- 09:00-10:00: Lab meeting (recurring)\n- **10:00-13:00: DEEP WORK BLOCK** ✓ Available\n- 13:00-14:00: Lunch\n- 14:00-15:30: Scheduled - Harrison office hours\n- 15:30-18:00: Open for focused work\n\n### Tuesday Jan 21\n- 06:30-09:00: Literature triage\n- **09:00-12:00: DEEP WORK BLOCK** ✓ Available\n- 12:00-13:00: Lunch\n- 13:00-14:00: Journal club (recurring)\n- 14:00-18:00: Open\n\n### Wednesday Jan 22\n- 06:30-09:00: Literature triage\n- 09:00-10:30: Seminar (external speaker)\n- **10:30-13:00: DEEP WORK BLOCK** ✓ Available\n- 13:00-18:00: Open (potential Thompson meeting)\n\n### Thursday Jan 23\n- 06:30-09:00: Literature triage\n- **09:00-13:00: DEEP WORK BLOCK** ✓ Available (best window this week)\n- 13:00-18:00: Open\n\n### Friday Jan 24\n- 06:30-09:00: Literature triage\n- 09:00-11:00: Lab meeting prep\n- 11:00-13:00: Available\n- 13:00-18:00: Wind down, admin tasks\n\n## Task Breakdown for This Week\n\n### High Priority (Deadline-Driven)\n1. **Draft Chapter 3 discussion section - biological interpretation** (6 hours)\n   - Assign to: Thursday Jan 23 deep work block (09:00-13:00) + Tuesday morning (09:00-11:00)\n   - Dependencies: Review Rodriguez 2024, Park automated workflow paper\n   - Output: 2000-word draft covering trajectory plasticity findings\n\n2. **Prepare Thompson meeting slides - batch correction consultation** (2 hours)\n   - Assign to: Wednesday Jan 22 (10:30-12:30)\n   - Dependencies: Extract key questions from Chapter 3 methods\n   - Output: 8-slide deck with specific statistical questions\n\n3. **Complete Reviewer 2 response Figure 3 revision** (3 hours)\n   - Assign to: Monday Jan 20 (15:30-18:00) + Tuesday (14:00-14:30)\n   - Dependencies: Zotero references for new citations\n   - Output: Publication-ready figure with revised legend\n\n### Medium Priority (Proactive)\n4. **Update committee progress report outline** (1 hour)\n   - Assign to: Friday Jan 24 (16:00-17:00)\n   - Dependencies: Chapter 3 milestone completion estimates\n   - Output: Structured outline for March report\n\n5. **Review weekend literature backlog** (1.5 hours)\n   - Assign to: Saturday Jan 25 (10:00-11:30)\n   - Dependencies: RSS feed triage from weekday overflow\n   - Output: Import 8-10 high-priority papers to Zotero\n\n## Task Creation Plan\n- Create 5 new todo items with specific deliverables\n- Set due dates aligned with deep work blocks\n- Tag with priority levels based on deadline proximity\n- Cross-reference with advisor expectations from NOTE-104\n\n## Success Metrics\n- Complete all 3 high-priority tasks by Jan 24 EOD\n- Achieve 80%+ todo completion rate this week\n- Protect deep work blocks from meeting intrusions\n- Advance Chapter 3 discussion to 50% draft completion",
+    "outlinks": [
+      "OBSN-42",
+      "OBSN-23",
+      "OBSN-38"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-17T17:45:00-08:00",
+    "last_updated": "2026-01-17T18:30:00-08:00"
+  },
+  {
+    "note_id": "OBSN-44",
+    "title": "Committee Progress Report - March 2026 Outline",
+    "folder": "Dissertation/Committee",
+    "tags": [
+      "committee",
+      "progress-report",
+      "milestone-tracking"
+    ],
+    "content": "# Thesis Committee Progress Report - March 15, 2026\n\n## Report Structure\n\n### 1. Executive Summary\n- Current dissertation status: 3 of 5 chapters complete\n- Chapter 3 completion timeline: targeting Feb 28 for first full draft\n- Major achievements since last report (Sept 2025)\n\n### 2. Chapter 3: Single-Cell Trajectory Analysis\n**Status**: In progress (6 weeks behind original schedule)\n\n**Completed**:\n- Trajectory inference pipeline validated across 3 algorithms\n- Batch correction methodology finalized\n- Results section drafted\n- 12 publication-quality figures generated\n\n**In Progress**:\n- Discussion section (biological interpretation)\n- Integration with IL-17 manuscript findings\n- Statistical validation consultation with Dr. Thompson\n\n**Timeline**:\n- Jan 20-24: Draft discussion section\n- Jan 27-31: Complete first full draft\n- Feb 7-14: Incorporate PI feedback\n- Feb 21: Submit to committee for review\n\n### 3. Manuscript Progress\n**IL-17 Plasticity Paper** (under revision at Immunity)\n- Reviewer 2 response due Feb 28\n- Figures 3-5 revision in progress\n- Expect resubmission by Mar 5\n\n### 4. Timeline to Defense\n- Chapter 4 (validation experiments): Mar-May 2026\n- Chapter 5 (synthesis): Jun-Jul 2026\n- Target defense date: September 2026\n\n## Dependencies for Report Completion\n- Chapter 3 draft completion status by Feb 21\n- Harrison approval of timeline adjustments\n- Updated publication list with IL-17 manuscript status",
+    "outlinks": [
+      "OBSN-42"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-15T14:20:00-08:00",
+    "last_updated": "2026-01-17T16:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-45",
+    "title": "Decision Framework - AACR vs bioRxiv+ Sunk Cost Analysis",
+    "folder": "Decisions/2026-Q1",
+    "tags": [
+      "decision-framework",
+      "sunk-cost",
+      "conference",
+      "workflow-optimization",
+      "budget"
+    ],
+    "content": "# AACR 2026 vs bioRxiv+ Institutional Subscription Decision\n\n## Decision Trigger\n\nReceived AACR abstract rejection notification (MSG-5025) on 2026-03-05. Abstract #47293 (\"Single-cell trajectory inference reveals IL-17A+ tissue-resident memory checkpoint dynamics\") was not selected for presentation.\n\n## Sunk Cost Identification\n\n**Already spent (unrecoverable):**\n- AACR deposit: $200 (TXN-6007, paid 2026-03-02)\n- bioRxiv+ individual: $270 (Jan-Mar 2026: TXN-6009, TXN-6010, TXN-6011)\n- Total sunk: $470\n\n**Key principle:** Sunk costs should NOT influence forward-looking decision. Evaluate only incremental costs and benefits from this point forward.\n\n## Option A: Attend AACR Without Presenting\n\n**Incremental costs:**\n- Registration balance: $695 (due 2026-04-05)\n- Flight: $285 (Delta quote, expires 2026-03-15)\n- Hotel: $220 (4 nights @ $55/night conference rate)\n- Meals/ground transport: ~$150\n- **Total incremental: $1,350**\n\n**Incremental benefits:**\n- Networking with cancer immunology researchers\n- Exposure to latest IL-17 pathway research\n- Poster session attendance (relevant to Chapter 3)\n- Career development / conference experience\n\n**Opportunity costs:**\n- 5 days away from lab (Apr 19-23)\n- Chapter 3 writing time (already 6 weeks overdue)\n- Thesis committee report prep (due Mar 15, tight timeline)\n\n**Value assessment:**\nNetworking value is REDUCED without presentation slot. Primary benefit was showcasing Chapter 3 work to establish field presence. Attending as audience member has lower ROI.\n\n## Option B: Redirect to bioRxiv+ Institutional\n\n**Incremental costs:**\n- Institutional subscription: $450/year\n- Already paid individual (Jan-Mar): -$270\n- **Net new cost: $180** (prorated for remaining 9 months)\n\n**Incremental benefits:**\n- API rate limit: 500 req/hr (vs 50 current) - 10x improvement\n- Eliminates workflow bottlenecks documented in [[OBSN-5]] and [[OBSN-12]]\n- Resolves Sunday morning collision issues (JOB-702 timeout)\n- Time savings: ~12 hours/month recovered for dissertation work\n- Batch metadata export for Zotero integration\n- 9 months of coverage (Apr-Dec 2026)\n\n**Opportunity benefits:**\n- 36 hours recovered over Mar-May (critical Chapter 3 writing period)\n- Directly addresses active issue: \"morning literature triage workflow is inefficient\"\n- Enables full workflow automation (Phase 1-3 DAG from [[OBSN-1]])\n\n**Requirements:**\n- PI approval for lab budget allocation\n- Institutional setup (2-3 business days per Marcus Chen, CON-215)\n\n## Incremental Value Comparison\n\n| Factor | AACR Path | bioRxiv+ Path |\n|--------|-----------|---------------|\n| Incremental cost | $1,350 | $180 |\n| Time investment | 5 days away | 0 days away |\n| Dissertation impact | Negative (time away) | Positive (36 hrs recovered) |\n| Career development | Moderate (networking) | Low (infrastructure) |\n| Addresses active issues | No | Yes (workflow efficiency) |\n| Risk | Low | Low (requires PI approval) |\n\n## Recommendation\n\n**Choose Option B: bioRxiv+ Institutional**\n\nRationale:\n1. **ROI**: $180 investment yields 36 hours for Chapter 3 (critical path item)\n2. **Alignment**: Directly addresses documented workflow inefficiencies\n3. **Timing**: Chapter 3 is 6 weeks overdue; time recovery is urgent\n4. **Reduced AACR value**: Without presentation, networking ROI is diminished\n5. **Future optionality**: Can attend AACR 2027 with accepted abstract\n\n**Sunk cost acknowledgment:**\nThe $200 AACR deposit is lost regardless of decision. This should not bias the choice. Forward-looking analysis strongly favors bioRxiv+ for dissertation progress.\n\n## Action Items\n\n- [ ] Draft PI meeting brief with ROI analysis (TODO-595, due 2026-03-11)\n- [ ] Research institutional setup process (TODO-596, due 2026-03-10)\n- [ ] Schedule Dr. Harrison meeting to request lab budget allocation (EVT-389, 2026-03-12)\n- [ ] IF APPROVED: Contact Marcus Chen to initiate institutional subscription\n- [ ] IF APPROVED: Cancel AACR registration (forfeit $200 deposit, avoid $1,350 incremental cost)\n- [ ] Document decision rationale and financial calculations in lab notebook\n\n## Related Notes\n\n- [[OBSN-1]] - Literature Workflow Optimization DAG Analysis\n- [[OBSN-5]] - Workflow Collision Analysis (Sunday morning jobs)\n- [[OBSN-12]] - Zotero API Rate Limits Reference\n- [[NOTE-131]] - AACR vs bioRxiv+ decision analysis session notes\n- [[NOTE-132]] - bioRxiv+ API rate limit impact metrics\n\n## Decision Log\n\n- 2026-03-05: AACR abstract rejection received (MSG-5025)\n- 2026-03-06: bioRxiv+ institutional pricing inquiry (MSG-5026 response from Marcus Chen)\n- 2026-03-07: Decision analysis session (NOTE-131, 90 min focus block)\n- 2026-03-08: Draft PI budget request email sent (MSG-5028)\n- 2026-03-12: Scheduled PI meeting to discuss (EVT-389)\n- 2026-04-05: AACR final payment deadline (decision must be finalized before this)",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-5",
+      "OBSN-12"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-07T14:30:00-08:00",
+    "last_updated": "2026-03-08T16:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-46",
+    "title": "bioRxiv+ Institutional Subscription - Setup Requirements",
+    "folder": "Technical/Services",
+    "tags": [
+      "biorxiv",
+      "api",
+      "institutional",
+      "workflow-automation"
+    ],
+    "content": "# bioRxiv+ Institutional Tier Setup\n\n## Pricing & Benefits\n\n**Cost:** $450/year (vs $1,079.88/year individual)\n**Savings:** $629.88/year\n\n**Key features:**\n- API access: 500 requests/hour (vs 50 individual)\n- Batch metadata export\n- Priority technical support\n- Institutional billing (charged to lab/dept budget)\n\n## Setup Process (per Marcus Chen, sales@biorxiv.org)\n\n1. **PI/Department approval required**\n   - Email or formal purchase order\n   - Invoice sent to institutional finance office\n\n2. **Activation timeline**\n   - 2-3 business days after payment processed\n   - Existing favorites/alerts transfer automatically\n\n3. **API key provisioning**\n   - New institutional API key issued upon activation\n   - Update scheduler jobs (JOB-701, JOB-709) with new credentials\n\n## Integration Points\n\n**Affected workflows:**\n- Morning literature triage (JOB-701) - primary bottleneck\n- Parallel RSS fetcher Phase 1 (JOB-712) - currently rate-limited\n- Weekly Zotero reconciliation (JOB-702) - collision issues\n\n**Configuration updates needed:**\n- Update API key in scheduler config\n- Increase concurrent request limit in RSS fetcher\n- Test rate-limit compliance with 500 req/hr quota\n\n## Questions for Marcus Chen (TODO-596)\n\n- [ ] Does Salk Institute already have institutional access?\n- [ ] If not, is PI email sufficient or need formal PO?\n- [ ] Exact timeline from payment to API key activation?\n- [ ] Can individual subscription credits ($270 Jan-Mar) transfer or refund?\n- [ ] Any setup assistance for API integration?\n\n## Related Notes\n\n- [[OBSN-45]] - AACR vs bioRxiv+ decision analysis\n- [[OBSN-12]] - Current API rate limit issues\n- [[OBSN-1]] - Literature workflow DAG (would benefit from higher limits)\n\n---\n\n*Contact: Marcus Chen (CON-215), sales@biorxiv.org, +1-650-555-0142*",
+    "outlinks": [
+      "OBSN-45",
+      "OBSN-12",
+      "OBSN-1"
+    ],
+    "inlinks": [
+      "OBSN-45"
+    ],
+    "created_at": "2026-03-07T16:00:00-08:00",
+    "last_updated": "2026-03-07T16:30:00-08:00"
+  },
+  {
+    "note_id": "OBSN-47",
+    "title": "Lab Meeting Rotation Conflict Resolution - 4-Week Forward Planning",
+    "folder": "Workflows/Scheduling",
+    "tags": [
+      "scheduling",
+      "conflict-resolution",
+      "lab-meetings",
+      "thesis-committee"
+    ],
+    "content": "# Lab Meeting Rotation Conflict Resolution - 4-Week Forward Planning\n\n## Problem Statement\nDr. Harrison's clinical rotation schedule creates irregular lab meeting times (Mon 2pm / Wed 10am / Fri 3pm rotation). Must identify conflicts with fixed commitments 4 weeks in advance to enable pre-emptive mitigation.\n\n## Fixed Commitments (Non-Negotiable)\n- **Deep-work blocks**: Tue/Thu 6:30-11am (SACRED)\n- **Departmental seminar**: Wed 4pm (mandatory, policy violation if missed)\n- **Dr. Thompson office hours**: Wed 2-4pm (weekly, requires >1 week notice to reschedule)\n- **Dr. Rodriguez office hours**: Mon 10am (alternating weeks, requires >1 week notice to reschedule)\n\n## January 2026 Analysis\nSee [[NOTE-133]] for detailed conflict matrix.\n\n**Summary**: No true conflicts. Jan 15 meeting is tight but manageable.\n\n## Mitigation Options (Ranked by Relationship Capital Cost)\n\n### Option 1: Lab Meeting Time Swap (LOWEST COST)\n- **Process**: Poll 6 lab members via email, requires consensus threshold\n- **Lead time**: ≥1 week for polling + rescheduling\n- **Cost**: Peer coordination overhead, minor inconvenience to lab\n- **When to use**: When rotation creates conflict with fixed commitment that cannot be moved\n\n### Option 2: Committee Office Hours Reschedule (MEDIUM COST)\n- **Process**: Email committee member with >1 week notice, propose alternative time\n- **Lead time**: >1 week required\n- **Cost**: Burns relationship capital with committee member, signals poor planning\n- **When to use**: When lab meeting conflict is unavoidable and seminar exemption is not justified\n- **Frequency limit**: ≤2 per semester per committee member\n\n### Option 3: Seminar Exemption Request (HIGHEST COST)\n- **Process**: Submit documented justification to seminar coordinator, requires advisor approval\n- **Lead time**: ≥1 week required\n- **Cost**: Policy violation risk, institutional relationship capital, thesis committee reporting\n- **When to use**: ONLY when conflict is with documented academic obligation (e.g., thesis committee meeting, conference presentation)\n- **Frequency limit**: ≤2-3 per semester (estimated)\n\n## Decision Framework\n\n```\nIF conflict_type == \"deep-work block\":\n    THEN request lab meeting time swap (deep-work is movable but sacred)\nELSE IF conflict_type == \"committee office hours\" AND lead_time > 1 week:\n    THEN evaluate: (time swap feasibility) vs (reschedule committee)\nELSE IF conflict_type == \"seminar\" AND justification_strength == \"STRONG\":\n    THEN request seminar exemption\nELSE IF conflict_type == \"seminar\" AND justification_strength == \"WEAK\":\n    THEN request lab meeting time swap\nELSE:\n    THEN accept conflict, optimize buffer time\n```\n\n## Action Items for February Planning\n- [ ] Extract Feb rotation schedule from Dr. Harrison (due Jan 20)\n- [ ] Cross-reference Feb 3, 10, 17, 24 lab meeting times with fixed commitments\n- [ ] Identify conflicts with thesis committee progress report deadline (Mar 15) prep period\n- [ ] Initiate mitigation requests by Feb 1 for conflicts in weeks of Feb 10-24\n\n## Related Notes\n- [[NOTE-133]] - January conflict analysis\n- [[NOTE-134]] - Seminar exemption strategy\n- [[OBSN-24]] - Thesis committee relationship management",
+    "outlinks": [
+      "OBSN-24"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-05T14:00:00-08:00",
+    "last_updated": "2026-01-05T15:30:00-08:00"
+  },
+  {
+    "note_id": "OBSN-48",
+    "title": "Multi-Week Calendar Conflict Detection - Automation Opportunity",
+    "folder": "Workflows/Scheduling",
+    "tags": [
+      "automation",
+      "calendar",
+      "conflict-detection",
+      "workflow-optimization"
+    ],
+    "content": "# Multi-Week Calendar Conflict Detection - Automation Opportunity\n\n## Current Manual Process\n1. Extract Dr. Harrison's rotation schedule from email\n2. Manually map 4 weeks of lab meeting times to calendar\n3. Query personal calendar for fixed commitments in same window\n4. Cross-reference in spreadsheet/notes to identify conflicts\n5. Annotate each conflict with rigidity level\n6. Evaluate mitigation options per conflict\n7. Generate action items with lead-time buffers\n\n**Time cost**: 45-60 minutes per rotation cycle\n**Error risk**: Manual cross-referencing, missed edge cases\n\n## Automation Design (Future)\n\n### Input Sources\n- Dr. Harrison's shared lab calendar (EVT-* events with \"Lab Meeting\" in title)\n- Personal calendar (EVT-* events with fixed commitments)\n- Conflict rigidity rules (stored in Obsidian)\n\n### Processing Logic\n```python\ndef detect_conflicts(lab_meetings, fixed_commitments, rigidity_rules):\n    conflicts = []\n    for lab_mtg in lab_meetings:\n        for commitment in fixed_commitments:\n            if time_overlap(lab_mtg, commitment):\n                conflict = {\n                    'lab_meeting': lab_mtg,\n                    'commitment': commitment,\n                    'rigidity': rigidity_rules[commitment.type],\n                    'mitigation_options': evaluate_mitigations(commitment.type),\n                    'action_deadline': lab_mtg.start_time - timedelta(weeks=1)\n                }\n                conflicts.append(conflict)\n    return conflicts\n```\n\n### Output Format\n- Markdown table of conflicts with rigidity annotations\n- Prioritized action items with due dates\n- Mitigation strategy recommendations\n\n## Blockers to Automation\n1. Dr. Harrison's rotation schedule not in structured calendar format (sent via email)\n2. Rigidity rules not codified (currently implicit knowledge)\n3. Mitigation option evaluation requires qualitative judgment (relationship capital tracking)\n\n## Incremental Improvement\n- **Phase 1**: Create rigidity rules lookup table in Obsidian\n- **Phase 2**: Template email to Dr. Harrison requesting structured calendar invites instead of text schedule\n- **Phase 3**: Build Python script for conflict detection once calendar data is structured\n\n## Related Notes\n- [[OBSN-47]] - Lab meeting conflict resolution framework\n- [[Literature Workflow Optimization - DAG Analysis]] - Similar workflow dependency analysis approach",
+    "outlinks": [
+      "OBSN-47",
+      "OBSN-1"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-05T15:45:00-08:00",
+    "last_updated": "2026-01-05T16:00:00-08:00"
+  },
+  {
+    "note_id": "OBSN-49",
+    "title": "February Lab Meeting Rotation Conflict - Decision Analysis",
+    "folder": "Decisions/2026-Q1",
+    "tags": [
+      "scheduling",
+      "committee",
+      "critical-path",
+      "rework-analysis",
+      "february-2026"
+    ],
+    "content": "# February Lab Meeting Rotation Conflict - Decision Analysis\n\n## Problem Statement\nDr. Harrison's February clinical rotation schedule creates a four-week chain of lab meeting time conflicts that cascade into thesis committee coordination, seminar attendance, and dissertation writing blocks.\n\n## Rotation Schedule (Confirmed 2026-01-28)\n- **Week 1 (Feb 3-7)**: Monday 2pm ✅ No conflicts\n- **Week 2 (Feb 10-14)**: Wednesday 10am ⚠️ CRITICAL PATH BOTTLENECK\n- **Week 3 (Feb 17-21)**: Wednesday 3pm ⚠️ Conflicts with IL-17 seminar\n- **Week 4 (Feb 24-28)**: Thursday 2pm ✅ No conflicts\n\n## Critical Path Bottleneck: Week 2 Wednesday 10am\n- **Primary conflict**: Dr. Thompson standing office hours (weekly recurring)\n- **Advance notice requirement**: 1 week minimum to reschedule without relationship damage\n- **Checkpoint decision date**: February 5, 2026\n- **Downstream dependencies**: Chapter 3 presentation prep (Feb 13 deep work block), committee report coordination, weekend reading blocks\n\n## Rework Cost Analysis\n### Parallel Advancement (Proactive Reschedule)\n- **Cost**: Uses relationship capital with Dr. Thompson\n- **Risk**: Requires explanation and justification\n- **Benefit**: Guarantees meeting one-week advance notice threshold\n- **Benefit**: Protects downstream dependencies (Chapter 3 prep, committee report)\n\n### Serial Waiting (Wait for Final Confirmation)\n- **Cost**: Risk of missing one-week advance notice threshold\n- **Cost**: Forces last-minute scramble if rotation confirmed late\n- **Cost**: Cannot reliably schedule downstream tasks (presentation prep, committee coordination)\n- **Benefit**: Avoids premature relationship capital usage if rotation changes\n\n## Decision: Parallel Advancement\n**Rationale**: Failure propagation risk of serial waiting outweighs relationship capital cost of proactive reschedule. If Week 2 lab meeting not confirmed by Feb 5, downstream tasks cannot be reliably scheduled, jeopardizing Chapter 3 presentation and March 15 committee report deadline.\n\n## Email Evidence\n- [[STUM-3067]] - Dr. Harrison rotation schedule announcement (2026-01-28)\n- [[STUM-3068]] - Dr. Thompson advance notice requirement (2026-02-01)\n- [[STUM-3070]] - Conditional reschedule request sent (2026-02-05)\n\n## Calendar Evidence\n- [[EVT-399]] - Week 2 lab meeting (Wed Feb 12, 10am)\n- [[EVT-400]] - Dr. Thompson office hours (Wed Feb 12, 10am) - CONFLICT\n- [[EVT-404]] - Chapter 3 presentation prep block (Thu Feb 13, 9am-12pm) - DOWNSTREAM DEPENDENCY\n\n## Secondary Conflicts\n### Week 3: Lab Meeting vs IL-17 Seminar\n- Lab meeting: Wed Feb 19, 3pm\n- Seminar: Dr. Sarah Williams (MIT) - \"IL-17 pathway dynamics in tissue inflammation\"\n- **Relevance**: Directly applicable to reviewer response and Chapter 3 discussion\n- **Decision pending**: Need to assess recording availability or alternative engagement options by Feb 12\n\n## Lessons Learned\n- Late rotation schedule announcements create cascading conflicts\n- Proactive communication with committee members preserves relationship capital\n- Calendar dependency mapping reveals critical path bottlenecks\n- One-week advance notice thresholds are hard constraints in committee scheduling\n\n## Related Notes\n- [[Calendar Conflict Resolution Framework]]\n- [[Committee Relationship Management]]\n- [[Chapter 3 Progress Timeline]]",
+    "outlinks": [
+      "OBSN-23",
+      "OBSN-34"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-29T19:30:00-08:00",
+    "last_updated": "2026-02-17T20:15:00-08:00"
+  },
+  {
+    "note_id": "OBSN-50",
+    "title": "Statistical Consulting Slot Selection - Conflict Analysis Feb 2026",
+    "folder": "Decisions/2026-Q1",
+    "tags": [
+      "scheduling",
+      "consulting",
+      "chapter3",
+      "conflict-resolution"
+    ],
+    "content": "# Statistical Consulting Slot Selection - February 2026\n\n## Context\nUCSD Biostatistics Consulting Service (Dr. Emily Chen) offered three time slots for batch correction consultation needed for Chapter 3 trajectory analysis. Must select single feasible slot accounting for hard conflicts, travel time, and protected deep-work blocks.\n\n## Proposed Time Slots (from STUM-3071)\n1. **Monday, February 10, 2026, 10:00 AM - 11:30 AM**\n2. **Wednesday, February 12, 2026, 9:00 AM - 10:30 AM**\n3. **Friday, February 14, 2026, 2:00 PM - 3:30 PM**\n\n## Hard Conflicts Analysis\n\n### Option 1: Monday Feb 10, 10:00-11:30 AM\n- **Dr. Rodriguez Office Hours**: Alternating Mondays 2-3pm (EVT-410)\n  - Feb 10 is an \"on\" week for Rodriguez office hours\n  - Consulting session ends 11:30am, Rodriguez starts 2pm\n  - **Gap**: 2.5 hours - sufficient buffer\n- **Travel requirement**: 30-min commute + 15-min prep = 45 min total\n  - Must leave Salk by 9:15am to arrive by 10am\n  - Sacred morning block (06:30-09:00) preserved ✓\n- **Conflicts**: NONE\n- **Assessment**: **FEASIBLE** ✓\n\n### Option 2: Wednesday Feb 12, 9:00-10:30 AM\n- **Dr. Thompson Office Hours**: Weekly Wednesdays 9-10am (EVT-406)\n  - **DIRECT CONFLICT** - cannot attend both ✗\n- **Lab Meeting (February rotation)**: Wed Feb 12, 10:00-11:30am (EVT-407)\n  - Consulting session ends 10:30am, lab meeting starts 10am\n  - **30-MINUTE OVERLAP** ✗\n- **Mandatory Seminar**: Wed 4-5:30pm (EVT-409)\n  - No conflict with morning slot\n- **Travel requirement**: Would need to leave consulting at 10:30am, arrive Salk by 11:00am\n  - **Cannot make 10am lab meeting start time** ✗\n- **Assessment**: **NOT FEASIBLE** - violates two hard commitments ✗\n\n### Option 3: Friday Feb 14, 2:00-3:30 PM\n- **Protected Deep-Work Block**: Friday Feb 14, 06:30-12:00 (EVT-408)\n  - Chapter 3 discussion section writing - 5.5-hour focused session\n  - Consulting session is 2-3:30pm, deep work ends at noon\n  - **Gap**: 2 hours - sufficient buffer\n- **Travel requirement**: Must leave Salk by 1:15pm to arrive by 2pm\n  - Deep work block ends 12:00pm\n  - Lunch + travel prep: 12:00-1:15pm (75 min) - tight but feasible\n- **Fragmentation concern**: Does NOT fragment deep-work block (morning session remains intact) ✓\n- **Return travel**: Session ends 3:30pm, return to Salk by 4:00pm\n  - Remainder of workday (4-7pm) available for email/admin tasks\n- **Conflicts**: NONE\n- **Assessment**: **FEASIBLE** ✓\n\n## Decision Matrix\n\n| Slot | Hard Conflicts | Travel Feasible | Deep-Work Impact | Verdict |\n|------|---------------|----------------|------------------|----------|\n| Mon Feb 10, 10am | None | Yes (leave 9:15am) | None - morning block preserved | ✓ FEASIBLE |\n| Wed Feb 12, 9am | Thompson office hours + Lab meeting overlap | No (cannot make 10am lab start) | N/A | ✗ NOT FEASIBLE |\n| Fri Feb 14, 2pm | None | Yes (leave 1:15pm) | None - morning block intact | ✓ FEASIBLE |\n\n## Preference Analysis: Mon Feb 10 vs Fri Feb 14\n\n### Monday Feb 10 Advantages:\n- Earlier in month = faster turnaround on batch correction questions\n- Afternoon remains free for implementing consultant recommendations\n- No risk of deep-work block fragmentation perception\n\n### Friday Feb 14 Disadvantages:\n- Later in month = delays Chapter 3 progress by 4 days\n- Tight lunch/travel window (75 min) - no buffer for deep-work overrun\n- If morning writing session runs long, creates stress cascade\n\n## FINAL DECISION: Monday, February 10, 10:00 AM - 11:30 AM\n\n**Rationale**: \n- Zero hard conflicts\n- Preserves sacred morning deep-work block (06:30-09:00)\n- Earlier consultation date accelerates Chapter 3 progress\n- Afternoon buffer allows same-day implementation of recommendations\n- Friday Feb 14 remains fully protected for uninterrupted writing\n\n## Action Items\n- [ ] TODO-609: Draft confirmation email to stat-consult@ucsd.edu\n- [ ] Add EVT-412: Statistical consulting session (Mon Feb 10, 10-11:30am, UCSD MTF Room 240)\n- [ ] Add EVT-413: Travel buffer (Mon Feb 10, 9:15-10:00am, Salk to UCSD)\n- [ ] Verify TODO-608: Preliminary trajectory analysis outputs ready by Feb 9\n\n## Metadata\n- **Decision Date**: 2026-01-13\n- **Deadline**: Respond by 2026-01-17 (per STUM-3071)\n- **Related**: [[Chapter 3 - Trajectory Analysis Discussion Outline]], [[Task Prioritization Framework - Deadline-Driven Planning]]\n- **References**: STUM-3071, EVT-406, EVT-407, EVT-408, EVT-410",
+    "outlinks": [
+      "OBSN-38",
+      "OBSN-27"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-13T10:30:00-08:00",
+    "last_updated": "2026-01-13T11:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-51",
+    "title": "February 2026 Lab Meeting Rotation - Cascade Impact Analysis",
+    "folder": "Meetings/PI",
+    "tags": [
+      "lab-meeting",
+      "scheduling",
+      "harrison",
+      "conflict-resolution"
+    ],
+    "content": "# February 2026 Lab Meeting Rotation - Cascade Analysis\n\n## Context\nDr. Harrison's clinical rotation at Scripps requires adjusted lab meeting schedule for February 2026 (announced STUM-3073). Need to identify conflicts with fixed commitments and execute pre-emptive mitigation.\n\n## February Lab Meeting Schedule (from STUM-3073)\n- **Week of Feb 3-7**: Monday, Feb 3, 3:00-4:30 PM\n- **Week of Feb 10-14**: Wednesday, Feb 12, 10:00-11:30 AM ⚠️\n- **Week of Feb 17-21**: Monday, Feb 17, 2:00-3:30 PM\n- **Week of Feb 24-28**: Friday, Feb 28, 9:00-10:30 AM\n\n## Fixed Commitment Conflicts\n\n### Week of Feb 10-14: Wednesday Feb 12, 10:00-11:30 AM\n**CONFLICT DETECTED**: Overlaps with Dr. Thompson weekly office hours (Wed 9-10am, EVT-406)\n\n**Cascade Impact**:\n- Cannot attend both Thompson office hours (9-10am) and lab meeting (10-11:30am)\n- Lab meeting is mandatory (PI-led, cannot skip without approval)\n- Thompson office hours are critical for thesis committee coordination\n- **Dr. Harrison explicitly flagged this conflict in STUM-3073** (\"I know the Feb 12 slot conflicts...\")\n\n**Mitigation Strategy**:\n1. Request one-week reschedule of Thompson office hours to Tue Feb 11 or Thu Feb 13\n2. >1 week advance notice preserves relationship capital\n3. Track as reschedule #2 for Thompson in 2026 (stay under 3/quarter threshold)\n4. Alternative: Attend Thompson 9-10am, arrive late to lab meeting (suboptimal - signals poor time management)\n\n**Action**: TODO-610 created to coordinate reschedule\n\n### Week of Feb 3-7: Monday Feb 3, 3:00-4:30 PM\n- No conflicts with fixed commitments ✓\n- Afternoon slot preserves morning deep-work block ✓\n\n### Week of Feb 17-21: Monday Feb 17, 2:00-3:30 PM\n- Presidents' Day (lab open) - no conflicts ✓\n- Does NOT conflict with Dr. Rodriguez alternating Monday office hours (Feb 17 is \"off\" week) ✓\n\n### Week of Feb 24-28: Friday Feb 28, 9:00-10:30 AM\n- Conflicts with sacred morning deep-work block (06:30-09:00) ⚠️\n- But lab meeting starts 9am (within acceptable threshold - not a policy violation)\n- **IL-17 Manuscript Reviewer Response FINAL DEADLINE**: Feb 28 (EVT-302)\n  - Lab meeting on deadline day is poor timing but unavoidable\n  - Must complete reviewer response by Feb 27 evening to avoid stress cascade\n\n## Relationship Capital Tracking\n\n### Dr. Thompson Reschedules (2026 YTD)\n1. Week of Jan 20: Rescheduled for AACR abstract revision (reschedule #1)\n2. Week of Feb 10: Requesting reschedule for lab meeting conflict (reschedule #2)\n3. **Remaining buffer**: 1 reschedule before hitting 3/quarter threshold (signals poor time management)\n\n### Dr. Rodriguez Reschedules (2026 YTD)\n- Zero reschedules YTD ✓\n- Maintain this record to preserve relationship capital\n\n## Notes from Dr. Harrison\n- \"Let's discuss how to handle that during our 1:1 next week\" (from STUM-3073)\n- Need to prepare mitigation proposal for next Harrison 1:1\n- Demonstrate proactive problem-solving (not reactive scrambling)\n\n## Metadata\n- **Analysis Date**: 2026-01-13\n- **Source**: STUM-3073 (Lab meeting schedule announcement)\n- **Related**: [[Task Prioritization Framework - Deadline-Driven Planning]], [[Statistical Consulting Slot Selection - Conflict Analysis Feb 2026]]",
+    "outlinks": [
+      "OBSN-27",
+      "OBSN-50"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-13T12:00:00-08:00",
+    "last_updated": "2026-01-13T12:30:00-08:00"
+  },
+  {
+    "note_id": "OBSN-52",
+    "title": "Sunk Cost Fallacy - AACR 2026 Decision Case Study",
+    "folder": "Decisions/2026-Q1",
+    "tags": [
+      "decision-framework",
+      "finance",
+      "cognitive-bias"
+    ],
+    "content": "# Sunk Cost Fallacy - AACR 2026 Case Study\n\n## Definition\nSunk cost fallacy: continuing an endeavor because of previously invested resources (time, money, effort) that cannot be recovered, rather than evaluating the decision based on future costs and benefits.\n\n## AACR 2026 Application\n\n### Sunk Costs (ignore for decision)\n- AACR registration deposit: $200 (non-refundable)\n- Delta flight booking: $850 (already paid)\n- Abstract preparation time: ~20 hours\n- **Total sunk: $1,050 + 20 hours**\n\n### Incremental Decision\n**Question:** Given that $1,050 is already spent, should I spend an additional $1,095 to attend AACR?\n\n**NOT:** \"I've already spent $1,050, so I should attend to avoid wasting it\"\n\n### Correct Analysis Framework\n1. **Ignore sunk costs** (they're gone regardless of decision)\n2. **Evaluate incremental costs vs incremental benefits**\n   - Incremental cost: $1,095 (remaining registration + hotel)\n   - Incremental benefit: Networking value without presentation\n3. **Compare to alternative use of incremental funds**\n   - Alternative: $1,095 saved + 4 days redirected to Chapter 3\n\n### Emotional Trap\n\"I've already paid $1,050, so I *have to* attend to make it worthwhile.\"\n\n**Counter:** The $1,050 is gone whether I attend or not. The real question is: Is attending worth an additional $1,095 + 4 days?\n\n### Decision Rule\nIf I wouldn't pay $2,145 today for AACR attendance without a presentation, then I shouldn't complete the registration just because I've already paid $1,050.\n\n## Related Concepts\n- [[OBSN-8]] - Opportunity Cost Framework\n- [[OBSN-14]] - Relationship Capital Accounting\n- [[NOTE-149]] - AACR vs bioRxiv+ Decision Analysis\n\n## References\n- Thaler, R. (1980). \"Toward a positive theory of consumer choice.\" *Journal of Economic Behavior & Organization*\n- Arkes & Blumer (1985). \"The psychology of sunk cost.\" *Organizational Behavior and Human Decision Processes*",
+    "outlinks": [
+      "OBSN-8",
+      "OBSN-14"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-31T08:45:00-07:00",
+    "last_updated": "2026-03-31T08:45:00-07:00"
+  },
+  {
+    "note_id": "OBSN-53",
+    "title": "Funding Source Alignment - Lab Budget vs Personal Stipend",
+    "folder": "Decisions/Lab-Policy",
+    "tags": [
+      "finance",
+      "lab-policy",
+      "decision-framework"
+    ],
+    "content": "# Funding Source Alignment - Lab Budget vs Personal Stipend\n\n## Harrison Lab Budget Policy (inferred from MSG-5043)\n\n### Lab-Funded Categories\n1. **Infrastructure investments** with lab-wide benefit\n   - Example: Zotero institutional subscription (mentioned as \"good example\")\n   - Criteria: Multiple lab members benefit\n2. **Individual tools** with dissertation timeline acceleration\n   - Criteria: Clear connection to getting \"back on track\"\n   - Requires justification of time savings\n3. **Statistical consulting** (budgeted but under-utilized)\n   - $2,400 budgeted, only $400 spent in Q1\n   - Harrison suggested reallocation if not needed\n\n### Personal Stipend Categories\n1. **Conference travel** for professional development\n   - No lab reimbursement for registration/travel\n   - Exception: If presenting lab work\n2. **Individual professional development**\n   - Courses, workshops, certifications\n   - Career networking events\n\n## Decision Framework\n\n### Step 1: Categorize Expense\n- Is it infrastructure or personal development?\n- Does it benefit multiple lab members or just me?\n- Does it accelerate dissertation timeline?\n\n### Step 2: Assess Funding Source Fit\n- Lab budget: Infrastructure + (lab-wide benefit OR dissertation acceleration)\n- Personal stipend: Professional development + individual career benefit\n\n### Step 3: Relationship Capital Cost\n- **Low cost:** Request aligns perfectly with lab budget policy\n- **Medium cost:** Request is borderline (e.g., individual tool with weak lab-wide benefit)\n- **High cost:** Request violates policy norms (e.g., personal career development from lab funds)\n\n## AACR vs bioRxiv+ Analysis\n\n### AACR 2026\n- **Category:** Professional development (no presentation)\n- **Benefit:** Individual career networking\n- **Funding source:** Personal stipend (correct alignment)\n- **Relationship capital cost:** N/A (not requesting lab funds)\n\n### bioRxiv+ Subscription\n- **Category:** Infrastructure investment\n- **Benefit:** Individual workflow optimization + potential lab-wide adoption\n- **Funding source:** Lab budget (requires PI approval)\n- **Relationship capital cost:** Medium\n  - Primary benefit is personal efficiency\n  - But: addresses documented infrastructure issue (JOB-710)\n  - And: aligns with Harrison's \"dissertation acceleration\" criterion\n  - And: potential for other members to adopt (Elena's meta-analysis)\n\n## Recommendation\nbioRxiv+ request has medium relationship capital cost but strong policy alignment:\n1. ✓ Infrastructure investment (not personal development)\n2. ✓ Dissertation timeline acceleration (Harrison's priority)\n3. ✓ Documented infrastructure issue (JOB-710 rate limits)\n4. ✓ Budget availability (statistical consulting under-utilized)\n5. ~ Lab-wide benefit (potential but not proven)\n\n## Related Notes\n- [[OBSN-52]] - Sunk Cost Fallacy\n- [[OBSN-14]] - Relationship Capital Accounting\n- [[NOTE-149]] - AACR vs bioRxiv+ Decision Analysis\n- [[MSG-5043]] - Harrison email on budget priorities\n\n## Action Items\n- Frame bioRxiv+ request as infrastructure + dissertation acceleration\n- Emphasize documented issue (JOB-710) not just personal preference\n- Mention potential lab-wide adoption (Elena, future members)\n- Reference statistical consulting budget availability",
+    "outlinks": [
+      "OBSN-52",
+      "OBSN-14"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-01T07:00:00-07:00",
+    "last_updated": "2026-04-01T07:00:00-07:00"
+  },
+  {
+    "note_id": "OBSN-54",
+    "title": "Chapter 3 Status - Trajectory Analysis Core Results",
+    "folder": "Dissertation/Chapter3",
+    "tags": [
+      "dissertation",
+      "chapter3",
+      "unpublished",
+      "trajectory-analysis"
+    ],
+    "content": "# Chapter 3 Status - Trajectory Analysis Core Results\n\n## Publication Status\n**UNPUBLISHED** - Do not share externally without PI approval\n\n## Core Findings (Dissertation Priority)\n- Novel Th17 plasticity checkpoint identification at branch point 2\n- Trajectory inference methodology combining Slingshot + custom pseudotime calibration\n- Tissue-specific trajectory divergence patterns (gut vs. skin)\n- Single-cell resolution of IL-17A/IL-17F expression dynamics\n\n## Timeline\n- Analysis completed: February 2026 (6 weeks overdue)\n- Draft writing: In progress (target mid-April)\n- Committee review: Target late April\n- First-author submission target: June 2026\n\n## Data Protection Notes\nDr. Harrison email 2026-03-26: \"Do not share any Chapter 3 data - raw or processed - with external collaborators until we have at least a preprint posted or, preferably, a first-author manuscript submitted.\"\n\n## Related\n- [[Reviewer 2 Response Strategy]]\n- [[Thesis Committee Progress Report 2026-03-15]]\n- [[Lab Data Sharing Policy]]",
+    "outlinks": [
+      "OBSN-12",
+      "OBSN-28",
+      "OBSN-55"
+    ],
+    "inlinks": [
+      "OBSN-8",
+      "OBSN-15"
+    ],
+    "created_at": "2026-02-18T14:30:00-08:00",
+    "last_updated": "2026-03-26T16:20:00-07:00"
+  },
+  {
+    "note_id": "OBSN-55",
+    "title": "Lab Data Sharing Policy - Authority Boundaries",
+    "folder": "Lab/Policies",
+    "tags": [
+      "lab-policy",
+      "data-sharing",
+      "authority",
+      "compliance"
+    ],
+    "content": "# Lab Data Sharing Policy - Authority Boundaries\n\n## Core Principles\n1. **PI Approval Required**: All external data sharing requires explicit PI approval\n2. **Unpublished Data Protection**: No sharing of unpublished results without PI sign-off\n3. **Publication Priority**: First-author priority must be protected for trainees\n\n## Decision Framework\n### Can Share Without Additional Approval:\n- Published datasets (with proper citation)\n- Publicly available code repositories\n- Metadata-only summaries (no raw data)\n\n### Requires PI Approval:\n- Unpublished raw data\n- Unpublished processed data\n- Novel analysis results before manuscript submission\n- Any data that could compromise trainee publication priority\n\n## Collaboration Response Template\nWhen receiving external data requests:\n1. Acknowledge request professionally\n2. Check publication status of requested data\n3. If unpublished → escalate to PI before committing\n4. Offer alternatives: post-publication access, published datasets, metadata-only\n\n## References\n- Harrison lab handbook Section 4.3\n- Salk Institute data management policy\n- Dr. Harrison email 2026-03-26 re: Chapter 3 protection\n\n## Related\n- [[Chapter 3 Status]]\n- [[External Collaboration Decision Framework]]",
+    "outlinks": [
+      "OBSN-54",
+      "OBSN-56"
+    ],
+    "inlinks": [
+      "OBSN-54"
+    ],
+    "created_at": "2026-01-15T10:00:00-08:00",
+    "last_updated": "2026-03-26T17:05:00-07:00"
+  },
+  {
+    "note_id": "OBSN-56",
+    "title": "GIDC Data Request - Conflict Analysis",
+    "folder": "Decisions/Lab-Policy",
+    "tags": [
+      "decision",
+      "data-sharing",
+      "conflict",
+      "chapter3",
+      "gidc"
+    ],
+    "content": "# GIDC Data Request - Conflict Analysis\n\n## Request Summary\n- **From**: Dr. Rachel Kaplan, Global Immunology Data Consortium\n- **Date**: 2026-03-28\n- **Request**: Th17 trajectory dataset for meta-analysis\n- **Timeline**: Dataset collection deadline mid-April, summer submission target\n\n## Hidden Conflict Identified\n\n### The Problem\nGIDC is requesting the **exact dataset** that forms the core of my Chapter 3 dissertation work:\n- Th17 trajectory analysis (unpublished)\n- Single-cell differentiation data (unpublished)\n- Novel plasticity checkpoint findings (unpublished)\n\nThis directly conflicts with:\n1. **Dr. Harrison's explicit guidance** (2026-03-26): \"Do not share any Chapter 3 data - raw or processed - with external collaborators until we have at least a preprint posted\"\n2. **Lab data-sharing policy**: PI approval required for unpublished data\n3. **Academic priority norms**: First-author publication priority must be protected\n\n### Risk Assessment\n- **High risk**: Sharing now would expose core dissertation findings before publication\n- **Timeline conflict**: GIDC mid-April deadline precedes my June submission target\n- **Authority boundary**: Cannot share without explicit PI approval (which guidance suggests would be denied)\n\n## Response Strategy\n\n### Immediate Actions\n1. ✅ Sent holding response to Dr. Kaplan (2026-03-28)\n2. ⏳ Draft decision brief for Dr. Harrison\n3. ⏳ Prepare alternative collaboration options\n\n### Alternative Offerings\n1. **Post-publication access**: Offer dataset after manuscript submission (~June 2026)\n2. **Published datasets**: Check if lab has other published Th17 datasets suitable for meta-analysis\n3. **Metadata-only**: Offer summary statistics that don't compromise analysis priority\n4. **Collaboration pivot**: Suggest co-authorship on future work using their meta-analysis framework\n\n### Draft Response (After PI Approval)\n\"Thank you for your interest in our Th17 trajectory work. The dataset you've requested forms the core of my dissertation Chapter 3, which is currently in preparation for first-author submission (target: June 2026). Per our lab policy, I cannot share unpublished data before manuscript submission.\n\nHowever, I'm very interested in supporting the GIDC meta-analysis and would like to propose alternatives:\n1. Post-publication access: I can commit to sharing the full dataset after manuscript submission (~June 2026)\n2. [Check with PI: Do we have published Th17 datasets that might be suitable?]\n3. Metadata-only contribution: I could provide summary statistics that preserve my analysis priority\n\nI hope one of these options works for your timeline. Please let me know if you'd like to discuss further.\"\n\n## Related\n- [[Chapter 3 Status]]\n- [[Lab Data Sharing Policy]]\n- [[External Collaboration Decision Framework]]\n\n## Next Steps\n- [ ] Forward GIDC request to Dr. Harrison with decision brief\n- [ ] Check lab publication database for alternative datasets\n- [ ] Draft formal response after PI guidance\n- [ ] Document decision in lab collaboration log",
+    "outlinks": [
+      "OBSN-54",
+      "OBSN-55"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-28T17:15:00-07:00",
+    "last_updated": "2026-03-28T18:30:00-07:00"
+  },
+  {
+    "note_id": "OBSN-57",
+    "title": "Committee Report Preparation - March 2026 Progress Update",
+    "folder": "Dissertation/Committee-Reports",
+    "tags": [
+      "committee-report",
+      "chapter3",
+      "progress-update",
+      "march-2026"
+    ],
+    "content": "# Thesis Committee Progress Report - March 15, 2026\n\n## Meeting Details\n- **Date**: March 15, 2026, 2:00-4:00 PM\n- **Location**: Salk Institute Conference Room 3B\n- **Attendees**: Dr. Harrison (PI), Dr. Thompson (computational methods), Dr. Rodriguez (trajectory analysis)\n\n## Agenda Items to Address\n1. Chapter 3 trajectory analysis progress (6-week delay explanation)\n2. Batch correction methodology decision (ComBat-seq vs Harmony)\n3. Revised dissertation timeline\n4. IL-17 manuscript reviewer response status\n5. Resource needs for final analyses\n\n## Key Preparation Tasks\n- [ ] Compile all [[Chapter 3 - Trajectory Analysis Discussion Outline]] notes\n- [ ] Extract trajectory inference citations from Zotero (Rodriguez 2024, Saelens 2024)\n- [ ] Draft timeline adjustment justification\n- [ ] Prepare technical depth for Thompson (batch correction stats) and Rodriguez (algorithm selection)\n- [ ] Synthesize outstanding questions for committee feedback\n\n## Technical Challenges Section - Draft Notes\n### Batch Correction Methodology Pivot\n- Initial approach: ComBat-seq (Zhang 2020) - standard for RNA-seq count data\n- Issue discovered: ComBat-seq assumes batch effects are additive, but our multi-site data shows multiplicative effects\n- Pivot to Harmony (Korsunsky 2019) - better handles complex batch structures\n- Timeline impact: 3 weeks for re-analysis + validation\n- References: [[ZOT-8]] (ComBat-seq paper), [[ZOT-12]] (Harmony benchmarking)\n\n### Computational Resource Constraints\n- Trajectory inference on 250K cells requires 128GB RAM\n- UCSD cluster queue times: 3-5 days during peak semester\n- Mitigation: negotiated priority access with Dr. Thompson's lab allocation\n- Timeline impact: 2 weeks of queue delays\n\n## Timeline Revision - Draft\n- **Original Chapter 3 completion**: January 31, 2026\n- **Revised completion**: March 15, 2026 (6-week delay)\n- **Contributing factors**:\n  1. Batch correction methodology pivot (3 weeks)\n  2. Computational resource delays (2 weeks)\n  3. IL-17 manuscript Reviewer 2 response (1 week competing priority)\n- **Revised dissertation defense target**: August 2026 (was July 2026)\n\n## Outstanding Questions for Committee\n1. Should I include sensitivity analysis for alternative trajectory algorithms (PAGA vs Slingshot)?\n2. Dr. Thompson: Is my batch correction validation approach (silhouette score + biological marker preservation) sufficient?\n3. Dr. Rodriguez: Do you recommend including pseudotime uncertainty quantification in Chapter 3?\n4. Timeline buffer: Is 1-month buffer adequate for Chapter 4 given Chapter 3 delays?\n\n## Cross-References\n- [[Chapter 3 - Trajectory Analysis Discussion Outline]]\n- [[Batch Correction Methodology Decision Log]]\n- [[IL-17 Manuscript Reviewer Response - Timeline]]\n- [[Dissertation Timeline - Revised March 2026]]",
+    "outlinks": [
+      "OBSN-8",
+      "OBSN-23",
+      "OBSN-34"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-08T09:00:00-08:00",
+    "last_updated": "2026-03-12T16:30:00-08:00"
+  },
+  {
+    "note_id": "OBSN-58",
+    "title": "Chapter 3 - Batch Correction Methodology Decision Log",
+    "folder": "Dissertation/Chapter3",
+    "tags": [
+      "chapter3",
+      "batch-correction",
+      "methodology",
+      "technical-decision"
+    ],
+    "content": "# Batch Correction Methodology Decision Log\n\n## Decision Context\nChapter 3 trajectory analysis requires integrating single-cell RNA-seq data from 3 sites (Salk, UCSD, Stanford) with known batch effects. Need to select appropriate batch correction method that preserves biological signal while removing technical variation.\n\n## Options Evaluated\n\n### Option 1: ComBat-seq (Zhang et al. 2020)\n- **Pros**: Standard for RNA-seq count data, preserves count distribution, well-validated\n- **Cons**: Assumes additive batch effects, struggles with multiplicative effects in our multi-site data\n- **Zotero**: [[ZOT-8]]\n- **Test results**: Batch mixing score 0.65 (target >0.8), biological marker preservation 0.72\n\n### Option 2: Harmony (Korsunsky et al. 2019)\n- **Pros**: Handles complex batch structures, iterative correction, preserves global structure\n- **Cons**: Operates in PCA space (not count data), requires parameter tuning\n- **Zotero**: [[ZOT-12]]\n- **Test results**: Batch mixing score 0.83, biological marker preservation 0.89\n\n### Option 3: Seurat v4 integration\n- **Pros**: Widely used, integrates with existing pipeline\n- **Cons**: Over-correction risk, computational cost for 250K cells\n- **Test results**: Not pursued after Harmony success\n\n## Final Decision: Harmony\n- **Date**: February 15, 2026\n- **Rationale**: Superior batch mixing (0.83 vs 0.65) while preserving biological signal (0.89 vs 0.72)\n- **Timeline impact**: 3 weeks for re-analysis + validation\n- **Committee communication**: Include in March 15 progress report as technical challenge\n\n## Validation Approach (for Dr. Thompson review)\n1. Silhouette score by batch (target <0.3 for good mixing)\n2. Biological marker preservation: IL-17A, RORγt, FOXP3 expression patterns\n3. Trajectory topology comparison: pre/post correction\n4. Sensitivity analysis: parameter sweep for theta (diversity clustering penalty)\n\n## References\n- Zhang et al. 2020 (ComBat-seq): [[ZOT-8]]\n- Korsunsky et al. 2019 (Harmony): [[ZOT-12]]\n- Benchmarking paper (Kumar 2026): [[ZOT-19]]",
+    "outlinks": [
+      "OBSN-57",
+      "OBSN-8"
+    ],
+    "inlinks": [
+      "OBSN-57"
+    ],
+    "created_at": "2026-02-15T10:30:00-08:00",
+    "last_updated": "2026-03-10T14:15:00-08:00"
+  },
+  {
+    "note_id": "OBSN-59",
+    "title": "Dissertation Timeline - Revised March 2026",
+    "folder": "Dissertation",
+    "tags": [
+      "dissertation",
+      "timeline",
+      "planning",
+      "committee-report"
+    ],
+    "content": "# Dissertation Timeline - Revised March 2026\n\n## Original Timeline (September 2025)\n- Chapter 3 completion: January 31, 2026\n- Chapter 4 completion: May 31, 2026\n- Dissertation defense: July 15, 2026\n- Graduation: August 2026\n\n## Revised Timeline (March 2026)\n- **Chapter 3 completion**: March 15, 2026 (**6-week delay**)\n- Chapter 4 completion: June 30, 2026 (1-month buffer added)\n- Dissertation defense: August 15, 2026 (1-month delay)\n- Graduation: December 2026 (ceremony timing)\n\n## Delay Analysis - Chapter 3\n\n### Contributing Factors\n1. **Batch correction methodology pivot** (3 weeks)\n   - ComBat-seq inadequate for multi-site data\n   - Harmony re-analysis + validation\n   - See: [[Chapter 3 - Batch Correction Methodology Decision Log]]\n\n2. **Computational resource constraints** (2 weeks)\n   - UCSD cluster queue times 3-5 days\n   - 250K cell trajectory inference requires 128GB RAM\n   - Mitigation: Dr. Thompson lab allocation priority access\n\n3. **IL-17 manuscript competing priority** (1 week)\n   - Reviewer 2 response due February 28\n   - Required Th17 trajectory re-analysis\n   - See: [[Reviewer 2 Response Strategy - IL-17 Manuscript]]\n\n## Risk Mitigation for Chapter 4\n- Added 1-month buffer (May 31 → June 30)\n- Pre-allocated UCSD cluster time with Dr. Thompson\n- Parallel writing strategy: draft introduction while analyses run\n- Weekly check-ins with Dr. Harrison to prevent scope creep\n\n## Committee Communication Plan\n- Present revised timeline at March 15 progress report\n- Emphasize proactive mitigation for Chapter 4\n- Request feedback on buffer adequacy\n- Highlight that August defense still allows Fall 2026 job market participation\n\n## Next Milestones\n- [ ] March 15: Committee progress report\n- [ ] March 31: Chapter 3 final draft to Dr. Harrison\n- [ ] April 15: Chapter 3 committee review\n- [ ] May 1: Begin Chapter 4 analyses\n- [ ] June 30: Chapter 4 completion target",
+    "outlinks": [
+      "OBSN-57",
+      "OBSN-58"
+    ],
+    "inlinks": [
+      "OBSN-57"
+    ],
+    "created_at": "2026-03-08T11:00:00-08:00",
+    "last_updated": "2026-03-11T09:45:00-08:00"
+  },
+  {
+    "note_id": "OBSN-60",
+    "title": "Literature Workflow Optimization - Implementation Guide",
+    "folder": "Workflows/Literature",
+    "tags": [
+      "workflow",
+      "optimization",
+      "literature-management",
+      "implementation-guide",
+      "DAG",
+      "rate-limits"
+    ],
+    "content": "# Literature Workflow Optimization - Implementation Guide\n\n## Overview\nConsolidated documentation for the morning literature triage parallelization project, synthesizing scattered notes, scheduler configurations, and email policy discussions into a single reference artifact.\n\n## DAG Analysis\n### Dependencies Identified\n- Phase 1 (Parallel): RSS feed fetching (arXiv, bioRxiv, PubMed) - no interdependencies\n- Phase 2 (Serial): Zotero import batch processing - depends on Phase 1 completion\n- Phase 3 (Serial): Obsidian backlink generation - depends on Phase 2 completion\n\n### Critical Path\nZotero API rate limits (100 requests/hour) create the bottleneck. Batch size must not exceed 15 papers per morning session to stay within limits.\n\n## Rate-Limit Calculations\n### Zotero API Constraints\n- Rate limit: 100 requests/hour\n- Metadata fetch: 1 request per paper\n- PDF download: 1 request per paper\n- Collection assignment: 1 request per paper\n- **Total per paper: 3 requests**\n- **Safe batch size: 15 papers (45 requests) + 10 request buffer = 55/100**\n\n### RSS Feed Parallelization\n- arXiv: ~2 seconds response time\n- bioRxiv: ~3 seconds response time  \n- PubMed: ~2.5 seconds response time\n- **Serial execution: ~7.5 seconds**\n- **Parallel execution: ~3 seconds (limited by slowest)**\n- **Time savings: 4.5 seconds per morning**\n\n## Implementation Checklist\n- [x] Create JOB-701 for parallel RSS fetching (Phase 1)\n- [x] Create JOB-702 for serial Zotero import (Phase 2)\n- [x] Document rate-limit calculations\n- [ ] Test end-to-end workflow with 10 sample papers\n- [ ] Enable JOB-701 and JOB-702 in production\n- [ ] Monitor for one week, check for lock timeouts\n- [ ] Update morning routine protocol in [[Morning Routine - Literature Triage Protocol]]\n\n## Lessons Learned from February Implementation Attempt\n### What Went Wrong\n1. **Insufficient testing**: Enabled jobs in production without pilot testing, caused immediate Zotero lock timeout on Feb 9\n2. **Ignored Sunday collision**: JOB-702 (daily triage) and JOB-710 (weekly reconciliation) both accessed Zotero at 07:00 on Sundays, creating resource contention\n3. **No rollback plan**: Had to manually disable jobs during morning deep-work block, violating sacred time boundary\n4. **Metadata-first rule violation**: Rushed implementation skipped verification that all Zotero imports had corresponding Obsidian backlinks\n\n### Corrective Actions\n1. **Pilot testing protocol**: Test with 10 sample papers on Saturday morning before production deployment\n2. **Sunday schedule adjustment**: Offset JOB-710 to run at 08:00 instead of 07:00 to avoid collision\n3. **Rollback checklist**: Document disable procedure, test rollback during pilot\n4. **Integrity verification**: Add post-import check that every Zotero citation_key has at least one Obsidian backlink\n\n## Technical Constraints (from Scheduler Configs)\n### JOB-701: morning_literature_triage_phase1_parallel\n- Cron: `0 6 * * *` (daily 06:00)\n- Execution time: ~3 seconds (parallel RSS fetch)\n- Dependencies: None\n- Output: List of paper metadata for Phase 2\n\n### JOB-702: morning_literature_triage_phase2_serial  \n- Cron: `5 6 * * *` (daily 06:05, 5-minute offset from Phase 1)\n- Execution time: ~8 minutes (15 papers × 30 seconds per paper)\n- Dependencies: JOB-701 completion\n- Rate limit buffer: 55/100 requests per hour\n\n### JOB-710: weekly_zotero_obsidian_batch_reconciliation\n- Cron: `0 8 * * 0` (Sundays 08:00, adjusted from 07:00)\n- Execution time: ~15 minutes\n- Dependencies: None (runs independently)\n- **Collision risk eliminated**: 2-hour gap between JOB-702 completion and JOB-710 start\n\n## Workflow Automation Policy (Dr. Harrison Email Thread)\n### Key Points from 2026-03-15 Discussion\n1. **Lab expectation**: Literature triage must not interfere with lab hours (09:00-18:00)\n2. **Metadata-first rule**: Every Obsidian claim must trace back to Zotero record - no exceptions\n3. **Failure handling**: Automated jobs must fail gracefully; manual intervention acceptable if logged\n4. **Resource sharing**: Zotero library is shared resource; coordinate with labmates on bulk operations\n\n### Approved Automation Scope\n- ✅ RSS feed fetching and filtering\n- ✅ Zotero metadata import (batch size ≤15)\n- ✅ Obsidian backlink generation (if deterministic)\n- ❌ Paper relevance scoring (requires manual judgment)\n- ❌ Automatic paper rejection (must review before discarding)\n\n## Missing Technical Details (Flag for Investigation)\n1. **PDF download reliability**: What happens if bioRxiv PDF link is broken? Does it count against rate limit?\n2. **Zotero lock timeout duration**: How long does lock persist after failed job? Need to test recovery time.\n3. **Obsidian graph rebuild trigger**: Does backlink generation trigger full graph rebuild? Could slow down vault.\n4. **RSS feed failure handling**: If one feed times out, does it block others in parallel execution?\n\n## Next Steps\n1. Schedule pilot test for Saturday 2026-04-05 at 10:00 (weekend reading block)\n2. Prepare 10 sample papers from arXiv immunology feed\n3. Document pilot results in [[Workflow Optimization - Pilot Test Results]]\n4. If successful, enable production jobs on Monday 2026-04-07\n5. Monitor for one week, check scheduler execution history daily\n\n## Related Notes\n- [[Workflow Collision Analysis - Sunday Morning Jobs]]\n- [[Zotero API Rate Limits - Reference]]\n- [[Morning Routine - Literature Triage Protocol]]\n- [[Workflow Optimization - Implementation Checklist]]\n\n---\n*Last updated: 2026-04-01*\n*Status: Draft - awaiting pilot test*",
+    "outlinks": [
+      "OBSN-5",
+      "OBSN-6",
+      "OBSN-2",
+      "OBSN-3"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-01T14:30:00-07:00",
+    "last_updated": "2026-04-01T17:45:00-07:00"
+  },
+  {
+    "note_id": "OBSN-61",
+    "title": "Weekend Reading Notes - April 2026",
+    "folder": "Reading/Weekly",
+    "tags": [
+      "reading",
+      "weekend",
+      "literature"
+    ],
+    "content": "# Weekend Reading Notes - April 2026\n\n## Saturday 2026-03-29\n- Read Park et al. metadata-first workflow paper - excellent implementation details\n- Key insight: They use 5-minute offset between job phases to avoid race conditions\n- Should apply same pattern to our morning triage optimization\n\n## Sunday 2026-03-30  \n- Reviewed Kumar trajectory benchmarking paper\n- Notes added to Zotero record ZOT-18\n- Need to cite this in Chapter 3 discussion section\n\n---\n*Personal reading log, not for publication*",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-03-29T11:00:00-07:00",
+    "last_updated": "2026-03-30T15:20:00-07:00"
+  }
+]

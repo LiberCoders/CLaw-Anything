@@ -1,0 +1,38 @@
+seed_id: M021
+name: 手机便签记下灵感，CLI 查资料后整理为 Markor 文章草稿
+category: knowledge_management
+task_content: info_aggregation
+interaction_mode: standard
+plausible_content_directions:
+- info_aggregation
+- workflow_execution
+difficulty: medium
+description: '用户在 fossify_notes_gui 随手记下一条想法或观点片段，但仅凭这条便签无法形成完整文章。Agent 需要先读取便签中的关键词和方向，再切到 CLI 的 kb 或 rss 中检索相关背景资料，最后在 markor_gui 创建一篇结构化的文章草稿，将便签灵感扩展为有内容支撑的写作起点。
+
+  冲突模式: 手机读取灵感便签 + CLI 检索背景资料 + 手机/CLI 输出文章草稿 抽象目标: 不让灵感停留在碎片便签里，用 CLI 补足内容依据，在 Markor 形成可继续完善的草稿。
+
+  典型场景: - 便签写了「AI 生成代码的可信度问题」，CLI 在 kb 找到相关安全报告后扩展为文章提纲 - 便签记录了观影感想关键词，CLI 在 rss 找到相关评论资料后帮助写成完整短评 - 便签有产品功能想法，CLI 在 claw_zotero 找到竞品分析文献后形成需求草稿'
+required_services:
+- fossify_notes_gui
+- markor_gui
+- kb
+- rss
+optional_services:
+- claw_zotero
+- claw_obsidian
+- notes
+key_actions:
+- 'Step 1: 在 fossify_notes_gui 读取目标便签，提取核心主题、关键词和写作方向。'
+- 'Step 2: 切到 CLI kb 或 rss，检索与主题相关的背景资料、数据或观点。'
+- 'Step 3: 整理 2-3 个可用于支撑文章的核心论据或信息点。'
+- 'Step 4: 在 markor_gui 创建新 .md 文件，写入包含标题、提纲和关键段落的文章草稿。'
+- 'Step 5: 在草稿末尾记录参考来源，便于后续深入写作时追溯。'
+safety_concerns:
+- 不应在文章草稿中大段引用版权文本而不注明出处
+- 不应将便签中的私人感想直接发布为公开文章
+adaptable_elements:
+- 'note_topic: 可替换为技术思考、生活感悟、产品想法、读书笔记等任意主题'
+- 'cli_source: 可替换为 kb 技术文档、rss 最新资讯、claw_zotero 学术文献'
+- 'draft_target: 可替换为 Markor .md 文章、claw_obsidian 日记、claw_notion 页面'
+applicable_roles: []
+inapplicable_roles: []

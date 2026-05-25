@@ -1,0 +1,13 @@
+noise_id: N010
+name: "Glance at CRM dashboard"
+description: "Open the CRM system to view dashboard data, make no changes, just close"
+involved_services: [crm]
+leaves_trace: false
+action_sequence:
+  - "Open CRM system"
+  - "View dashboard"
+  - "Close CRM system"
+time_preference: midday
+adaptable_elements:
+  - "View duration"
+  - "Which metrics to focus on"

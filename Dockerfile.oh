@@ -1,0 +1,57 @@
+# Runner image for claw-anything + vanilla OpenHarness (trial-in-container sandbox mode).
+# Build via: scripts/build_oh_image.sh
+#
+# Differs from Dockerfile.oh_ext: no OH-Ext source copy, no adb binary —
+# vanilla OH has no GUI/mobile plugin and trials using this image cannot drive
+# Android. For GUI tasks build claw-anything-oh-ext:latest instead.
+#
+# Override registry at build time if needed:
+#   docker build --build-arg REGISTRY=docker.io -f Dockerfile.oh .
+ARG REGISTRY=docker.m.daocloud.io
+FROM ${REGISTRY}/python:3.11-slim
+
+WORKDIR /opt/claw-anything
+
+# ── claw-anything ────────────────────────────────────────────────────────────
+# Install dependencies first (separate layer for better cache reuse).
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt \
+        -i https://pypi.tuna.tsinghua.edu.cn/simple \
+        --trusted-host pypi.tuna.tsinghua.edu.cn \
+        --no-cache-dir \
+    && rm /tmp/requirements.txt
+
+# Install claw-anything package (src/ + mock_services/ copied by build script).
+COPY claw-anything/pyproject.toml /opt/claw-anything/pyproject.toml
+COPY claw-anything/src /opt/claw-anything/src
+COPY claw-anything/mock_services /opt/claw-anything/mock_services
+RUN pip install -e /opt/claw-anything \
+        -i https://pypi.tuna.tsinghua.edu.cn/simple \
+        --trusted-host pypi.tuna.tsinghua.edu.cn \
+        --no-cache-dir
+
+# ── OpenHarness (vanilla, from PyPI) ─────────────────────────────────────────
+# 0.1.9 is the first upstream release where PluginManifest has ``tools_dir``
+# (LoadedPlugin gains a ``tools`` list) — without it the claw-anything plugin
+# loads but its tools are silently dropped, so the model only sees OH's
+# builtin set. Do not downgrade below 0.1.9.
+# Fallback to PyPI default index if the tsinghua mirror is missing the package.
+RUN pip install 'openharness-ai==0.1.9' \
+        -i https://pypi.tuna.tsinghua.edu.cn/simple \
+        --trusted-host pypi.tuna.tsinghua.edu.cn \
+        --no-cache-dir \
+    || pip install 'openharness-ai==0.1.9' --no-cache-dir
+
+# ── sitecustomize for runtime patching of OH ─────────────────────────────────
+# Python auto-imports ``sitecustomize`` from site-packages at interpreter
+# startup. The shipped file (see ``docker/oh/sitecustomize.py``) installs
+# env-var-gated monkey patches that backport a handful of OH-Ext mechanisms
+# vanilla openharness-ai lacks (e.g. ``CLAW_TASK_EXECUTION_DATE`` →
+# ``EnvironmentInfo.date`` override). Patches stay no-op when their gating
+# env var is unset, so stock ``oh`` runs are unaffected.
+COPY oh/sitecustomize.py /tmp/sitecustomize.py
+RUN SITE_DIR="$(python -c 'import site; print(site.getsitepackages()[0])')" \
+    && cp /tmp/sitecustomize.py "$SITE_DIR/sitecustomize.py" \
+    && rm /tmp/sitecustomize.py
+
+ENTRYPOINT ["claw-anything"]

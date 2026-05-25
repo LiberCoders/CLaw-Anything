@@ -1,0 +1,15 @@
+noise_id: N032
+name: "Check Feishu group messages"
+description: "Open a Feishu work group to quickly scan recent messages without taking any action"
+involved_services: [claw_feishu]
+leaves_trace: false
+action_sequence:
+  - "Open Feishu"
+  - "Navigate to a work group"
+  - "Scroll through recent messages"
+  - "Close the group"
+time_preference: any
+adaptable_elements:
+  - "Which group to check"
+  - "How many messages to browse"
+  - "Whether to open a specific doc mentioned in chat"

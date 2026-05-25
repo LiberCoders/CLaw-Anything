@@ -1,0 +1,246 @@
+[
+  {
+    "conversation_id": "1",
+    "contact_name": "王磊 (数据分析)",
+    "contact_number": "+86 138-0012-3456",
+    "last_message": "晓雨，Q1 用户留存漏斗报告整理好了吗？明天规划会要用",
+    "timestamp": "2026-01-09T15:32:00+08:00",
+    "unread_count": 1,
+    "messages": [
+      {
+        "message_id": "1",
+        "sender": "+86 138-0012-3456",
+        "body": "晓雨，Q1 用户留存漏斗报告整理好了吗？明天规划会要用",
+        "timestamp": "2026-01-09T15:32:00+08:00",
+        "type": "received",
+        "read": false
+      }
+    ]
+  },
+  {
+    "conversation_id": "2",
+    "contact_name": "刘婷 (运营部)",
+    "contact_number": "+86 139-8765-4321",
+    "last_message": "需要按渠道拆分的数据，特别是社交分享渠道的留存率",
+    "timestamp": "2026-01-09T15:35:00+08:00",
+    "unread_count": 1,
+    "messages": [
+      {
+        "message_id": "2",
+        "sender": "+86 139-8765-4321",
+        "body": "需要按渠道拆分的数据，特别是社交分享渠道的留存率",
+        "timestamp": "2026-01-09T15:35:00+08:00",
+        "type": "received",
+        "read": false
+      }
+    ]
+  },
+  {
+    "conversation_id": "3",
+    "contact_name": "张浩 (开发)",
+    "contact_number": "+86 136-5544-7788",
+    "last_message": "周末辛苦了，调休记得申请哈",
+    "timestamp": "2026-01-09T19:20:00+08:00",
+    "unread_count": 1,
+    "messages": [
+      {
+        "message_id": "3",
+        "sender": "+86 136-5544-7788",
+        "body": "周末辛苦了，调休记得申请哈",
+        "timestamp": "2026-01-09T19:20:00+08:00",
+        "type": "received",
+        "read": false
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "thread_id": "thread_ops_liuting",
+    "contact_name": "刘婷 (运营部)",
+    "contact_number": "+86 138-0012-5678",
+    "message_preview": "Got it, thanks! This is very helpful...",
+    "timestamp": "2026-02-01T15:08:00+08:00",
+    "is_read": true,
+    "is_outgoing": false,
+    "messages": [
+      {
+        "id": "msg_001",
+        "content": "小雨，你好！下周我们要做活动策划会，需要社交分享渠道的留存数据。能否提供一下最近的数据？特别是社交分享功能上线后的留存表现，谢谢！",
+        "timestamp": "2026-02-01T11:23:00+08:00",
+        "is_outgoing": false
+      },
+      {
+        "id": "msg_002",
+        "content": "收到！我先核实一下最新的实验数据版本，稍后给你发详细数据",
+        "timestamp": "2026-02-01T11:28:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "msg_003",
+        "content": "【社交分享渠道留存数据】\n实验版本: v2.3_social_share_prod\n数据时间段: 2026-01-15 至 2026-01-31\n\n核心指标:\n• 次日留存率 (Day-1): 38.6%\n• 7日留存率 (Day-7): 21.4%\n• 样本量: 156,800 用户\n\n对比基线渠道提升:\n• Day-1 +4.3 pct\n• Day-7 +2.7 pct\n\n数据来源: 生产环境 A/B 实验，已通过配置验证\n\n详细分析报告路径已记录在案，如需完整版可以再发给你",
+        "timestamp": "2026-02-01T14:52:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "msg_004",
+        "content": "Got it, thanks! This is very helpful for our campaign planning.",
+        "timestamp": "2026-02-01T15:08:00+08:00",
+        "is_outgoing": false
+      }
+    ]
+  },
+  {
+    "thread_id": "FSMS-302",
+    "participants": [
+      "+86 13800001234"
+    ],
+    "contact_name": "Zhang Hao (Dev Lead)",
+    "last_message": "好的，我看到了，是control_group_ratio配置缺失，我马上修复",
+    "last_message_time": "2026-04-02T09:45:00+08:00",
+    "unread_count": 0,
+    "pinned": false,
+    "archived": false,
+    "messages": [
+      {
+        "id": "MSG-301",
+        "from": "+86 13800001234",
+        "text": "晓雨，A/B实验配置报错了，你能看下吗？",
+        "time": "2026-04-02T08:50:00+08:00",
+        "is_outgoing": false
+      },
+      {
+        "id": "MSG-302",
+        "from": "me",
+        "text": "看到了，scheduler日志显示是social_sharing_viral_v1配置文件第23行缺少control_group_ratio字段，需要补一个0.0-1.0之间的float值",
+        "time": "2026-04-02T09:40:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-303",
+        "from": "+86 13800001234",
+        "text": "好的，我看到了，是control_group_ratio配置缺失，我马上修复",
+        "time": "2026-04-02T09:45:00+08:00",
+        "is_outgoing": false
+      }
+    ]
+  },
+  {
+    "thread_id": "FSMS-303",
+    "participants": [
+      "+86 13698745210"
+    ],
+    "contact_name": "Li Jing (Design Lead)",
+    "last_message": "Got it, will revise the user flow section tonight. Thanks for catching this!",
+    "last_message_time": "2026-04-02T19:45:00+08:00",
+    "unread_count": 0,
+    "pinned": false,
+    "archived": false,
+    "messages": [
+      {
+        "id": "MSG-303-001",
+        "from": "me",
+        "text": "Hi Li Jing, urgent - found a strategic misalignment in the social sharing PRD. Can we talk?",
+        "time": "2026-04-02T18:30:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-303-002",
+        "from": "+86 13698745210",
+        "text": "Sure, what's up? Review is tomorrow morning...",
+        "time": "2026-04-02T18:32:00+08:00",
+        "is_outgoing": false
+      },
+      {
+        "id": "MSG-303-003",
+        "from": "me",
+        "text": "The PRD Section 3 proposes social sharing as primary user acquisition channel. But our Q1 OKR (see OBSN-10) explicitly focuses on RETENTION of existing users, not new acquisition. Social/viral features are deferred to Q2.",
+        "time": "2026-04-02T18:35:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-303-004",
+        "from": "me",
+        "text": "Impact: If we build acquisition-focused social sharing now, it won't move our Q1 KPIs (Day-7 retention target 25%, repeat purchase 40%). We'd be off-strategy and waste sprint capacity.",
+        "time": "2026-04-02T18:36:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-303-005",
+        "from": "me",
+        "text": "Suggestion: Either 1) Reframe social sharing as retention tool (e.g. share purchase history with friends to get rewards - keeps existing users engaged), or 2) Push entire feature to Q2 when acquisition is priority. Need to revise PRD before tomorrow's review.",
+        "time": "2026-04-02T18:38:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-303-006",
+        "from": "+86 13698745210",
+        "text": "Oh wow, you're right. I was thinking acquisition because boss mentioned 'growth' but didn't check the OKR doc. This is a big miss.",
+        "time": "2026-04-02T18:42:00+08:00",
+        "is_outgoing": false
+      },
+      {
+        "id": "MSG-303-007",
+        "from": "+86 13698745210",
+        "text": "Option 1 makes more sense - we can pivot the user flow to retention-focused sharing. I'll update wireframes tonight.",
+        "time": "2026-04-02T18:44:00+08:00",
+        "is_outgoing": false
+      },
+      {
+        "id": "MSG-303-008",
+        "from": "me",
+        "text": "Perfect. I'll update PRD sections 4-5 with retention framing. Let's sync at 9am tomorrow before the review to align.",
+        "time": "2026-04-02T18:46:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-303-009",
+        "from": "+86 13698745210",
+        "text": "Got it, will revise the user flow section tonight. Thanks for catching this!",
+        "time": "2026-04-02T19:45:00+08:00",
+        "is_outgoing": false
+      }
+    ]
+  },
+  {
+    "thread_id": "FSMS-304",
+    "participants": [
+      "+86 13512348765"
+    ],
+    "contact_name": "Wang Lei (Dev)",
+    "last_message": "No problem, I'll be there.",
+    "last_message_time": "2026-04-02T20:15:00+08:00",
+    "unread_count": 0,
+    "pinned": false,
+    "archived": false,
+    "messages": [
+      {
+        "id": "MSG-304-001",
+        "from": "me",
+        "text": "Hey Wang Lei, heads up - we're pivoting the social sharing feature from acquisition to retention focus. Will explain in tomorrow's review.",
+        "time": "2026-04-02T20:10:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-304-002",
+        "from": "+86 13512348765",
+        "text": "OK, does that change the technical scope much?",
+        "time": "2026-04-02T20:12:00+08:00",
+        "is_outgoing": false
+      },
+      {
+        "id": "MSG-304-003",
+        "from": "me",
+        "text": "Probably simpler - less external channel integration, more in-app engagement hooks. We'll review details tomorrow.",
+        "time": "2026-04-02T20:13:00+08:00",
+        "is_outgoing": true
+      },
+      {
+        "id": "MSG-304-004",
+        "from": "+86 13512348765",
+        "text": "No problem, I'll be there.",
+        "time": "2026-04-02T20:15:00+08:00",
+        "is_outgoing": false
+      }
+    ]
+  }
+]

@@ -1,0 +1,119 @@
+[
+  {
+    "job_id": "JOB-701",
+    "name": "weekly_volunteer_reminder",
+    "description": "Weekly reminder to check volunteer availability for education programs",
+    "cron_expression": "0 9 * * MON",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_volunteer_reminder",
+    "created_by": "Zhuo Ma Yang Zong",
+    "tags": [
+      "volunteer",
+      "reminder",
+      "weekly"
+    ],
+    "notes": "Decided not needed - will handle manually",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-702",
+    "name": "weekly_volunteer_reminder",
+    "description": "Send weekly reminder to volunteers about upcoming activities",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_volunteer_reminder",
+    "created_by": "Zhuo Ma Yang Zong",
+    "tags": [
+      "reminder",
+      "volunteers"
+    ],
+    "notes": "Decided to handle reminders manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-703",
+    "name": "weekly_donor_report_reminder",
+    "description": "Weekly reminder to compile donor contribution reports",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_email",
+    "created_by": "Zhuo Ma Yang Zong",
+    "tags": [
+      "reminder",
+      "reporting",
+      "donors"
+    ],
+    "notes": "Decided to handle this manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-704",
+    "name": "weekly_donor_reminder",
+    "description": "Send weekly reminder to check donor follow-ups",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Zhuo Ma Yang Zong",
+    "tags": [
+      "reminder",
+      "donors"
+    ],
+    "notes": "Decided unnecessary - already have manual process",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-705",
+    "name": "weekly_volunteer_reminder",
+    "description": "Send reminder to check volunteer schedules",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Zhuo Ma Yang Zong",
+    "tags": [
+      "reminder",
+      "volunteers"
+    ],
+    "notes": "",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-706",
+    "name": "weekly_donor_report_reminder",
+    "description": "Weekly reminder to compile donor engagement reports",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Zhuo Ma Yang Zong",
+    "tags": [
+      "reminder",
+      "reporting",
+      "weekly"
+    ],
+    "notes": "Decided unnecessary - already tracked in calendar",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  }
+]

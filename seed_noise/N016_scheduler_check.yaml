@@ -1,0 +1,14 @@
+noise_id: N016
+name: "Check scheduled jobs"
+description: "Open the scheduler to check whether scheduled jobs are running normally, confirm no issues then close"
+involved_services: [scheduler]
+leaves_trace: false
+action_sequence:
+  - "Open scheduled job list"
+  - "Browse job run statuses"
+  - "View recent execution history of a job"
+  - "Close scheduler"
+time_preference: morning
+adaptable_elements:
+  - "Which type of scheduled job to focus on"
+  - "Whether to check execution history details"

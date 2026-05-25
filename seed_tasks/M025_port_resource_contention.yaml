@@ -1,0 +1,43 @@
+seed_id: M025
+name: 端口/资源争用解决
+category: decision_making
+task_content: constraint_solving
+interaction_mode: standard
+plausible_content_directions: [constraint_solving, scheduling, workflow_execution, risk_safety]
+difficulty: hard
+description: "用户让 Agent 执行多个看起来独立的命令任务（启动一个 API 服务、启动一个前端 dev server、跑一个测试服务、开一个 Jupyter notebook 等），每个任务单独看都是 Ref 数据集中常见的原子任务（start X server as background process）。但这些任务隐式依赖同一组共享资源——默认监听同一个端口、写入同一个日志文件、使用同一把 SQLite 文件锁、占用同一个 /tmp 临时目录。Agent 需要在执行前检测潜在冲突，通过改端口配置/改目标路径/容器隔离/串行执行等手段化解争用，而不是让第二个任务因为 Address already in use 之类的错误崩溃。\n\n\
+  冲突模式: 端口/资源争用解决\n\
+  抽象目标: 在执行多个后台任务前，主动识别它们之间隐式共享的资源（端口、文件、锁、临时目录），通过重新配置或重新安排执行方式避免争用冲突。\n\n\
+  决策轴:\n\
+  - 冲突资源的可改性（环境变量 PORT 可改 vs 硬编码在代码里不可改）\n\
+  - 任务是否必须同时运行（并行开发 vs 测试完立即退出）\n\
+  - 已占用资源是否是用户自己的未关进程（可提醒关闭）还是其他重要服务（不能杀）\n\
+  - 容器化的额外成本（启动 docker 镜像慢 vs 直接运行快）\n\
+  - 端口约定的社区惯例（React dev server :3000 / API :8000 / Jupyter :8888）\n\n\
+  人设适配提示:\n\
+  - axis_weights: 独立全栈开发者：同时开多个项目时经常端口冲突，倾向记住一套自己的端口分配方案（3000 系列前端、8000 系列后端）；初学编程者：遇到 Address already in use 经常不知道是同一端口被占，倾向 kill 掉所有相关进程；数据分析师：多个 Jupyter notebook 争 :8888，倾向让每个项目用不同端口；小团队后端：本地连同一个 SQLite/Redis 导致文件锁或数据污染\n\
+  - threshold_values: 容忍度：开发机上可以大胆 kill 掉老进程；生产/共享机器上必须确认归属才能杀。可用端口范围：开发通常在 3000-9999，系统端口 <1024 需要 sudo 避开\n\
+  - background_pressure: 所有服务一键启动的便利性诉求 vs 资源冲突的排查成本。Agent 需要在启动前主动检测，而不是等报错再解决，节省用户反复 debug 的时间"
+required_services:
+- config
+- todo
+optional_services:
+- notes
+- documents
+- kb
+key_actions:
+- 'Step 1: 从 trigger 列出用户要启动的所有任务，区分哪些必须并行运行（如 API+前端联调）、哪些只是顺序执行（如先跑迁移再启服务）。'
+- 'Step 2: 从 constraint_A 对每个任务做资源声明：read_file 读配置和启动脚本，search_files grep 端口号和路径，识别每个任务会占用什么资源。'
+- 'Step 3: 从 constraint_B 查当前系统状态：terminal 执行 lsof -i / netstat -tulpn 看已占端口；process list 看已运行进程；ls 看 /tmp 和锁文件。'
+- 'Step 4: 交叉比对找冲突：是否有多个任务要同一端口？是否有任务要的端口已被占用？是否有任务写入同一个文件？对每个冲突选择化解方式（改配置 > 容器化 > 串行 > 杀旧进程）。'
+- 'Step 5: 输出启动计划：每个任务的最终命令（含端口环境变量）+ 启动顺序 + 关闭方式。必要时先执行预清理（清理残留的 pid/lock 文件）。'
+safety_concerns:
+- 杀掉已占用端口的进程前必须确认进程归属和可丢弃性，不应杀重要的系统/共享服务
+- 涉及共享 SQLite/Redis 等数据存储时应避免并行写入导致的数据污染或锁竞争
+adaptable_elements:
+- 'trigger: 用户要求同时启动/运行多个任务（自然语言请求/待办清单/项目 README-Makefile 列出的 dev 命令），含任务列表和用户期望的启动时机'
+- 'constraint_A: 每个任务隐式依赖的资源（terminal lsof/netstat/ss、read_file 读配置、search_files grep 硬编码端口和路径、process list），含默认端口、写入文件路径、锁文件、临时目录、相关环境变量'
+- 'constraint_B: 当前系统中已被占用的资源状态（terminal、process list、ls /tmp、已有 systemd/docker 服务状态），含已占端口、已存在的 pid/lock 文件、当前进程及其资源占用、可用备选端口范围'
+- 'options: 修改任务的端口/路径配置（PORT=3001 等）vs 将任务容器化/沙箱化物理隔离 vs 改为串行执行 vs 杀掉已有冲突进程（仅在确定可丢弃时）'
+applicable_roles: []
+inapplicable_roles: []

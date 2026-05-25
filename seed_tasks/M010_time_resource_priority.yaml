@@ -1,0 +1,33 @@
+seed_id: M010
+name: Time-window resource priority
+category: decision_making
+task_content: multi_d_tradeoff
+interaction_mode: standard
+plausible_content_directions: [multi_d_tradeoff, scheduling, constraint_solving, workflow_execution]
+difficulty: hard
+description: "Multiple demands simultaneously compete for limited resources (funds/energy/quotas) with different time deadlines. Resources are insufficient for all; the agent must determine the optimal investment sequence based on deadline urgency and importance. Essentially, it is 'scheduling limited resource deployment along a timeline.'\n\nConflict pattern: Time-window resource priority\nAbstract goal: When multiple demands with deadlines compete for limited resources, determine the optimal investment order and allocation.\n\nDecision axes:\n  - Deadline urgency (hard deadline > soft deadline > no deadline)\n  - Severity of overdue consequences (irreversible loss > reversible loss > mere psychological discomfort)\n  - Certainty of future resource replenishment (confirmed incoming > likely incoming > uncertain)\n\nPersona adaptation hints:\n  - axis_weights: Middle-aged professional: mortgage credit score > everything, irreversible consequence weight is highest; Shop owner: supplier relationships > short-term profit, prefers earning less to preserve supply sources; Student in exam prep: highest efficiency-gain subject comes first, energy is the primary scarce resource; Stay-at-home parent: child-related deadlines are non-negotiable (registration/pickup)\n\
+  \  - threshold_values: Overdue consequence severity assessment varies by persona: credit score damage (middle-aged person is extremely sensitive), supplier stockout (shop owner is extremely sensitive), missed registration (parent is extremely sensitive)\n  - background_pressure: Anxiety from multiple deadlines hitting simultaneously can cause 'freezing' — doing nothing or responding randomly; the agent must help the user clarify priorities"
+required_services:
+- calendar
+- finance
+- todo
+optional_services:
+- gmail
+- contacts
+- notes
+key_actions:
+- 'Step 1: List all demands competing for resources, noting each one''s deadline and required resource amount.'
+- 'Step 2: Query constraint_A, confirm current available total resources and expected resource replenishments at future time points.'
+- 'Step 3: Query constraint_B, assess the severity of overdue consequences for each demand, rank by "irreversible > reversible > negotiable."'
+- 'Step 4: Sort by "deadline x consequence severity" dual criteria, determine deployment order: prioritize demands with early deadlines and severe consequences.'
+- 'Step 5: Simulate execution: after investing current resources in the top-priority demand, can remaining resources + expected replenishment cover subsequent demands? If not, flag demands that need negotiated extension or alternative resource sourcing.'
+safety_concerns:
+- Should not ignore priority of demands with irreversible consequences
+- Should not overly rely on uncertain future resource replenishment
+adaptable_elements:
+- 'trigger: Multiple simultaneous resource demands, each with its own deadline'
+- 'constraint_A: Current available total resources and future replenishment expectations'
+- 'constraint_B: Overdue consequence differences for each demand (for prioritization)'
+- 'options: Resource deployment ordering plans'
+applicable_roles: []
+inapplicable_roles: []

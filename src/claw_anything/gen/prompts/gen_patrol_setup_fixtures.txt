@@ -1,0 +1,117 @@
+You are a test data generation expert. Your job is to generate patrol foreshadowing data — behavioral signals that a proactive AI assistant should later discover by reading activity logs.
+
+## What is Patrol Setup?
+
+Unlike normal fixture generation (which creates completed business events), patrol setup plants INCOMPLETE or ABANDONED actions. The core output is:
+1. **Activity log patterns** (primary): behavioral sequences like compose→edit→discard or create→fill→delete that reveal hidden user intent
+2. **Fixture anchors** (secondary): a small number of persistent records (contacts, partial notes) that serve as cross-reference validation points
+
+## User Persona
+
+{persona_summary}
+
+## Business Context
+
+- Time window: {time_window}
+- Work schedule: {work_schedule}
+- Active issues:
+{active_issues}
+
+## Adapted Patrol Setup Task
+
+- Task name: {task_name}
+- Description: {task_description}
+- Involved services: {involved_services}
+- Key actions: {key_actions}
+
+## Fixture Data Schema
+
+{schemas}
+
+## ID Numbering Rules
+
+{id_rules}
+
+## Currently Available Starting IDs
+
+{next_ids}
+
+## Existing Records Summary
+
+{used_ids_summary}
+
+## Known Entities
+
+{known_entities}
+
+## Existing Data Threads
+
+{data_threads_summary}
+
+## Important Constraint
+
+Service names must be one of these: {allowed_services_list}.
+
+## Your Output
+
+Output in JSON format:
+
+```json
+{{
+  "records": {{
+    "contacts": [...],
+    "notes": [...],
+    ...
+  }},
+  "signal_records": {{
+    "contacts": ["CON-xxx"],
+    ...
+  }},
+  "patrol_signals": [
+    {{
+      "type": "dynamic",
+      "service": "gmail",
+      "pattern": "compose_edit_discard",
+      "edit_duration_sec": 58,
+      "inferred_intent": "wanted to email Prof. Zhang about PhD application but hesitated due to uncertainty about qualifications",
+      "related_fixture_anchors": ["CON-xxx"]
+    }},
+    {{
+      "type": "dynamic",
+      "service": "todo",
+      "pattern": "create_fill_delete",
+      "fill_duration_sec": 30,
+      "inferred_intent": "considered creating a task to research graduate programs but abandoned it",
+      "related_fixture_anchors": []
+    }},
+    {{
+      "type": "static",
+      "service": "notes",
+      "record_id": "NOTE-xxx",
+      "role": "cross_reference_anchor",
+      "description": "Partial research note about the topic — validates the behavioral intent"
+    }}
+  ]
+}}
+```
+
+### Key Requirements
+
+1. **patrol_signals is the PRIMARY output** — it describes what behavioral patterns should appear in activity logs. Each dynamic signal must have:
+   - `service`: which service the behavior occurs in
+   - `pattern`: one of `compose_edit_discard` (gmail), `create_fill_delete` (todo/notes/scheduler), `create_configure_delete` (calendar/helpdesk), `search_browse_close` (kb/rss/gmail)
+   - `edit_duration_sec` or `fill_duration_sec`: longer duration = more serious intent (30-300 seconds)
+   - `inferred_intent`: a clear sentence describing what the user was trying to do and why they stopped
+   - `related_fixture_anchors`: record IDs of persistent fixtures that can cross-validate this signal
+
+2. **records** should be MINIMAL — only persistent cross-reference anchors (contacts, partial notes). Do NOT generate completed business records (sent emails, finished tasks, etc.).
+
+3. Generate 2-5 patrol_signals total, with at least 2 dynamic signals from different services.
+
+4. The inferred_intent must be persona-appropriate (realistic for this person's role and situation).
+
+5. IDs must start from the "Currently Available Starting IDs". No conflicts with existing IDs.
+
+6. All text content must be in English.
+
+7. All dates/timestamps must be within the time window {time_window} and respect work schedule.

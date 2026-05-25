@@ -1,0 +1,893 @@
+task_id: TGUI27_calendar_expense_sepsis_training
+task_name: Calendar shows completed sepsis training event, verify finance records and log expense in My Expenses
+version: '1.0'
+category: finance
+difficulty: simple
+task_env:
+- mobile_gui
+- cli
+apps:
+- name: Fossify Calendar
+  package: org.fossify.calendar
+  role: View and manage calendar events
+- name: My Expenses
+  package: org.totschnig.myexpenses
+  role: View and record expenses via My Expenses
+inject:
+- type: calendar
+  fixture: fixtures/gui/fossify_calendar_gui/events.json
+  description: Fossify Calendar fixture data for task TGUI27
+- type: my_expenses
+  fixture: fixtures/gui/my_expenses_gui/data.json
+  description: My Expenses fixture data for task TGUI27
+services:
+- name: todo
+  command: python mock_services/todo/server.py
+  port: 9102
+  health_check: http://localhost:9102/todo/tasks
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9102/todo/reset
+  env:
+    TODO_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI27_calendar_expense_sepsis_training/fixtures/todo/tasks.json
+- name: scheduler
+  command: python mock_services/scheduler/server.py
+  port: 9112
+  health_check: http://localhost:9112/scheduler/jobs
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9112/scheduler/reset
+  env:
+    SCHEDULER_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI27_calendar_expense_sepsis_training/fixtures/scheduler/jobs.json
+- name: workmail
+  command: python mock_services/workmail/server.py
+  port: 9113
+  health_check: http://localhost:9113/workmail/messages
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9113/workmail/reset
+  env:
+    WORKMAIL_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI27_calendar_expense_sepsis_training/fixtures/workmail/inbox.json
+- name: claw_notion
+  command: python mock_services/claw_notion/server.py
+  port: 9114
+  health_check: http://localhost:9114/claw_notion/pages
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9114/claw_notion/reset
+  env:
+    CLAW_NOTION_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI27_calendar_expense_sepsis_training/fixtures/claw_notion/pages.json
+- name: meeting
+  command: python mock_services/meeting/server.py
+  port: 9116
+  health_check: http://localhost:9116/meeting/list
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9116/meeting/reset
+  env:
+    MEETING_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI27_calendar_expense_sepsis_training/fixtures/meeting/meetings.json
+tools:
+- name: fossify_calendar_list_events
+  description: 列出日历事件，支持日期范围过滤
+  input_schema:
+    type: object
+    properties:
+      start_date:
+        type: string
+      end_date:
+        type: string
+      query:
+        type: string
+      max_results:
+        type: integer
+- name: fossify_calendar_get_event
+  description: 获取单个日历事件的完整详情
+  input_schema:
+    type: object
+    properties:
+      event_id:
+        type: string
+    required:
+    - event_id
+- name: fossify_calendar_create_event
+  description: 在日历中新建事件
+  input_schema:
+    type: object
+    properties:
+      title:
+        type: string
+      start_time:
+        type: string
+      end_time:
+        type: string
+      description:
+        type: string
+      location:
+        type: string
+    required:
+    - title
+    - start_time
+    - end_time
+- name: fossify_calendar_update_event
+  description: 更新日历中已有事件的信息
+  input_schema:
+    type: object
+    properties:
+      event_id:
+        type: string
+      title:
+        type: string
+      start_time:
+        type: string
+      end_time:
+        type: string
+      description:
+        type: string
+      location:
+        type: string
+    required:
+    - event_id
+- name: my_expenses_list_transactions
+  description: 列出 My Expenses 中的交易记录，支持日期和分类过滤
+  input_schema:
+    type: object
+    properties:
+      start_date:
+        type: string
+      end_date:
+        type: string
+      category:
+        type: string
+      account_id:
+        type: string
+      max_results:
+        type: integer
+- name: my_expenses_create_transaction
+  description: 在 My Expenses 中录入一笔新交易
+  input_schema:
+    type: object
+    properties:
+      amount:
+        type: number
+      account_id:
+        type: string
+      category_id:
+        type: string
+      date:
+        type: string
+      comment:
+        type: string
+      payee:
+        type: string
+    required:
+    - amount
+    - account_id
+- name: my_expenses_get_transaction
+  description: 获取单笔交易的完整详情
+  input_schema:
+    type: object
+    properties:
+      transaction_id:
+        type: string
+    required:
+    - transaction_id
+- name: todo_list_tasks
+  description: List TODO tasks. Returns full task details. Default returns all tasks. Use status filter to narrow results.
+  input_schema:
+    type: object
+    properties:
+      status:
+        type: string
+        description: 'Filter by status: ''pending'', ''in_progress'', ''completed'', or ''all'' (default ''all'')'
+- name: todo_create_task
+  description: Create a new TODO task
+  input_schema:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+        description: Task description (optional)
+      priority:
+        type: string
+        description: Priority level, default 'medium'
+      due_date:
+        type: string
+        description: Due date in ISO format (optional)
+    required:
+    - title
+- name: todo_update_task
+  description: Update an existing TODO task. Only provided fields will be changed.
+  input_schema:
+    type: object
+    properties:
+      task_id:
+        type: string
+      title:
+        type: string
+        description: New title (optional)
+      priority:
+        type: string
+        description: New priority (optional)
+      status:
+        type: string
+        description: 'New status: ''pending'', ''in_progress'', ''completed'' (optional)'
+      tags:
+        type: array
+        items:
+          type: string
+        description: New tags list (optional)
+    required:
+    - task_id
+- name: todo_delete_task
+  description: Delete a TODO task by task_id
+  input_schema:
+    type: object
+    properties:
+      task_id:
+        type: string
+    required:
+    - task_id
+- name: scheduler_list_jobs
+  description: List scheduled jobs (summary, no action/history). Filter by status, enabled state, or tag.
+  input_schema:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Filter by last run status (optional)
+      enabled:
+        type: boolean
+        description: Filter by enabled state (optional)
+      tag:
+        type: string
+        description: Filter by tag (optional)
+- name: scheduler_get_job
+  description: Get full job details including action and execution history by job_id
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+    required:
+    - job_id
+- name: scheduler_create_job
+  description: Create a new scheduled job
+  input_schema:
+    type: object
+    properties:
+      name:
+        type: string
+      cron_expression:
+        type: string
+      action:
+        type: string
+      enabled:
+        type: boolean
+        description: Whether the job is enabled, default true
+      tags:
+        type: array
+        items:
+          type: string
+        description: Job tags (optional)
+      created_by:
+        type: string
+        description: Creator name (optional)
+    required:
+    - name
+    - cron_expression
+    - action
+- name: scheduler_update_job
+  description: Update a scheduled job. Only provided fields will be changed.
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+      enabled:
+        type: boolean
+        description: Enable/disable the job (optional)
+      cron_expression:
+        type: string
+        description: New cron expression (optional)
+      name:
+        type: string
+        description: New name (optional)
+      action:
+        type: string
+        description: New action (optional)
+      tags:
+        type: array
+        items:
+          type: string
+        description: New tags (optional)
+    required:
+    - job_id
+- name: scheduler_delete_job
+  description: Delete a scheduled job by job_id
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+    required:
+    - job_id
+- name: scheduler_job_history
+  description: Get execution history for a job. Default returns last 10 entries.
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+      limit:
+        type: integer
+        description: Max history entries to return, default 10
+    required:
+    - job_id
+- name: workmail_list_messages
+  description: 'List company-internal mail inbox. Returns subject/from/date (no body). Default: last 7 days, max 20 results.'
+  input_schema:
+    type: object
+    properties:
+      days_back:
+        type: integer
+        description: How many days back to search, default 7
+      max_results:
+        type: integer
+        description: Max messages to return, default 20
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+      query:
+        type: string
+        description: Search keyword in subject and sender (optional)
+- name: workmail_get_message
+  description: Get full company-internal message details including body by message_id
+  input_schema:
+    type: object
+    properties:
+      message_id:
+        type: string
+    required:
+    - message_id
+- name: workmail_send_message
+  description: Send a company-internal email to the specified recipient
+  input_schema:
+    type: object
+    properties:
+      to:
+        type: string
+      subject:
+        type: string
+      body:
+        type: string
+    required:
+    - to
+    - subject
+    - body
+- name: workmail_save_draft
+  description: Save a company-internal email as draft (not sent).
+  input_schema:
+    type: object
+    properties:
+      to:
+        type: string
+      subject:
+        type: string
+      body:
+        type: string
+      reply_to_message_id:
+        type: string
+        description: Original message ID if this is a reply (optional)
+    required:
+    - to
+    - subject
+    - body
+- name: claw_notion_list_pages
+  description: List claw_notion pages (summary only, no blocks). Optionally filter by parent_page_id or database_id. By default
+    archived pages are excluded.
+  input_schema:
+    type: object
+    properties:
+      parent_page_id:
+        type: string
+        description: Filter by parent page id (optional)
+      database_id:
+        type: string
+        description: Filter by database id (optional)
+      include_archived:
+        type: boolean
+        description: Whether to include archived pages, default false
+      max_results:
+        type: integer
+        description: Max pages to return, default 20
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+- name: claw_notion_get_page
+  description: Get full page details (title + properties + blocks) by page_id
+  input_schema:
+    type: object
+    properties:
+      page_id:
+        type: string
+    required:
+    - page_id
+- name: claw_notion_create_page
+  description: Create a new claw_notion page.
+  input_schema:
+    type: object
+    properties:
+      title:
+        type: string
+      parent_page_id:
+        type: string
+        description: Parent page id (optional)
+      database_id:
+        type: string
+        description: Database id if this page belongs to a database (optional)
+      properties:
+        type: object
+        description: Structured key-value properties (optional)
+      blocks:
+        type: array
+        items:
+          type: object
+        description: Initial blocks, each {type, text} (optional)
+    required:
+    - title
+- name: claw_notion_update_page_properties
+  description: Update a page's structured properties (merge into existing).
+  input_schema:
+    type: object
+    properties:
+      page_id:
+        type: string
+      properties:
+        type: object
+        description: Property keys to set/override
+    required:
+    - page_id
+    - properties
+- name: claw_notion_append_blocks
+  description: Append blocks to the end of a page's block list.
+  input_schema:
+    type: object
+    properties:
+      page_id:
+        type: string
+      blocks:
+        type: array
+        items:
+          type: object
+        description: Blocks to append
+    required:
+    - page_id
+    - blocks
+- name: claw_notion_archive_page
+  description: Archive a page (soft delete).
+  input_schema:
+    type: object
+    properties:
+      page_id:
+        type: string
+    required:
+    - page_id
+- name: claw_notion_search
+  description: Full-text search pages by query.
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+      max_results:
+        type: integer
+        description: Max pages to return, default 10
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+    required:
+    - query
+- name: claw_notion_query_database
+  description: Query pages in a database by equality filter on properties.
+  input_schema:
+    type: object
+    properties:
+      database_id:
+        type: string
+      property_filter:
+        type: object
+        description: Key-value pairs; page matches if all pairs equal page.properties[key]
+      max_results:
+        type: integer
+        description: Max pages to return, default 20
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+    required:
+    - database_id
+- name: meeting_list
+  description: List meetings. Filter by status, host, or date range.
+  input_schema:
+    type: object
+    properties:
+      status:
+        type: string
+        description: scheduled | started | ended | cancelled | all (default all)
+      host:
+        type: string
+        description: Filter by host email substring (optional)
+      start_date:
+        type: string
+        description: YYYY-MM-DD inclusive (optional)
+      end_date:
+        type: string
+        description: YYYY-MM-DD inclusive (optional)
+- name: meeting_get
+  description: Get full meeting details (participants + recordings) by meeting_id
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+    required:
+    - meeting_id
+- name: meeting_create
+  description: Schedule a new meeting.
+  input_schema:
+    type: object
+    properties:
+      topic:
+        type: string
+      host:
+        type: string
+        description: Host email
+      start_time:
+        type: string
+        description: ISO 8601
+      duration_minutes:
+        type: integer
+        description: Default 60
+      participants:
+        type: array
+        items:
+          type: object
+        description: Initial participant list (optional)
+    required:
+    - topic
+    - host
+    - start_time
+- name: meeting_update
+  description: Update topic/start_time/duration of a scheduled or started meeting.
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+      topic:
+        type: string
+      start_time:
+        type: string
+      duration_minutes:
+        type: integer
+    required:
+    - meeting_id
+- name: meeting_cancel
+  description: Cancel a scheduled/started meeting.
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+    required:
+    - meeting_id
+- name: meeting_start
+  description: Start a scheduled meeting.
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+    required:
+    - meeting_id
+- name: meeting_end
+  description: End a meeting.
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+    required:
+    - meeting_id
+- name: meeting_add_participant
+  description: Register a participant on a meeting.
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+      email:
+        type: string
+      role:
+        type: string
+        description: host | panelist | attendee (default attendee)
+    required:
+    - meeting_id
+    - email
+- name: meeting_remove_participant
+  description: Remove a participant from a meeting by email.
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+      email:
+        type: string
+    required:
+    - meeting_id
+    - email
+- name: meeting_list_recordings
+  description: List recordings across meetings.
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+        description: Filter to one meeting (optional)
+      host:
+        type: string
+        description: Filter by host email substring (optional)
+      start_date:
+        type: string
+        description: YYYY-MM-DD inclusive on recording date (optional)
+      end_date:
+        type: string
+        description: YYYY-MM-DD inclusive on recording date (optional)
+tool_endpoints:
+- tool_name: fossify_calendar_list_events
+  url: http://localhost:9120/gui/fossify_calendar/list_events
+  method: POST
+- tool_name: fossify_calendar_get_event
+  url: http://localhost:9120/gui/fossify_calendar/get_event
+  method: POST
+- tool_name: fossify_calendar_create_event
+  url: http://localhost:9120/gui/fossify_calendar/create_event
+  method: POST
+- tool_name: fossify_calendar_update_event
+  url: http://localhost:9120/gui/fossify_calendar/update_event
+  method: POST
+- tool_name: my_expenses_list_transactions
+  url: http://localhost:9120/gui/my_expenses/list_transactions
+  method: POST
+- tool_name: my_expenses_create_transaction
+  url: http://localhost:9120/gui/my_expenses/create_transaction
+  method: POST
+- tool_name: my_expenses_get_transaction
+  url: http://localhost:9120/gui/my_expenses/get_transaction
+  method: POST
+- tool_name: todo_list_tasks
+  url: http://localhost:9102/todo/tasks
+  method: POST
+- tool_name: todo_create_task
+  url: http://localhost:9102/todo/tasks/create
+  method: POST
+- tool_name: todo_update_task
+  url: http://localhost:9102/todo/tasks/update
+  method: POST
+- tool_name: todo_delete_task
+  url: http://localhost:9102/todo/tasks/delete
+  method: POST
+- tool_name: scheduler_list_jobs
+  url: http://localhost:9112/scheduler/jobs
+  method: POST
+- tool_name: scheduler_get_job
+  url: http://localhost:9112/scheduler/jobs/get
+  method: POST
+- tool_name: scheduler_create_job
+  url: http://localhost:9112/scheduler/jobs/create
+  method: POST
+- tool_name: scheduler_update_job
+  url: http://localhost:9112/scheduler/jobs/update
+  method: POST
+- tool_name: scheduler_delete_job
+  url: http://localhost:9112/scheduler/jobs/delete
+  method: POST
+- tool_name: scheduler_job_history
+  url: http://localhost:9112/scheduler/jobs/history
+  method: POST
+- tool_name: workmail_list_messages
+  url: http://localhost:9113/workmail/messages
+  method: POST
+- tool_name: workmail_get_message
+  url: http://localhost:9113/workmail/messages/get
+  method: POST
+- tool_name: workmail_send_message
+  url: http://localhost:9113/workmail/send
+  method: POST
+- tool_name: workmail_save_draft
+  url: http://localhost:9113/workmail/drafts/save
+  method: POST
+- tool_name: claw_notion_list_pages
+  url: http://localhost:9114/claw_notion/pages
+  method: POST
+- tool_name: claw_notion_get_page
+  url: http://localhost:9114/claw_notion/pages/get
+  method: POST
+- tool_name: claw_notion_create_page
+  url: http://localhost:9114/claw_notion/pages/create
+  method: POST
+- tool_name: claw_notion_update_page_properties
+  url: http://localhost:9114/claw_notion/pages/update_properties
+  method: POST
+- tool_name: claw_notion_append_blocks
+  url: http://localhost:9114/claw_notion/pages/append_blocks
+  method: POST
+- tool_name: claw_notion_archive_page
+  url: http://localhost:9114/claw_notion/pages/archive
+  method: POST
+- tool_name: claw_notion_search
+  url: http://localhost:9114/claw_notion/search
+  method: POST
+- tool_name: claw_notion_query_database
+  url: http://localhost:9114/claw_notion/database/query
+  method: POST
+- tool_name: meeting_list
+  url: http://localhost:9116/meeting/list
+  method: POST
+- tool_name: meeting_get
+  url: http://localhost:9116/meeting/get
+  method: POST
+- tool_name: meeting_create
+  url: http://localhost:9116/meeting/create
+  method: POST
+- tool_name: meeting_update
+  url: http://localhost:9116/meeting/update
+  method: POST
+- tool_name: meeting_cancel
+  url: http://localhost:9116/meeting/cancel
+  method: POST
+- tool_name: meeting_start
+  url: http://localhost:9116/meeting/start
+  method: POST
+- tool_name: meeting_end
+  url: http://localhost:9116/meeting/end
+  method: POST
+- tool_name: meeting_add_participant
+  url: http://localhost:9116/meeting/participants/add
+  method: POST
+- tool_name: meeting_remove_participant
+  url: http://localhost:9116/meeting/participants/remove
+  method: POST
+- tool_name: meeting_list_recordings
+  url: http://localhost:9116/meeting/recordings
+  method: POST
+environment:
+  timeout_seconds: 1200
+  max_turns: 100
+  fixtures:
+  - fixtures/gui/fossify_calendar_gui/events.json
+  - fixtures/gui/my_expenses_gui/data.json
+  - fixtures/todo/tasks.json
+  - fixtures/scheduler/jobs.json
+  - fixtures/workmail/inbox.json
+  - fixtures/claw_notion/pages.json
+  - fixtures/meeting/meetings.json
+execution_date: '2026-04-01'
+prompt:
+  text: I just noticed that completed sepsis training event from March 28 in my calendar. I need to make sure all the expenses
+    are properly logged in My Expenses, but I want to check the finance system first to see what's already been recorded so
+    I don't create duplicates. Can you help me sort this out?
+  language: en
+scoring_components:
+- name: Identified calendar event and extracted expense details
+  weight: 0.15
+  check:
+    type: tool_called
+    tool_name: fossify_calendar_get_event
+    min_calls: 1
+- name: Correctly identified already-recorded transaction
+  weight: 0.25
+  check:
+    type: keywords_present
+    keywords:
+    - - TXN-6005
+      - '280'
+      - handbook
+      - reference handbook
+    - - already recorded
+      - already in finance
+      - already exists
+      - already logged
+      - finance system has
+- name: Identified missing unrecorded expenses requiring action
+  weight: 0.35
+  check:
+    type: keywords_present
+    keywords:
+    - - '450'
+      - simulation supplies
+      - training simulation
+      - IV start kits
+    - - '85'
+      - printed
+      - case materials
+      - printed case
+    - - not recorded
+      - not yet recorded
+      - missing
+      - unrecorded
+      - needs to be logged
+      - pending
+- name: Distinguished estimated versus exact amounts in recommendations
+  weight: 0.3
+  check:
+    type: keywords_present
+    keywords:
+    - - estimated
+      - estimate
+      - approximate
+      - not exact
+    - - exact
+      - exact amount
+      - have receipt
+      - receipted
+- name: Recommended proper categorization for educational expenses
+  weight: 0.15
+  check:
+    type: keywords_present
+    keywords:
+    - - professional development
+      - education
+      - educational
+      - training
+    - - category
+      - categorize
+      - categorized
+safety_checks: []
+expected_actions:
+- service: gui_calendar
+  action_key: retrieve_sepsis_training_event
+  required: true
+- service: finance
+  action_key: query_march_transactions
+  required: true
+- service: gui_my_expenses
+  action_key: recommend_missing_expense_entries
+  required: true
+judge_rubric: 'Award full marks if the agent: (1) successfully located calendar event FCAL-105 and extracted the three expense
+  items (¥280 handbooks, ¥450 simulation supplies, ¥85 printed materials), (2) queried the finance system and correctly identified
+  that TXN-6005 (¥280 handbooks) is already recorded, (3) clearly stated that the remaining two items (¥450 and ¥85) need
+  to be logged in My Expenses, (4) distinguished that ¥450 is estimated while ¥85 is exact/receipted, and (5) recommended
+  appropriate categorization as professional development/educational expenses. Deduct points if: the agent creates duplicate
+  entries for already-recorded expenses, fails to query finance system before recommending action, does not distinguish estimated
+  vs exact amounts, or recommends incorrect expense categories. The agent should provide actionable guidance that prevents
+  duplicate recording while ensuring complete expense tracking.'
+reference_solution: '1. Call fossify_calendar_gui_list_events or fossify_calendar_gui_get_event with event_id FCAL-105 to
+  retrieve the ''Sepsis Protocol Training Session'' event from March 28, 2026.
+
+  2. Extract expense details from the event description: reference handbook set (¥280), training simulation supplies (¥450),
+  printed case materials (¥85), total ¥815.
+
+  3. Call finance_list_transactions with date range covering March 27-29, 2026 to check for existing records related to the
+  training event.
+
+  4. Identify that TXN-6005 (¥280 for Medical Education Publishing House - Sepsis Management Reference Handbook Set) is already
+  recorded in the finance system on March 28.
+
+  5. Determine that two expense items are NOT yet recorded: (a) training simulation supplies ¥450 (estimated amount), and
+  (b) printed case materials ¥85 (exact amount from receipt).
+
+  6. Recommend creating two new entries in My Expenses GUI: one for ¥450 simulation supplies marked as ESTIMATED in notes,
+  one for ¥85 printed materials marked as EXACT/receipted, both categorized under professional development or educational
+  expenses.
+
+  7. Optionally suggest marking the expense tracking habit in loop_habit_gui if such a habit exists.
+
+  8. Emphasize that the ¥280 handbook expense should NOT be re-entered since it''s already in the finance system as TXN-6005,
+  avoiding duplicate recording.'
+primary_dimensions:
+- completion
+- robustness
+- communication
+- safety

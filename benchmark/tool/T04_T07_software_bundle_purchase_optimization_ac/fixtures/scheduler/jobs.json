@@ -1,0 +1,117 @@
+[
+  {
+    "job_id": "JOB-701",
+    "name": "weekly_portfolio_backup",
+    "description": "Backup design portfolio files to cloud storage",
+    "cron_expression": "0 22 * * 0",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "backup_portfolio",
+    "created_by": "Carlos Rivera",
+    "tags": [
+      "backup",
+      "portfolio"
+    ],
+    "notes": "",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-702",
+    "name": "weekly_portfolio_backup",
+    "description": "Weekly backup reminder for design portfolio files",
+    "cron_expression": "0 18 * * 5",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder",
+    "created_by": "Carlos Rivera",
+    "tags": [
+      "backup",
+      "reminder"
+    ],
+    "notes": "Decided to use manual backup instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-703",
+    "name": "weekly_portfolio_backup",
+    "description": "Backup design portfolio files to cloud storage",
+    "cron_expression": "0 22 * * 0",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "backup_portfolio_files",
+    "created_by": "Carlos Rivera",
+    "tags": [
+      "backup",
+      "portfolio"
+    ],
+    "notes": "Decided manual backup is sufficient",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-704",
+    "name": "weekly_portfolio_backup_reminder",
+    "description": "Weekly reminder to backup design portfolio files to external drive",
+    "cron_expression": "0 18 * * 5",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Carlos Rivera",
+    "tags": [
+      "backup",
+      "reminder",
+      "portfolio"
+    ],
+    "notes": "Actually I already have auto-backup set up, this is redundant",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-705",
+    "name": "weekly_portfolio_backup",
+    "description": "Weekly backup of design portfolio files",
+    "cron_expression": "0 18 * * 5",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "backup_portfolio",
+    "created_by": "Carlos Rivera",
+    "tags": [
+      "backup",
+      "portfolio"
+    ],
+    "notes": "Decided to use manual backup instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-706",
+    "name": "daily_social_media_post",
+    "description": "Auto-post design work to social media",
+    "cron_expression": "0 9 * * *",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "post_to_social",
+    "created_by": "Carlos Rivera",
+    "tags": [
+      "marketing",
+      "social"
+    ],
+    "notes": "Better to post manually for authenticity",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  }
+]

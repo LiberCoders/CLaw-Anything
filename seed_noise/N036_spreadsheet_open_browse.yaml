@@ -1,0 +1,16 @@
+noise_id: N036
+name: "Open and browse a spreadsheet"
+description: "Open a spreadsheet workbook, look at a data range out of curiosity or to recall a number, then close without making changes"
+involved_services: [sheet]
+leaves_trace: false
+action_sequence:
+  - "List available workbooks"
+  - "Open a relevant workbook"
+  - "Browse one or two sheets"
+  - "Read a specific data range"
+  - "Close the workbook"
+time_preference: any
+adaptable_elements:
+  - "Which workbook to open"
+  - "What range to look at"
+  - "Whether to run a quick aggregate (SUM/AVG) out of curiosity"

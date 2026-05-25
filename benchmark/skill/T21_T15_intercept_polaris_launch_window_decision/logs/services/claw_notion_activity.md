@@ -1,0 +1,51 @@
+# Claw_Notion Activity Log
+
+| Time | Action | Reference | Duration |
+|------|--------|-----------|----------|
+| 2026-01-01 14:18:02 | open_notion | - | 1s |
+| 2026-01-01 14:18:04 | browse_sidebar | - | 8s |
+| 2026-01-01 14:18:13 | close_notion | - | 2s |
+| 2026-01-27 13:00:32 | open_notion | - | 1s |
+| 2026-01-27 13:00:35 | browse_sidebar | - | 27s |
+| 2026-01-27 13:01:07 | close_notion | - | 1s |
+| 2026-02-09 11:31:19 | open_notion | - | 2s |
+| 2026-02-09 11:31:26 | browse_sidebar | - | 5s |
+| 2026-02-09 11:31:32 | close_notion | - | 3s |
+| 2026-02-10 10:30:00 | open_notion | - | 3s |
+| 2026-02-10 10:30:08 | create_new_page | - | 3s |
+| 2026-02-10 10:30:13 | set_page_title | NPAG-1 | 4s |
+| 2026-02-10 10:30:22 | fill_page_blocks | - | 216s |
+| 2026-02-10 10:34:01 | save_page | NPAG-1 | 3s |
+| 2026-02-10 10:34:07 | close_notion | - | 1s |
+| 2026-02-14 15:30:00 | open_notion | - | 1s |
+| 2026-02-14 15:30:05 | create_new_page | - | 1s |
+| 2026-02-14 15:30:07 | set_page_title | NPAG-4 | 4s |
+| 2026-02-14 15:30:13 | fill_page_blocks | - | 31s |
+| 2026-02-14 15:30:45 | save_page | NPAG-4 | 1s |
+| 2026-02-14 15:30:47 | close_notion | - | 2s |
+| 2026-02-15 09:00:00 | open_notion | - | 2s |
+| 2026-02-15 09:00:05 | create_new_page | - | 1s |
+| 2026-02-15 09:00:07 | set_page_title | NPAG-2 | 3s |
+| 2026-02-15 09:00:13 | fill_page_blocks | - | 244s |
+| 2026-02-15 09:04:18 | save_page | NPAG-2 | 1s |
+| 2026-02-15 09:04:24 | close_notion | - | 1s |
+| 2026-02-16 18:15:14 | open_notion | - | 3s |
+| 2026-02-16 18:15:22 | create_new_page | - | 1s |
+| 2026-02-16 18:15:24 | edit_page_draft | - | 56s |
+| 2026-02-16 18:16:24 | discard_page | - | 3s |
+| 2026-02-19 13:26:12 | open_notion | - | 2s |
+| 2026-02-19 13:26:15 | browse_sidebar | - | 29s |
+| 2026-02-19 13:26:45 | close_notion | - | 2s |
+| 2026-02-21 09:15:00 | open_notion | - | 1s |
+| 2026-02-21 09:15:03 | create_new_page | - | 1s |
+| 2026-02-21 09:15:06 | set_page_title | NPAG-3 | 1s |
+| 2026-02-21 09:15:11 | fill_page_blocks | - | 205s |
+| 2026-02-21 09:18:37 | save_page | NPAG-3 | 1s |
+| 2026-02-21 09:18:39 | close_notion | - | 3s |
+| 2026-02-26 12:14:15 | open_notion | - | 2s |
+| 2026-02-26 12:14:21 | create_new_page | - | 5s |
+| 2026-02-26 12:14:27 | edit_page_draft | - | 39s |
+| 2026-02-26 12:15:07 | discard_page | - | 2s |
+| 2026-02-28 16:13:43 | open_notion | - | 1s |
+| 2026-02-28 16:13:48 | browse_sidebar | - | 21s |
+| 2026-02-28 16:14:11 | close_notion | - | 1s |

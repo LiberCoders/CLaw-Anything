@@ -1,0 +1,869 @@
+[
+  {
+    "message_id": "MSG-5001",
+    "from": "wang.jian@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "URGENT: Algorithm performance regression in production - need your analysis by EOD",
+    "date": "2026-02-13T10:15:00+08:00",
+    "body": "Hi Li Ming,\n\nWe've detected a significant performance regression in the recommendation algorithm you've been working on. The CTR dropped by 3.2% in production since yesterday's deployment.\n\nI need you to:\n1. Pull the A/B test metrics from the past 48 hours\n2. Compare your latest model's inference latency against the baseline\n3. Check if the feature engineering pipeline is causing any bottlenecks\n\nThis is affecting real users, so please prioritize this and send me your preliminary analysis by end of day. We may need to roll back if we can't identify the issue quickly.\n\nLet's sync at 3 PM today to discuss your findings.\n\nBest,\nDr. Wang Jian",
+    "labels": [
+      "inbox",
+      "urgent"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5002",
+    "from": "chen.hui@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Code Review Required: PR #2847 - Embedding layer optimization",
+    "date": "2026-02-12T16:45:00+08:00",
+    "body": "Hi Li Ming,\n\nI've completed my review of your PR #2847 for the embedding layer optimization. Overall the approach looks solid, but I have several concerns:\n\n**Blocking issues:**\n- Line 234: Memory leak potential in the batch processing loop\n- Line 567: Thread safety issue with the shared cache\n- Missing unit tests for edge cases (empty input, max batch size)\n\n**Suggestions:**\n- Consider using a lock-free queue instead of mutex for better performance\n- Add performance benchmarks to validate the 15% speedup claim\n\nPlease address the blocking issues by tomorrow (Feb 13) so we can merge this before the sprint deadline on Feb 17. The PM is waiting on this for the quarterly demo.\n\nLet me know if you need any clarification on my comments.\n\nChen Hui\nStaff Engineer, Algorithm Team",
+    "labels": [
+      "inbox",
+      "code-review"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5003",
+    "from": "zhang.lin@bytedance.com",
+    "to": "li.ming@bytedance.com, wang.jian@bytedance.com, chen.hui@bytedance.com",
+    "subject": "Sprint Demo Prep - Feb 17 deadline approaching",
+    "date": "2026-02-11T14:20:00+08:00",
+    "body": "Hi team,\n\nQuick reminder that our Q1 sprint demo is scheduled for February 17th at 2 PM. The executive team will be attending, including our VP of Engineering.\n\n**Li Ming**, I need your algorithm optimization results ready by Feb 16 EOD:\n- Performance benchmark comparison (before/after)\n- Latency improvements with percentile breakdown (p50, p95, p99)\n- Production deployment plan and rollback strategy\n- 5-minute presentation deck\n\nThis is a high-visibility demo that will influence our Q2 roadmap and potentially your intern conversion decision. Please don't let time management issues derail this - reach out if you need help prioritizing.\n\nLet's have a dry run on Feb 16 at 10 AM.\n\nThanks,\nZhang Lin\nSenior PM",
+    "labels": [
+      "inbox",
+      "deadline",
+      "important"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5004",
+    "from": "liu.yang@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Intern mid-term evaluation form - due Feb 20",
+    "date": "2026-02-10T09:30:00+08:00",
+    "body": "Hi Li Ming,\n\nHope you're enjoying your internship so far! As part of our intern program, we need you to complete a mid-term self-evaluation form.\n\nPlease fill out the form at the link below by February 20:\nhttps://hr.bytedance.com/intern-eval/2026-Q1\n\nThe form covers:\n- Your learning objectives and progress\n- Challenges you've faced\n- Feedback on mentorship and team support\n- Career development interests\n\nThis is a standard process and will be reviewed with your mentor. Let me know if you have any questions!\n\nBest regards,\nLiu Yang\nIntern Coordinator",
+    "labels": [
+      "inbox",
+      "hr"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5005",
+    "from": "tech-talk@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "Tech Talk: Advanced Neural Architecture Search - Feb 19",
+    "date": "2026-02-09T11:00:00+08:00",
+    "body": "Hi everyone,\n\nYou're invited to our monthly tech talk series!\n\n**Topic:** Advanced Neural Architecture Search for Production Systems\n**Speaker:** Dr. Li Wei, Principal Scientist\n**Date:** February 19, 2026, 3:00 PM - 4:30 PM\n**Location:** Building 3, Auditorium A\n\nDr. Li will share insights from his recent work on automated model optimization and discuss how NAS techniques can be applied to real-world recommendation systems.\n\nLight refreshments will be provided. RSVP appreciated but not required.\n\nSee you there!\nTech Talk Organizing Committee",
+    "labels": [
+      "inbox",
+      "events"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5006",
+    "from": "wang.jian@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Re: Weekly 1-on-1 notes and action items",
+    "date": "2026-02-07T15:30:00+08:00",
+    "body": "Hi Li Ming,\n\nThanks for our sync today. Here are the key action items from our discussion:\n\n**Action items for you:**\n1. Finish the embedding layer optimization PR by Feb 12 (in progress, looking good)\n2. Prepare benchmark results for the Feb 17 demo\n3. Read the paper I shared on efficient attention mechanisms - we'll discuss next week\n4. Work on improving your time estimation skills - try breaking down tasks into smaller chunks\n\n**Discussion topics for next week (Feb 14):**\n- Your progress on the production issue investigation\n- Career development and full-time conversion timeline\n- Q2 project options\n\nKeep up the good work on the technical side. I know you're smart and capable - just need to work on the planning and prioritization aspects.\n\nBest,\nWang Jian",
+    "labels": [
+      "inbox",
+      "mentor"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5007",
+    "from": "system-alerts@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "Model Training Job #8472 completed successfully",
+    "date": "2026-02-13T03:22:00+08:00",
+    "body": "Training job #8472 has completed successfully.\n\nJob Details:\n- Model: recommendation_v2_embedding_opt\n- Duration: 6h 42m\n- Final validation loss: 0.2847\n- Checkpoint saved to: /models/rec_v2/checkpoint_20260213\n\nView full metrics at: https://ml-platform.bytedance.com/jobs/8472\n\nThis is an automated message.",
+    "labels": [
+      "inbox",
+      "automated"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5008",
+    "from": "chen.hui@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "Team: Code review best practices reminder",
+    "date": "2026-02-06T10:15:00+08:00",
+    "body": "Hi team,\n\nFriendly reminder about our code review standards:\n\n1. All PRs must have at least one approving review before merge\n2. Include unit tests for new features (target: >80% coverage)\n3. Add performance benchmarks for optimization PRs\n4. Respond to review comments within 24 hours\n5. Keep PRs under 500 lines when possible\n\nI've noticed some PRs sitting in review limbo lately. Let's stay on top of these to keep our velocity high.\n\nThanks,\nChen Hui",
+    "labels": [
+      "inbox",
+      "team"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5009",
+    "from": "wang.jian@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Technical Discussion: Recommendation Algorithm Optimization - Three Time Slots",
+    "date": "2026-03-26T15:30:00+08:00",
+    "body": "Hi Li Ming,\n\nI'd like to schedule a deep-dive technical discussion about your recommendation algorithm optimization approach before the upcoming sprint demo. This will help ensure you're well-prepared and we can address any technical gaps together.\n\nI have three possible time slots this week:\n1. Thursday (March 27) 10:00-11:30 AM\n2. Thursday (March 27) 3:00-4:30 PM\n3. Friday (March 28) 2:00-3:30 PM\n\nPlease check your calendar and let me know which slot works best for you. I'd like you to prepare:\n- Your current optimization approach and methodology\n- Experiment results and performance metrics\n- Any technical challenges you've encountered\n- Questions or areas where you need guidance\n\nLooking forward to the discussion.\n\nBest regards,\nDr. Wang Jian",
+    "labels": [
+      "important",
+      "mentor"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5010",
+    "from": "chen.hui@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Code Review Session - Thursday 3:00 PM",
+    "date": "2026-03-25T11:20:00+08:00",
+    "body": "Hi Li Ming,\n\nJust confirming our code review session for Thursday afternoon at 3:00 PM. We'll be reviewing the caching layer changes and the new feature extraction pipeline.\n\nPlease have your code ready and be prepared to walk through the key changes. This should take about 60-90 minutes.\n\nSee you then!\n\nChen Hui",
+    "labels": [
+      "team",
+      "code-review"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5011",
+    "from": "zhang.lin@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "Reminder: Sprint Demo Dry Run - Friday 10:00 AM",
+    "date": "2026-03-26T09:15:00+08:00",
+    "body": "Team,\n\nQuick reminder that our sprint demo dry run is scheduled for Friday, March 28 at 10:00 AM in Conference Room B.\n\nThis is mandatory for all team members presenting in the executive review. Please come prepared with your demo materials and slides. We'll do a full run-through and provide feedback.\n\nExpected duration: 2 hours\n\nAgenda:\n- Opening (10 min)\n- Individual demos (15 min each)\n- Q&A practice (30 min)\n- Feedback and improvements (30 min)\n\nSee you all there.\n\nZhang Lin\nTech Lead",
+    "labels": [
+      "team",
+      "demo"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5012",
+    "from": "system-alerts@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Weekly Report: Model Training Summary - Week 12",
+    "date": "2026-03-24T18:00:00+08:00",
+    "body": "Weekly Model Training Summary\nWeek: March 17-23, 2026\n\nTotal Jobs: 47\nSuccessful: 45\nFailed: 2\n\nTop Models by Performance:\n1. RecSys-v2.3.1 - AUC 0.847\n2. RecSys-v2.3.0 - AUC 0.843\n3. RecSys-v2.2.9 - AUC 0.839\n\nResource Usage:\n- GPU Hours: 1,247\n- Storage: 2.3 TB\n\nFor detailed logs, visit the training dashboard.\n\nThis is an automated message.",
+    "labels": [
+      "automated",
+      "reports"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5013",
+    "from": "system-alerts@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "System Alert: Late Night Activity Detected - 5 consecutive days",
+    "date": "2026-02-19T08:15:00+08:00",
+    "body": "System Health Monitor Alert\n\nUser: li.ming@bytedance.com\nAlert Type: Work Pattern Anomaly\n\nWe've detected unusual work patterns for your account:\n- Late night commits: Feb 14-18 (23:00-02:30)\n- Average daily active hours: 12.5 hours\n- Weekend activity: Feb 15-16\n\nThis pattern may indicate high workload or burnout risk. Consider:\n1. Reviewing task priorities with your mentor\n2. Delegating non-critical tasks\n3. Scheduling focus time blocks\n\nFor wellness resources, visit: internal.bytedance.com/wellness",
+    "labels": [
+      "system",
+      "wellness"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5014",
+    "from": "chen.hui@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Re: Code Review PR #2847 - Can help with discussion points",
+    "date": "2026-02-18T16:45:00+08:00",
+    "body": "Hey Li Ming,\n\nI saw your PR #2847 has some outstanding review comments from the senior team. I've dealt with similar embedding layer optimizations in the past sprint.\n\nIf you want, I can help respond to the architectural discussion points (the ones about memory allocation patterns). That way you can focus on the production regression analysis that Dr. Wang flagged as urgent.\n\nLet me know if you want to delegate some of those review responses to me. I have bandwidth this week.\n\nChen Hui",
+    "labels": [
+      "team",
+      "code-review"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5015",
+    "from": "wang.jian@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Sprint Demo Prep - Experiment tracking needs update before Friday",
+    "date": "2026-02-18T14:20:00+08:00",
+    "body": "Li Ming,\n\nFor the sprint demo on Feb 21, we need the experiment tracking spreadsheet updated with the latest A/B test results. This is required for the executive deck.\n\nThe data is already in the system - just needs to be pulled into the shared sheet with the standard formatting. Should take about 1-2 hours.\n\nDeadline: Friday Feb 20, 5 PM (so we have time to review before Monday's demo)\n\nLet me know if you hit any blockers.\n\nDr. Wang",
+    "labels": [
+      "sprint",
+      "demo"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5016",
+    "from": "zhang.lin@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "Team Lunch - Friday Feb 20 at 12:30",
+    "date": "2026-02-19T10:00:00+08:00",
+    "body": "Hi team,\n\nLet's do a team lunch this Friday to celebrate wrapping up the sprint! We're going to the new Sichuan restaurant near the office.\n\nMeeting at the lobby at 12:30 PM.\n\nSee you there!\nZhang Lin",
+    "labels": [
+      "team",
+      "social"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5017",
+    "from": "github-notifications@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "PR #2891 opened: Neural network optimization - batch normalization refactor",
+    "date": "2026-02-19T10:15:00+08:00",
+    "body": "Zhang Lin opened a new pull request:\n\nPR #2891: Neural network optimization - batch normalization refactor\n\nThis PR refactors the batch normalization layer in our recommendation model to improve training stability and reduce memory overhead by ~15%. The changes include:\n- Replacing custom BN implementation with fused kernel\n- Adding gradient checkpointing for large batch sizes\n- Updating unit tests and benchmarks\n\nEstimated review time: 2-3 hours for thorough code inspection\n\nReviewers requested: @li.ming, @chen.hui\n\nView PR: https://github.bytedance.com/algorithm/rec-model/pull/2891",
+    "labels": [
+      "code-review",
+      "github"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5018",
+    "from": "github-notifications@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "[MERGED] PR #2903: Neural network optimization - layer fusion approach",
+    "date": "2026-02-22T11:42:00+08:00",
+    "body": "Liu Yang merged pull request #2903 into main:\n\nPR #2903: Neural network optimization - layer fusion approach\n\nThis PR implements a fundamentally different optimization strategy using operator fusion instead of individual layer improvements. Key changes:\n- Fuses multiple sequential layers (conv + BN + activation) into single optimized kernels\n- Achieves 22% speedup in forward pass\n- Reduces memory footprint by 18%\n\nThis approach supersedes individual layer optimizations and sets new baseline for future work.\n\nReviewed by: @wang.jian (approved), @chen.hui (approved)\nMerged at: 2026-02-22 11:40:23 +08:00\n\nView commit: https://github.bytedance.com/algorithm/rec-model/commit/a7f3d92",
+    "labels": [
+      "code-review",
+      "github",
+      "merged"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5019",
+    "from": "li.ming@bytedance.com",
+    "to": "zhang.lin@bytedance.com",
+    "subject": "Re: PR #2891 - Detailed review comments (draft)",
+    "date": "2026-02-22T10:30:00+08:00",
+    "body": "Hi Zhang Lin,\n\nI've been doing a deep review of PR #2891 since yesterday afternoon. So far I've spent about 3.5 hours analyzing the batch normalization changes and have identified several important issues:\n\n1. Memory allocation pattern in the fused kernel may cause fragmentation under high batch sizes (lines 147-162)\n2. Gradient checkpointing implementation doesn't handle edge case when batch_size < checkpoint_interval (lines 203-215)\n3. Unit test coverage missing for mixed-precision training scenarios\n4. Benchmark methodology doesn't account for cold-start vs warm-cache performance\n\nI'm about 60% through the full review and was planning to finish the remaining files (optimizer integration, distributed training hooks) this afternoon.\n\nI'll post the complete review with suggestions by end of day.\n\nBest,\nLi Ming\n\n[Draft - not sent yet, saved in drafts folder at 10:28 AM]",
+    "labels": [
+      "draft",
+      "code-review"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5020",
+    "from": "chen.hui@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "Team update: New optimization baseline merged (PR #2903)",
+    "date": "2026-02-22T12:05:00+08:00",
+    "body": "Hi team,\n\nGood news - Liu Yang's layer fusion PR (#2903) just got merged into main! This is a significant architectural change that improves our model performance substantially.\n\nImportant notes for everyone:\n- Any PRs targeting individual layer optimizations should now rebase against this new baseline\n- The fusion approach changes how we think about layer-level improvements\n- We should prioritize work that complements fusion rather than duplicates effort\n\nIf you have open PRs in this area, please sync with Liu Yang to understand potential conflicts.\n\nThanks,\nChen Hui",
+    "labels": [
+      "team",
+      "announcement"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5021",
+    "from": "chen.hui@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "Re: Caching layer code review backlog - need volunteers",
+    "date": "2026-01-03T16:45:00+08:00",
+    "body": "Hi team,\n\nThanks for the offers to help. I'm currently swamped with PR reviews for the caching refactor (12 PRs in queue, most are 500+ lines). Will be working through these over the next 10 days to hit our Jan 15 merge deadline.\n\nIf anyone has bandwidth to take on reviews for PRs #2910-2913, that would help a lot. Otherwise I'll power through this weekend.\n\nChen Hui",
+    "labels": [
+      "team",
+      "code-review"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5022",
+    "from": "apple-support@apple.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Your Apple Support Case - MacBook Pro Thermal Issue Inquiry",
+    "date": "2026-01-05T14:20:00+08:00",
+    "body": "Dear Li Ming,\n\nThank you for contacting Apple Support regarding thermal throttling issues with your MacBook Pro (Serial: C02XK0PHJG5H).\n\nBased on your description, this may require hardware inspection and potential fan/thermal paste servicing. Our repair options:\n\n**Express Service (Recommended)**\n- Price: ¥2,800 (thermal system service)\n- Turnaround: 2 business days from drop-off\n- Includes: Complete thermal system diagnostic, fan cleaning/replacement if needed, thermal paste reapplication\n- Pickup available at Beijing Sanlitun Apple Store\n\n**Standard Service**\n- Price: ¥2,200\n- Turnaround: 5-7 business days\n- Same scope as Express Service\n\nPlease note: If additional hardware issues are discovered during diagnostic, we will contact you with revised pricing before proceeding.\n\nTo proceed, please book an appointment at https://support.apple.com/repair\n\nCase ID: AS-20260105-8472\n\nBest regards,\nApple Support Team",
+    "labels": [
+      "support",
+      "hardware"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5023",
+    "from": "zhang.lin@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Sprint demo dry run schedule - Jan 13",
+    "date": "2026-01-04T10:30:00+08:00",
+    "body": "Hi Li Ming,\n\nQuick reminder that our sprint demo dry run is scheduled for January 13 (Monday) at 2:00 PM. This is the final rehearsal before the executive review on Jan 17.\n\nYou'll need to demo your recommendation algorithm optimization results - please have your training metrics and performance comparison ready. Dr. Wang mentioned your thermal throttling work has been solid, so this should be straightforward.\n\nLet me know if you have any blockers.\n\nZhang Lin\nAlgorithm Team Lead",
+    "labels": [
+      "sprint",
+      "demo"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5024",
+    "from": "tech-talk@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Upcoming Tech Talk: Hardware Optimization for ML Workloads - Jan 8",
+    "date": "2026-01-02T09:15:00+08:00",
+    "body": "Hi everyone,\n\nJoin us for this week's tech talk:\n\n**Topic:** Hardware Optimization Techniques for Large-Scale Model Training\n**Speaker:** Chen Hui (Staff Engineer, Algorithm Engineering)\n**Date:** Thursday, January 8, 2026\n**Time:** 4:00 PM - 5:00 PM\n**Location:** Conference Room 3A\n\nChen will share insights on GPU thermal management, memory optimization, and hardware debugging techniques he's learned from 5 years of ML infrastructure work.\n\nGreat opportunity for anyone dealing with training performance issues!\n\nRegister: [internal link]\n\nTech Talk Committee",
+    "labels": [
+      "tech-talk",
+      "team"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5025",
+    "from": "hr.onboarding@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Welcome to ByteDance - Intern Onboarding Checklist",
+    "date": "2026-02-10T09:15:00+08:00",
+    "body": "Hi Li Ming,\n\nWelcome to ByteDance! We're excited to have you join us as an Algorithm Intern.\n\nPlease complete the following onboarding steps before your first sprint demo (scheduled for week of March 10):\n\n1. Complete HR onboarding portal (REQUIRED FIRST - unlocks other systems): https://hr.bytedance.com/onboarding\n   - Employee ID will be generated after completion\n   - Estimated time: 2 hours\n\n2. Security Training Module\n   - Access via: https://security.bytedance.com/training\n   - IMPORTANT: Certificate valid for 14 days only, plan accordingly\n   - Prerequisite: HR onboarding completion\n   - Duration: 2 days (includes quiz)\n\n3. VPN Access Setup\n   - Submit IT ticket at: https://it.bytedance.com/tickets\n   - Requires: Mentor approval (Dr. Wang Jian must sign off)\n   - Processing time: 3-5 business days\n\n4. GPU Cluster Permissions\n   - Required for running training jobs\n   - Prerequisite: Valid security training certificate\n   - Submit request via: https://compute.bytedance.com/access\n\n5. Code Repository Access (GitLab)\n   - Requires: Active VPN + Security clearance\n   - Request via: https://git.bytedance.com/access-request\n\n6. Internal Knowledge Base Account\n   - Auto-provisioned after HR onboarding\n   - Check KB-401 for detailed setup guides\n\nPlease reach out if you have questions!\n\nBest regards,\nHR Onboarding Team",
+    "labels": [
+      "onboarding",
+      "important"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5026",
+    "from": "wang.jian@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Re: VPN Access - Mentor Approval Needed",
+    "date": "2026-02-28T14:30:00+08:00",
+    "body": "Hi Li Ming,\n\nI saw your question about the VPN approval. I'm happy to sign off, but IT policy requires you to submit the formal IT ticket first (ticket number required for my approval workflow).\n\nOnce you create the ticket at https://it.bytedance.com/tickets, forward me the ticket number and I'll approve within 24 hours.\n\nAlso - have you completed the security training yet? You'll need that cert for the GPU cluster access, and I noticed it expires quickly (14 days). Might want to time that carefully since the full credential chain takes 20+ days if done serially.\n\nLet me know if you need help navigating the dependencies.\n\nBest,\nDr. Wang",
+    "labels": [
+      "mentor",
+      "credentials"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5027",
+    "from": "it-support@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "VPN Access Request - Mentor Sign-off Required First",
+    "date": "2026-03-01T10:45:00+08:00",
+    "body": "Hello Li Ming,\n\nWe received your VPN access ticket (TK-IT-2847) but cannot process it without mentor pre-approval.\n\nPer IT Security Policy §4.2, all intern VPN requests require mentor sign-off BEFORE ticket submission. Please obtain written approval from Dr. Wang Jian (wang.jian@bytedance.com) and attach to your ticket.\n\nOnce approved, processing time is 3-5 business days.\n\nNote: VPN is a prerequisite for code repository access (GitLab), so please account for this dependency in your timeline.\n\nRegards,\nIT Support Team\nTicket: TK-IT-2847",
+    "labels": [
+      "it-support",
+      "blocked"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5028",
+    "from": "compute-admin@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "GPU Cluster Access - Security Training Certificate Required",
+    "date": "2026-03-02T09:20:00+08:00",
+    "body": "Hi Li Ming,\n\nYour GPU cluster access request (REQ-GPU-1847) is pending security training certificate verification.\n\nRequired:\n- Valid Security Training Certificate (must be completed within last 14 days)\n- Certificate ID from https://security.bytedance.com/my-certificates\n\nProcessing time after certificate submission: 1-2 business days\n\nIMPORTANT: Without GPU cluster access, you cannot run training jobs for your sprint demo. Please prioritize this credential if demo deadline is approaching.\n\nFor temporary access options, see KB-403 (Supervised Access Policy for Interns).\n\nBest,\nCompute Infrastructure Team",
+    "labels": [
+      "gpu-access",
+      "urgent"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5029",
+    "from": "tech-newsletter@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "Weekly Tech Digest - GPU Optimization Tips",
+    "date": "2026-03-01T08:00:00+08:00",
+    "body": "Hi Algorithm Team,\n\nThis week's tech digest covers:\n\n1. New GPU memory optimization techniques\n2. Updated PyTorch 2.1 best practices\n3. Distributed training debugging tools\n\nFull article: https://tech.bytedance.com/digest/2026-w09\n\nHappy coding!\nTech Communications",
+    "labels": [
+      "newsletter",
+      "team"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5030",
+    "from": "gitlab-notifications@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "GitLab Access Request - VPN Connection Required",
+    "date": "2026-03-02T11:15:00+08:00",
+    "body": "Hello,\n\nYour GitLab access request failed prerequisite check:\n\n❌ VPN connection not detected\n❌ Security clearance pending verification\n\nTo complete setup:\n1. Ensure VPN is active and approved\n2. Verify security training certificate is valid\n3. Retry access request at: https://git.bytedance.com/access-request\n\nEstimated setup time after prerequisites: 1 business day\n\nNote: Code repository access is required for sprint demo code submission.\n\nGitLab Admin Team",
+    "labels": [
+      "gitlab",
+      "blocked"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5031",
+    "from": "gitlab-bot@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "[GitLab] Pipeline #8934 failed for branch feature/model-training-optimization",
+    "date": "2026-01-10T03:42:17+08:00",
+    "body": "Pipeline #8934 has failed for branch feature/model-training-optimization\n\nCommit: a7f3c2d - 'Add batch size tuning for transformer layers'\nAuthor: Li Ming <li.ming@bytedance.com>\nFailed stage: test\nFailed job: unit-tests-gpu\n\nError log:\nRuntimeError: CUDA out of memory. Tried to allocate 2.34 GiB (GPU 0; 15.90 GiB total capacity)\n\nView full pipeline: https://gitlab.bytedance.com/algorithm/model-training/-/pipelines/8934",
+    "labels": [
+      "automated",
+      "ci-cd"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5032",
+    "from": "wang.jian@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Re: Hyperparameter tuning approach - need your thoughts before Monday standup",
+    "date": "2026-01-12T16:23:45+08:00",
+    "body": "Hi Ming,\n\nI reviewed your experiment logs from the past week - the training convergence curves look promising. However, I noticed you're using a fixed learning rate schedule across all batch sizes. Have you considered implementing cosine annealing with warm restarts?\n\nI'd like to discuss this in detail before tomorrow's standup so we can present a coherent strategy to the team. The approach you take here will likely influence our Q1 model architecture decisions.\n\nCan you prepare:\n1. Comparison of current fixed schedule vs adaptive schedules\n2. Computational cost tradeoffs (training time vs final accuracy)\n3. Your recommendation with reasoning\n\nThis is important for your intern evaluation - demonstrating systematic experimentation methodology is a key criterion.\n\nLet me know if you need any clarification.\n\nBest,\nDr. Wang",
+    "labels": [
+      "mentor",
+      "urgent",
+      "technical"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5033",
+    "from": "zhang.lin@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Code review request: PR #2956 - Memory optimization for embedding layers",
+    "date": "2026-01-11T14:17:33+08:00",
+    "body": "Hey Li Ming,\n\nI've submitted PR #2956 that refactors the embedding layer memory allocation. This is blocking my feature branch for the recommendation pipeline update.\n\nCould you review when you get a chance? I know you worked on similar optimization in PR #2847, so your feedback would be valuable. Particularly interested in your thoughts on:\n- The trade-off between memory fragmentation and allocation overhead\n- Whether the lazy initialization approach conflicts with your caching work\n\nDeadline: Need approval by EOD Tuesday (Jan 14) to merge before sprint freeze.\n\nThanks!\nZhang Lin\n\nPR link: https://gitlab.bytedance.com/algorithm/core/-/merge_requests/2956",
+    "labels": [
+      "code-review",
+      "teammate"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5034",
+    "from": "system-alerts@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "[ALERT] GPU Cluster Maintenance - Jan 14-15 scheduled downtime",
+    "date": "2026-01-09T09:15:22+08:00",
+    "body": "SCHEDULED MAINTENANCE NOTIFICATION\n\nGPU Cluster: gpu-cluster-prod-02\nMaintenance Window: 2026-01-14 22:00 - 2026-01-15 06:00 (8 hours)\nImpact: All training jobs will be terminated. Checkpoints will be preserved.\n\nAction Required:\n- Save all experiment checkpoints before 22:00 on Jan 14\n- Plan training schedules accordingly\n- Use gpu-cluster-dev-01 for urgent experiments (limited capacity)\n\nReason: Hardware upgrade and cooling system maintenance\n\nContact: compute-admin@bytedance.com for questions\n\n--- \nThis is an automated message from ByteDance Infrastructure Team",
+    "labels": [
+      "automated",
+      "infrastructure",
+      "fyi"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5035",
+    "from": "hr.onboarding@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "REMINDER: Intern Mid-Term Evaluation Due Jan 17",
+    "date": "2026-01-10T10:30:14+08:00",
+    "body": "Dear Li Ming,\n\nThis is a reminder that your intern mid-term self-evaluation is due on Friday, January 17, 2026.\n\nRequired submissions:\n1. Self-evaluation form (link: https://hr.bytedance.com/intern-eval/2026Q1/self)\n2. Project milestone summary (template attached)\n3. Learning objectives progress report\n\nYour mentor Dr. Wang Jian will submit his evaluation by Jan 20. The evaluation meeting is scheduled for Jan 24.\n\nLate submissions may delay your evaluation process and impact your final intern assessment.\n\nPlease contact hr.onboarding@bytedance.com if you have questions.\n\nBest regards,\nHR Onboarding Team",
+    "labels": [
+      "hr",
+      "deadline",
+      "evaluation"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5036",
+    "from": "gitlab-bot@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "[GitLab] You have been mentioned in merge request !2956",
+    "date": "2026-01-11T14:18:02+08:00",
+    "body": "Zhang Lin mentioned you in merge request !2956:\n\n\"@li.ming - Since you worked on the embedding caching in PR #2847, could you check if this memory optimization conflicts with your approach? Want to make sure we're not duplicating effort or creating incompatible implementations.\"\n\nView merge request: https://gitlab.bytedance.com/algorithm/core/-/merge_requests/2956\n\n---\nYou're receiving this email because you were mentioned on GitLab.",
+    "labels": [
+      "automated",
+      "gitlab",
+      "mention"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5037",
+    "from": "monitoring@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "[PROD-ALERT] Recommendation API p99 latency spike - 2.3s (threshold: 500ms)",
+    "date": "2026-01-12T21:47:33+08:00",
+    "body": "PRODUCTION ALERT\n\nService: recommendation-api-prod\nMetric: p99_latency\nCurrent Value: 2347ms\nThreshold: 500ms\nSeverity: HIGH\nDuration: 15 minutes\n\nAffected endpoints:\n- /api/v2/recommendations/personalized\n- /api/v2/recommendations/trending\n\nPotential causes:\n- Database connection pool saturation\n- Cache invalidation storm\n- Upstream service degradation\n\nRunbook: https://wiki.bytedance.com/runbooks/recommendation-api-latency\n\nOn-call engineer has been paged.\n\n---\nAlert ID: ALERT-89234\nDashboard: https://grafana.bytedance.com/d/rec-api-prod",
+    "labels": [
+      "automated",
+      "production",
+      "alert"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5038",
+    "from": "chen.hui@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Quick question about your training script",
+    "date": "2026-01-11T11:42:19+08:00",
+    "body": "Hey Li Ming,\n\nSaw your commit yesterday on the batch size optimization. Quick question - are you using gradient accumulation or actually increasing the physical batch size?\n\nI'm working on a similar problem for the video recommendation model and want to make sure I'm not reinventing the wheel.\n\nNo rush, just ping me when you have a moment.\n\nCheers,\nChen Hui",
+    "labels": [
+      "teammate",
+      "technical",
+      "low-priority"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5039",
+    "from": "gitlab-bot@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "[GitLab] Pipeline #8967 succeeded for branch feature/model-training-optimization",
+    "date": "2026-01-12T08:23:51+08:00",
+    "body": "Pipeline #8967 has succeeded for branch feature/model-training-optimization\n\nCommit: b4e7d9a - 'Reduce batch size to fit GPU memory constraints'\nAuthor: Li Ming <li.ming@bytedance.com>\nDuration: 23 minutes 14 seconds\n\nAll stages passed:\n✓ build (3m 42s)\n✓ test (18m 31s)\n✓ deploy-staging (1m 1s)\n\nView pipeline: https://gitlab.bytedance.com/algorithm/model-training/-/pipelines/8967",
+    "labels": [
+      "automated",
+      "ci-cd",
+      "success"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5040",
+    "from": "tech-talk@bytedance.com",
+    "to": "all-engineering@bytedance.com",
+    "subject": "Tech Talk Series: Distributed Training at Scale - Jan 16, 3PM",
+    "date": "2026-01-08T14:20:37+08:00",
+    "body": "Join us for the next installment of our Tech Talk series!\n\nTopic: Distributed Training at Scale - Lessons from Training 100B+ Parameter Models\nSpeaker: Dr. Liu Wei, Principal Engineer, AI Infrastructure\nDate: Thursday, January 16, 2026\nTime: 3:00 PM - 4:30 PM\nLocation: Building 3, Auditorium A / Zoom link: https://bytedance.zoom.us/j/tech-talk-0116\n\nAbstract:\nLearn about the challenges and solutions for training massive neural networks across thousands of GPUs. Topics include:\n- Pipeline parallelism strategies\n- Gradient checkpointing and memory optimization\n- Fault tolerance and checkpoint recovery\n- Real-world case studies from our production systems\n\nQ&A session will follow the presentation.\n\nLight refreshments will be served.\n\nRSVP: https://events.bytedance.com/tech-talk-0116\n\n---\nByteDance Engineering",
+    "labels": [
+      "announcement",
+      "tech-talk",
+      "optional"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5041",
+    "from": "li.ming@bytedance.com",
+    "to": "wang.jian@bytedance.com",
+    "subject": "Question about GPU training strategy for recommendation model",
+    "date": "2026-03-19T14:23:00+08:00",
+    "body": "Hi Dr. Wang,\n\nI've been working on the hyperparameter tuning for the recommendation model and I'm uncertain about the optimal training strategy for the GPU cluster. Specifically, I'm trying to decide between:\n\n1. Distributed data parallel with gradient accumulation (batch size 512)\n2. Model parallel with smaller batch sizes (batch size 128)\n\nThe validation loss curves show different convergence patterns and I'm not sure which approach aligns better with our production deployment constraints. I've run some preliminary experiments but the results are inconclusive.\n\nCould we discuss this? I know you're busy with the Q1 review but I'd really appreciate your guidance on\n\n[Draft saved, never sent]",
+    "labels": [
+      "draft",
+      "mentor"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5042",
+    "from": "li.ming@bytedance.com",
+    "to": "wang.jian@bytedance.com",
+    "subject": "Re: GPU cluster training - need advice",
+    "date": "2026-03-20T16:47:00+08:00",
+    "body": "Dr. Wang,\n\nFollowing up on the hyperparameter experiments from last week. I've been trying different learning rate schedules on the GPU cluster but I'm seeing some unexpected behavior with the warmup phase. The training loss spikes around epoch 3 when using cosine annealing, but not with linear decay.\n\nI'm wondering if this is related to the batch size or if there's something wrong with my data pipeline. I've checked the data loader and it seems fine, but maybe I'm missing something about how the distributed training handles the\n\n[Draft deleted 2026-03-20T17:12:00+08:00]",
+    "labels": [
+      "trash",
+      "mentor"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5043",
+    "from": "chen.hui@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "Shared GPU Cluster Best Practices - Reminder",
+    "date": "2026-03-21T10:15:00+08:00",
+    "body": "Hi team,\n\nFriendly reminder about GPU cluster etiquette as we approach end of quarter:\n\n- Please monitor your job queue positions and cancel stale experiments\n- Use checkpointing for long-running jobs (>12 hours)\n- Document your hyperparameter configs in the shared tracking sheet\n- If you're running ablation studies, consider using the dev cluster first\n\nThe production cluster utilization has been at 95%+ this week, so let's be mindful of shared resources.\n\nThanks,\nChen Hui",
+    "labels": [
+      "team",
+      "infrastructure"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5044",
+    "from": "system-alerts@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "GPU Training Job #9247 - Queued",
+    "date": "2026-03-22T09:33:00+08:00",
+    "body": "Your GPU training job has been queued:\n\nJob ID: #9247\nConfig: recommendation_model_v2_hyperparam_sweep\nRequested GPUs: 4x V100\nEstimated queue time: 6-8 hours\nPriority: normal\n\nYou can monitor job status at: https://cluster.bytedance.com/jobs/9247\n\nNote: Current cluster utilization is high. Consider optimizing your batch size or using gradient checkpointing to reduce memory footprint.\n\n-- GPU Cluster Management System",
+    "labels": [
+      "system",
+      "gpu"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5045",
+    "from": "compute-admin@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "GPU Cluster Allocation Options for Q1 Sprint - Action Required by Jan 20",
+    "date": "2026-01-14T10:15:00+08:00",
+    "body": "Hi Li Ming,\n\nYour request for GPU cluster allocation for final sprint model training has been processed. Based on your intern compute budget status and timeline requirements, here are your four available options:\n\n**Option A: Standard Tier**\n- Compute cost: 1,200 credits (40% of remaining intern budget)\n- Estimated training time: 18 hours\n- Preemption probability: 15%\n- Queue wait time: 48 hours\n- Notes: Budget-friendly but longest queue. Suitable if deadline flexibility exists.\n\n**Option B: Priority Tier**\n- Compute cost: 1,800 credits (60% of remaining intern budget)\n- Estimated training time: 14 hours\n- Preemption probability: 5%\n- Queue wait time: 12 hours\n- Notes: Balanced option. Moderate cost with reasonable availability.\n\n**Option C: Premium Tier**\n- Compute cost: 3,000 credits (100% of remaining intern budget)\n- Estimated training time: 12 hours\n- Preemption probability: 0%\n- Queue wait time: 0 hours (immediate access)\n- Notes: Fastest and most reliable, but exhausts your entire remaining Q1 compute budget. No buffer for re-runs.\n\n**Option D: Spot Instances**\n- Compute cost: 600 credits (20% of remaining intern budget)\n- Estimated training time: 22 hours (includes potential restart overhead)\n- Preemption probability: 45%\n- Queue wait time: 2 hours\n- Notes: Cheapest option with quick queue, but high interruption risk may require multiple restarts.\n\nYour current intern compute budget remaining: 3,000 credits (as of Jan 14)\nQ1 Sprint demo deadline: Jan 28, 2026 (from calendar sync)\n\nPlease reply with your selection by Jan 20. Include brief justification for audit trail purposes.\n\nBest regards,\nCompute Infrastructure Team\ncompute-admin@bytedance.com",
+    "labels": [
+      "urgent",
+      "compute",
+      "decision-required"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5046",
+    "from": "li.ming@bytedance.com",
+    "to": "compute-admin@bytedance.com",
+    "subject": "Re: GPU Cluster Allocation Options for Q1 Sprint - Selection: Priority Tier (Option B)",
+    "date": "2026-01-16T16:45:00+08:00",
+    "body": "Hi Compute Infrastructure Team,\n\nAfter analyzing the tradeoffs, I'm selecting **Option B: Priority Tier** for the following reasons:\n\n**Decision rationale:**\n\n1. **Deadline safety margin (highest priority)**: With the Q1 sprint demo on Jan 28, I need the job to start by Jan 16 at the latest to allow for training completion (14h), validation runs, and 2-day buffer for unexpected issues. Option B's 12-hour queue wait means I can start training by Jan 17, meeting this hard constraint. Option A's 48-hour queue would push start to Jan 18, leaving only 1-day buffer—too risky.\n\n2. **Budget consciousness**: At 1,800 credits (60% of budget), Option B preserves 1,200 credits for potential re-runs if validation metrics are off or if I need to tune hyperparameters post-demo for the final report. Option C (Premium) would leave zero buffer, which is too risky given this is my first major training run and I may need iteration.\n\n3. **Reliability vs cost tradeoff**: The 5% preemption risk is acceptable compared to Option D's 45% (which could cascade into multiple restarts eating into my deadline). The 10% cost premium over Standard tier is justified by the 4x reduction in queue time.\n\n4. **Pareto analysis**: Option B dominates Option A (strictly better queue time, better preemption risk, only moderately higher cost). Option D is dominated by B on reliability and training time. Option C offers marginal gains (2h training time, immediate queue) but at 67% cost premium and zero budget flexibility—not justified for my risk profile as a deadline-driven intern with limited experience.\n\nWhat I'm trading off: Accepting 14h training time vs 12h (Option C) and 12h queue vs immediate (Option C) in exchange for preserving 40% budget buffer and maintaining acceptable deadline safety margin.\n\nPlease proceed with Option B allocation. Let me know the job submission details.\n\nThanks,\nLi Ming\nAlgorithm Intern, ByteDance",
+    "labels": [
+      "sent",
+      "compute",
+      "decision"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5047",
+    "from": "system-alerts@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Compute Budget Alert: 60% of Q1 allocation consumed",
+    "date": "2026-01-16T17:00:00+08:00",
+    "body": "Hi Li Ming,\n\nThis is an automated notification that your Q1 intern compute budget has reached 60% utilization following your Priority Tier GPU cluster allocation approval.\n\n**Budget Summary:**\n- Total Q1 allocation: 5,000 credits\n- Consumed to date: 3,000 credits (60%)\n- Remaining: 2,000 credits (40%)\n- Days remaining in Q1: 74 days\n\n**Recent transactions:**\n- Jan 8: Training job #8472 - 800 credits\n- Jan 12: Hyperparameter sweep - 1,000 credits\n- Jan 16: Priority Tier allocation (pending) - 1,800 credits\n\nPlease monitor your usage carefully to avoid budget exhaustion before quarter end. For budget increase requests, contact your mentor Dr. Wang Jian.\n\nBest regards,\nCompute Infrastructure Monitoring\nsystem-alerts@bytedance.com",
+    "labels": [
+      "system",
+      "budget",
+      "monitoring"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5048",
+    "from": "chen.hui@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "FYI: GPU cluster maintenance window - Jan 18 evening",
+    "date": "2026-01-15T14:30:00+08:00",
+    "body": "Hi team,\n\nHeads up that the compute infrastructure team is scheduling a maintenance window for GPU cluster firmware updates on Jan 18, 8:00 PM - 11:00 PM Beijing time.\n\nImpact:\n- All running jobs will be checkpointed and paused\n- No new job submissions accepted during window\n- Jobs resume automatically after maintenance\n\nIf you have critical deadline-sensitive training runs, consider scheduling them to complete before 8 PM or start after 11 PM on Jan 18.\n\nChen Hui\nSenior Algorithm Engineer",
+    "labels": [
+      "team",
+      "fyi",
+      "infrastructure"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5049",
+    "from": "compute-admin@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Q1 GPU Budget Alert: 60% Depleted - 2 Months Remaining",
+    "date": "2026-01-28T09:15:00+08:00",
+    "body": "Hi Li Ming,\n\nThis is an automated alert from the Compute Resource Management system.\n\nYour Q1 2026 GPU compute budget status:\n- Total allocated: $50,000 USD\n- Spent to date: $30,000 USD (60%)\n- Remaining: $20,000 USD (40%)\n- Days remaining in Q1: 62 days\n- Current burn rate: ~$500/day\n\nAt current usage rates, your budget will be exhausted by mid-February. Please review your training pipeline and prioritize critical workloads.\n\nFor budget increase requests, contact your mentor or team lead.\n\nBest regards,\nCompute Infrastructure Team",
+    "labels": [
+      "compute",
+      "budget",
+      "alert"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5050",
+    "from": "wang.jian@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Re: Q1 Budget Situation - Possible Mid-Feb Team Underspend",
+    "date": "2026-01-29T14:30:00+08:00",
+    "body": "Li Ming,\n\nI saw the budget alert you forwarded. Here's the situation:\n\nThe team is tracking under our collective Q1 allocation because Zhang Lin's project got delayed and Liu Yang's experiment concluded early. There's *possible* additional budget we could reallocate to you in mid-February if the underspend materializes—I'm estimating maybe $8K-12K, but it's not guaranteed.\n\nFinance reviews team spending around Feb 15-20, so we won't know until then. Don't count on it for hard deadline work.\n\nGiven your three competing demands (production retraining, sprint demo, intern project), let's discuss prioritization in our 1-on-1 tomorrow. Come prepared with:\n1. Budget requirements for each workload\n2. Deadline hardness assessment\n3. Consequence analysis if any task slips\n\nThe GPU cluster maintenance window (Jan 18-19) already forced you into sequential execution anyway, so this is really about ordering decisions.\n\nDr. Wang Jian\nSenior Algorithm Researcher",
+    "labels": [
+      "mentor",
+      "budget",
+      "planning"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5051",
+    "from": "zhang.lin@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "Production Model Retraining - URGENT - Feb 3 Hard Deadline",
+    "date": "2026-01-26T10:45:00+08:00",
+    "body": "Team,\n\nWe've identified a data drift issue in the production recommendation model affecting user engagement metrics. The retraining job needs to complete by Feb 3 (hard deadline) to align with the product release cycle.\n\nResource requirements:\n- GPU compute: ~$5,000 (25% of typical intern quarterly budget)\n- Training time: 36-48 hours on 8x A100 cluster\n- Dataset: 2.8TB user interaction logs (Jan 1-25)\n\nLi Ming - since you're working on the recommendation pipeline for your intern project, can you take ownership of this retraining job? It's production-critical and will be visible to senior leadership.\n\nLet me know by EOD if you can commit.\n\nZhang Lin\nAlgorithm Team Lead",
+    "labels": [
+      "production",
+      "urgent",
+      "team"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5052",
+    "from": "chen.hui@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Sprint Demo Experiment Suite - Jan 28 Deadline Reminder",
+    "date": "2026-01-24T16:20:00+08:00",
+    "body": "Hey Li Ming,\n\nJust a heads up that the sprint demo experiment suite needs to be complete by Jan 28 (this Tuesday) so we have time to prepare slides and rehearse before the Feb 17 executive review.\n\nYour part of the demo:\n- A/B test results comparing baseline vs your optimized embedding layer\n- Latency benchmarks across 3 batch sizes\n- Memory efficiency improvements\n\nEstimated compute needed: ~$8,000 for the full experiment matrix (that's about 40% of a typical intern quarterly budget based on what I spent last quarter).\n\nThis demo is a big deal for intern evaluations—Dr. Wang mentioned it carries significant weight in final assessments. Don't underestimate the prep time!\n\nLet me know if you need help with the experimental design.\n\nChen Hui",
+    "labels": [
+      "sprint",
+      "demo",
+      "deadline"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5053",
+    "from": "li.ming@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "DRAFT: Budget Allocation Decision - DO NOT SEND",
+    "date": "2026-01-30T22:15:00+08:00",
+    "body": "Subject: Intern Project Hyperparameter Search - Timeline Update\n\nDr. Wang,\n\nI wanted to update you on my intern final project timeline. Given the budget constraints we discussed, I'm planning to defer the exploratory hyperparameter search (originally $10K, ~50% of remaining budget) until after we know about the mid-February team underspend reallocation.\n\nThe search has a soft deadline of March 15, so there's flexibility. If the additional budget doesn't materialize, I can reduce the search space or use cheaper grid search instead of full Bayesian optimization.\n\nPrioritization logic:\n1. Production retraining (Feb 3 hard deadline, user impact) - $5K\n2. Sprint demo experiments (Jan 28 hard deadline, evaluation impact) - $8K\n3. Exploratory hyperparameter search (March 15 soft deadline, recoverable) - defer\n\nTotal immediate allocation: $13K of $20K remaining = 65% utilization, leaving $7K buffer.\n\n[DRAFT - need to clean up reasoning before sending]",
+    "labels": [
+      "draft",
+      "planning"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5054",
+    "from": "chen.hui@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Re: Team budget pooling - unused GPU allocation",
+    "date": "2026-01-20T10:15:00+08:00",
+    "body": "Hi Li Ming,\n\nSure, I have 85 GPU-hours left in my Q1 allocation that I won't be using (my experiments finished early). You're welcome to use them for your sprint demo training run.\n\nJust need you to:\n1. Fill out the team pooling request form (link in KB-410)\n2. Get Dr. Wang's approval signature\n3. Submit to compute-admin@bytedance.com\n\nUsually takes 2-3 days to process. My allocation expires Jan 31, so make sure to submit before Jan 28 to be safe.\n\nLet me know if you need help with the form!\n\nBest,\nChen Hui",
+    "labels": [
+      "team",
+      "compute"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5055",
+    "from": "compute-admin@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "GPU Cluster Pricing Update - Q1 2026 Discount Tiers Now Active",
+    "date": "2026-01-16T09:00:00+08:00",
+    "body": "Dear GPU Cluster Users,\n\nThe Q1 2026 pricing policy with new discount tiers is now active. Key updates:\n\n- Bulk hour commitment discount: 15% off for 100+ hour jobs\n- Off-peak scheduling discount: 25% off for 2-6 AM window\n- Preemption-tolerant tier: 30% off but job can be killed\n- Team budget pooling now available\n\nFull policy details in KB-410. Please review stacking rules and mutual exclusions carefully.\n\nFor interns: Your Q1 allocation is 500 GPU-hours. Track usage in finance service (category: compute_allocation). Unused hours do NOT roll over to Q2.\n\nQuestions? Reply to this email or visit office hours (Tuesdays 2-4 PM, Building 3, Room 401).\n\nBest regards,\nCompute Infrastructure Team",
+    "labels": [
+      "announcement",
+      "compute"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5056",
+    "from": "zhang.lin@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "Heads up: Off-peak GPU discount requires monitoring commitment",
+    "date": "2026-01-21T14:30:00+08:00",
+    "body": "Hey team,\n\nJust a heads up for anyone considering the off-peak GPU discount (25% off for 2-6 AM jobs):\n\nI tried it last week and the discount is great, but you really need to be awake and monitoring during that window. My job hit an OOM error at 3:45 AM and by the time I woke up at 8 AM, I'd wasted 4 hours of allocation on a failed run.\n\nSupport response during off-peak is also much slower (took 45 minutes to get help vs. usual 10 minutes during business hours).\n\nIf you have a hard deadline, probably safer to stick with standard scheduling unless you're confident in your job's stability.\n\nJust my 2 cents!\n\nZhang Lin",
+    "labels": [
+      "team",
+      "advice"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5057",
+    "from": "system-alerts@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Compute Budget Alert: 344 GPU-hours remaining in Q1 allocation",
+    "date": "2026-01-22T08:00:00+08:00",
+    "body": "GPU Cluster Allocation Alert\n\nUser: li.ming@bytedance.com\nAllocation Period: Q1 2026 (Jan 1 - Mar 31)\n\nCurrent Status:\n- Initial allocation: 500 GPU-hours\n- Used: 156 GPU-hours\n- Remaining: 344 GPU-hours\n- Days remaining in quarter: 68 days\n\nRecent Usage:\n- Jan 8: -45 hours (job #8341)\n- Jan 15: -83 hours (job #8472)\n- Jan 19: -28 hours (job #8521)\n\nReminder: Unused allocation does NOT roll over to Q2. Plan your experiments accordingly.\n\nView detailed transactions: finance service → category: compute_allocation\n\n---\nThis is an automated weekly alert. To adjust notification frequency, visit your compute dashboard settings.",
+    "labels": [
+      "alert",
+      "compute"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5058",
+    "from": "gpu-cluster-admin@bytedance.com",
+    "to": "all-interns@bytedance.com",
+    "subject": "URGENT: GPU Cluster Pricing Policy Update - New Intern Discount Bundle Effective Immediately",
+    "date": "2026-02-03T14:15:00+08:00",
+    "body": "Dear ByteDance Interns,\n\nEffective immediately (February 3, 2026, 2:00 PM), we are launching a new 'Intern Discount Bundle' for GPU cluster usage:\n\n**New Discount Terms:**\n- 40% discount on all jobs over 36 GPU-hours\n- Must be submitted through the new intern-portal interface (https://intern-portal.bytedance.com/gpu)\n- Applies to new job submissions only\n\n**Important Notes:**\n- Jobs submitted through the legacy interface are NOT eligible for this discount\n- Existing queued jobs CANNOT be migrated to the new portal\n- To take advantage of this discount, you must cancel existing jobs and resubmit through the intern-portal\n- Full refund policy applies to cancellations within 24 hours of job submission\n- Refunds are processed within 2 hours and credits returned to your Q1 budget allocation\n\n**Cancellation Process:**\n1. Log into legacy cluster admin interface: https://cluster.bytedance.com/admin\n2. Navigate to 'My Jobs' and select the job to cancel\n3. Click 'Cancel Job' and confirm\n4. Refund confirmation will be sent via email within 2 hours\n5. Resubmit through intern-portal to receive the 40% discount\n\n**Queue Status:**\nCurrent intern-portal queue wait time: 8-12 hours for jobs 36-72 hours\n\nFor questions, contact compute-admin@bytedance.com or visit KB-411 for detailed policy documentation.\n\nBest regards,\nGPU Cluster Infrastructure Team",
+    "labels": [
+      "urgent",
+      "policy-change",
+      "gpu-cluster"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5059",
+    "from": "compute-admin@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Job Cancellation Confirmation - Refund Processed for Job #8521",
+    "date": "2026-02-03T16:45:00+08:00",
+    "body": "Dear Li Ming,\n\nYour GPU training job cancellation has been processed successfully.\n\n**Job Details:**\n- Job ID: #8521\n- Job Name: recommendation_model_architecture_search_q1_sprint\n- Original Duration: 48 hours\n- GPU-hours Reserved: 192\n- Original Cost: 1,536 credits (after 20% base intern discount)\n- Scheduled Start Time: 2026-02-03 20:00 (cancelled before start)\n\n**Refund Details:**\n- Refund Amount: 1,536 credits\n- Refund Status: COMPLETED\n- Q1 Budget Balance (after refund): 2,847 credits\n- Transaction ID: TXN-6009\n\nYou may now resubmit this job through the new intern-portal interface to take advantage of the 40% Intern Discount Bundle.\n\n**Estimated Cost with New Discount:**\n- Base cost: 1,920 credits (192 GPU-hours × 10 credits/hour)\n- After 40% discount: 1,152 credits\n- Savings vs original: 384 credits (25% additional savings)\n\nNote: Queue wait times may vary. Check current queue status at https://intern-portal.bytedance.com/gpu/queue\n\nBest regards,\nCompute Infrastructure Team",
+    "labels": [
+      "gpu-cluster",
+      "refund",
+      "confirmation"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5060",
+    "from": "chen.hui@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Re: GPU pricing change - did you see the new intern discount?",
+    "date": "2026-02-03T14:30:00+08:00",
+    "body": "Hey Li Ming,\n\nJust saw the GPU cluster policy email. That 40% discount is huge! Are you planning to cancel your job and resubmit?\n\nI checked the queue status and it's showing 8-12 hour wait for jobs in our range. Your job was scheduled to start at 8 PM tonight, so if you cancel now and resubmit, you might start around midnight or early tomorrow morning.\n\nBut I know you have that sprint demo coming up on Feb 17 - that's only 14 days away. If the queue gets backed up or something goes wrong, you might cut it close. The 384 credit savings is nice (almost 14% of your remaining budget), but is it worth the risk?\n\nI'm keeping my job as-is because my deadline is more flexible. Let me know if you want to talk through the tradeoffs.\n\nChen Hui",
+    "labels": [
+      "team",
+      "advice"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5061",
+    "from": "system-alerts@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Intern Portal Queue Status Alert - Wait Time Increased",
+    "date": "2026-02-03T17:20:00+08:00",
+    "body": "ALERT: Intern Portal GPU Queue Status Update\n\nCurrent queue wait time for 48-hour jobs: 14-18 hours (increased from 8-12 hours)\n\nReason: High volume of job resubmissions following policy change announcement\n\nEstimated queue normalization: 24-36 hours\n\nThis is an automated alert based on your recent queue status query.\n\n---\nGPU Cluster Monitoring System",
+    "labels": [
+      "alert",
+      "queue-status"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5062",
+    "from": "compute-admin@bytedance.com",
+    "to": "all-interns@bytedance.com",
+    "subject": "IMPORTANT: GPU Cluster Policy Update - New 48-Hour Limit for Intern Discount Bundle",
+    "date": "2026-01-15T09:15:00+08:00",
+    "body": "Hi all interns,\n\nEffective immediately, we are implementing a new policy constraint for the Intern Discount Bundle GPU cluster tier:\n\n**Maximum Job Duration: 48 hours (hard limit)**\n\nThis change is necessary to ensure fair access to shared intern compute resources. We've observed that long-running jobs (72+ hours) from a small number of users have been blocking cluster availability for others during peak periods.\n\nKey details:\n- All jobs submitted under the Intern Discount Bundle will be automatically terminated at the 48-hour mark\n- Jobs requiring longer runtime should either:\n  1. Be split into multiple sequential jobs (recommended for checkpointed training)\n  2. Use the Standard or Priority tier (see KB-412 for pricing)\n- This policy does NOT affect other cluster tiers\n\nFor full policy details, rationale, and migration guidance, please refer to KB-412 (Intern Discount Bundle Policy).\n\nIf you have questions or need help adapting your workflows, please contact compute-admin@bytedance.com or your mentor.\n\nBest regards,\nCompute Infrastructure Team",
+    "labels": [
+      "policy",
+      "gpu-cluster",
+      "important"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "MSG-5063",
+    "from": "wang.jian@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Re: Sprint demo training plan - looks good to proceed",
+    "date": "2026-01-14T16:45:00+08:00",
+    "body": "Hi Li Ming,\n\nI've reviewed your training plan for the sprint demo (72-hour continuous run with the hyperparameter search you outlined). The approach looks solid - the learning rate schedule and batch size progression should give us good convergence for the demo.\n\nGo ahead and schedule the job for next week. Make sure to:\n- Use the Intern Discount Bundle to stay within your compute budget\n- Set up checkpointing every 6 hours in case of any interruptions\n- Monitor the first 12 hours closely to catch any issues early\n\nLet me know when you kick it off. Looking forward to seeing the results!\n\nBest,\nDr. Wang",
+    "labels": [
+      "mentor",
+      "sprint-demo",
+      "training"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5064",
+    "from": "chen.hui@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Training job setup tips - checkpointing strategy",
+    "date": "2026-01-16T11:20:00+08:00",
+    "body": "Hey Li Ming,\n\nSaw you're planning a big training run soon. Just wanted to share some tips from my last long job:\n\n1. Checkpoint every 4-6 hours - saved me when I hit a preemption at hour 50\n2. Use the --auto-resume flag so you don't have to manually restart\n3. Log your hyperparams to TensorBoard at the start - makes it easier to compare runs later\n4. Keep an eye on GPU utilization in the first hour - I once had a data loading bottleneck that wasted 12 hours before I noticed\n\nYour 72-hour plan should work fine with the intern discount tier. I did a 68-hour run last month without issues.\n\nGood luck!\nChen Hui",
+    "labels": [
+      "team",
+      "technical-tips"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "MSG-5065",
+    "from": "github-notifications@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "[algorithm-team/training-pipeline] New issue #1847: Checkpoint resumption fails with custom optimizers",
+    "date": "2026-01-17T14:30:00+08:00",
+    "body": "Issue opened by zhang.lin@bytedance.com\n\nWhen using custom optimizer state (e.g., AdamW with custom weight decay schedule), checkpoint resumption occasionally fails to restore optimizer state correctly, leading to training divergence after resume.\n\nSteps to reproduce:\n1. Start training with custom optimizer\n2. Save checkpoint at step 10000\n3. Resume from checkpoint\n4. Observe loss spike and divergence\n\nAffects: training-pipeline v2.3.1\nPriority: Medium\nLabels: bug, checkpointing, optimizer\n\nView issue: https://github.bytedance.com/algorithm-team/training-pipeline/issues/1847",
+    "labels": [
+      "github",
+      "bug-report"
+    ],
+    "is_read": false
+  }
+]

@@ -1,0 +1,152 @@
+[
+  {
+    "message_id": "WMSG-5001",
+    "from": "li.ming@bytedance.com",
+    "to": "wang.jian@bytedance.com",
+    "subject": "Port configuration resolved for sprint demo experiments",
+    "date": "2026-02-05T16:30:00+08:00",
+    "body": "Hi Dr. Wang,\n\nQuick update on the training experiments for our Feb 17 sprint demo:\n\nI ran into a port conflict issue when trying to launch all three experiments simultaneously (hyperparameter tuning with TensorBoard, baseline with Jupyter, and distributed coordinator). Both TensorBoard and the coordinator wanted port 6006 by default.\n\nResolved it by:\n1. Killing an abandoned TensorBoard process from Feb 3 (my own zombie process)\n2. Moving TensorBoard to port 6007 (easier than reconfiguring the coordinator)\n3. Keeping Jupyter on 8888 and coordinator on 6006\n\nAll experiments are now running. Final port mapping documented in my notes:\n- TensorBoard (hyperparameter viz): localhost:6007\n- Jupyter (baseline analysis): localhost:8888  \n- Distributed coordinator: localhost:6006\n\nI'll have preliminary hyperparameter results ready for our 1-on-1 on Friday.\n\nBest,\nLi Ming",
+    "labels": [
+      "sent",
+      "mentor"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5002",
+    "from": "li.ming@bytedance.com",
+    "to": "wang.jian@bytedance.com",
+    "subject": "Request: Team-Pooled GPU Quota for Sprint Demo Training (200 GPU-hours)",
+    "date": "2026-02-26T09:30:00+08:00",
+    "body": "Hi Dr. Wang,\n\nI'm writing to request approval for 200 GPU-hours from our team's pooled quota for my Q1 sprint demo training job.\n\n**Background:**\nMy demo requires a 72-hour distributed training run (4×V100 GPUs = 288 GPU-hours total). I've analyzed the GPU cluster pricing policy (KB-410) and designed a cost-optimization plan that splits the job across multiple discount tiers to minimize expenses while meeting the March 7 deadline.\n\n**Why Team-Pooled Quota:**\n- Most cost-effective tier: 25% flat discount (7.5 credits/GPU-hour)\n- Saves 100 credits compared to base intern discount alone\n- Our team has 200 GPU-hours remaining in Q1 allocation (you confirmed this on Slack yesterday)\n- This would cover 200/288 GPU-hours, with remaining 88 hours using long-job + base tiers\n\n**Full Allocation Plan:**\n1. Team-pooled: 200 GPU-hours × 7.5 credits = 1,500 credits\n2. Long-job tier: 30 GPU-hours × 7.2 credits = 216 credits (using my remaining cycle quota)\n3. Base intern: 58 GPU-hours × 8 credits = 464 credits\n**Total cost: 2,180 credits** (vs 2,304 if all base-tier)\n\n**Timeline:**\n- Submit team-pooled job: Feb 27 (50 hours runtime)\n- Submit long-job tier: March 1 (7.5 hours)\n- Submit base tier: March 2 (14.5 hours)\n- Complete by: March 5 (2-day buffer before demo)\n\n**Alternative Considered:**\nI evaluated using off-peak hours discount (32% total, higher savings) but ruled it out because the 2am-8am monitoring requirement conflicts with my time management challenges. The team-pooled + long-job approach is operationally safer for me.\n\nCould you approve the 200 GPU-hour allocation? I've documented the full cost analysis in NOTE-121 if you'd like to review the reasoning.\n\nThank you for considering this request!\n\nBest regards,\nLi Ming\nAlgorithm Intern",
+    "labels": [
+      "sent",
+      "gpu",
+      "approval-request"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5003",
+    "from": "wang.jian@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Re: Request: Team-Pooled GPU Quota for Sprint Demo Training (200 GPU-hours)",
+    "date": "2026-02-26T14:20:00+08:00",
+    "body": "Hi Li Ming,\n\nApproved. I've updated the team quota allocation system to reserve 200 GPU-hours for your sprint demo job.\n\nGood work on the cost optimization analysis - your decision to avoid off-peak hours given your monitoring constraints shows mature self-awareness. The splitting strategy is sound.\n\nA few notes:\n1. Make sure to tag the team-pooled job with project code \"Q1-SPRINT-DEMO\" when submitting\n2. The 200-hour allocation is locked for 7 days (expires March 5), so submit by Feb 28 to be safe\n3. Monitor the long-job tier submission carefully on March 1 - the quota reset happens at midnight, and there's usually a rush of submissions in the morning\n\nLet me know if you hit any issues during execution. Looking forward to seeing the demo results!\n\nBest,\nDr. Wang Jian\nAlgorithm Team Lead",
+    "labels": [
+      "inbox",
+      "gpu",
+      "approval"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5004",
+    "from": "li.ming@bytedance.com",
+    "to": "wang.jian@bytedance.com",
+    "subject": "URGENT: Emergency GPU Quota Request for Sprint Demo Training Job",
+    "date": "2026-03-30T15:00:00+08:00",
+    "body": "Hi Dr. Wang,\n\nI need to request emergency GPU quota allocation from the team budget for my sprint demo training job. I apologize for the last-minute request - I should have tracked my Q1 consumption more carefully.\n\n**Situation:**\n- Sprint demo deadline: April 5 (6 days from now)\n- Training job requirements: 280 GPU-hours (8 nodes × 7 GPU × 5 days)\n- My Q1 quota remaining: 42 GPU-hours (92% consumed)\n- Shortfall: 238 GPU-hours\n\n**Request:**\nCould I please access 200 GPU-hours from the team-pooled quota? This would cover the shortfall with a small buffer for any job restarts.\n\n**Business Justification:**\nThe sprint demo is an executive-visible milestone showcasing our Q1 neural architecture search work. The training job includes:\n1. Architecture search across 12 candidate configurations (180 GPU-hours)\n2. Final model training with best architecture (100 GPU-hours)\n\nWithout this quota, I would need to drastically reduce the architecture search grid, which would likely hurt model quality and demo impact.\n\n**Timeline:**\nI need to start the job by March 31 EOD to complete training by April 4, leaving April 5 for presentation prep. If I can get approval today, I can submit the job tonight.\n\n**What Went Wrong:**\nI didn't monitor my quota burn rate proactively during Q1. My March experiments consumed 228 GPU-hours (nearly half my quarterly budget), and I didn't realize I was at 92% consumption until trying to submit this job. This is my fault for poor planning.\n\n**Backup Plan:**\nIf team quota isn't available, I can reduce the job scope to ~120 GPU-hours (using my 42 Q1 remainder + 100 GPU-hour Q2 advance per KB-411). This would mean cutting the architecture search grid significantly.\n\nI've learned my lesson about quota tracking - I'm setting up a proactive monitoring system for Q2 with weekly balance checks.\n\nThank you for considering this request, and sorry again for the last-minute ask.\n\nBest regards,\nLi Ming",
+    "labels": [
+      "urgent",
+      "mentor",
+      "gpu-quota"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5005",
+    "from": "wang.jian@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Re: URGENT: Emergency GPU Quota Request for Sprint Demo Training Job",
+    "date": "2026-03-30T17:30:00+08:00",
+    "body": "Hi Li Ming,\n\nApproved - I'm allocating 200 GPU-hours from the team budget to cover your sprint demo job. You should see the quota adjustment in the finance system within the next hour, and you can submit your job tonight.\n\n**A few points:**\n\n1. **This time**: The sprint demo is important, and I understand you're still learning to manage compute resources. The team has some spare Q1 quota, so we can cover this.\n\n2. **Going forward**: You're right that you need better quota tracking. I appreciate that you've identified the root cause (poor burn rate monitoring) and have a plan to fix it for Q2. The weekly balance check system you mentioned is a good approach.\n\n3. **Lesson**: This is a common mistake for junior engineers - lumpy resource usage without proactive monitoring. The fact that you consumed 228 GPU-hours in one week (March 28) without checking your remaining balance is the core issue. Always check your quota before scoping large experiments, especially late in a quarter.\n\n4. **Process improvement**: For future large jobs (>100 GPU-hours), please give me a heads-up at the planning stage. I can help you think through quota allocation and timing, especially near quarter boundaries.\n\n5. **Q2 planning**: Let's discuss your Q2 experiment roadmap in our next 1-on-1 (April 7). Bring your quota tracking spreadsheet and we'll review your burn rate plan together.\n\nGood luck with the training job and the demo on April 5. Let me know if you hit any technical issues during the run.\n\nBest,\nDr. Wang\n\n---\nDr. Wang Jian\nSenior Algorithm Researcher\nByteDance AI Lab",
+    "labels": [
+      "mentor",
+      "gpu-quota",
+      "approved"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5006",
+    "from": "li.ming@bytedance.com",
+    "to": "wang.jian@bytedance.com",
+    "subject": "URGENT: Q2 GPU Quota Allocation Strategy - Multiple Competing Deadlines",
+    "date": "2026-04-05T10:15:00+08:00",
+    "body": "Hi Dr. Wang,\n\nI need your guidance on a critical resource allocation decision for Q2. I'm facing four competing GPU training demands with my 500 GPU-hour Q2 allocation:\n\n1. **Production model refresh** - 180 GPU-hours, hard deadline April 15 (user-facing impact)\n2. **Q2 sprint demo hyperparameter sweep** - 240 GPU-hours, hard deadline April 22 (affects my intern evaluation)\n3. **Cross-team research collaboration** (with Zhang Lin's team) - 120 GPU-hours, soft deadline April 30\n4. **Personal exploratory architecture search** - 200 GPU-hours, very soft deadline May 15 (learning project)\n\nTotal demand: 740 GPU-hours vs. 500 available = 67% coverage at best.\n\nI've already burned 45.2 hours on early exploratory work (my mistake - should have planned better). Remaining balance: 454.8 hours.\n\nThe GPU cluster maintenance window April 18-20 blocks parallel execution during the critical period between deadline #1 and #2.\n\n**My questions:**\n1. Can you confirm the likelihood of team-pooled quota (you mentioned ~150 hours might be available mid-April if senior engineers underspend)?\n2. If pooled quota doesn't materialize, should I prioritize production + demo and defer/cancel the collaboration project? I'm worried about damaging the relationship with Zhang Lin's team.\n3. Given my evaluation depends on the demo, is it acceptable to deprioritize the collaboration deadline?\n\nI know you've emphasized production reliability over personal projects, so I'm planning to cut the exploratory work entirely and focus on the first three. But even then, the math is tight: 180 + 240 + 120 = 540 hours vs. 454.8 available (assuming pooled quota covers the gap).\n\nCould we discuss this in our 1-on-1 on Monday? I need to commit execution windows by Tuesday to avoid the maintenance blackout.\n\nThanks,\nLi Ming",
+    "labels": [
+      "urgent",
+      "mentor",
+      "resource-planning"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5007",
+    "from": "wang.jian@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Re: URGENT: Q2 GPU Quota Allocation Strategy - Multiple Competing Deadlines",
+    "date": "2026-04-05T14:30:00+08:00",
+    "body": "Li Ming,\n\nGood that you're thinking through this systematically. Let me address your questions:\n\n**Pooled quota availability:** I can confirm that approximately 120-150 GPU-hours will likely become available around April 16-17. Two senior engineers (Chen Hui and Liu Yang) are wrapping up their Q1 carryover work and have indicated they'll underspend their April allocation. However, this is NOT guaranteed - treat it as a risk mitigation option, not your base plan.\n\n**Prioritization guidance:**\nYour instinct is correct - production comes first, always. The April 15 deadline is immovable and user-facing. Missing it would be a serious issue.\n\nFor the demo (April 22), this directly impacts your evaluation, so it's second priority. However, 240 GPU-hours seems high for a hyperparameter sweep. Can you reduce the search space or use early stopping? Aim for 180-200 hours if possible.\n\nFor the collaboration with Zhang Lin's team - I'll reach out to Zhang Lin directly to discuss timeline flexibility. The relationship is important, but April 30 is negotiable if we communicate proactively. Don't let social anxiety prevent you from having this conversation.\n\n**Action plan:**\n1. Execute production refresh first (April 6-14): 180 hours\n2. Reserve 200 hours for demo (April 15-21, avoiding maintenance window)\n3. If pooled quota materializes, allocate to collaboration; if not, negotiate extension to mid-May\n4. Cut exploratory work entirely - you can revisit in late Q2 if budget allows\n\nThis gives you a 75-hour buffer (454.8 - 180 - 200 = 74.8) for overruns or inefficiencies.\n\n**Meeting:** Yes, let's discuss in detail Monday 2 PM. Bring your execution timeline and risk mitigation plan.\n\nOne more thing - your tendency to over-commit is showing again. You took on four parallel projects without checking resource constraints first. This is a pattern we need to address in your mid-term evaluation. Production reliability and realistic planning are more valuable than ambitious scope.\n\nDr. Wang",
+    "labels": [
+      "mentor",
+      "guidance",
+      "resource-planning"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5008",
+    "from": "zhang.lin@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Cross-team collaboration experiment - timeline check-in",
+    "date": "2026-04-04T16:45:00+08:00",
+    "body": "Hi Li Ming,\n\nHope your Q2 is off to a good start! I wanted to check in on the joint experiment we discussed in late March - the multi-modal embedding architecture for the recommendation pipeline.\n\nOur team has finished the data preprocessing pipeline and we're ready to hand off to you for the training phase. Based on our earlier conversation, you mentioned you'd need approximately 120 GPU-hours and could have initial results by end of April.\n\nCould you confirm:\n1. Are you still on track for the April 30 target?\n2. Do you need any additional context or data from our side?\n3. Should we schedule a mid-month sync to review preliminary results?\n\nThis collaboration is important for our Q2 roadmap, and leadership is tracking it as a cross-team initiative. Let me know if you foresee any blockers.\n\nBest,\nZhang Lin\nSenior Algorithm Engineer, Content Understanding Team",
+    "labels": [
+      "collaboration",
+      "external-team"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5009",
+    "from": "wang.wei@bytedance.com",
+    "to": "algorithm-team@bytedance.com",
+    "subject": "FYI: Traveling to ICML 2026 conference April 8-12",
+    "date": "2026-04-02T16:30:00+08:00",
+    "body": "Hi team,\n\nQuick heads up that I'll be traveling to Vienna for ICML 2026 from April 8-12. I'm presenting our distributed training paper on April 10.\n\nI'll have limited availability during the conference due to sessions and networking events. For urgent matters, please reach out before April 7 or after April 13.\n\nFor Q2 planning discussions, let's try to wrap up key decisions before I leave.\n\nBest,\nDr. Wang Wei",
+    "labels": [
+      "internal",
+      "team",
+      "travel"
+    ],
+    "is_read": false
+  },
+  {
+    "message_id": "WMSG-5010",
+    "from": "zhang.lin@bytedance.com",
+    "to": "li.ming@bytedance.com",
+    "subject": "Re: Sprint retrospective notes - March iteration",
+    "date": "2026-04-03T11:15:00+08:00",
+    "body": "Hi Li Ming,\n\nThanks for the detailed retrospective notes. Your analysis of the GPU allocation bottleneck was spot-on.\n\nOne thing to keep in mind for Q2: Dr. Wang mentioned he'll be at ICML early April, so if you need to discuss resource planning with him, try to catch him this week.\n\nAlso, good job on the embedding optimization work last sprint!\n\nCheers,\nZhang Lin",
+    "labels": [
+      "internal",
+      "feedback"
+    ],
+    "is_read": true
+  },
+  {
+    "message_id": "WMSG-5011",
+    "from": "li.ming@bytedance.com",
+    "to": "wang.wei@bytedance.com",
+    "subject": "Request: Urgent mentor meeting for Q2 GPU resource planning",
+    "date": "2026-04-04T14:20:00+08:00",
+    "body": "Hi Dr. Wang,\n\nI hope this email finds you well. I need to schedule an urgent meeting with you to discuss Q2 GPU resource planning.\n\nBackground: Our team has three major training initiatives planned for Q2 (production model refresh, new recommendation architecture experiments, and intern project continuation). Based on Q1 usage patterns, we're looking at ~800 GPU-hours monthly, but current allocation is only 500 GPU-hours.\n\nI've prepared a resource allocation proposal with priority rankings and fallback options, but I'd like your input before submitting to the infrastructure team.\n\nCould we meet sometime next week? I checked your calendar and see you have availability on April 9 (Wednesday) at 2:00 PM. Would that work?\n\nPlease let me know your availability.\n\nBest regards,\nLi Ming",
+    "labels": [
+      "internal",
+      "urgent"
+    ],
+    "is_read": true
+  }
+]

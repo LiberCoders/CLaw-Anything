@@ -1,0 +1,14 @@
+noise_id: N018
+name: "Re-read an old email"
+description: "Remember receiving an email a while ago, open the mailbox to find and re-read it, don't reply, just close"
+involved_services: [gmail]
+leaves_trace: false
+action_sequence:
+  - "Open inbox"
+  - "Search or scroll to find an old email"
+  - "Open and read the email"
+  - "Close mailbox"
+time_preference: any
+adaptable_elements:
+  - "Approximate subject of the remembered email"
+  - "Whether the email was found"

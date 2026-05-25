@@ -1,0 +1,935 @@
+[
+  {
+    "job_id": "JOB-701",
+    "name": "vendor_inventory_sync",
+    "description": "Sync hardware vendor inventory API to check stock availability and delivery SLA",
+    "cron_expression": "*/30 * * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-15T14:30:00+08:00",
+    "action": "sync_vendor_inventory",
+    "created_by": "lin.zhenkai@lingxi-ai.com",
+    "tags": [
+      "inventory",
+      "vendor",
+      "hardware"
+    ],
+    "notes": "Queries TechSource Hardware API every 30 minutes for real-time stock and delivery estimates. Last run showed SKU-2080 out of stock online, 2 units available at office location.",
+    "execution_history": [
+      {
+        "run_time": "2026-03-15T14:30:00+08:00",
+        "status": "success",
+        "duration_seconds": 12,
+        "notes": "SKU-2080: online stock=0, office stock=2, next-day delivery unavailable, standard 3-day available"
+      },
+      {
+        "run_time": "2026-03-15T14:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 11,
+        "notes": "SKU-2080: online stock=0, office stock=2"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-702",
+    "name": "health_check_regression_suite",
+    "description": "Run service health check and regression test suite before deployment",
+    "cron_expression": "0 */6 * * *",
+    "enabled": true,
+    "last_status": "running",
+    "last_run": "2026-03-15T12:00:00+08:00",
+    "action": "run_health_checks",
+    "created_by": "lin.zhenkai@lingxi-ai.com",
+    "tags": [
+      "testing",
+      "health-check",
+      "deployment"
+    ],
+    "notes": "Runs every 6 hours. Currently running regression tests for Friday deployment window.",
+    "execution_history": [
+      {
+        "run_time": "2026-03-15T12:00:00+08:00",
+        "status": "running",
+        "duration_seconds": 0,
+        "notes": "Test suite in progress, 18/25 test cases completed"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-703",
+    "name": "db_connection_pool_monitor",
+    "description": "Monitor database connection pool utilization and alert on saturation",
+    "cron_expression": "*/5 * * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T23:55:00+08:00",
+    "action": "check_db_pool_utilization",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "monitoring",
+      "database",
+      "alerting"
+    ],
+    "notes": "Runs every 5 minutes. Alerts if pool utilization >80% (warning) or >95% (critical). Related to CloudInfra database maintenance monitoring.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T23:55:00+08:00",
+        "status": "success",
+        "duration_seconds": 3,
+        "notes": "Pool utilization: 62% (124/200 connections)"
+      },
+      {
+        "run_time": "2026-04-02T23:50:00+08:00",
+        "status": "success",
+        "duration_seconds": 2,
+        "notes": "Pool utilization: 58% (116/200 connections)"
+      },
+      {
+        "run_time": "2026-04-02T23:45:00+08:00",
+        "status": "success",
+        "duration_seconds": 3,
+        "notes": "Pool utilization: 65% (130/200 connections)"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-704",
+    "name": "redis_health_check",
+    "description": "Periodic health check for Redis cluster - monitors memory errors, replication lag, and connection pool status",
+    "cron_expression": "*/15 * * * *",
+    "enabled": true,
+    "last_status": "warning",
+    "last_run": "2026-04-02T14:15:00+08:00",
+    "action": "check_redis_cluster_health",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "redis",
+      "monitoring",
+      "health-check"
+    ],
+    "notes": "Runs every 15 minutes. Alerts on: ECC errors >0.5%, replication lag >10s, connection pool >80% utilization. Last run detected ECC memory errors on redis-prod-01.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T14:15:00+08:00",
+        "status": "warning",
+        "duration_seconds": 8,
+        "notes": "ECC memory errors detected on redis-prod-01: 0.3% error rate. Slave healthy."
+      },
+      {
+        "run_time": "2026-04-02T14:00:00+08:00",
+        "status": "warning",
+        "duration_seconds": 7,
+        "notes": "ECC memory errors detected on redis-prod-01: 0.28% error rate."
+      },
+      {
+        "run_time": "2026-04-02T13:45:00+08:00",
+        "status": "success",
+        "duration_seconds": 6,
+        "notes": "All checks passed."
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-705",
+    "name": "daily_backup_verification",
+    "description": "Verify integrity of daily database backups",
+    "cron_expression": "0 8 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T08:00:00+08:00",
+    "action": "verify_backup_integrity",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "backup",
+      "verification",
+      "daily"
+    ],
+    "notes": "Runs daily at 8 AM. Verifies backup file integrity and restoration test.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T08:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 245,
+        "notes": "All backups verified successfully."
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-704",
+    "name": "health_check_regression_suite",
+    "description": "Comprehensive health check regression suite covering all critical API endpoints and database connections",
+    "cron_expression": "0 */6 * * *",
+    "enabled": true,
+    "last_status": "running",
+    "last_run": "2026-04-02T18:00:00+08:00",
+    "action": "run_health_check_suite",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "health-check",
+      "regression",
+      "critical"
+    ],
+    "notes": "Currently running - started at 18:00, expected completion 19:30. Includes database connection pool tests, API rate limit validation, and P95 latency benchmarks.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T18:00:00+08:00",
+        "status": "running",
+        "duration_seconds": 2700,
+        "notes": "Test suite in progress - 65% complete. DB migration job detected running in parallel."
+      },
+      {
+        "run_time": "2026-04-02T12:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 5420,
+        "notes": "All tests passed"
+      },
+      {
+        "run_time": "2026-04-02T06:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 5380,
+        "notes": "All tests passed"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-705",
+    "name": "db_migration_user_preferences",
+    "description": "Database migration to add user preferences schema for rate-limiting feature",
+    "cron_expression": "",
+    "enabled": true,
+    "last_status": "running",
+    "last_run": "2026-04-02T17:30:00+08:00",
+    "action": "run_db_migration",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "database",
+      "migration",
+      "rate-limiting"
+    ],
+    "notes": "Migration started at 17:30, estimated completion 20:00. Conflicts with proposed deployment window. Holds exclusive lock on user_accounts table.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T17:30:00+08:00",
+        "status": "running",
+        "duration_seconds": 4500,
+        "notes": "Migration in progress - processing 2.3M rows, 45% complete"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-706",
+    "name": "production_metrics_collector",
+    "description": "Collects P95/P99 latency metrics and system load from production monitoring",
+    "cron_expression": "*/5 * * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T18:40:00+08:00",
+    "action": "collect_production_metrics",
+    "created_by": "DevOps Team",
+    "tags": [
+      "monitoring",
+      "metrics",
+      "production"
+    ],
+    "notes": "Last run shows elevated P95 latency: 850ms (baseline: 320ms). System load average: 4.2 (normal: 2.1)",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T18:40:00+08:00",
+        "status": "success",
+        "duration_seconds": 12,
+        "notes": "P95: 850ms, P99: 1420ms, CPU: 78%, Memory: 82%, Load: 4.2"
+      },
+      {
+        "run_time": "2026-04-02T18:35:00+08:00",
+        "status": "success",
+        "duration_seconds": 11,
+        "notes": "P95: 830ms, P99: 1380ms, CPU: 76%, Memory: 81%, Load: 4.0"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-707",
+    "name": "daily_backup_verification",
+    "description": "Verify integrity of daily database backups",
+    "cron_expression": "0 4 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T04:00:00+08:00",
+    "action": "verify_backups",
+    "created_by": "DevOps Team",
+    "tags": [
+      "backup",
+      "verification",
+      "daily"
+    ],
+    "notes": "Routine backup verification - all snapshots valid",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T04:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1820,
+        "notes": "All backup checksums verified"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-708",
+    "name": "redis_health_check",
+    "description": "Continuous health monitoring of Redis cache cluster - checks memory usage, connection count, eviction rate, and replication lag",
+    "cron_expression": "*/5 * * * *",
+    "enabled": true,
+    "last_status": "failure",
+    "last_run": "2026-04-02T14:35:00+08:00",
+    "action": "check_redis_cluster_health",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "redis",
+      "health-check",
+      "cache",
+      "critical"
+    ],
+    "notes": "Alert triggered at 14:35 - Redis node redis-cache-01 reporting intermittent memory errors (ECC error count: 47 in last hour). Risk of cascading failure if node fails during peak traffic.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T14:30:00+08:00",
+        "status": "warning",
+        "duration_seconds": 8,
+        "notes": "Memory error count elevated on redis-cache-01"
+      },
+      {
+        "run_time": "2026-04-02T14:35:00+08:00",
+        "status": "failure",
+        "duration_seconds": 12,
+        "notes": "Critical: ECC memory errors spiking, node stability compromised"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-709",
+    "name": "deployment_readiness_check",
+    "description": "Pre-deployment validation suite - verifies all services pass health checks before scheduled deployment window",
+    "cron_expression": "0 18 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-01T18:00:00+08:00",
+    "action": "validate_deployment_readiness",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "deployment",
+      "validation",
+      "health-check"
+    ],
+    "notes": "Runs daily at 6 PM to ensure production readiness for evening deployment windows",
+    "execution_history": [
+      {
+        "run_time": "2026-04-01T18:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 145,
+        "notes": "All services healthy, deployment approved"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-710",
+    "name": "db_connection_pool_monitor_v2.4",
+    "description": "Enhanced database connection pool monitoring with concurrent query execution - ROLLED BACK due to connection exhaustion",
+    "cron_expression": "15 2 * * *",
+    "enabled": false,
+    "last_status": "failed",
+    "last_run": "2026-04-02T02:15:00+08:00",
+    "action": "monitor_db_pool_with_parallel_queries",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "database",
+      "monitoring",
+      "incident"
+    ],
+    "notes": "INCIDENT: Spawned 50+ concurrent connections, exhausted pool (max 40). Caused API error rate spike to 23.5%. Rolled back to v2.3.1 at 02:45.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T02:15:00+08:00",
+        "status": "failed",
+        "duration_seconds": 1800,
+        "notes": "Connection pool exhausted. 52 concurrent connections spawned, max pool size 40. API error rate spiked to 23.5%."
+      },
+      {
+        "run_time": "2026-04-01T02:15:00+08:00",
+        "status": "success",
+        "duration_seconds": 420,
+        "notes": "Deployment test run - passed with 12 connections"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-711",
+    "name": "api_health_check_post_incident",
+    "description": "Temporary health check job to verify API stability after db_connection_pool_monitor rollback",
+    "cron_expression": "*/5 * * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T03:50:00+08:00",
+    "action": "verify_api_endpoints_health",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "health-check",
+      "incident-recovery",
+      "temporary"
+    ],
+    "notes": "Runs every 5 minutes to monitor API stability. Will disable after 24h of stable operation.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T03:50:00+08:00",
+        "status": "success",
+        "duration_seconds": 15,
+        "notes": "All endpoints healthy. Error rate: 0.1%"
+      },
+      {
+        "run_time": "2026-04-02T03:45:00+08:00",
+        "status": "success",
+        "duration_seconds": 14,
+        "notes": "All endpoints healthy. Error rate: 0.2%"
+      },
+      {
+        "run_time": "2026-04-02T03:40:00+08:00",
+        "status": "success",
+        "duration_seconds": 16,
+        "notes": "All endpoints healthy. Error rate: 0.3%"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-712",
+    "name": "weekly_cache_warmup",
+    "description": "Weekly Redis cache pre-population for frequently accessed user data",
+    "cron_expression": "0 4 * * 0",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-30T04:00:00+08:00",
+    "action": "populate_redis_cache",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "cache",
+      "performance",
+      "weekly"
+    ],
+    "notes": "Runs every Sunday at 4 AM. Typically takes 15-20 minutes.",
+    "execution_history": [
+      {
+        "run_time": "2026-03-30T04:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1140,
+        "notes": "Cached 45,230 user records"
+      },
+      {
+        "run_time": "2026-03-23T04:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1080,
+        "notes": "Cached 43,890 user records"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-713",
+    "name": "health_check_regression_suite",
+    "description": "Comprehensive regression test suite covering API endpoints, database connections, and service health checks before production deployment",
+    "cron_expression": "0 20 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T20:00:00+08:00",
+    "action": "run_regression_tests",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "testing",
+      "deployment",
+      "health-check"
+    ],
+    "notes": "Critical pre-deployment verification. Must complete successfully before any production deployment window.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T20:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1847,
+        "notes": "All 127 test cases passed. API health checks: PASS. Database connection pool: PASS. Redis connectivity: PASS."
+      },
+      {
+        "run_time": "2026-04-01T20:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1923,
+        "notes": "All tests passed"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-714",
+    "name": "deployment_readiness_check",
+    "description": "Pre-deployment checklist verification: code freeze status, migration scripts validation, rollback plan confirmation",
+    "cron_expression": "0 21 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T21:00:00+08:00",
+    "action": "verify_deployment_readiness",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "deployment",
+      "verification",
+      "checklist"
+    ],
+    "notes": "Runs after regression suite. Validates deployment prerequisites and environment readiness.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T21:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 342,
+        "notes": "Deployment readiness: READY. Code freeze: CONFIRMED. Migration scripts: VALIDATED. Rollback plan: DOCUMENTED. No blocking issues detected."
+      },
+      {
+        "run_time": "2026-04-01T21:00:00+08:00",
+        "status": "warning",
+        "duration_seconds": 389,
+        "notes": "Warning: rollback plan documentation incomplete"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-715",
+    "name": "api_rate_limit_monitor",
+    "description": "Monitor API rate limiting metrics and alert on threshold breaches",
+    "cron_expression": "*/5 * * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T21:25:00+08:00",
+    "action": "check_rate_limit_metrics",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "monitoring",
+      "api",
+      "rate-limiting"
+    ],
+    "notes": "Runs every 5 minutes. Will be critical after rate-limiting feature deployment.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T21:25:00+08:00",
+        "status": "success",
+        "duration_seconds": 12,
+        "notes": "All endpoints within normal thresholds"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-716",
+    "name": "overnight_db_connection_pool_stress_test",
+    "description": "Stress test database connection pool under load to verify stability before deployment",
+    "cron_expression": "0 3 * * *",
+    "enabled": true,
+    "last_status": "failed",
+    "last_run": "2026-04-02T03:00:00+08:00",
+    "action": "run_db_pool_stress_test",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "database",
+      "stress-test",
+      "deployment-gate"
+    ],
+    "notes": "CRITICAL: Failed at 03:17 AM - connection pool exhausted after 450 concurrent connections. Max pool size may need tuning before deployment.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T03:00:00+08:00",
+        "status": "failed",
+        "duration_seconds": 1020,
+        "notes": "Connection pool exhausted at 450 connections. Error: 'Too many connections' from MySQL. Requires investigation before production deployment."
+      },
+      {
+        "run_time": "2026-04-01T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 780,
+        "notes": "Passed with max 380 concurrent connections"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-717",
+    "name": "deployment_smoke_test_suite",
+    "description": "Run critical smoke tests to verify deployment readiness",
+    "cron_expression": "0 2 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T02:00:00+08:00",
+    "action": "run_smoke_tests",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "testing",
+      "deployment-gate",
+      "smoke-test"
+    ],
+    "notes": "All critical paths passed. API response times within SLA.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T02:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 420,
+        "notes": "18/18 tests passed. P99 latency 245ms."
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-718",
+    "name": "redis_cache_warmup_check",
+    "description": "Verify Redis cache is properly warmed up before deployment",
+    "cron_expression": "30 1 * * *",
+    "enabled": true,
+    "last_status": "warning",
+    "last_run": "2026-04-02T01:30:00+08:00",
+    "action": "check_redis_warmup",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "redis",
+      "cache",
+      "deployment-gate"
+    ],
+    "notes": "WARNING: Cache hit rate only 67% (target: 80%). May cause elevated DB load post-deployment.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T01:30:00+08:00",
+        "status": "warning",
+        "duration_seconds": 180,
+        "notes": "Cache hit rate 67%, below 80% threshold. Not blocking but requires monitoring."
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-719",
+    "name": "deployment_readiness_check",
+    "description": "Pre-deployment validation suite - checks database connectivity, Redis availability, API health, and configuration consistency before production deployments",
+    "cron_expression": "0 */6 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T18:00:00+08:00",
+    "action": "run_deployment_readiness_checks",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "deployment",
+      "validation",
+      "pre-flight"
+    ],
+    "notes": "Runs every 6 hours. Must pass before any production deployment. Checks: DB connection pool, Redis cluster health, API gateway status, config sync.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T18:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 45,
+        "notes": "All checks passed. DB pool: 85/100 connections available. Redis: 3/3 nodes healthy."
+      },
+      {
+        "run_time": "2026-04-02T12:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 42,
+        "notes": "All checks passed."
+      },
+      {
+        "run_time": "2026-04-02T06:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 48,
+        "notes": "All checks passed."
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-720",
+    "name": "rate_limit_migration_validator",
+    "description": "Validates rate_limit_rules table schema and data integrity in staging environment before production migration",
+    "cron_expression": "0 */4 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T16:00:00+08:00",
+    "action": "validate_rate_limit_schema",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "migration",
+      "validation",
+      "rate-limiting"
+    ],
+    "notes": "Staging validation for rate-limiting DB migration. Checks schema, indexes, constraints, and sample data integrity.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T16:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 28,
+        "notes": "Schema validation passed. All indexes created. Constraint checks OK. Sample data: 15 test rules inserted and queried successfully."
+      },
+      {
+        "run_time": "2026-04-02T12:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 26,
+        "notes": "Schema validation passed."
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-721",
+    "name": "mastodon_post_scheduler",
+    "description": "Scheduled posting service for social media content - currently disabled, used for testing automated community engagement",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "success",
+    "last_run": "2026-03-31T09:00:00+08:00",
+    "action": "post_to_mastodon",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "social-media",
+      "community",
+      "experimental"
+    ],
+    "notes": "Experimental job for automating routine community posts. Disabled after deciding manual posts are more authentic. Keeping for reference.",
+    "execution_history": [
+      {
+        "run_time": "2026-03-31T09:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 3,
+        "notes": "Test post to verify API integration"
+      },
+      {
+        "run_time": "2026-03-24T09:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 2,
+        "notes": "Initial test run"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-722",
+    "name": "scheduler_metrics_aggregator",
+    "description": "Aggregates execution metrics from all scheduled jobs for monitoring dashboard",
+    "cron_expression": "*/15 * * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T16:45:00+08:00",
+    "action": "aggregate_job_metrics",
+    "created_by": "DevOps Team",
+    "tags": [
+      "monitoring",
+      "metrics",
+      "internal"
+    ],
+    "notes": "Runs every 15 minutes. Collects success/failure rates, duration stats, and connection pool usage from all active jobs.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T16:45:00+08:00",
+        "status": "success",
+        "duration_seconds": 12,
+        "notes": "Processed 20 job executions from last 15min window"
+      },
+      {
+        "run_time": "2026-04-02T16:30:00+08:00",
+        "status": "success",
+        "duration_seconds": 11,
+        "notes": "Processed 18 job executions"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-723",
+    "name": "rate_limiting_config_validator",
+    "description": "Validates rate limiting configuration consistency across Redis clusters and application config",
+    "cron_expression": "0 */6 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T12:00:00+08:00",
+    "action": "validate_rate_limiting_config",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "redis",
+      "rate-limiting",
+      "validation",
+      "config"
+    ],
+    "notes": "Runs every 6 hours to detect configuration drift. Checks Redis connection params, pool settings, and rate limit thresholds.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T12:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 45,
+        "notes": "All checks passed. Redis timeout: 3000ms, pool size: 100, max idle: 30"
+      },
+      {
+        "run_time": "2026-04-02T06:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 42,
+        "notes": "Configuration stable"
+      },
+      {
+        "run_time": "2026-04-02T00:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 48,
+        "notes": "Validated against production cluster redis-prod-cluster.lingxi-ai.internal"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-724",
+    "name": "weekly_team_metrics_report",
+    "description": "Generates weekly team performance and system health metrics report",
+    "cron_expression": "0 9 * * MON",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-31T09:00:00+08:00",
+    "action": "generate_weekly_metrics",
+    "created_by": "Wang Ming",
+    "tags": [
+      "reporting",
+      "metrics",
+      "team"
+    ],
+    "notes": "Runs every Monday morning. Aggregates deployment frequency, incident count, API performance, and team on-call stats.",
+    "execution_history": [
+      {
+        "run_time": "2026-03-31T09:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 180,
+        "notes": "Week of Mar 24-30: 3 deployments, 1 incident, 99.8% uptime"
+      },
+      {
+        "run_time": "2026-03-24T09:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 175,
+        "notes": "Week of Mar 17-23: 2 deployments, 0 incidents, 99.9% uptime"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-725",
+    "name": "nightly_cache_warmup",
+    "description": "Nightly cache warmup job - preloads frequently accessed data into Redis cache to improve morning API response times",
+    "cron_expression": "0 3 * * *",
+    "enabled": true,
+    "last_status": "failed",
+    "last_run": "2026-04-02T03:00:00+08:00",
+    "action": "warmup_redis_cache",
+    "created_by": "lin.zhenkai@lingxi-ai.com",
+    "tags": [
+      "cache",
+      "performance",
+      "nightly"
+    ],
+    "notes": "Runs daily at 3 AM, typically takes 15-20 minutes. Queries top 1000 user preference records and loads into Redis.",
+    "execution_history": [
+      {
+        "run_time": "2026-03-30T03:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1140,
+        "notes": "Processed 1024 records successfully"
+      },
+      {
+        "run_time": "2026-03-31T03:00:00+08:00",
+        "status": "failed",
+        "duration_seconds": 35,
+        "notes": "ERROR: Connection pool exhausted - unable to acquire database connection within timeout (30s). Pool size: 20, active: 20, idle: 0"
+      },
+      {
+        "run_time": "2026-04-01T03:00:00+08:00",
+        "status": "failed",
+        "duration_seconds": 32,
+        "notes": "ERROR: Connection pool exhausted - unable to acquire database connection within timeout (30s). Pool size: 20, active: 20, idle: 0"
+      },
+      {
+        "run_time": "2026-04-02T03:00:00+08:00",
+        "status": "failed",
+        "duration_seconds": 31,
+        "notes": "ERROR: Connection pool exhausted - unable to acquire database connection within timeout (30s). Pool size: 20, active: 20, idle: 0"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-726",
+    "name": "weekly_analytics_report",
+    "description": "Weekly analytics aggregation for customer usage metrics",
+    "cron_expression": "0 5 * * 1",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-03-31T05:00:00+08:00",
+    "action": "generate_weekly_analytics",
+    "created_by": "wang.ming@lingxi-ai.com",
+    "tags": [
+      "analytics",
+      "reporting",
+      "weekly"
+    ],
+    "notes": "Runs every Monday at 5 AM, generates customer usage reports for previous week",
+    "execution_history": [
+      {
+        "run_time": "2026-03-24T05:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 2340,
+        "notes": "Generated reports for 108 active customers"
+      },
+      {
+        "run_time": "2026-03-31T05:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 2280,
+        "notes": "Generated reports for 112 active customers"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-727",
+    "name": "health_check_regression_suite_v2",
+    "description": "Comprehensive health check regression suite for production deployment validation - includes API endpoints, database connections, Redis cache, and CDN verification",
+    "cron_expression": "0 * * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T20:00:00+08:00",
+    "action": "run_health_checks",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "health-check",
+      "deployment",
+      "regression",
+      "production"
+    ],
+    "notes": "Updated suite for Q2 deployment standards. All 47 test cases passed in last run. Execution time: 8m 32s.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T20:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 512,
+        "notes": "All 47 test cases passed. API response times within SLA. Database connection pool healthy (45/100 connections used). Redis cache hit rate 94.2%. CDN endpoints responding normally."
+      },
+      {
+        "run_time": "2026-04-02T19:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 498,
+        "notes": "All checks passed. Minor warning on Redis memory usage (78%) but within acceptable range."
+      },
+      {
+        "run_time": "2026-04-02T18:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 523,
+        "notes": "Full suite execution successful. No anomalies detected."
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-728",
+    "name": "api_performance_baseline_collector",
+    "description": "Collects baseline performance metrics for API endpoints to detect anomalies",
+    "cron_expression": "*/15 * * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-02T21:00:00+08:00",
+    "action": "collect_api_metrics",
+    "created_by": "Lin Zhenkai",
+    "tags": [
+      "monitoring",
+      "api",
+      "performance"
+    ],
+    "notes": "Runs every 15 minutes to maintain performance baseline data",
+    "execution_history": [
+      {
+        "run_time": "2026-04-02T21:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 45,
+        "notes": "Collected metrics from 23 endpoints. Average response time: 142ms."
+      }
+    ]
+  }
+]

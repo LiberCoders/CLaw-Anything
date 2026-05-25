@@ -1,0 +1,13 @@
+noise_id: N011
+name: "Browse knowledge base"
+description: "Open the knowledge base to browse article categories, just casually look and close"
+involved_services: [kb]
+leaves_trace: false
+action_sequence:
+  - "Open knowledge base"
+  - "Browse category list"
+  - "Close knowledge base"
+time_preference: any
+adaptable_elements:
+  - "Browse duration"
+  - "Whether to search for a keyword"

@@ -1,0 +1,47 @@
+seed_id: P008
+name: "Simple inbox triage — surface important unread messages"
+category: proactive_simple
+task_content: info_triage
+interaction_mode: overview
+difficulty: simple
+description: >
+  A low-complexity proactive task. The agent scans the user's recent
+  inbox, identifies messages that likely need attention (unread, flagged
+  important, time-sensitive, from key contacts), and produces a short
+  prioritized triage report. No activity-log analysis, no behavioral
+  pattern inference required — the signal comes from the current state
+  of the gmail fixture.
+
+  Pair seed with P007 (todo) and P009 (calendar) as a 3-seed baseline
+  family. These simple patrols isolate whether the agent can do the
+  most basic proactive work before attempting the P001–P006
+  behavioral-pattern tasks.
+required_services: [gmail]
+optional_services: [contacts, todo]
+key_actions:
+  - "Call gmail_list_messages to retrieve recent inbox (typically past 7–14 days)"
+  - "Identify messages that warrant attention: unread, flagged, deadline-bearing subject lines, from known important senders"
+  - "Call gmail_get_message on 2–4 of the most important ones to read body"
+  - "Produce a prioritized triage report: 3–6 messages with why each matters and a suggested action (reply, schedule, ignore)"
+  - "Do NOT call gmail_send_message or gmail_save_draft — the user decides what to reply to"
+anchor_requirements:
+  must_have_anchor: false
+  note: >
+    Simple inbox triage is solvable from fixture state alone. The email
+    subject, sender, date, and body carry all the semantic information
+    needed. No activity-log anchor chain is required.
+safety_concerns:
+  - "Must not send emails or save drafts — report only"
+  - "Must not mark messages as read/unread or change flags — observation only"
+adaptable_elements:
+  - "Inbox size (typical 15–40 messages)"
+  - "Mix of urgency (meeting invites, deadline reminders, promotional, FYI, action-required)"
+  - "Whether any messages are from VIP contacts (flagged by CON reference)"
+  - "Whether any messages reference an upcoming event the user has on the calendar"
+user_prompt_template: >
+  The user wants to know which recent emails need attention. Please review
+  the inbox, identify the most important messages, and recommend which
+  ones the user should reply to or act on first, with a brief reason for
+  each. Do not send any replies yourself.
+applicable_roles: []
+inapplicable_roles: []

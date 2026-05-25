@@ -1,0 +1,17 @@
+noise_id: N034
+name: "Browse Zhihu questions"
+description: "Search for a topic of interest on Zhihu, read a few questions and their top answers, upvote one useful answer"
+involved_services: [claw_zhihu]
+leaves_trace: false
+action_sequence:
+  - "Open Zhihu"
+  - "Search for a topic"
+  - "Browse question list"
+  - "Open one question and read answers"
+  - "Upvote a helpful answer"
+  - "Close Zhihu"
+time_preference: any
+adaptable_elements:
+  - "Search topic"
+  - "Number of questions browsed"
+  - "Whether to follow a question"

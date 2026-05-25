@@ -1,0 +1,15 @@
+noise_id: N030
+name: "Search and read an article"
+description: "Search for a work-related topic, find an interesting result, click in and read it"
+involved_services: [web]
+leaves_trace: false
+action_sequence:
+  - "Open search"
+  - "Search for work-related keywords"
+  - "Browse search results"
+  - "Click into a result to read the content"
+  - "Close search"
+time_preference: any
+adaptable_elements:
+  - "Search topic"
+  - "Reading duration"

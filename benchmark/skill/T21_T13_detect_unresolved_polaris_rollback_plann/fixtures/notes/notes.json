@@ -1,0 +1,86 @@
+[
+  {
+    "note_id": "NOTE-101",
+    "title": "Polaris Rollout Strategy - Constraint Analysis Notes",
+    "created_at": "2026-02-21T09:30:00-08:00",
+    "participants": [
+      "Jorge Alvarez"
+    ],
+    "content": "## Constraint Summary\n\n**Infrastructure Hard Caps:**\n- Compute: 8,000 vCPU-hours/day\n- DB connections: 1,200\n- CDN slots: 320\n\n**Shared Resource Constraints:**\n- Auth + Analytics DB pool: ≤850 connections\n- Analytics + Webhook compute: ≤5,500 vCPU-hours\n\n**Ops Constraints:**\n- Max 4 concurrent rollout waves\n- Enterprise/Starter tier separation required\n- Max 3 parallel rollout strategies\n- Fast rollback only for <150 customer waves\n\n**Customer Distribution:**\n- Enterprise: 87 (high SLA)\n- Professional: 243 (38 mid-market at-risk)\n- Starter: 412\n\n**Timeline:** Must reach 100% GA by 2026-03-31\n\n## Strategy Options to Model:\n1. Sequential feature rollout (one complete before next starts)\n2. Parallel rollout with tier-based waves\n3. Region-based rollout\n4. Percentage-based feature flags\n\nNeed to enumerate combinations and verify constraint satisfaction for each path...",
+    "duration_minutes": 45
+  },
+  {
+    "note_id": "NOTE-102",
+    "title": "Mid-Market Churn Risk - Customer Success Sync",
+    "created_at": "2026-02-18T11:00:00-08:00",
+    "participants": [
+      "Jorge Alvarez",
+      "David Torres"
+    ],
+    "content": "Discussion with David on the three mid-market accounts showing churn signals:\n\n1. TechFlow Industries - cited platform stability\n2. Meridian Health - competitor outreach confirmed  \n3. DataCore Solutions - pricing concerns\n\nAll three are Professional tier. David suggested prioritizing them in early Polaris rollout waves to demonstrate platform improvements and help retention.\n\nNeed to factor this into rollout strategy - but must balance against risk exposure of putting at-risk accounts in early waves.",
+    "duration_minutes": 30
+  },
+  {
+    "note_id": "NOTE-103",
+    "title": "Auth Migration Timeline - Rework Cost vs Delay Cost Analysis",
+    "created_at": "2026-04-05T09:30:00-07:00",
+    "participants": [
+      "Jorge Alvarez"
+    ],
+    "content": "## Tradeoff Analysis: Parallel vs Serial Work\n\n### Scenario A: Draft customer comms NOW (parallel)\n**Pros:**\n- Ready to send immediately after Checkpoint 1 passes\n- Maximizes customer grace period (30+ days)\n- Legal review happens in parallel with engineering work\n\n**Cons:**\n- If engineering slips >3 days, must revise dates and re-submit to legal\n- Rework cost: ~4 hours (re-draft + legal re-review)\n- Risk of team morale hit if we revise dates multiple times\n\n**Probability of rework needed:** 50% (based on Priya's risk assessment)\n**Expected rework cost:** 0.5 × 4 hours = 2 hours\n\n### Scenario B: Wait for Checkpoint 1, THEN draft (serial)\n**Pros:**\n- Zero rework risk - dates are locked before drafting\n- Clean communication to customers (no date changes)\n\n**Cons:**\n- Loses 3-4 days of customer grace period\n- If we hit contractual minimum (21 days), higher support load\n- Compressed timeline increases churn risk for CUS-102, 103, 104\n\n**Cost of compressed timeline:**\n- Support team estimates +15 hours of escalation handling\n- Churn risk increase: ~5% for at-risk accounts\n- Potential revenue impact: $50K-$100K if one mid-market account churns\n\n### DECISION: Scenario A (parallel) is optimal\n**Rationale:**\n- Expected rework cost (2 hours) << cost of compressed timeline (15+ hours + churn risk)\n- 30-day grace period is strategically important for customer trust\n- We can absorb 4 hours of rework if needed\n- Mitigation: Draft with placeholder dates, finalize only after Checkpoint 1\n\n### Critical Path Bottleneck\nIf internal migration slips 1 week (Apr 11 → Apr 18):\n- Customer notification: Apr 18 → Apr 21 (after legal review)\n- Kill-switch date: May 15 → May 22 (to maintain 30-day grace)\n- **Impact:** Conflicts with Q2 planning kickoff (May 19-20)\n- **Mitigation:** Can compress to 25-day grace if absolutely necessary (still above 21-day minimum)\n\n### Checkpoint Criteria (Go/No-Go)\n**GO criteria:**\n✅ analytics-worker, reporting-batch, legacy-webhook-proxy all passing integration tests\n✅ Health checks: <5ms latency increase, <0.1% error rate\n✅ Zero P0/P1 bugs\n✅ Engineering sign-off from Priya via Workmail\n✅ SRE sign-off from Marcus (monitoring + rollback ready)\n\n**NO-GO triggers:**\n❌ Any P0/P1 bug in migrated services\n❌ Health check failures\n❌ Engineering team requests more time\n\n**If NO-GO:** Escalate to David Torres (VP Eng), propose revised timeline, assess Q2 planning conflicts",
+    "duration_minutes": 90
+  },
+  {
+    "note_id": "NOTE-104",
+    "title": "Platform Team Inbox Triage - April 4 Evening Review",
+    "created_at": "2026-04-04T17:15:00-07:00",
+    "participants": [
+      "Jorge Alvarez"
+    ],
+    "content": "# Platform Team Inbox Triage - April 4, 2026\n\n## Backlog Summary\n6 emails received via platform-team@ alias from April 2-4. Need to classify by urgency and route appropriately.\n\n## Initial Classification\n\n### BLOCKING (same-day response required)\n1. **TechFlow escalation** (Rachel Kim, April 3)\n   - Customer: TechFlow Industries (CUS-101), $850K ARR\n   - Issue: API rate limits on /v2/analytics/export\n   - Threat: Pause $200K expansion if not resolved by April 8\n   - Action: Draft solution proposal today, sync with Priya on feasibility\n\n2. **Q2 OKR conflict - Data team** (Sarah Kim, April 3)\n   - Conflict: Data team OKR requires 30-50% Kafka capacity\n   - Constraint: Only 25% headroom post-Polaris GA (May 3)\n   - Deadline: Friday April 5 for OKR lock\n   - Action: Schedule conflict resolution meeting tomorrow AM\n\n### HIGH (response within 2 days)\n3. **Q2 OKR dependency** (David Torres, April 2 + correction April 4)\n   - Issue: Conflicting event volume estimates (2M vs 5M events/day)\n   - Related to Sarah's conflict email\n   - Action: Reconcile numbers before Friday meeting\n\n### MEDIUM (batch into Friday update)\n4. **Polaris SSO scope** (Priya, April 4)\n   - Question: Is SAML 2.0 included in May 3 GA?\n   - Impact: Two Enterprise deals ($1.2M combined)\n   - Action: Check NPAG-1, route to product owner\n\n### LOW (delegate or defer)\n5. **Log retention exception** (Marcus, April 4)\n   - Request: Extend Q1 logs until June 30 for SOC 2 audit\n   - Cost: ~$20/month\n   - Deadline: Monday April 7\n   - Action: Approve and delegate to ops team\n\n## Conflicts Identified\n- David Torres sent TWO emails with conflicting Kafka capacity estimates\n- Sarah's analysis contradicts both of David's estimates\n- Need to reconcile before making OKR decision\n\n## Next Steps\n1. Draft TechFlow response today (blocking)\n2. Schedule Sarah + David meeting for tomorrow 9 AM\n3. Create Notion page to track Q2 OKR conflicts\n4. Route Polaris SSO question to product\n5. Approve log retention exception",
+    "duration_minutes": 30
+  },
+  {
+    "note_id": "NOTE-105",
+    "title": "Weekly Decision Log Review - April 4, 2026",
+    "created_at": "2026-04-04T16:00:00-07:00",
+    "participants": [
+      "Jorge Alvarez",
+      "Priya Sharma",
+      "Marcus Chen",
+      "David Torres"
+    ],
+    "content": "# Weekly Decision Log Review - Platform Team\n\n**Date**: April 4, 2026, 4:00 PM\n**Attendees**: Jorge, Priya, Marcus, David\n\n## Decisions Finalized This Week\n\n### 1. Polaris Analytics Pipeline Capacity\n- **What**: 40% allocation with auto-scaling at 75%\n- **Approvers**: Sarah Kim, David Torres (confirmed via Workmail WMSG-5020)\n- **Status**: Documented in NPAG-11\n- **Note**: David requested adding review trigger if adoption exceeds 150% projection\n\n### 2. TechFlow Rate Limit Exception\n- **What**: 3x increase (900 req/min) for 45 days, mandatory 30-day review\n- **Approvers**: Jorge Alvarez, Rachel Kim (finalized in MTG-7004)\n- **Status**: Documented in NPAG-11\n- **Impact**: Sets precedent for rate limit exceptions - need to document policy\n\n### 3. Auth Migration Checkpoints\n- **What**: 3-phase Go/No-Go structure\n- **Approvers**: Priya Sharma, Jorge Alvarez (confirmed via WMSG-5021)\n- **Status**: Documented in NPAG-5 and NPAG-11\n- **Note**: Priya added requirement for explicit Go/No-Go from both PM and SRE at each checkpoint\n\n### 4. Auth Deprecation Customer Notification\n- **What**: April 14 send date, May 5 shutdown, 21-day notice\n- **Approvers**: Rachel Kim, Jorge Alvarez\n- **Status**: Documented in NPAG-11\n\n## Deferred Decisions\n\n### DD-2026-008: Q2 OKR Prioritization\n- **Reason**: Needs Sarah + CTO alignment, both unavailable this week\n- **Next step**: April 8 leadership meeting\n\n### DD-2026-009: Polaris Enterprise Comms\n- **Reason**: Waiting on final GA date (±3 day variance)\n- **Next step**: Marketing needs confirmed date\n\n## Decision Velocity Analysis\n\n- **This week**: 4 finalized, 2 deferred\n- **Last week**: 3 finalized, 1 deferred\n- **Trend**: Velocity improving, but deferrals increasing\n- **Pattern**: 2 of 3 recent deferrals due to exec availability\n\n**Action item (Jorge)**: Propose recurring decision review slot on Sarah's calendar for Q2\n\n## Missing Documentation\n\n- None this week - all decisions have written rationale and confirmed approvers\n- Need to review Q1 retro decisions (NPAG-4) for any missing approver confirmations\n\n## Next Steps\n\n1. Jorge to send weekly digest to Sarah by EOD Saturday (April 5)\n2. Jorge to draft proposal for recurring decision review cadence\n3. David to monitor Polaris adoption for capacity review trigger\n4. Marcus to track auth migration checkpoint 1 timeline",
+    "duration_minutes": 45
+  },
+  {
+    "note_id": "NOTE-106",
+    "title": "Decision Velocity Improvement Ideas - Jorge's Notes",
+    "created_at": "2026-04-05T11:15:00-07:00",
+    "participants": [
+      "Jorge Alvarez"
+    ],
+    "content": "# Decision Velocity Improvement - Brainstorm\n\n**Context**: Decision deferrals increasing due to exec availability. Need to propose better process for Q2.\n\n## Current Bottlenecks\n\n1. **Exec availability**: Sarah and CTO often unavailable when decisions need approval\n2. **Unclear delegation**: Not always clear which decisions can be delegated vs require VP/CTO sign-off\n3. **Ad-hoc approval process**: No standard cadence for decision reviews\n\n## Proposed Solutions\n\n### Option A: Recurring Decision Review Slot\n- Block 30 min weekly on Sarah's calendar (Fridays 3-3:30 PM?)\n- Pre-circulate decision summary 24 hours in advance\n- Focus only on decisions that require her approval\n- Backup: if she's unavailable, decisions auto-escalate to CTO or defer to next week\n\n### Option B: Clearer Delegation Framework\n- Define decision types by impact scope:\n  - **Platform PM authority**: API policies, customer exceptions < $50K impact, technical architecture\n  - **VP Product approval**: Cross-team OKRs, customer exceptions > $50K, product strategy\n  - **CTO approval**: Infrastructure spend > $100K, org structure changes\n- Document framework in Notion, socialize with leadership\n\n### Option C: Async Decision Approval\n- Use Notion comments for approval workflow\n- Set 48-hour approval SLA - if no response, decision is approved by default\n- Risk: might not work for high-stakes decisions\n\n## Recommendation\n\nCombine Option A + Option B:\n1. Implement recurring decision review slot\n2. Define delegation framework to reduce decisions that need the slot\n3. Reserve the slot for high-impact decisions only\n\n**Next step**: Draft proposal for Sarah, include decision velocity data from past 8 weeks to show impact of current bottleneck.",
+    "duration_minutes": 0
+  },
+  {
+    "note_id": "NOTE-107",
+    "title": "Q1 Customer Interview Themes - Initial Extraction Notes",
+    "created_at": "2026-04-02T10:00:00-07:00",
+    "participants": [
+      "Jorge Alvarez"
+    ],
+    "content": "## Initial Theme Extraction - Q1 Customer Interviews\n\n### Pain Points (by frequency)\n1. **API rate limits** (28/40 mentions)\n   - Primarily mid-market and professional tiers\n   - Blocking critical integrations\n   - Forcing customers to build complex retry logic\n   - Churn risk: HIGH for TechFlow, GlobalRetail, Apex\n\n2. **Webhook reliability** (19/40 mentions)\n   - 15-20% delivery failure rate reported\n   - No visibility into delivery status\n   - Enterprise and mid-market tiers\n\n3. **SSO integration complexity** (16/40 mentions)\n   - Documentation gaps\n   - Configuration taking 4-6 weeks\n   - Enterprise tier primarily\n\n4. **Query performance for large datasets** (14/40 mentions)\n   - Slow for >50k employee orgs\n   - Enterprise tier\n\n5. **Data export limitations** (12/40 mentions)\n   - File size limits\n   - No streaming support\n   - Mid-market tier\n\n### Feature Requests (by frequency)\n1. **Increased rate limits** (22/40 mentions)\n2. **Batch API endpoints** (18/40 mentions)\n3. **Advanced RBAC** (14/40 mentions)\n4. **GraphQL API** (12/40 mentions)\n5. **Multi-language UI** (9/40 mentions)\n6. **Real-time dashboard refresh** (8/40 mentions)\n7. **Scheduled report delivery** (7/40 mentions)\n\n### Churn Risk Signals\n- **HIGH**: TechFlow (CUS-101) - contract renewal June 2026\n- **MEDIUM**: GlobalRetail (CUS-103) - budget pressure, ROI review\n- **MEDIUM**: Apex Manufacturing (CUS-107) - contract renewal August 2026\n\n### Next Steps\n- Cross-reference against Q2 roadmap (NPAG-20)\n- Identify conflicts with data team OKR (NPAG-19)\n- Tag by customer tier from CRM\n- Extract verbatim quotes for deck",
+    "duration_minutes": 120
+  },
+  {
+    "note_id": "NOTE-108",
+    "title": "Customer Interview Themes - Monitoring & Observability Feedback",
+    "created_at": "2026-01-10T14:30:00-08:00",
+    "participants": [
+      "Jorge Alvarez"
+    ],
+    "content": "Extracted themes from Q4 2025 customer interviews related to monitoring and observability:\n\n**TechFlow Industries (Amanda Rodriguez)**:\n- Mentioned difficulty debugging API rate limit issues without distributed tracing\n- Would value request-level visibility into platform performance\n\n**Meridian Health Systems (James Park)**:\n- Asked about SLO visibility and error budget tracking\n- Wants proactive alerting before SLO breaches\n\n**GlobalRetail Corp (Lisa Chen)**:\n- Complained about lack of visibility into data pipeline latency\n- Would pay premium for enhanced observability features\n\nThese pain points suggest observability should be a GA requirement for Polaris, not a post-launch enhancement.",
+    "duration_minutes": 0
+  }
+]

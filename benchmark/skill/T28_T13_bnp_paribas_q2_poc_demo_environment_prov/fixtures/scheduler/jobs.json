@@ -1,0 +1,201 @@
+[
+  {
+    "job_id": "JOB-701",
+    "name": "weekly_demo_prep_reminder",
+    "description": "Weekly reminder to prepare demo environment for customer presentations",
+    "cron_expression": "0 9 * * MON",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_notification",
+    "created_by": "Arjun Menon",
+    "tags": [
+      "reminder",
+      "demo",
+      "prep"
+    ],
+    "notes": "Decided to handle this manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-702",
+    "name": "weekly_pipeline_review_reminder",
+    "description": "Weekly reminder to review data pipeline performance metrics",
+    "cron_expression": "0 9 * * MON",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_notification",
+    "created_by": "Arjun Menon",
+    "tags": [
+      "reminder",
+      "weekly"
+    ],
+    "notes": "",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-703",
+    "name": "weekly_demo_prep_reminder",
+    "description": "Weekly reminder to review upcoming demo environments and prepare technical collateral for EMEA FS prospects",
+    "cron_expression": "0 9 * * MON",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Arjun Menon",
+    "tags": [
+      "reminder",
+      "demo",
+      "prep"
+    ],
+    "notes": "Decided this is redundant with existing calendar blocks",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-704",
+    "name": "weekly_fscs_update_reminder",
+    "description": "Weekly reminder to check FSCS regulatory updates for UK financial services",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Arjun Menon",
+    "tags": [
+      "reminder",
+      "regulatory",
+      "weekly"
+    ],
+    "notes": "Decided to track this manually instead",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-705",
+    "name": "weekly_pipeline_review_reminder",
+    "description": "Weekly reminder to review sales pipeline progress",
+    "cron_expression": "0 9 * * MON",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_notification",
+    "created_by": "Arjun Menon",
+    "tags": [
+      "reminder",
+      "weekly"
+    ],
+    "notes": "",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-706",
+    "name": "weekly_demo_prep_reminder",
+    "description": "Weekly reminder to prepare demo environment for customer presentations",
+    "cron_expression": "0 9 * * 1",
+    "enabled": false,
+    "last_status": "not_run",
+    "last_run": null,
+    "action": "send_notification",
+    "created_by": "Arjun Menon",
+    "tags": [
+      "reminder",
+      "demo",
+      "weekly"
+    ],
+    "notes": "Decided unnecessary - already have calendar reminders",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-707",
+    "name": "sc_feature_engineering_daily",
+    "description": "Standard Chartered POC - Feature Engineering Pipeline (Snowpark Python)",
+    "cron_expression": "0 0 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-01T00:00:00+08:00",
+    "action": "execute_snowpark_pipeline",
+    "created_by": "arjun.menon@snowflake.com",
+    "tags": [
+      "sc-q2-poc",
+      "feature-engineering",
+      "cpu-workload"
+    ],
+    "notes": "UPDATED 2026-04-01: Execution time changed from 9:00 AM SGT to 8:00 AM SGT to resolve staging collision. I/O-heavy workload, reads 15GB from raw data lake, writes to /feature-store/. Estimated duration: 20 minutes. Must complete before model training jobs.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-01T00:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1140,
+        "notes": "Dry run before schedule change"
+      },
+      {
+        "run_time": "2026-03-31T01:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 1180,
+        "notes": ""
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-708",
+    "name": "sc_credit_risk_training_daily",
+    "description": "Standard Chartered POC - Credit Risk Model Training (Snowpark Python, GPU)",
+    "cron_expression": "25 0 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-01T00:25:00+08:00",
+    "action": "execute_snowpark_gpu_training",
+    "created_by": "arjun.menon@snowflake.com",
+    "tags": [
+      "sc-q2-poc",
+      "model-training",
+      "gpu-workload"
+    ],
+    "notes": "UPDATED 2026-04-01: Execution time changed from 9:00 AM SGT to 8:25 AM SGT to resolve GPU warehouse collision with fraud detection training. GPU-intensive, requires 2x A100 nodes, consumes ~40% GPU warehouse quota. Estimated duration: 45 minutes. Depends on feature engineering completion.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-01T00:25:00+08:00",
+        "status": "success",
+        "duration_seconds": 2640,
+        "notes": "First run with staggered schedule"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-709",
+    "name": "sc_fraud_detection_training_daily",
+    "description": "Standard Chartered POC - Fraud Detection Model Training (Snowpark Python, GPU)",
+    "cron_expression": "15 1 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-04-01T01:15:00+08:00",
+    "action": "execute_snowpark_gpu_training",
+    "created_by": "arjun.menon@snowflake.com",
+    "tags": [
+      "sc-q2-poc",
+      "model-training",
+      "gpu-workload"
+    ],
+    "notes": "UPDATED 2026-04-01: Execution time changed from 9:00 AM SGT to 9:15 AM SGT to resolve GPU warehouse collision with credit risk training. GPU-intensive, requires 2x A100 nodes, consumes ~35% GPU warehouse quota. Estimated duration: 35 minutes. Executes after credit risk training completes.",
+    "execution_history": [
+      {
+        "run_time": "2026-04-01T01:15:00+08:00",
+        "status": "success",
+        "duration_seconds": 2040,
+        "notes": "First run with staggered schedule"
+      }
+    ]
+  }
+]

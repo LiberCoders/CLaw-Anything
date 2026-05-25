@@ -1,0 +1,13 @@
+noise_id: N004
+name: "Browse weekly calendar"
+description: "Open the calendar to flip through this week's schedule, make no changes, just close"
+involved_services: [calendar]
+leaves_trace: false
+action_sequence:
+  - "Open calendar"
+  - "Switch to week view"
+  - "Browse weekly schedule"
+  - "Close calendar"
+time_preference: morning
+adaptable_elements:
+  - "Browse duration"

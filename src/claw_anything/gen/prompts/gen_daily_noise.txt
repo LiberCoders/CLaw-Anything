@@ -1,0 +1,101 @@
+You are generating realistic daily routine noise for a persona's activity logs and fixture data. These are mundane, event-independent activities that happen every day — browsing an inbox, checking the calendar, jotting a note then deleting it, etc. They simulate realistic user behaviour and should NOT be related to any specific business task or event.
+
+## User Persona
+
+{persona_summary}
+
+## Business Context
+
+- Time window: {time_window}
+- Work schedule: {work_schedule}
+
+## Target Days
+
+Generate noise sessions for these workdays:
+{target_days}
+
+## Seed Noise Patterns
+
+For each day, generate sessions based on the following seed noise examples. You may adapt them to the persona's context (e.g. the title of a deleted note could relate to the persona's industry):
+
+{seed_noise_examples}
+
+## Fixture Data Schema (for trace-leaving noise only)
+
+{trace_schemas}
+
+## Currently Available Starting IDs (for trace records only)
+
+{next_ids}
+
+## Existing Record IDs (do not conflict)
+
+{used_ids_summary}
+
+## Important Constraints
+
+1. Service names must be one of these: {allowed_services_list}.
+2. All timestamps must be strictly within the time window {time_window} and respect the work schedule.
+3. Each session's timestamp must match the seed noise's time_preference:
+   - morning: 08:00-10:00
+   - midday: 10:00-13:00
+   - afternoon: 13:00-17:00
+   - evening: 17:00-19:00
+   - any: 08:00-19:00
+4. For trace-leaving noise (leaves_trace=true), generate a valid fixture record following the schema exactly. Mark it with `"_noise": true`.
+   - deleted_note: a notes record with `"_status": "deleted"` and minimal content
+   - discarded_draft: a gmail record with `"labels": ["DRAFT", "DISCARDED"]` and empty/minimal body
+   - cancelled_todo: a todo record with `"status": "cancelled"` and minimal description
+5. Trace record IDs must start from the "Currently Available Starting IDs" and increment sequentially. No conflicts with existing IDs.
+6. Each activity_log step must have: service (string), action (string), duration_sec (integer 1-300).
+7. Activity log actions should use concise English action names (e.g. "open_inbox", "browse_feed", "create_new_note", "delete_note", "close_notes").
+8. Generate {routines_per_day} noise sessions per day.
+9. Spread sessions throughout the day — avoid clustering all sessions in the same time slot.
+10. All text content in trace records must be in English.
+
+## Your Output
+
+Output JSON:
+
+```json
+{{
+  "noise_sessions": [
+    {{
+      "noise_id": "N001",
+      "day": "2026-02-15",
+      "timestamp": "2026-02-15T09:15:00+08:00",
+      "activity_log": [
+        {{"service": "gmail", "action": "open_inbox", "duration_sec": 2}},
+        {{"service": "gmail", "action": "browse_inbox", "duration_sec": 15}},
+        {{"service": "gmail", "action": "close_inbox", "duration_sec": 1}}
+      ],
+      "trace_record": null
+    }},
+    {{
+      "noise_id": "N005",
+      "day": "2026-02-15",
+      "timestamp": "2026-02-15T14:30:00+08:00",
+      "activity_log": [
+        {{"service": "notes", "action": "open_notes", "duration_sec": 1}},
+        {{"service": "notes", "action": "create_new_note", "duration_sec": 2}},
+        {{"service": "notes", "action": "edit_note", "duration_sec": 25}},
+        {{"service": "notes", "action": "delete_note", "duration_sec": 1}},
+        {{"service": "notes", "action": "close_notes", "duration_sec": 1}}
+      ],
+      "trace_record": {{
+        "service": "notes",
+        "record": {{
+          "note_id": "NOTE-120",
+          "title": "supplier callback",
+          "created_at": "2026-02-15T14:30:00+08:00",
+          "content": "",
+          "participants": [],
+          "duration_minutes": 0,
+          "_noise": true,
+          "_status": "deleted"
+        }}
+      }}
+    }}
+  ]
+}}
+```

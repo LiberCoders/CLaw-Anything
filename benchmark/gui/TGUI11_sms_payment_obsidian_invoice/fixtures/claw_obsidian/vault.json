@@ -1,0 +1,104 @@
+[
+  {
+    "note_id": "OBSN-1",
+    "title": "SaaS报表模块 - 客户订阅清单",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "customers",
+      "billing"
+    ],
+    "content": "# SaaS报表模块客户清单\n\n## 订阅月度营收报表的客户\n\n### 1. 联华科技 (Lianhua Tech)\n- 联系人: 刘经理\n- 手机: +86 138-0012-3456\n- 订阅时间: 2025-11-15\n- 套餐: 专业版 (¥1,200/月)\n- 报表需求: 每月1号生成上月营收汇总，包含分类统计和趋势图\n\n### 2. 东方贸易 (Dongfang Trading)\n- 联系人: 王总\n- 手机: +86 139-8765-4321\n- 订阅时间: 2025-12-20\n- 套餐: 企业版 (¥2,800/月)\n- 报表需求: 月度营收 + 库存周转分析\n\n## 技术配置\n\n数据源: mysql://saas-db.chenghao-studio.com:3306/saas_billing\n调度任务: JOB-701 (monthly_revenue_report)\n生成时间: 每月1号凌晨2点\n\n## 历史问题记录\n\n- 2026-01-15: 数据库连接池配置优化，解决超时问题\n- 2026-02-17: 数据源开始出现连接超时，连续3天失败\n\n## 待办\n\n- [ ] 核查数据库服务器状态\n- [ ] 检查防火墙规则变更\n- [ ] 确认Aliyun RDS实例是否到期续费",
+    "outlinks": [
+      "OBSN-2"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-10T15:30:00+08:00",
+    "last_updated": "2026-02-19T14:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-2",
+    "title": "SaaS报表模块 - 故障排查手册",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "troubleshooting",
+      "playbook"
+    ],
+    "content": "# SaaS报表模块故障排查\n\n## 常见故障类型\n\n### 1. 数据源连接失败\n\n**症状**: \n- scheduler日志显示 \"Connection timeout\" 或 \"Connection refused\"\n- 报表生成任务在几秒内快速失败\n\n**排查步骤**:\n1. 检查Aliyun RDS控制台，确认实例运行状态\n2. 测试本地到数据库的网络连通性: `telnet saas-db.chenghao-studio.com 3306`\n3. 检查白名单配置，确认服务器IP未被移除\n4. 查看RDS慢日志，排除数据库性能问题\n\n**修复时间估算**:\n- 网络/白名单问题: 30分钟内\n- 数据库性能问题: 1-2小时\n- RDS实例故障: 需联系阿里云，2-4小时\n\n### 2. 报表生成逻辑错误\n\n**症状**:\n- 任务运行成功但客户反馈数据不对\n- 执行时间明显偏长(>5分钟)\n\n**排查步骤**:\n1. 检查最近代码变更记录\n2. 对比上月成功生成的报表数据\n3. 手动执行SQL查询验证数据准确性\n\n**修复时间估算**: 2-4小时\n\n## 客户通知模板\n\n### 数据源故障(非代码问题)\n\n\"您好[客户名]，我们的报表系统遇到数据库连接问题，正在紧急排查。预计[X小时]内修复，修复后会立即补发报表。给您带来不便深表歉意。\"\n\n### 代码逻辑问题\n\n\"您好[客户名]，报表模块发现一个计算逻辑问题，我们正在修复中。预计今晚[具体时间]前修复并重新生成正确报表发送给您。\"",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [
+      "OBSN-1"
+    ],
+    "created_at": "2026-01-12T16:00:00+08:00",
+    "last_updated": "2026-02-15T22:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-3",
+    "title": "2026-02 工作日志",
+    "folder": "Daily",
+    "tags": [
+      "journal",
+      "2026-02"
+    ],
+    "content": "# 2026年2月工作日志\n\n## 2026-02-19 周三\n\n14:25 - 收到SaaS报表任务失败告警邮件\n14:30 - 查看scheduler执行历史，发现从2月17日开始连续3天失败\n14:35 - 错误信息: Connection timeout to mysql://saas-db.chenghao-studio.com:3306\n\n初步判断: 数据源连接问题，非代码逻辑bug\n\n待办:\n- 登录Aliyun RDS控制台检查实例状态\n- 测试网络连通性\n- 给刘经理和王总发短信说明情况\n\n## 2026-02-18 周二\n\n16:00-23:30 - 电商小程序购物车模块开发\n23:30-01:00 - 企业官网改版CSS调整\n\n## 2026-02-17 周一\n\n15:00-19:00 - SaaS报表模块代码review\n20:00-02:00 - 电商小程序支付接口联调",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-02-01T14:00:00+08:00",
+    "last_updated": "2026-02-19T14:35:00+08:00"
+  },
+  {
+    "note_id": "OBSN-4",
+    "title": "东方贸易 - 官网改版项目合同",
+    "folder": "Projects/Dongfang-Website",
+    "tags": [
+      "contract",
+      "client",
+      "dongfang",
+      "website"
+    ],
+    "content": "# Dongfang Trading - Official Website Redesign Contract\n\n**Client**: 东方贸易 Dongfang Trading  \n**Contact**: 王总 (Wang Zong) +86 13800138001  \n**Contract Date**: 2026-01-15  \n**Project Start**: 2026-01-20  \n\n## Scope of Work\n- Complete redesign of corporate website (10 pages)\n- Responsive design for mobile and desktop\n- CMS integration (WordPress)\n- SEO optimization\n- 3 rounds of revision\n\n## Payment Terms\n**Total Contract Value**: ¥45,000\n\n### Milestone 1 (30%): ¥13,500\n- **Deliverable**: Design mockups and wireframes approved\n- **Due Date**: 2026-02-10\n- **Status**: ✅ Completed 2026-02-08, Payment received 2026-02-12\n\n### Milestone 2 (40%): ¥18,000\n- **Deliverable**: Frontend development complete, staging site live\n- **Due Date**: 2026-03-15\n- **Status**: ✅ Completed 2026-03-12, **Payment PENDING**\n- **Delivered Items**:\n  - All 10 pages coded and responsive\n  - WordPress CMS integrated\n  - Admin training document provided\n  - Staging URL: https://staging.dongfang-trade.com\n  - Client sign-off received 2026-03-14 via email\n\n### Milestone 3 (30%): ¥13,500\n- **Deliverable**: Production deployment and 1-month support\n- **Due Date**: 2026-04-10\n- **Status**: ⏳ Pending Milestone 2 payment confirmation\n\n## Notes\n- Client requested payment reminder to be professional and reference contract terms\n- All deliverables for Milestone 2 have been signed off\n- Need to send invoice before proceeding to final deployment",
+    "outlinks": [
+      "OBSN-5"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-15T14:30:00+08:00",
+    "last_updated": "2026-03-14T17:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-5",
+    "title": "东方贸易 - 项目交付清单",
+    "folder": "Projects/Dongfang-Website",
+    "tags": [
+      "deliverables",
+      "checklist",
+      "dongfang"
+    ],
+    "content": "# Dongfang Trading - Deliverables Checklist\n\n## Milestone 2 Completed Items (2026-03-12)\n\n### Frontend Development\n- ✅ Homepage with hero section and company intro\n- ✅ About Us page with team profiles\n- ✅ Products/Services catalog (6 pages)\n- ✅ Contact page with map integration\n- ✅ News/Blog section\n- ✅ Mobile responsive design tested on 5+ devices\n\n### CMS Integration\n- ✅ WordPress 6.4 installed and configured\n- ✅ Custom theme developed\n- ✅ Admin panel configured for client use\n- ✅ Content migration from old site\n- ✅ User roles and permissions set up\n\n### Documentation\n- ✅ Admin user guide (15 pages, PDF)\n- ✅ Content update procedures\n- ✅ Backup and maintenance guide\n\n### Testing & QA\n- ✅ Cross-browser testing (Chrome, Firefox, Safari, Edge)\n- ✅ Performance optimization (PageSpeed score: 92/100)\n- ✅ Security hardening completed\n\n### Client Sign-off\n- ✅ Staging review meeting 2026-03-13\n- ✅ Email confirmation received 2026-03-14\n\n## Work Hours Summary\n- Design revisions: 12 hours\n- Frontend development: 48 hours\n- CMS setup and customization: 20 hours\n- Testing and QA: 8 hours\n- Documentation: 6 hours\n- Client communication and training: 4 hours\n**Total**: 98 hours @ ¥183.67/hour = ¥18,000",
+    "outlinks": [
+      "OBSN-4"
+    ],
+    "inlinks": [
+      "OBSN-4"
+    ],
+    "created_at": "2026-03-12T16:00:00+08:00",
+    "last_updated": "2026-03-14T18:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-6",
+    "title": "2026-04 工作日志",
+    "folder": "Daily",
+    "tags": [
+      "daily",
+      "log",
+      "april"
+    ],
+    "content": "# April 2026 Work Log\n\n## 2026-04-02\n- 15:30 - Received payment inquiry SMS from 王总 (Dongfang Trading)\n- 15:35 - Need to review contract terms in OBSN-4 and prepare invoice\n- 16:00 - Draft invoice for Milestone 2 payment\n\n## 2026-04-01\n- Continued work on ecommerce miniapp bug fixes\n- Responded to 李姐's UI review request\n\n## 2026-03-31\n- Q1 wrap-up, three projects in parallel delivery phase\n- SaaS report module still showing intermittent errors",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-04-01T14:00:00+08:00",
+    "last_updated": "2026-04-02T15:35:00+08:00"
+  }
+]

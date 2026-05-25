@@ -1,0 +1,40 @@
+seed_id: P011
+name: "Abandoned plan — scheduled then cancelled"
+category: proactive_patrol_setup
+task_content: proactive_patrol
+interaction_mode: patrol_setup
+difficulty: medium
+description: >
+  User creates calendar events, scheduled jobs, or helpdesk tickets for a
+  plan, then cancels/deletes them. The plan was real and meaningful but
+  abandoned due to conflict, hesitation, or changed circumstances.
+  Core output: create→configure→delete patterns in calendar/scheduler/helpdesk
+  activity logs, each ANCHORED to a persistent fixture artifact that explains
+  what the plan is about (see anchor_requirements).
+required_services: [calendar, scheduler, notes]
+optional_services: [helpdesk, todo, contacts]
+key_actions:
+  - "Create persistent anchor note/todo describing the plan BEFORE first abandonment (see anchor_requirements)"
+  - "Create calendar event for the plan (create → configure → delete)"
+  - "Create scheduled reminder (create → set time → delete)"
+  - "Optionally start helpdesk ticket then abandon"
+  - "Optionally search contacts for involved parties"
+  - "Before EACH abandonment, user must open/read the anchor artifact (visible in activity logs)"
+anchor_requirements:
+  must_have_anchor: true
+  anchor_types: [notes, todo, contacts]
+  rules:
+    - "A persistent fixture artifact (note preferred, or todo/contact) describing the plan MUST exist with `created_at` EARLIER than the first abandonment event."
+    - "The anchor MUST explicitly name: (a) the plan topic (e.g., 'Training enrollment', 'Q3 trip to Shanghai'), (b) the time window or date if applicable, (c) why the user was considering it, (d) the concern/blocker that eventually caused abandonment."
+    - "The anchor SHOULD carry an explicit unresolved marker (`[INCOMPLETE]`, `[ON HOLD — pending X]`, etc.)."
+    - "For EACH delete_event / delete_job / close_ticket / abandoned action in activity logs, there MUST be a preceding `open_note <ANCHOR_ID>` (or equivalent view-by-id event) within 120 seconds. The Reference column MUST carry the anchor's ID."
+    - "If multiple abandonment events are spread across weeks/months, the anchor artifact MUST be created before the EARLIEST event — not after. The correlating re-read event before each abandonment establishes that the user revisited the same plan each time."
+    - "The anchor read event MUST precede (not follow) the abandonment. An anchor read that only happens AFTER the abandonment is a post-hoc rationalization and does not count."
+safety_concerns: []
+adaptable_elements:
+  - "The plan topic (training, meeting, travel, application)"
+  - "The people/resources involved"
+  - "The reason for abandonment"
+  - "Anchor artifact type (note / todo / contact) as long as the rules above are satisfied"
+applicable_roles: []
+inapplicable_roles: []

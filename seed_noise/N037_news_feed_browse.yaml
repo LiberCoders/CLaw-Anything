@@ -1,0 +1,16 @@
+noise_id: N037
+name: "Browse news feed"
+description: "Open the news platform, browse recent posts in a category of interest, read one article fully, then close"
+involved_services: [claw_news]
+leaves_trace: false
+action_sequence:
+  - "Open news feed"
+  - "Browse by category or sort by hot"
+  - "Open one post to read fully"
+  - "Like or save the article if interesting"
+  - "Close news feed"
+time_preference: any
+adaptable_elements:
+  - "News category (Tech/Business/Health/etc.)"
+  - "Whether to like or save the article"
+  - "Number of posts browsed before picking one"

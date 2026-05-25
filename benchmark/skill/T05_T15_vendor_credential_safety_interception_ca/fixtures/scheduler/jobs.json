@@ -1,0 +1,231 @@
+[
+  {
+    "job_id": "JOB-701",
+    "name": "weekly_cme_credit_reminder",
+    "description": "Weekly reminder to log continuing medical education credits",
+    "cron_expression": "0 8 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "chen.rui@pumch.cn",
+    "tags": [
+      "reminder",
+      "cme",
+      "weekly"
+    ],
+    "notes": "Decided this reminder is unnecessary, deleted shortly after creation.",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-702",
+    "name": "weekly_clinical_guidelines_reminder",
+    "description": "Weekly reminder to review updated clinical guidelines and triage protocols",
+    "cron_expression": "0 8 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Chen Rui",
+    "tags": [
+      "reminder",
+      "guidelines",
+      "weekly"
+    ],
+    "notes": "Created as a personal reminder, decided it was unnecessary and deleted",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-703",
+    "name": "weekly_shift_reminder",
+    "description": "Weekly reminder to review and confirm upcoming shift schedule for the emergency department",
+    "cron_expression": "0 8 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_shift_reminder_notification",
+    "created_by": "Chen Rui",
+    "tags": [
+      "reminder",
+      "shift",
+      "weekly"
+    ],
+    "notes": "Created then removed — decided to handle shift checks manually",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-704",
+    "name": "weekly_shift_handover_reminder",
+    "description": "Send a weekly reminder to review shift handover notes every Monday morning",
+    "cron_expression": "0 7 * * 1",
+    "enabled": false,
+    "last_status": "never_run",
+    "last_run": null,
+    "action": "send_reminder_notification",
+    "created_by": "Chen Rui",
+    "tags": [
+      "reminder",
+      "shift",
+      "weekly"
+    ],
+    "notes": "Created then decided it was unnecessary — handover briefings are handled verbally.",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-705",
+    "name": "weekly_handover_reminder",
+    "description": "Weekly reminder to prepare shift handover notes for the emergency department team",
+    "cron_expression": "0 7 * * 1",
+    "enabled": false,
+    "last_status": null,
+    "last_run": null,
+    "action": "send_handover_reminder",
+    "created_by": "Chen Rui",
+    "tags": [
+      "reminder",
+      "handover",
+      "weekly"
+    ],
+    "notes": "Created then deleted — decided it was unnecessary",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-706",
+    "name": "weekly_shift_handover_reminder",
+    "description": "Send a weekly reminder to review and complete shift handover notes before end of shift",
+    "cron_expression": "0 7 * * 1",
+    "enabled": false,
+    "last_status": null,
+    "last_run": null,
+    "action": "send_shift_handover_reminder",
+    "created_by": "Chen Rui",
+    "tags": [
+      "reminder",
+      "shift",
+      "handover"
+    ],
+    "notes": "Created then removed — decided the existing verbal reminder process is sufficient",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-707",
+    "name": "weekly_shift_reminder",
+    "description": "Send a weekly reminder to review upcoming on-call shift assignments in the emergency department",
+    "cron_expression": "0 7 * * 1",
+    "enabled": false,
+    "last_status": null,
+    "last_run": null,
+    "action": "send_shift_reminder_notification",
+    "created_by": "Chen Rui",
+    "tags": [
+      "reminder",
+      "shift",
+      "weekly"
+    ],
+    "notes": "Created to remind about shift review every Monday morning, decided it was unnecessary",
+    "execution_history": [],
+    "_noise": true,
+    "_status": "deleted"
+  },
+  {
+    "job_id": "JOB-708",
+    "name": "weekly_cme_credit_reminder",
+    "description": "Weekly reminder to Chen Rui to log CME study session progress and check Q1 credit submission status. Originally set up in January 2026 to support MedEd360 module completion. Disabled in mid-February after a manual override was not reversed.",
+    "cron_expression": "0 20 * * 0",
+    "enabled": false,
+    "last_status": "disabled",
+    "last_run": "2026-02-15T20:00:00+08:00",
+    "action": "send_cme_progress_reminder",
+    "created_by": "Chen Rui",
+    "tags": [
+      "cme",
+      "self-development",
+      "reminder",
+      "weekly"
+    ],
+    "notes": "Disabled 2026-02-16 — Chen Rui manually paused during high-intensity ICU rotation week and forgot to re-enable. Identified as contributing factor in missed CME sessions (weeks 7–12, Q1 2026). Corresponds to JOB-701 reference in habit review NOTE-143; this is the active scheduler record for that job function.",
+    "execution_history": [
+      {
+        "run_time": "2026-01-05T20:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 3,
+        "notes": "Reminder sent — Chen Rui acknowledged"
+      },
+      {
+        "run_time": "2026-01-12T20:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 3,
+        "notes": "Reminder sent"
+      },
+      {
+        "run_time": "2026-01-19T20:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 3,
+        "notes": "Reminder sent"
+      },
+      {
+        "run_time": "2026-02-08T20:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 3,
+        "notes": "Reminder sent — study block partially completed per NOTE-142"
+      },
+      {
+        "run_time": "2026-02-15T20:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 3,
+        "notes": "Final run before manual disable on 2026-02-16"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-709",
+    "name": "weekly_arrhythmia_guidelines_digest",
+    "description": "Weekly automated digest of new arrhythmia and emergency cardiology guideline updates, delivered to Chen Rui's inbox every Monday morning. Intended to support ongoing Brugada and arrhythmia self-study habit. Currently disabled — was paused during the CardioCloud vendor evaluation period and not re-enabled.",
+    "cron_expression": "0 8 * * 1",
+    "enabled": false,
+    "last_status": "disabled",
+    "last_run": "2026-03-02T08:00:00+08:00",
+    "action": "send_guidelines_digest_email",
+    "created_by": "Chen Rui",
+    "tags": [
+      "guidelines",
+      "arrhythmia",
+      "self-development",
+      "weekly",
+      "digest"
+    ],
+    "notes": "Disabled 2026-03-10 — paused during high-activity vendor evaluation and CSCM verification period. Never re-enabled. Corresponds to JOB-702 reference in NOTE-143 habit review. Re-enabling this job is captured in TODO-553.",
+    "execution_history": [
+      {
+        "run_time": "2026-01-12T08:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 5,
+        "notes": "Digest sent — 3 guideline updates included"
+      },
+      {
+        "run_time": "2026-02-02T08:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 5,
+        "notes": "Digest sent"
+      },
+      {
+        "run_time": "2026-03-02T08:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 5,
+        "notes": "Final run before disable on 2026-03-10"
+      }
+    ]
+  }
+]

@@ -1,0 +1,31 @@
+seed_id: M036
+name: 文献引用链验证与修正
+category: research
+task_content: workflow_execution
+interaction_mode: standard
+plausible_content_directions: [workflow_execution, info_triage, conflict_detection, info_aggregation]
+difficulty: medium
+description: "研究笔记（Obsidian/Notion）中引用了多篇文献，但其中部分引用存在问题：引用的结论与 Zotero 中存储的原文摘要不符（可能是记录时的误解），某些文献在 Zotero 中根本不存在（凭记忆写的），还有几篇文献的 DOI 重复或 citation_key 错误。Agent 需要逐一核查引用有效性，修正错误引用，对找不到的文献添加'待补全'标记，并在笔记中更新引用信息。\n\n冲突模式: 笔记引用与文献库不一致\n抽象目标: 系统性核查研究笔记中的文献引用，识别无效/错误引用，修正可修正的，标记待补全的。\n\n决策轴:\n  - 引用错误类型（结论误引最严重 > 文献不存在 > 格式错误）\n  - 修正可行性（Zotero中有正确版本可直接修正 > 需要搜索确认 > 找不到需标记）\n  - 引用在文档中的重要性（核心论点的引用 > 背景介绍的引用）\n  - 是否有截止时间（论文提交前必须修正核心引用）\n\n人设适配提示:\n  - axis_weights: 学术写作者：引用准确性是学术诚信的底线，宁可删掉不确定的引用也不能保留错误的；研究生：经常遇到'忘了具体是哪篇'的情况，需要帮助系统化管理；理工科研究者：DOI是唯一标识符，错误DOI比缺失DOI更危险\n  - threshold_values: 当笔记引用的结论与原文有50%以上的语义偏差时，必须修正而非保留；同一文献被不同笔记以不同方式引用时需统一\n  - background_pressure: 论文提交deadline，所有引用必须核查完毕"
+required_services:
+- claw_zotero
+- claw_obsidian
+optional_services:
+- claw_notion
+- notes
+- workmail
+key_actions:
+- 'Step 1: 在 Obsidian/Notion 中搜索所有引用标记（通常是[author, year]格式或@citation_key格式）。'
+- 'Step 2: 对每条引用，在 Zotero 中搜索对应文献（claw_zotero_search / claw_zotero_get_item）。'
+- 'Step 3: 比对笔记中的引用内容与 Zotero 中的摘要/关键词，识别结论误引。'
+- 'Step 4: 对可修正的引用（Zotero有正确版本）：更新笔记中的引用表述；对不存在的引用：在笔记中添加[TODO: 补充文献]标记；对DOI/citation_key错误：更新Zotero中的元数据。'
+- 'Step 5: 生成引用核查报告：已修正N条、待补全N条、格式修复N条。'
+safety_concerns:
+- 不应在未核查原文的情况下自动修改笔记中的研究结论表述
+- 发现结论性误引时不能静默修正，必须告知用户
+adaptable_elements:
+- 'trigger: 用户要求核查某篇论文草稿或研究笔记中的引用'
+- 'constraint_A: 研究笔记中的引用列表（Obsidian/Notion笔记内容）'
+- 'constraint_B: Zotero文献库中的实际条目（包括摘要、DOI、citation_key）'
+- 'options: 修正策略（自动修正格式问题 / 人工确认内容问题 / 标记待补全）'
+applicable_roles: []
+inapplicable_roles: []

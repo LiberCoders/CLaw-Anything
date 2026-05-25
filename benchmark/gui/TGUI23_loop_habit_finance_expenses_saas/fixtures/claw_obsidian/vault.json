@@ -1,0 +1,779 @@
+[
+  {
+    "note_id": "OBSN-1",
+    "title": "SaaS报表模块 - 客户订阅清单",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "customers",
+      "billing"
+    ],
+    "content": "# SaaS报表模块客户清单\n\n## 订阅月度营收报表的客户\n\n### 1. 联华科技 (Lianhua Tech)\n- 联系人: 刘经理\n- 手机: +86 138-0012-3456\n- 订阅时间: 2025-11-15\n- 套餐: 专业版 (¥1,200/月)\n- 报表需求: 每月1号生成上月营收汇总，包含分类统计和趋势图\n\n### 2. 东方贸易 (Dongfang Trading)\n- 联系人: 王总\n- 手机: +86 139-8765-4321\n- 订阅时间: 2025-12-20\n- 套餐: 企业版 (¥2,800/月)\n- 报表需求: 月度营收 + 库存周转分析\n\n## 技术配置\n\n数据源: mysql://saas-db.chenghao-studio.com:3306/saas_billing\n调度任务: JOB-701 (monthly_revenue_report)\n生成时间: 每月1号凌晨2点\n\n## 历史问题记录\n\n- 2026-01-15: 数据库连接池配置优化，解决超时问题\n- 2026-02-17: 数据源开始出现连接超时，连续3天失败\n\n## 待办\n\n- [ ] 核查数据库服务器状态\n- [ ] 检查防火墙规则变更\n- [ ] 确认Aliyun RDS实例是否到期续费",
+    "outlinks": [
+      "OBSN-2"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-10T15:30:00+08:00",
+    "last_updated": "2026-02-19T14:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-2",
+    "title": "SaaS报表模块 - 故障排查手册",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "troubleshooting",
+      "playbook"
+    ],
+    "content": "# SaaS报表模块故障排查\n\n## 常见故障类型\n\n### 1. 数据源连接失败\n\n**症状**: \n- scheduler日志显示 \"Connection timeout\" 或 \"Connection refused\"\n- 报表生成任务在几秒内快速失败\n\n**排查步骤**:\n1. 检查Aliyun RDS控制台，确认实例运行状态\n2. 测试本地到数据库的网络连通性: `telnet saas-db.chenghao-studio.com 3306`\n3. 检查白名单配置，确认服务器IP未被移除\n4. 查看RDS慢日志，排除数据库性能问题\n\n**修复时间估算**:\n- 网络/白名单问题: 30分钟内\n- 数据库性能问题: 1-2小时\n- RDS实例故障: 需联系阿里云，2-4小时\n\n### 2. 报表生成逻辑错误\n\n**症状**:\n- 任务运行成功但客户反馈数据不对\n- 执行时间明显偏长(>5分钟)\n\n**排查步骤**:\n1. 检查最近代码变更记录\n2. 对比上月成功生成的报表数据\n3. 手动执行SQL查询验证数据准确性\n\n**修复时间估算**: 2-4小时\n\n## 客户通知模板\n\n### 数据源故障(非代码问题)\n\n\"您好[客户名]，我们的报表系统遇到数据库连接问题，正在紧急排查。预计[X小时]内修复，修复后会立即补发报表。给您带来不便深表歉意。\"\n\n### 代码逻辑问题\n\n\"您好[客户名]，报表模块发现一个计算逻辑问题，我们正在修复中。预计今晚[具体时间]前修复并重新生成正确报表发送给您。\"",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [
+      "OBSN-1"
+    ],
+    "created_at": "2026-01-12T16:00:00+08:00",
+    "last_updated": "2026-02-15T22:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-3",
+    "title": "2026-02 工作日志",
+    "folder": "Daily",
+    "tags": [
+      "journal",
+      "2026-02"
+    ],
+    "content": "# 2026年2月工作日志\n\n## 2026-02-19 周三\n\n14:25 - 收到SaaS报表任务失败告警邮件\n14:30 - 查看scheduler执行历史，发现从2月17日开始连续3天失败\n14:35 - 错误信息: Connection timeout to mysql://saas-db.chenghao-studio.com:3306\n\n初步判断: 数据源连接问题，非代码逻辑bug\n\n待办:\n- 登录Aliyun RDS控制台检查实例状态\n- 测试网络连通性\n- 给刘经理和王总发短信说明情况\n\n## 2026-02-18 周二\n\n16:00-23:30 - 电商小程序购物车模块开发\n23:30-01:00 - 企业官网改版CSS调整\n\n## 2026-02-17 周一\n\n15:00-19:00 - SaaS报表模块代码review\n20:00-02:00 - 电商小程序支付接口联调",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-02-01T14:00:00+08:00",
+    "last_updated": "2026-02-19T14:35:00+08:00"
+  },
+  {
+    "note_id": "OBSN-4",
+    "title": "东方贸易 - 官网改版项目合同",
+    "folder": "Projects/Dongfang-Website",
+    "tags": [
+      "contract",
+      "client",
+      "dongfang",
+      "website"
+    ],
+    "content": "# Dongfang Trading - Official Website Redesign Contract\n\n**Client**: 东方贸易 Dongfang Trading  \n**Contact**: 王总 (Wang Zong) +86 13800138001  \n**Contract Date**: 2026-01-15  \n**Project Start**: 2026-01-20  \n\n## Scope of Work\n- Complete redesign of corporate website (10 pages)\n- Responsive design for mobile and desktop\n- CMS integration (WordPress)\n- SEO optimization\n- 3 rounds of revision\n\n## Payment Terms\n**Total Contract Value**: ¥45,000\n\n### Milestone 1 (30%): ¥13,500\n- **Deliverable**: Design mockups and wireframes approved\n- **Due Date**: 2026-02-10\n- **Status**: ✅ Completed 2026-02-08, Payment received 2026-02-12\n\n### Milestone 2 (40%): ¥18,000\n- **Deliverable**: Frontend development complete, staging site live\n- **Due Date**: 2026-03-15\n- **Status**: ✅ Completed 2026-03-12, **Payment PENDING**\n- **Delivered Items**:\n  - All 10 pages coded and responsive\n  - WordPress CMS integrated\n  - Admin training document provided\n  - Staging URL: https://staging.dongfang-trade.com\n  - Client sign-off received 2026-03-14 via email\n\n### Milestone 3 (30%): ¥13,500\n- **Deliverable**: Production deployment and 1-month support\n- **Due Date**: 2026-04-10\n- **Status**: ⏳ Pending Milestone 2 payment confirmation\n\n## Notes\n- Client requested payment reminder to be professional and reference contract terms\n- All deliverables for Milestone 2 have been signed off\n- Need to send invoice before proceeding to final deployment",
+    "outlinks": [
+      "OBSN-5"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-15T14:30:00+08:00",
+    "last_updated": "2026-03-14T17:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-5",
+    "title": "东方贸易 - 项目交付清单",
+    "folder": "Projects/Dongfang-Website",
+    "tags": [
+      "deliverables",
+      "checklist",
+      "dongfang"
+    ],
+    "content": "# Dongfang Trading - Deliverables Checklist\n\n## Milestone 2 Completed Items (2026-03-12)\n\n### Frontend Development\n- ✅ Homepage with hero section and company intro\n- ✅ About Us page with team profiles\n- ✅ Products/Services catalog (6 pages)\n- ✅ Contact page with map integration\n- ✅ News/Blog section\n- ✅ Mobile responsive design tested on 5+ devices\n\n### CMS Integration\n- ✅ WordPress 6.4 installed and configured\n- ✅ Custom theme developed\n- ✅ Admin panel configured for client use\n- ✅ Content migration from old site\n- ✅ User roles and permissions set up\n\n### Documentation\n- ✅ Admin user guide (15 pages, PDF)\n- ✅ Content update procedures\n- ✅ Backup and maintenance guide\n\n### Testing & QA\n- ✅ Cross-browser testing (Chrome, Firefox, Safari, Edge)\n- ✅ Performance optimization (PageSpeed score: 92/100)\n- ✅ Security hardening completed\n\n### Client Sign-off\n- ✅ Staging review meeting 2026-03-13\n- ✅ Email confirmation received 2026-03-14\n\n## Work Hours Summary\n- Design revisions: 12 hours\n- Frontend development: 48 hours\n- CMS setup and customization: 20 hours\n- Testing and QA: 8 hours\n- Documentation: 6 hours\n- Client communication and training: 4 hours\n**Total**: 98 hours @ ¥183.67/hour = ¥18,000",
+    "outlinks": [
+      "OBSN-4"
+    ],
+    "inlinks": [
+      "OBSN-4"
+    ],
+    "created_at": "2026-03-12T16:00:00+08:00",
+    "last_updated": "2026-03-14T18:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-6",
+    "title": "2026-04 工作日志",
+    "folder": "Daily",
+    "tags": [
+      "daily",
+      "log",
+      "april"
+    ],
+    "content": "# April 2026 Work Log\n\n## 2026-04-02\n- 15:30 - Received payment inquiry SMS from 王总 (Dongfang Trading)\n- 15:35 - Need to review contract terms in OBSN-4 and prepare invoice\n- 16:00 - Draft invoice for Milestone 2 payment\n\n## 2026-04-01\n- Continued work on ecommerce miniapp bug fixes\n- Responded to 李姐's UI review request\n\n## 2026-03-31\n- Q1 wrap-up, three projects in parallel delivery phase\n- SaaS report module still showing intermittent errors",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-04-01T14:00:00+08:00",
+    "last_updated": "2026-04-02T15:35:00+08:00"
+  },
+  {
+    "note_id": "OBSN-7",
+    "title": "张总电商小程序 - 需求变更日志",
+    "folder": "Projects/Ecommerce-Miniapp",
+    "tags": [
+      "ecommerce",
+      "requirements",
+      "client-zhang"
+    ],
+    "content": "# 张总电商小程序 - 需求变更日志\n\n## 2026-03-28 现场需求会议记录\n\n### 参会人员\n- 张总（客户方）\n- 成昊（开发方）\n\n### 会议地点\n张总公司会议室，白板讨论\n\n### 讨论内容\n\n#### UI Wireframe Changes (白板草图)\n1. **首页商品展示布局调整**\n   - 从双列改为单列大图展示\n   - 优先级：P0（必须实现）\n   - 影响：首页组件重构，预计 +8 工时\n\n2. **购物车结算流程简化**\n   - 合并地址选择和支付方式选择页面\n   - 优先级：P1（强烈建议）\n   - 影响：结算流程逻辑调整，预计 +6 工时\n\n3. **商品详情页增加视频播放功能**\n   - 支持商品短视频展示\n   - 优先级：P0（必须实现）\n   - 影响：需要视频存储方案和播放器集成，预计 +12 工时\n\n4. **用户个人中心增加积分系统**\n   - 完整积分获取、消费、兑换流程\n   - 优先级：P2（可延后）\n   - 影响：新增积分模块，预计 +20 工时\n\n5. **订单列表增加物流追踪地图**\n   - 实时显示配送员位置\n   - 优先级：P1（强烈建议）\n   - 影响：需要对接第三方物流API，预计 +10 工时\n\n6. **商品搜索增加语音输入**\n   - 支持语音转文字搜索\n   - 优先级：P2（可延后）\n   - 影响：需要语音识别服务，预计 +8 工时\n\n7. **增加客服聊天功能**\n   - 在线客服即时通讯\n   - 优先级：P0（必须实现）\n   - 影响：需要IM服务集成，预计 +15 工时\n\n### 原定交付时间\n2026-04-15\n\n### 变更后预估交付时间\n考虑P0和P1优先级变更，预计需要额外 51 工时\n按当前工作负荷，建议延期至 2026-04-28\n\n### 待确认事项\n- [ ] 客户确认优先级排序\n- [ ] 客户确认是否接受延期\n- [ ] 视频存储方案预算确认\n- [ ] 第三方服务费用确认\n\n### 白板照片\n- IMG_20260401_153022.jpg - 首页布局和购物车流程草图\n- IMG_20260401_153145.jpg - 详情页视频功能和积分系统草图\n\n---\n\n## 历史变更记录\n\n### 2026-03-15 - 支付方式调整\n已完成，增加微信支付和支付宝\n\n### 2026-03-08 - 商品分类筛选优化\n已完成，增加多级分类筛选",
+    "outlinks": [
+      "OBSN-4"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-28T16:00:00+08:00",
+    "last_updated": "2026-04-01T16:15:00+08:00"
+  },
+  {
+    "note_id": "OBSN-8",
+    "title": "2026-03 项目工时统计",
+    "folder": "Daily",
+    "tags": [
+      "timesheet",
+      "billing"
+    ],
+    "content": "# 2026-03 项目工时统计\n\n## 电商小程序项目（张总）\n- 已完成工时：142h\n- 原计划总工时：180h\n- 当前进度：79%\n- 备注：3月28日会议新增需求，需重新评估\n\n## 官网改版项目（东方贸易）\n- 已完成工时：88h\n- 计划总工时：120h\n- 当前进度：73%\n- 备注：等待第二期款项到账\n\n## SaaS报表模块维护\n- 3月工时：24h\n- 主要工作：bug修复、性能优化\n- 备注：4月2日出现数据源配置问题\n\n## 总计\n3月总工时：254h\n平均每日工时：8.2h",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-03-31T23:30:00+08:00",
+    "last_updated": "2026-04-02T15:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-9",
+    "title": "SaaS报表模块 - 数据源配置变更记录",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "troubleshooting",
+      "config"
+    ],
+    "content": "# SaaS报表模块 - 数据源配置变更记录\n\n## 2026-02-15 数据源迁移\n- 从旧的MySQL实例迁移到新的RDS实例\n- 连接字符串已更新：`mysql://saas_user@rds-new.aliyun.com:3306/reports_db`\n- 迁移后测试通过\n\n## 已知问题\n### Issue #1: 间歇性连接超时 (2026-03-28 首次出现)\n- **症状**: 调度器任务显示 \"connection timeout\" 错误\n- **频率**: 每周1-2次，通常在数据量大的报表生成时\n- **临时解决方案**: 手动重启任务，成功率100%\n- **根本原因**: 怀疑是连接池配置过小，max_connections=10 不够用\n- **计划修复**: 需要修改配置文件 `config/database.yml`，将 max_connections 提升至 50，并增加 connection_timeout 至 30s\n- **预计修复时间**: 2小时（包括测试和部署）\n\n## 2026-04-01 最新观察\n- 李强客户反馈报表生成失败\n- 检查调度器日志 JOB-702，确认是 connection pool exhausted\n- 已在本地环境验证配置调整有效\n\n## 修复计划\n1. 更新 `config/database.yml` 配置\n2. 在测试环境验证（30分钟）\n3. 部署到生产环境（30分钟）\n4. 监控1小时确认稳定\n\n**下次发生时 ETA: 2小时内修复完成**",
+    "outlinks": [
+      "OBSN-2"
+    ],
+    "inlinks": [
+      "OBSN-2"
+    ],
+    "created_at": "2026-03-28T16:30:00+08:00",
+    "last_updated": "2026-04-01T23:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-10",
+    "title": "客户沟通模板 - Bug报告响应",
+    "folder": "Templates",
+    "tags": [
+      "template",
+      "communication",
+      "client"
+    ],
+    "content": "# 客户沟通模板 - Bug报告响应\n\n## 模板结构\n1. 致谢与问题确认\n2. 问题分类说明（新问题/已知问题/变更相关）\n3. 技术背景简述（客户能理解的语言）\n4. 具体修复计划与 ETA\n5. 后续跟进承诺\n\n## 示例\n\"感谢反馈。经核实，这是我们在 2/15 数据源升级后出现的已知问题（连接池配置不足），本周已是第二次发生。修复需要调整数据库连接配置并重新部署，预计2小时内完成。我会在修复后第一时间通知您，并在未来一周内持续监控确保稳定。\"\n\n## 注意事项\n- 避免过度技术细节\n- 给出可实现的 ETA\n- 说明是否为重复问题",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-03-15T10:00:00+08:00",
+    "last_updated": "2026-03-15T10:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-11",
+    "title": "2026-04-02 工作日志",
+    "folder": "Daily",
+    "tags": [
+      "daily",
+      "log"
+    ],
+    "content": "# 2026-04-02 工作日志\n\n## 15:23 李强客户报告 SaaS 报表模块故障\n- 症状：数据源连接失败\n- 分类：已知问题（OBSN-9 记录的连接池问题）\n- 本周第二次发生\n- 需要起草专业回复，说明这是 2/15 配置变更后的已知问题\n- 修复 ETA: 2小时\n\n## 待办\n- [ ] 查阅 OBSN-9 确认问题细节和修复方案\n- [ ] 在 Fossify Notes 起草回复\n- [ ] 发送短信给李强\n- [ ] 更新 OBSN-9 记录本次故障\n\n## 其他\n- 张总电商小程序进度正常\n- 东方贸易官网改版等待款项确认",
+    "outlinks": [
+      "OBSN-9"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T15:30:00+08:00",
+    "last_updated": "2026-04-02T15:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-12",
+    "title": "SaaS报表模块 - 第三方服务成本追踪",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "cost-tracking",
+      "budget"
+    ],
+    "content": "# SaaS Third-Party Service Cost Tracking\n\n## DataLytics Cloud\n- **Service**: Professional Analytics API\n- **Monthly Cost**: ¥1,280 CNY\n- **Usage**: Data aggregation and visualization for client reporting dashboards\n- **Last Renewal**: 2026-03-10\n- **Next Renewal Due**: 2026-04-10\n- **Client Dependencies**: \n  - Li Qiang (TechSolutions) - uses daily revenue reports\n  - Chen Ming - uses weekly analytics dashboard\n  - 3 other active subscribers rely on this service\n\n## Usage Statistics (Q1 2026)\n- January: 2,840 API calls\n- February: 3,120 API calls\n- March: 3,650 API calls (trending up)\n- Average response time: 180ms\n- Uptime: 99.8%\n\n## Budget Impact\n- Q1 Total Spent: ¥3,840 CNY (3 months)\n- Projected Q2: ¥3,840 CNY\n- Annual projection: ¥15,360 CNY\n\n## Alternatives Evaluated (Feb 2026)\n- Self-hosted solution: Would require 40+ hours development time\n- Cheaper tier: Lacks real-time features clients need\n- **Decision**: Continue with current plan, essential for service quality\n\n## Notes\n- Service is critical - 5 active clients depend on it\n- Renewal must happen before April 10 to avoid service interruption\n- No suitable cheaper alternative found",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-6"
+    ],
+    "inlinks": [
+      "OBSN-6"
+    ],
+    "created_at": "2026-02-15T16:30:00+08:00",
+    "last_updated": "2026-03-29T18:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-13",
+    "title": "2026 Q1 预算执行情况",
+    "folder": "Finance",
+    "tags": [
+      "budget",
+      "quarterly-review",
+      "finance"
+    ],
+    "content": "# Q1 2026 Budget Execution Review\n\n## Revenue\n- Total Income: ¥68,500 CNY\n  - Ecommerce miniapp project: ¥28,000 (partial)\n  - Dongfang website redesign: ¥22,000 (milestone 1 & 2)\n  - SaaS subscriptions: ¥18,500\n\n## Business Expenses\n- SaaS subscriptions: ¥3,840 (DataLytics)\n- Cloud hosting: ¥1,350 (Aliyun)\n- Software licenses: ¥890\n- Marketing: ¥600\n- **Total Expenses**: ¥6,680\n\n## Cash Flow Analysis\n- Net Income: ¥61,820\n- Available for Q2 operations: ~¥55,000 (after personal draw)\n- Emergency fund: ¥20,000 (maintained)\n\n## Q2 Budget Allocation\n- Essential SaaS renewals: ¥5,000 (budgeted)\n- Development tools: ¥2,000\n- Buffer for client delays: ¥8,000\n\n## Notes\n- DataLytics renewal (¥1,280) is within Q2 budget\n- Dongfang payment delay affects cash flow but not critical\n- Overall financial health: Good",
+    "outlinks": [
+      "OBSN-12"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-28T15:20:00+08:00",
+    "last_updated": "2026-03-31T17:10:00+08:00"
+  },
+  {
+    "note_id": "OBSN-14",
+    "title": "个人开发工具清单 2026",
+    "folder": "Resources",
+    "tags": [
+      "tools",
+      "reference"
+    ],
+    "content": "# Personal Development Tools Inventory 2026\n\n## IDE & Editors\n- VS Code (free)\n- JetBrains WebStorm (annual license: ¥1,200)\n\n## Version Control\n- GitHub Pro (monthly: $4 USD)\n\n## Design Tools\n- Figma (free tier)\n- Canva Pro (annual: ¥600)\n\n## Communication\n- WeChat (free)\n- Email (free)\n\n## Project Management\n- Obsidian (free)\n- Notion (free tier)\n\n## Monitoring & Analytics\n- DataLytics Cloud (monthly: ¥1,280) - CRITICAL for SaaS module\n\n## Notes\n- Most tools are free or low-cost\n- DataLytics is the most expensive but essential\n- Total monthly recurring: ~¥1,350",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-01-15T14:00:00+08:00",
+    "last_updated": "2026-03-20T16:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-15",
+    "title": "东方贸易 - 付款里程碑跟进记录",
+    "folder": "Projects/Dongfang-Website",
+    "tags": [
+      "payment",
+      "milestone",
+      "client-communication"
+    ],
+    "content": "# Payment Milestone Follow-up Log\n\n## Milestone 2 Status (as of 2026-04-01)\n- **Deliverable**: Homepage redesign + 3 product pages\n- **Completion**: 100% - delivered on 2026-03-28\n- **Payment due**: 2026-04-05 (7 days after delivery confirmation)\n- **Amount**: ¥15,000 (50% of total contract)\n- **Invoice sent**: 2026-03-29 (INV-2026-0328)\n\n## Client confirmation\n- Wang Zong acknowledged receipt via WeChat on 2026-03-30\n- Requested minor text adjustment (completed same day)\n- Final approval received 2026-03-31\n\n## Next action\n- Send polite payment reminder on 2026-04-02 (3 days before due date)\n- Include invoice reference and payment details\n- Maintain professional tone - this is first milestone, relationship building phase\n\n## Payment terms from contract\n- Milestone 1 (30%): Paid on 2026-02-15 ✓\n- Milestone 2 (50%): Due 2026-04-05\n- Final (20%): Upon project completion\n\n## SMS draft prepared\n- Saved in Fossify Notes as \"Payment reminder - Wang Zong Apr 2\"",
+    "outlinks": [
+      "OBSN-4",
+      "OBSN-5"
+    ],
+    "inlinks": [
+      "OBSN-6"
+    ],
+    "created_at": "2026-04-01T20:30:00+08:00",
+    "last_updated": "2026-04-02T14:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-16",
+    "title": "客户沟通模板 - 付款提醒话术",
+    "folder": "Templates",
+    "tags": [
+      "template",
+      "payment",
+      "communication"
+    ],
+    "content": "# Payment Reminder Templates\n\n## Polite Pre-Due Reminder (3-5 days before)\n\"Hi [Client Name], this is a friendly reminder that payment for [Project/Milestone] (Invoice [INV-XXX], ¥[Amount]) is due on [Date]. The deliverables were completed on [Delivery Date]. Please let me know if you need any clarification on the invoice. Bank details: [Account Info]. Thank you!\"\n\n## Overdue Follow-up (1-3 days after due)\n\"Hi [Client Name], I wanted to check in regarding Invoice [INV-XXX] for ¥[Amount], which was due on [Date]. Please let me know if there are any issues with the invoice or if you need an updated copy. Looking forward to your response.\"\n\n## Deliverable Confirmation Request\n\"Hi [Client Name], I've completed [Deliverable Description] as per our agreement. Could you please confirm receipt and review? Once approved, the payment of ¥[Amount] (Invoice [INV-XXX]) will be due on [Date]. Thank you!\"\n\n## Notes\n- Always maintain professional, non-confrontational tone\n- Reference specific invoice numbers and dates\n- Offer to help with any questions\n- For first-time delays, assume good faith",
+    "outlinks": [],
+    "inlinks": [
+      "OBSN-15"
+    ],
+    "created_at": "2026-03-15T19:00:00+08:00",
+    "last_updated": "2026-03-28T21:15:00+08:00"
+  },
+  {
+    "note_id": "OBSN-17",
+    "title": "SaaS报表模块 - 第三方服务成本追踪",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "cost-analysis",
+      "datalytics"
+    ],
+    "content": "# DataLytics Cloud Cost-Benefit Analysis\n\n## Current Usage (Q1 2026)\n\n**Subscription**: Professional Tier @ $89/month\n**Monthly Cost**: $89 USD (~¥640 CNY)\n**Q1 Total**: $267 USD\n\n## Usage Metrics\n\n- **API Calls**: ~4,200/month average (42% of 10K limit)\n- **Active Clients**: 3 企业客户 using report generation\n- **Revenue Attribution**: ~¥8,500/month from SaaS module\n- **ROI**: 13.3x (revenue/cost ratio)\n\n## Service Quality Assessment\n\n### Pros\n- Reliable uptime (99.2% in Q1)\n- Good documentation\n- Fast query response (<500ms avg)\n\n### Cons\n- Recent connection degradation (see [[OBSN-9]])\n- Price increase announced: $89 → $119 (+33.7%)\n- Under-utilizing API quota (only 42% usage)\n\n## Alternative Evaluation (Mar 28 research)\n\n1. **ReportHub** - $49/month, 5K calls\n   - Migration effort: ~2 days\n   - Risk: smaller vendor, less mature\n\n2. **Self-hosted PostgreSQL + Metabase**\n   - One-time setup: ~5 days\n   - Monthly cost: ~$15 (server only)\n   - Risk: maintenance burden\n\n3. **DataFlow Lite** - $69/month, 8K calls\n   - Similar features\n   - Migration: ~1 day\n\n## Decision Factors\n\n- New price ($119) = 18.6% of monthly SaaS revenue\n- Still profitable but margin shrinks\n- Current integration stable despite config issues\n- Migration risk vs. cost savings trade-off\n\n## Next Steps\n\n- [ ] Check recent failure rate in scheduler logs\n- [ ] Verify if service quality justifies 34% price hike\n- [ ] Decision deadline: April 10, 2026\n\n---\nLast updated: 2026-03-28",
+    "outlinks": [
+      "OBSN-9",
+      "OBSN-12"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-28T16:30:00+08:00",
+    "last_updated": "2026-03-28T17:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-18",
+    "title": "2026 Q1 SaaS订阅支出汇总",
+    "folder": "Finance",
+    "tags": [
+      "finance",
+      "subscriptions",
+      "q1"
+    ],
+    "content": "# Q1 2026 SaaS Subscription Expenses\n\n## Active Subscriptions\n\n### DataLytics Cloud\n- **Tier**: Professional\n- **Cost**: $89/month\n- **Q1 Total**: $267 (Jan-Mar)\n- **Status**: Renewal due Apr 10, price increase to $119/month\n\n### Aliyun OSS\n- **Usage-based**: ~¥45/month\n- **Q1 Total**: ¥138\n\n### GitHub Pro\n- **Cost**: $4/month\n- **Q1 Total**: $12\n\n### Total Q1 SaaS Spend\n- **USD**: $279\n- **CNY**: ¥138\n- **Combined**: ~¥2,150 CNY equivalent\n\n## Renewal Decisions Pending\n\n- **DataLytics**: Evaluate cost-benefit given 34% price increase\n- Consider migration to cheaper alternative if ROI drops below 10x\n\n---\nCreated: 2026-03-31",
+    "outlinks": [
+      "OBSN-17"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-31T15:20:00+08:00",
+    "last_updated": "2026-03-31T15:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-19",
+    "title": "SaaS报表模块 - 第三方服务成本追踪",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "cost-tracking",
+      "saas",
+      "budget"
+    ],
+    "content": "# SaaS报表模块 - 第三方服务成本追踪\n\n## DataLytics Cloud API\n\n### 当前订阅\n- **套餐**: Standard Tier\n- **月费**: $89/月 (¥645)\n- **包含额度**:\n  - API调用: 500K次/月\n  - 数据传输: 50GB/月\n- **超额费用**: \n  - API: $0.0002/次\n  - 数据传输: $0.15/GB\n\n### Q1 实际使用量 (基于 JOB-706 日志)\n\n**1月 (Jan 2026)**\n- API调用: 162,180次\n- 数据传输: 14.1GB\n- 评估: 远低于套餐限额 ✓\n\n**2月 (Feb 2026)**\n- API调用: 158,940次  \n- 数据传输: 13.7GB\n- 评估: 远低于套餐限额 ✓\n\n**3月 (Mar 2026)**\n- API调用: 166,200次 (估算，基于3月前29天数据)\n- 数据传输: 14.5GB (估算)\n- 评估: 远低于套餐限额 ✓\n\n**Q1 总计**\n- API调用: ~487,320次 (月均 162,440次)\n- 数据传输: ~42.3GB (月均 14.1GB)\n- **结论**: 月均使用量仅为 Standard 套餐限额的 32.5% (API) 和 28.2% (数据传输)\n\n### 续费决策分析\n\n**DataLytics 声称的「必须升级」理由存疑**\n- 邮件称 Q1 使用了 1.2M API 调用 → **实际仅 487K，差距 2.5 倍**\n- 邮件称数据传输 85GB → **实际仅 42.3GB，差距 2 倍**\n- 他们的「估算」严重夸大了实际使用量\n\n**Standard 套餐充足性**\n- 当前月均使用量距离套餐上限还有 67% 的余量\n- 即使 Q2 业务量增长 50%，仍在 Standard 套餐范围内\n- SaaS 报表模块客户数 Q1 末为 12 家，Q2 预计新增 3-4 家，不会导致 3 倍用量增长\n\n**Professional 套餐 ($249/月) 性价比分析**\n- 价格上涨 180% ($89 → $249)\n- 提供 2M API 调用额度 → 当前仅用 24%\n- 提供 200GB 数据传输 → 当前仅用 21%\n- **结论**: 严重过度配置，浪费 $160/月 (¥1,160)\n\n### 续费决策建议\n\n**推荐方案**: 保持 Standard 套餐，拒绝升级\n\n**备选方案**:\n1. 与 DataLytics 协商，要求提供真实使用数据证明升级必要性\n2. 如对方坚持，考虑迁移到替代服务商 (参考 newsletter 推荐的 alternatives)\n\n**行动清单**:\n- [ ] 导出 JOB-706 完整 Q1 日志作为谈判依据\n- [ ] 4月8日前回复 DataLytics，附上实际使用数据，要求保持 Standard 套餐\n- [ ] 如协商失败，评估迁移成本 (预计 2-3 天开发工时)\n\n---\n\n## 其他服务成本\n\n### Aliyun OSS\n- 月费: ¥45-60 (存储 + 流量)\n- 状态: 合理范围 ✓\n\n### 微信小程序 API\n- 免费额度内\n- 状态: 无成本 ✓\n\n---\n\n*最后更新: 2026-04-01*",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-9"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-15T15:30:00+08:00",
+    "last_updated": "2026-04-01T16:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-20",
+    "title": "DataLytics 替代方案调研",
+    "folder": "Resources",
+    "tags": [
+      "research",
+      "alternatives",
+      "cost-optimization"
+    ],
+    "content": "# DataLytics 替代方案调研\n\n## 背景\nDataLytics 续费时要求强制升级到 Professional 套餐 ($249/月)，但实际使用量远低于 Standard 套餐限额。如协商失败，需要备选方案。\n\n## 候选服务\n\n### 1. OpenMetrics API\n- 定价: $79/月 (600K API 调用 + 60GB 传输)\n- 优势: 价格更低，API 兼容性好\n- 劣势: 国内访问速度较慢，需要代理\n- 迁移成本: 中等 (2天)\n\n### 2. CloudInsight Analytics\n- 定价: $95/月 (800K API 调用 + 80GB 传输)\n- 优势: 国内节点，响应快\n- 劣势: API 格式差异大，需要重写适配层\n- 迁移成本: 高 (3-4天)\n\n### 3. 自建轻量方案\n- 定价: 仅服务器成本 ~¥200/月\n- 优势: 完全可控，无供应商锁定\n- 劣势: 需要维护，增加运维负担\n- 迁移成本: 很高 (5-7天开发 + 持续维护)\n\n## 决策矩阵\n如 DataLytics 不让步 → 优先尝试 OpenMetrics (性价比最优)\n\n*创建于: 2026-03-28*",
+    "outlinks": [],
+    "inlinks": [
+      "OBSN-19"
+    ],
+    "created_at": "2026-03-28T17:45:00+08:00",
+    "last_updated": "2026-03-28T18:10:00+08:00"
+  },
+  {
+    "note_id": "OBSN-21",
+    "title": "SAAS-2026-001 - Report Generation Failure - DataLytics Rate Limit",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "troubleshooting",
+      "datalytics",
+      "case-study",
+      "rate-limit"
+    ],
+    "content": "# Case Study: SAAS-2026-001 - Report Generation Failure\n\n## Incident Summary\n**Date**: 2026-03-30\n**Reporter**: Li Qiang (SaaS Client)\n**Severity**: High\n**Status**: Resolved\n**Resolution Date**: 2026-03-31\n\n## Client Complaint\nLi Qiang reported recurring monthly report generation failures starting March 30, 2026. Error message: \"Data source unavailable\". Client has demos scheduled for April 3rd requiring these reports.\n\n## Investigation Timeline\n\n### Initial Report (2026-03-30 09:15)\n- Client message via WeChat: Monthly report failed, same error as last week\n- Previous incident: Similar failure on 2026-03-23 (resolved temporarily)\n\n### Scheduler Log Analysis (2026-03-30 14:30-15:45)\n\n**Job**: `saas_report_generation` (JOB-704)\n**Recent Failure Pattern**:\n```\n2026-03-30 06:00:00 - FAILED - DataLytics API error: 429 Too Many Requests\n2026-03-29 06:00:00 - FAILED - DataLytics API error: 429 Too Many Requests  \n2026-03-28 06:00:00 - SUCCESS (degraded, 45min runtime vs normal 12min)\n2026-03-27 06:00:00 - SUCCESS\n2026-03-26 06:00:00 - FAILED - DataLytics API error: 429 Too Many Requests\n```\n\n**Log Excerpt** (JOB-704 execution on 2026-03-30):\n```\n[06:00:12] Starting saas_report_generation job\n[06:00:15] Connecting to DataLytics API (datalytics_api_client)\n[06:02:48] API call 1/15: Success (batch 1, 100 records)\n[06:05:22] API call 2/15: Success (batch 2, 100 records)\n...\n[06:18:45] API call 8/15: HTTP 429 - Rate limit exceeded (1000/1000 daily quota used)\n[06:18:46] Retry attempt 1/3 after 30s backoff\n[06:19:18] API call 8/15: HTTP 429 - Rate limit exceeded\n[06:19:19] Retry attempt 2/3 after 60s backoff\n[06:20:21] API call 8/15: HTTP 429 - Rate limit exceeded\n[06:20:22] Job FAILED - Unable to complete data fetch from DataLytics\n```\n\n### Config Service Review (2026-03-30 15:00)\n\n**Integration**: `datalytics_api_client` (INT-104)\n- Current tier: Basic (1000 API calls/day)\n- Average daily usage (last 7 days): 1420 calls/day\n- Peak usage: 1680 calls/day (2026-03-29)\n- Trend: +15% month-over-month growth\n\n**Configuration Change History**:\n```\n2026-02-15: Increased batch size from 50 to 100 records per call\n2026-01-20: Added 3 new report templates (increased call frequency)\n2025-12-10: Initial DataLytics integration setup (Basic tier)\n```\n\n### DataLytics Usage Monitor Cross-Reference (2026-03-30 15:30)\n\n**Job**: `datalytics_usage_monitor` (JOB-705)\n**Usage Pattern Analysis**:\n- Daily quota exhaustion time trending earlier each week\n- 2026-03-23: Quota hit at 08:15 (after report job completion)\n- 2026-03-26: Quota hit at 06:18 (during report job - first failure)\n- 2026-03-30: Quota hit at 06:18 (during report job)\n\n**Root Cause Confirmed**: Report generation job now requires ~1400 API calls due to:\n1. New report templates added in January (3 additional)\n2. Increased batch size in February (more calls per report)\n3. Client base growth (+8 active subscriptions since Jan)\n\n## Root Cause Analysis\n\n**Primary Cause**: DataLytics API rate limit (1000 calls/day on Basic tier) insufficient for current workload\n\n**Contributing Factors**:\n1. Feature expansion without capacity planning\n2. No usage alerting configured before hitting quota\n3. Client growth not factored into infrastructure scaling\n\n## Resolution Steps\n\n### Immediate Fix (2026-03-31 23:00-23:45)\n1. Upgraded DataLytics tier: Basic → Professional\n   - New quota: 5000 API calls/day\n   - Cost increase: $49/month → $149/month\n   - Approval: Self-approved (business critical)\n\n2. Updated config service:\n   - Modified INT-104 tier configuration\n   - Verified new quota reflected in API client\n\n3. Manual test run:\n   - Executed saas_report_generation job manually\n   - Completed successfully in 14 minutes\n   - All 15 API call batches succeeded\n\n4. Notified client:\n   - Confirmed resolution via WeChat\n   - Provided ETA met (April 1st 10:00 AM)\n\n### Long-term Prevention (Scheduled for April)\n1. **Monitoring Enhancement**:\n   - Add usage threshold alerts at 70%, 85%, 95% of daily quota\n   - Configure JOB-705 to send notifications to my phone\n\n2. **Capacity Planning**:\n   - Document API usage per report template\n   - Create monthly capacity review checklist\n   - Add usage projection to client onboarding process\n\n3. **Architecture Optimization** (future consideration):\n   - Evaluate query batching optimization\n   - Consider caching frequently-accessed data\n   - Investigate alternative data providers for cost comparison\n\n## Lessons Learned\n\n1. **Proactive monitoring**: Should have caught usage trend before failure\n2. **Capacity planning**: Feature additions must include infrastructure impact assessment\n3. **Client communication**: Quick investigation + clear ETA maintained trust\n4. **Documentation value**: This case study will serve as troubleshooting template\n\n## Reference Links\n- [[OBSN-2]] - SaaS报表模块 - 故障排查手册\n- [[OBSN-9]] - SaaS报表模块 - 数据源配置变更记录\n- Scheduler job: JOB-704 (saas_report_generation)\n- Config integration: INT-104 (datalytics_api_client)\n- Monitor job: JOB-705 (datalytics_usage_monitor)\n\n## Cost Impact\n- Monthly recurring: +$100/month (DataLytics tier upgrade)\n- One-time investigation: ~3 hours (absorbed, not billed to client)\n- Business value: Prevented demo failure, maintained client relationship\n\n---\n**Case archived**: 2026-04-02\n**Next review**: 2026-04-30 (monthly capacity check)",
+    "outlinks": [
+      "OBSN-2",
+      "OBSN-9"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T01:30:00+08:00",
+    "last_updated": "2026-04-02T02:15:00+08:00"
+  },
+  {
+    "note_id": "OBSN-22",
+    "title": "DataLytics API - Usage Optimization Ideas",
+    "folder": "Resources",
+    "tags": [
+      "optimization",
+      "api",
+      "cost-reduction"
+    ],
+    "content": "# DataLytics API Optimization Brainstorm\n\n## Context\nAfter the rate-limit incident (SAAS-2026-001), need to think about long-term optimization strategies.\n\n## Current State\n- Professional tier: 5000 calls/day, $149/month\n- Average usage: ~1400 calls/day (28% of quota)\n- Growth rate: +15% MoM\n\n## Optimization Ideas\n\n### Short-term (Q2 2026)\n1. **Query batching review**\n   - Current: 100 records per batch\n   - Test: 200 records per batch (might reduce total calls by 40%)\n   - Risk: Larger payloads, potential timeout issues\n\n2. **Cache common queries**\n   - Static reference data (categories, templates)\n   - TTL: 24 hours\n   - Estimated savings: 100-150 calls/day\n\n### Medium-term (Q3 2026)\n3. **Alternative providers**\n   - Research: Chartify API ($99/month, 3000 calls/day)\n   - Research: OpenMetrics ($120/month, 4000 calls/day)\n   - Migration effort: ~2 weeks\n\n4. **Client-side aggregation**\n   - Pre-aggregate some metrics in our DB\n   - Reduce real-time API dependency\n\n## Next Steps\n- [ ] Benchmark batch size impact (April 15)\n- [ ] Prototype caching layer (April 30)\n- [ ] Cost comparison spreadsheet (May 15)\n\n---\n*Note: Don't over-optimize prematurely. Current tier gives 3.5x headroom.*",
+    "outlinks": [
+      "OBSN-21"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T02:30:00+08:00",
+    "last_updated": "2026-04-02T02:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-23",
+    "title": "SaaS报表模块 - DataLytics API 配置问题排查记录",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "troubleshooting",
+      "api",
+      "datalytics"
+    ],
+    "content": "# DataLytics API Configuration Troubleshooting\n\n## Known Issues History\n\n### 2026-03-15: Rate Limit Exceeded\n- **Symptom**: 429 errors during peak hours\n- **Root cause**: Monthly quota reached early\n- **Resolution**: Upgraded to higher tier\n- **Fix time**: 2 hours (including tier upgrade approval)\n\n### 2026-03-22: Authentication Token Expired\n- **Symptom**: 401 unauthorized errors\n- **Root cause**: API token rotation not updated in config\n- **Resolution**: Updated INT-104 with new token\n- **Fix time**: 30 minutes\n\n### 2026-04-02: Connection Timeout (CURRENT)\n- **Symptom**: Connection refused at api.datalytics-cloud.com:443\n- **First occurrence**: 2026-04-02 03:15 AM\n- **Pattern**: First failure after 3 consecutive successful runs\n- **Likely cause**: DataLytics service outage OR network issue OR expired subscription\n- **Action items**:\n  1. Check DataLytics service status page\n  2. Verify subscription renewal status (expires April 10)\n  3. Test connection manually from CLI\n  4. Check INT-104 config validity\n\n## Resolution Procedure\n\n1. **Identify failure type** (rate limit / auth / connection / data)\n2. **Check execution_history** in JOB-703 for pattern\n3. **Cross-reference with INT-104** config status\n4. **Estimate fix time**:\n   - Config issue: 30-60 min\n   - Service outage: 2-4 hours (wait for provider)\n   - Subscription issue: 1-2 hours (renewal process)\n\n## Client Communication Template\n\nSee [[客户沟通模板 - Bug报告响应]] for non-technical explanation templates.\n\n**Key points**:\n- Acknowledge issue proactively\n- Explain impact scope (which reports affected)\n- Provide realistic ETA based on root cause\n- Offer interim workaround if available",
+    "outlinks": [
+      "OBSN-10"
+    ],
+    "inlinks": [
+      "OBSN-2"
+    ],
+    "created_at": "2026-04-02T03:30:00+08:00",
+    "last_updated": "2026-04-02T03:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-24",
+    "title": "Li Qiang - SaaS客户联系记录",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "client",
+      "saas",
+      "communication"
+    ],
+    "content": "# Li Qiang - SaaS Subscriber Profile\n\n**Company**: TechSolutions Co.\n**Subscription tier**: Professional (8 users)\n**Start date**: 2025-11-20\n**Monthly fee**: ¥1,200\n**Primary contact**: Li Qiang (李强)\n**WeChat ID**: liqiang_tech\n**Phone**: +86 138-0013-8888\n\n## Communication History\n\n### 2026-03-15\n- Topic: Feature request for custom report templates\n- Response: Added to Q2 roadmap\n\n### 2026-03-28\n- Topic: Question about data export format\n- Response: Sent documentation link\n\n### 2026-04-02 (PENDING)\n- Topic: Report generation failure alert\n- Status: Need to send proactive update\n- Impact: Daily reports for 2026-04-02 not generated\n- ETA: TBD after troubleshooting\n\n## Service Level\n- Response time expectation: Within 4 hours during business hours\n- Issue severity: HIGH (production service disruption)\n- Client satisfaction: High (no previous incidents)\n\n## Notes\n- Very responsive client, appreciates proactive communication\n- Technical background, can understand some technical details but prefers business impact focus\n- Prefers WeChat for quick updates, email for detailed documentation",
+    "outlinks": [
+      "OBSN-23",
+      "OBSN-10"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-15T16:00:00+08:00",
+    "last_updated": "2026-04-02T03:50:00+08:00"
+  },
+  {
+    "note_id": "OBSN-25",
+    "title": "SaaS报表模块 - 批量导出功能提案",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "feature-proposal",
+      "reports"
+    ],
+    "content": "# SaaS报表模块 - 批量导出功能提案\n\n## Problem Statement\n多位客户（Li Qiang, Zhang Zong, Wang Fang）在 Q1 反复提出需求：\n- 月末需要批量导出 20+ 份报表，当前只能逐个手动生成\n- 希望支持定时调度，自动发送周报/月报到邮箱\n- 大数据量报表（>1000行）经常超时，需要后台处理能力\n\n当前架构（见 KB-401）仅支持单次同步生成，无批量和调度能力。\n\n## Proposed Solution\n\n### Phase 1: Batch Export API (8-10 hours)\n- 新增 POST /api/v1/reports/batch endpoint\n- 接收报表配置数组，返回 batch_job_id\n- 后台异步处理，结果打包为 ZIP 存储到 OSS\n- 完成后通过 webhook 或轮询通知客户端\n\n### Phase 2: Scheduling Integration (12-15 hours)\n- 集成现有 scheduler 服务（JOB-704 类似架构）\n- 支持 cron 表达式配置定时任务\n- 可选邮件发送（需对接 SMTP 或 Aliyun DirectMail）\n- 管理界面：创建/编辑/暂停调度任务\n\n### Technical Approach\n- 使用 Redis Queue 或 Celery 做异步任务队列\n- 复用现有 report generation engine（KB-401）\n- 文件存储：Aliyun OSS（已有 INT-102 集成）\n- 调度器：扩展现有 scheduler 模块（JOB-704 架构）\n\n## Effort Estimate\n- Phase 1 (Batch Export): **8-10 hours**\n  - API endpoint: 2h\n  - Async job queue setup: 3h\n  - ZIP packaging & OSS upload: 2h\n  - Testing: 2-3h\n\n- Phase 2 (Scheduling): **12-15 hours**\n  - Scheduler integration: 4h\n  - Cron config UI: 3h\n  - Email delivery: 3h\n  - Testing & documentation: 2-3h\n\n**Total: 20-25 hours** (约 3-4 个工作日)\n\n## Client Impact & Priority\n- **High impact**: 60% of Q1 feature requests mention this (KB-402)\n- **Revenue potential**: Li Qiang 表示如有此功能愿升级到更高订阅层级\n- **Competitive advantage**: 主要竞品 DataLytics 已支持批量导出\n- **Churn risk mitigation**: Zhang Zong 提到如无此功能可能 Q2 不续约\n\n## Implementation Priority\n建议 **Q2 优先级：P1**\n- Phase 1 可在 4 月中旬完成，立即缓解客户痛点\n- Phase 2 排期到 5 月，配合 Q2 产品路线图\n\n## References\n- Architecture: KB-401 (SaaS Report Generation Module)\n- Feature requests: KB-402 (Client Feature Request Log - Q1 2026)\n- Client communications: OBSN-1 (SaaS客户订阅清单), WCC-3 (Li Qiang chat)\n- Scheduler example: JOB-704 (saas_report_generation)\n\n---\n*Created: 2026-04-02 15:30*  \n*Source: FNOT-219 (late-night feature idea note)*",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-2"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T15:30:00+08:00",
+    "last_updated": "2026-04-02T16:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-26",
+    "title": "2026-04-02 Daily Log",
+    "folder": "Daily",
+    "tags": [
+      "daily-log"
+    ],
+    "content": "# 2026-04-02 Daily Log\n\n## Work Done\n- 15:00-16:45: 整理了 SaaS 批量导出功能提案（OBSN-25）\n  - 从 Fossify Notes 里的简短想法扩展成完整提案\n  - 查阅了 KB 里的架构文档和客户反馈记录\n  - 估算了工时和优先级\n\n- 17:30-19:00: 修复了东方贸易官网的响应式布局问题\n\n## Tomorrow\n- 发送批量导出提案给 Li Qiang 和 Zhang Zong 征求反馈\n- 继续跟进官网改版收尾工作\n\n## Notes\n- 晚上记得补充 Q1 财务资料整理（税务申报快到期了）",
+    "outlinks": [
+      "OBSN-25"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T20:30:00+08:00",
+    "last_updated": "2026-04-02T20:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-27",
+    "title": "张总电商小程序 - 交付里程碑记录",
+    "folder": "Projects/Ecommerce-Miniapp",
+    "tags": [
+      "project",
+      "ecommerce",
+      "delivery",
+      "milestone"
+    ],
+    "content": "# 张总电商小程序 - 交付里程碑\n\n## 项目基本信息\n- 合同金额：¥58,000\n- 客户：张总（某电商公司）\n- 项目周期：2026-01-15 ~ 2026-03-20\n\n## 交付里程碑\n\n### Milestone 1: 需求确认与原型设计 (已完成)\n- 完成日期：2026-02-05\n- 交付物：产品原型、技术方案文档\n- 款项：预付款 ¥20,000 (已收 2026-01-18)\n\n### Milestone 2: 核心功能开发 (已完成)\n- 完成日期：2026-02-28\n- 交付物：商品列表、购物车、订单管理模块\n- 款项：进度款 ¥23,000 (已收 2026-03-05)\n\n### Milestone 3: 最终交付与上线 (已完成)\n- 原定日期：2026-03-20\n- 实际完成：2026-03-25 (因需求变更延期5天)\n- 交付物：完整小程序、部署文档、管理后台\n- 款项：尾款 ¥15,000 (待收)\n- 备注：3月15日客户追加了会员积分功能，导致延期\n\n## 部署记录\n- 测试环境部署：2026-03-22 14:30\n- 生产环境部署：2026-03-25 16:45\n- 微信小程序审核通过：2026-03-26 10:20\n\n## 待办事项\n- [ ] 跟进尾款收款（约定交付后7个工作日内支付）\n- [ ] 整理项目总结文档",
+    "outlinks": [
+      "OBSN-7"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-15T15:30:00+08:00",
+    "last_updated": "2026-03-26T17:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-28",
+    "title": "SaaS报表模块 - 生产部署日志",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "deployment",
+      "production"
+    ],
+    "content": "# SaaS报表模块 - 生产部署日志\n\n## 2026-01-20: v1.2.0 初始部署\n- 部署时间：2026-01-20 22:30:00\n- 版本：v1.2.0\n- 变更：新增批量导出功能\n- 状态：成功\n\n## 2026-02-15: v1.2.1 Bug修复\n- 部署时间：2026-02-15 23:15:00\n- 版本：v1.2.1\n- 变更：修复日期筛选器时区问题\n- 状态：成功\n\n## 2026-03-10: v1.3.0 功能增强\n- 部署时间：2026-03-10 21:45:00\n- 版本：v1.3.0\n- 变更：\n  - 新增自定义报表模板功能\n  - 优化查询性能\n  - 更新数据源配置结构\n- 状态：成功\n- 备注：此版本修改了数据源配置格式，需要客户更新配置文件\n\n## 客户订阅状态\n- 李强 (Li Qiang): 企业版，订阅至 2026-06-30\n- 陈明 (Chen Ming): 标准版，订阅至 2026-05-15\n- 其他客户：共12个活跃订阅\n\n## 已知问题\n- 3月10日部署后，部分客户未及时更新数据源配置，导致报表生成失败\n- 需要主动联系客户协助配置迁移",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-9"
+    ],
+    "inlinks": [
+      "OBSN-2"
+    ],
+    "created_at": "2026-01-20T22:00:00+08:00",
+    "last_updated": "2026-03-11T09:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-29",
+    "title": "2026-01 工作日志",
+    "folder": "Daily",
+    "tags": [
+      "daily",
+      "work-log",
+      "january"
+    ],
+    "content": "# 2026年1月工作日志\n\n## 2026-01-15 Wed\n- 与张总签订电商小程序开发合同，合同金额 ¥58,000\n- 收到预付款 ¥20,000\n- 开始需求调研\n\n## 2026-01-20 Mon\n- SaaS报表模块 v1.2.0 部署上线\n- 完成东方贸易官网改版第一阶段设计稿\n\n## 2026-01-28 Tue\n- 电商小程序原型设计完成\n- 与张总确认产品功能清单\n\n## 工时统计\n- 电商小程序：45小时\n- 东方贸易官网：32小时\n- SaaS平台维护：18小时\n- 总计：95小时",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-01-15T14:00:00+08:00",
+    "last_updated": "2026-01-31T23:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-30",
+    "title": "Q1 2026 项目收款汇总",
+    "folder": "Finance",
+    "tags": [
+      "finance",
+      "invoice",
+      "q1",
+      "revenue"
+    ],
+    "content": "# Q1 2026 项目收款汇总\n\n## 电商小程序项目 - 张总\n- 合同总额：¥58,000\n- 已收款项：\n  - 2026-01-18: 预付款 ¥20,000\n  - 2026-03-05: 进度款 ¥23,000\n- 待收款项：\n  - 尾款 ¥15,000 (交付日期：2026-03-25，约定7个工作日内支付)\n- 收款状态：部分收款，尾款待跟进\n\n## 东方贸易官网改版 - 王总\n- 合同总额：¥45,000\n- 已收款项：\n  - 2026-01-10: 预付款 ¥18,000\n- 待收款项：\n  - 进度款 ¥18,000 (Milestone 2完成，2026-02-28)\n  - 尾款 ¥9,000 (最终交付后)\n- 收款状态：进度款已逾期，需催款\n- 备注：王总2月底承诺3月初支付进度款，但至今未到账\n\n## SaaS报表模块订阅收入\n- 2026-01 订阅费：¥8,500\n- 2026-02 订阅费：¥9,200\n- 2026-03 订阅费：¥8,800\n- 小计：¥26,500\n\n## Q1总收入汇总\n- 已收款合计：¥97,700\n  - 电商小程序：¥43,000\n  - 东方贸易：¥18,000\n  - SaaS订阅：¥26,500\n  - DataLytics API退款：¥10,200\n- 应收未收：¥42,000\n  - 电商小程序尾款：¥15,000\n  - 东方贸易进度款+尾款：¥27,000\n\n## 税务申报准备\n- Q1应纳税所得额：¥97,700\n- 税务申报截止日：2026-04-15\n- 待办：整理发票、银行流水、合同扫描件",
+    "outlinks": [
+      "OBSN-4",
+      "OBSN-27",
+      "OBSN-5"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-28T16:00:00+08:00",
+    "last_updated": "2026-03-31T22:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-31",
+    "title": "DataLytics续费价格分析 - 2026 Q2",
+    "folder": "Finance/Subscriptions",
+    "tags": [
+      "saas",
+      "cost-optimization",
+      "datalytics"
+    ],
+    "content": "# DataLytics Cloud Q2 Renewal Analysis\n\n## Current Situation\n- Renewal email received: April 1, 2026\n- Due date: April 10, 2026\n- Q2 renewal amount: **$297.00** (Apr-Jun 2026)\n\n## Price Comparison\n### Q1 2026 (Actual)\n- January: $90.00\n- February: $90.00\n- March: $90.00\n- **Total Q1: $270.00**\n\n### Q2 2026 (Proposed)\n- New monthly rate: $99.00\n- 3 months × $99 = **$297.00**\n- **Price increase: $27.00 (10%)**\n\n## Analysis\n- Monthly increase: $90 → $99 (+$9/month)\n- Reason stated: infrastructure costs + new features\n- Need to verify: Did I actually use any new features in Q1?\n\n## Action Items\n- [ ] Query CLI finance records to confirm Q1 charges match expectations\n- [ ] Check if $270 total matches bank statements\n- [ ] Review DataLytics usage logs to assess if service is still worth $99/month\n- [ ] Consider alternatives if price/value ratio has declined\n- [ ] Decide by April 8 (2 days before deadline)\n\n## Decision Criteria\n- Current usage: ~2,900 API calls/month for SaaS report module\n- Alternative services: Check newsletter recommendations\n- Cost of migration: ~2-3 days development time\n- Risk: SaaS module downtime during migration\n\n## Next Steps\n1. Verify historical charges in CLI finance service\n2. Log Q2 renewal expense in my_expenses_gui if accepting\n3. Document decision in this note\n4. Mark expense reconciliation habit complete",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-9"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-01T15:30:00+08:00",
+    "last_updated": "2026-04-02T14:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-32",
+    "title": "2026-04 财务待办事项",
+    "folder": "Finance",
+    "tags": [
+      "finance",
+      "monthly-review",
+      "april"
+    ],
+    "content": "# April 2026 Finance To-Do\n\n## Urgent (This Week)\n- [ ] DataLytics renewal decision by April 8\n- [ ] Reconcile Q1 subscription expenses\n- [ ] Review all Q1 receipts for tax filing\n\n## Subscriptions Due\n- DataLytics Cloud: April 10 ($297 Q2 renewal)\n- Aliyun OSS: April 20 (estimated ¥180)\n\n## Pending Payments\n- 东方贸易 Milestone 2: ¥15,000 (overdue since March 28)\n- 张总电商小程序 Phase 1: ¥8,000 (due April 15)\n\n## Tax Prep\n- Q1 income tax filing deadline: April 15\n- Need to compile all Q1 invoices and receipts",
+    "outlinks": [
+      "OBSN-4",
+      "OBSN-31"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-01T14:00:00+08:00",
+    "last_updated": "2026-04-02T14:25:00+08:00"
+  },
+  {
+    "note_id": "OBSN-33",
+    "title": "东方贸易 - 官网改版技术方案草稿 v2.1",
+    "folder": "Projects/Dongfang-Website",
+    "tags": [
+      "technical-spec",
+      "vue",
+      "nuxt",
+      "待确认"
+    ],
+    "content": "# 东方贸易官网改版 - 技术方案\n\n## 技术栈选型\n\n### 前端框架\n- **Vue.js**: [TODO: 确认最新版本] - 当前草稿使用 3.3.8\n- **Nuxt.js**: [TODO: 确认最新版本] - 当前草稿使用 3.9.0\n- **UI Framework**: Element Plus 2.5.x\n\n### 性能指标预期\n- 首屏加载时间: < 1.2s (基于 Vue 3.3 benchmark)\n- Lighthouse Score: > 90\n- [TODO: 确认最新版本] 更新性能数据来源\n\n### 部署架构\n- Aliyun ECS + OSS\n- Nginx reverse proxy\n- PM2 process management\n\n### 技术优势说明\n根据 2025 年底的性能测试报告，Vue 3.3 + Nuxt 3.9 组合在 SSR 场景下相比传统 SPA 有 40% 的首屏性能提升。但需要确认 2026 年 Q1 是否有更稳定的版本发布。\n\n### 待办事项\n- [ ] 确认 Vue 和 Nuxt 最新稳定版本号\n- [ ] 更新性能 benchmark 数据引用\n- [ ] 移除过时的技术假设\n- [ ] 发送给王总确认\n\n---\n最后更新: 2026-03-28\n下次更新计划: 2026-04-02 (基于最新 RSS 技术资讯)",
+    "outlinks": [
+      "OBSN-4",
+      "OBSN-5"
+    ],
+    "inlinks": [
+      "OBSN-6"
+    ],
+    "created_at": "2026-03-28T16:30:00+08:00",
+    "last_updated": "2026-03-31T23:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-34",
+    "title": "前端技术栈调研 - 2026 Q1",
+    "folder": "Resources",
+    "tags": [
+      "research",
+      "vue",
+      "nuxt",
+      "frontend"
+    ],
+    "content": "# 前端技术栈调研 - 2026 Q1\n\n## Vue.js 生态\n- Vue 3.4.x 系列已发布，重点改进响应式性能\n- Nuxt 3.10.x 系列稳定性提升明显\n\n## 待查阅 RSS 源\n- Vue.js 官方博客\n- Nuxt.js release notes\n- Frontend performance benchmarks\n\n## 应用场景\n需要为东方贸易官网改版项目确认最新技术栈版本。\n\n---\n创建时间: 2026-03-30",
+    "outlinks": [
+      "OBSN-33"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-30T18:20:00+08:00",
+    "last_updated": "2026-03-30T18:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-35",
+    "title": "东方贸易 - 技术栈与依赖清单",
+    "folder": "Projects/Dongfang-Website",
+    "tags": [
+      "dongfang",
+      "technical-specs",
+      "dependencies"
+    ],
+    "content": "# Dongfang Trading Website Redesign - Technical Stack\n\n## Frontend Framework\n- **Vue.js**: v3.3.4 (installed Feb 2026)\n- **Vite**: v5.0.8\n- **Vue Router**: v4.2.5\n- **Pinia**: v2.1.7 (state management)\n\n## UI Components\n- Element Plus v2.4.4\n- Custom component library for product catalog\n\n## Key Features Using Vue Reactivity\n1. **Product Catalog** (~/src/views/ProductCatalog.vue)\n   - Real-time filtering with 200+ SKUs\n   - Heavy use of computed properties for price calculations\n   - Reactive search with debouncing\n   \n2. **Interactive Quote Builder** (~/src/components/QuoteBuilder.vue)\n   - Complex nested reactive forms\n   - Auto-calculation of bulk pricing\n   - Live preview updates\n\n3. **Customer Portal Dashboard** (~/src/views/Dashboard.vue)\n   - Real-time order status updates\n   - Reactive charts using Chart.js integration\n\n## Current Performance Concerns\n- Product catalog page shows ~200ms initial render on mobile\n- Quote builder has noticeable lag when adding 10+ items\n- Dashboard chart updates cause brief UI freezes\n\n## Project Timeline\n- **Current Status**: 85% complete (as of Apr 1)\n- **Remaining Work**: \n  - Performance optimization (planned)\n  - Final client UAT\n  - Deployment preparation\n- **Delivery Target**: Apr 15, 2026\n- **Go-live**: Apr 20, 2026\n\n## Technical Debt\n- Need to optimize computed property chains in ProductCatalog\n- Consider lazy loading for dashboard widgets\n- Review reactive array operations in quote builder\n\n## Dependencies Update Policy\nClient contract allows minor version updates during development phase if they:\n1. Don't introduce breaking changes\n2. Improve performance or fix critical bugs\n3. Don't delay delivery timeline\n\nMajor updates require client approval.\n\n## Notes\n- Wang Zong (client) is non-technical but appreciates performance improvements\n- Site will handle ~500 daily visitors initially\n- Mobile performance is priority (60% mobile traffic expected)\n\n---\nLast updated: 2026-04-01",
+    "outlinks": [
+      "OBSN-4",
+      "OBSN-5"
+    ],
+    "inlinks": [
+      "OBSN-4"
+    ],
+    "created_at": "2026-02-15T16:30:00+08:00",
+    "last_updated": "2026-04-01T15:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-36",
+    "title": "Vue.js 升级评估模板",
+    "folder": "Templates",
+    "tags": [
+      "template",
+      "technical",
+      "upgrade"
+    ],
+    "content": "# Framework Upgrade Evaluation Template\n\n## Version Information\n- **Current Version**: \n- **Target Version**: \n- **Release Date**: \n- **Release Type**: [ ] Major [ ] Minor [ ] Patch\n\n## Key Improvements\n1. \n2. \n3. \n\n## Breaking Changes\n- [ ] None\n- [ ] List:\n\n## Project Fit Assessment\n### Performance Impact\n- Relevant to our use case: [ ] High [ ] Medium [ ] Low\n- Expected improvement: \n\n### Risk Analysis\n- Breaking changes affect us: [ ] Yes [ ] No\n- Testing effort required: [ ] High [ ] Medium [ ] Low\n- Rollback complexity: [ ] High [ ] Medium [ ] Low\n\n### Timeline Considerations\n- Current project phase: \n- Time to upgrade & test: \n- Impact on delivery: [ ] None [ ] Minor [ ] Blocks\n\n## Client Communication\n### Benefits to Highlight\n- \n\n### Implementation Effort\n- Estimated hours: \n- Testing required: \n- Deployment risk: \n\n### Recommendation Framing\n- [ ] Required (security/critical bug)\n- [ ] Recommended (performance/quality)\n- [ ] Optional (nice-to-have)\n- [ ] Defer (post-launch)\n\n## Decision\n- [ ] Proceed with upgrade\n- [ ] Recommend to client\n- [ ] Defer to next phase\n- [ ] Skip this version\n\n## Action Items\n- [ ] Test in dev environment\n- [ ] Draft client communication\n- [ ] Update project timeline if needed\n- [ ] Log decision in project notes",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-03-10T14:20:00+08:00",
+    "last_updated": "2026-03-10T14:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-37",
+    "title": "2026-04-01 Vue 3.4.21 升级评估 - 东方贸易项目",
+    "folder": "Projects/Dongfang-Website",
+    "tags": [
+      "dongfang",
+      "vue",
+      "upgrade-evaluation",
+      "performance"
+    ],
+    "content": "# Vue 3.4.21 Upgrade Evaluation - Dongfang Trading Website\n\nDate: 2026-04-01\nEvaluator: Wei Chenghao\n\n## Version Information\n- **Current Version**: Vue 3.3.4\n- **Target Version**: Vue 3.4.21\n- **Release Date**: 2026-04-01\n- **Release Type**: [x] Minor [ ] Patch\n\n## Key Improvements (from RSS feed)\n1. Reactivity tracking overhead reduced by 40% in complex component hierarchies\n2. Optimized computed property dependency tracking with smarter caching\n3. Faster ref unwrapping in templates (beneficial for data-heavy applications)\n4. Reduced memory footprint for reactive objects\n5. **Benchmark**: Product catalog (500+ items) improved from 180ms → 108ms initial render\n\n## Breaking Changes\n- [x] None - fully backward-compatible release\n\n## Project Fit Assessment\n\n### Performance Impact\n- Relevant to our use case: [x] High [ ] Medium [ ] Low\n- **Expected improvement**: \n  - Product catalog (200+ SKUs): Current ~200ms could drop to ~120ms (40% improvement)\n  - Quote builder lag: Computed property optimization should reduce update latency\n  - Dashboard chart updates: Reactive object optimization may eliminate UI freezes\n\n### Specific Benefits for Dongfang Project\n1. **Product Catalog** - Heavy computed properties for filtering/pricing → direct benefit\n2. **Quote Builder** - Complex nested reactive forms → caching improvements help\n3. **Mobile Performance** - 60% of traffic is mobile, render time critical\n\n### Risk Analysis\n- Breaking changes affect us: [ ] Yes [x] No\n- Testing effort required: [ ] High [x] Medium [ ] Low\n  - Need to test: catalog filtering, quote builder calculations, dashboard updates\n  - Estimated: 3-4 hours comprehensive testing\n- Rollback complexity: [ ] High [ ] Medium [x] Low\n  - Simple `npm install vue@3.3.4` if issues arise\n\n### Timeline Considerations\n- Current project phase: 85% complete, performance optimization planned\n- Time to upgrade & test: ~4 hours (1 hour upgrade, 3 hours testing)\n- Impact on delivery: [x] None [ ] Minor [ ] Blocks\n  - Still 14 days until delivery (Apr 15)\n  - Performance optimization was already scheduled\n  - This could *reduce* optimization work needed\n\n## Client Communication Strategy\n\n### Benefits to Highlight for Wang Zong\n- \"Faster page loading, especially on mobile\" (non-technical language)\n- \"Product catalog will load 40% faster based on Vue.js benchmarks\"\n- \"Smoother experience when building quotes with multiple items\"\n- \"Better performance = better user experience = more conversions\"\n\n### Implementation Effort\n- Estimated hours: 4 hours (upgrade + testing)\n- Testing required: Product catalog, quote builder, dashboard, mobile devices\n- Deployment risk: Low (backward-compatible, easy rollback)\n- **Cost to client**: None (within existing optimization budget)\n\n### Recommendation Framing\n- [ ] Required (security/critical bug)\n- [x] Recommended (performance/quality)\n- [ ] Optional (nice-to-have)\n- [ ] Defer (post-launch)\n\n**Positioning**: \"Optional performance enhancement that aligns with our planned optimization work. No additional cost, low risk, measurable benefit.\"\n\n## Decision\n- [x] Recommend to client\n- Reasoning:\n  1. Perfect timing - optimization phase already planned\n  2. High relevance - addresses our exact performance pain points\n  3. Low risk - no breaking changes, easy rollback\n  4. Client benefit - measurable performance improvement\n  5. Professional value - shows proactive technical stewardship\n\n## Action Items\n- [x] Read full Vue 3.4.21 release notes\n- [x] Evaluate fit for Dongfang project\n- [ ] Test upgrade in local dev environment (2 hours)\n- [ ] Draft client recommendation message (30 min)\n- [ ] Send recommendation to Wang Zong via SMS\n- [ ] Log recommendation in project communication history\n- [ ] If approved: schedule upgrade + testing (4 hours)\n\n## Draft Message Points\n- Keep it brief (SMS format)\n- Lead with benefit, not technical details\n- Frame as optional enhancement\n- Provide clear effort estimate\n- No pressure - client's choice\n\n---\nNext: Draft message in Fossify Notes, send via Fossify Messages",
+    "outlinks": [
+      "OBSN-35",
+      "OBSN-36"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-01T22:30:00+08:00",
+    "last_updated": "2026-04-02T00:15:00+08:00"
+  },
+  {
+    "note_id": "OBSN-38",
+    "title": "SaaS报表模块 - DataLytics API 使用量分析",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "api",
+      "cost-analysis",
+      "datalytics"
+    ],
+    "content": "# DataLytics API Usage Analysis\n\n## Timeline\n- **Mar 10-12**: API calls averaging 8.5k/day (within Standard tier 10k limit)\n- **Mar 13**: Spike to 12.3k calls - first rate limit error\n- **Mar 14**: 14.8k calls - multiple client reports failed\n- **Mar 15**: Upgraded to Pro tier (50k/day limit) at 02:30 AM\n\n## Root Cause\n**Client: Li Qiang / TechSolutions Co.**\n- Enabled new batch export feature on Mar 12\n- Each export job makes ~200 API calls\n- Li Qiang's team ran 15-20 exports/day during testing phase\n- No usage throttling implemented on our side\n\n## Cost Impact\n- Standard tier: ¥680/month\n- Pro tier: ¥1280/month\n- **Delta: ¥600/month (¥7,200 annually)**\n- Prorated charge for Mar 15-31: ¥600 × 16/31 = ¥309.68\n- Total March charge: ¥680 + ¥309.68 ≈ ¥990\n\n## Contract Review\n[[TechSolutions - SaaS维护合同]]:\n- Section 4.2: \"Infrastructure costs directly attributable to client usage may be billed back with prior written notice\"\n- Section 4.3: \"API rate limit upgrades triggered by client feature requests are billable\"\n\n## Decision\n✅ **Billable to TechSolutions** - batch export was their feature request, usage spike directly caused upgrade\n\n## Action Items\n- [ ] Document cost allocation in Q1 finance report\n- [ ] Send cost notification to Li Qiang before next invoice\n- [ ] Implement usage throttling to prevent future surprises\n- [ ] Review other client API usage patterns",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-5"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-16T15:30:00+08:00",
+    "last_updated": "2026-03-28T18:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-39",
+    "title": "TechSolutions - SaaS维护合同",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "contract",
+      "saas",
+      "techsolutions",
+      "billing"
+    ],
+    "content": "# TechSolutions Co. - SaaS Maintenance Agreement\n\n**Client**: Li Qiang (李强) / TechSolutions Co.\n**Contract Period**: 2025-10-01 ~ 2026-09-30\n**Monthly Fee**: ¥8,500 (includes hosting, maintenance, minor features)\n\n## Billing Terms\n\n### Section 4.2 - Infrastructure Cost Pass-through\n> \"Infrastructure costs (cloud hosting, API services, CDN) directly attributable to client-specific usage patterns or feature requests may be billed back to client with itemized justification and 7-day advance written notice.\"\n\n### Section 4.3 - API Service Tier Upgrades\n> \"If client feature requests or usage patterns require upgrade of third-party API service tiers (e.g., DataLytics, payment gateways), such upgrade costs are billable to client on a prorated basis from upgrade date.\"\n\n### Section 4.5 - Invoicing Schedule\n> Monthly invoices due by 5th of following month. Infrastructure pass-through charges must be documented in monthly cost allocation report.\n\n## Feature Request Log\n- **2026-02-20**: Li Qiang requested batch report export feature\n- **2026-03-05**: Feature deployed to production\n- **2026-03-12**: Li Qiang's team began intensive testing\n\n## Notes\n- Contract clearly allows billing back API upgrade costs\n- Must provide written notice + justification before adding to invoice\n- Good client relationship - transparent communication important",
+    "outlinks": [
+      "OBSN-38"
+    ],
+    "inlinks": [
+      "OBSN-38"
+    ],
+    "created_at": "2025-10-01T10:00:00+08:00",
+    "last_updated": "2026-03-28T18:50:00+08:00"
+  },
+  {
+    "note_id": "OBSN-40",
+    "title": "2026-03 财务核对清单",
+    "folder": "Finance",
+    "tags": [
+      "finance",
+      "q1",
+      "reconciliation",
+      "march"
+    ],
+    "content": "# March 2026 Finance Reconciliation\n\n## Revenue (Confirmed)\n- 张总电商小程序 - Milestone 2: ¥15,000 (received Mar 8)\n- 东方贸易官网改版 - Milestone 1: ¥12,000 (received Mar 3)\n- TechSolutions SaaS维护费 - March: ¥8,500 (received Mar 5)\n- **Total: ¥35,500**\n\n## Expenses (To Review)\n### SaaS Subscriptions\n- DataLytics Cloud: ¥680 (Feb recurring) + ¥600 (Mar upgrade prorate) = **¥1,280**\n  - ⚠️ **Action required**: Verify upgrade attribution → Li Qiang/TechSolutions\n  - If billable: reduces net expense to ¥680\n- Aliyun OSS: ¥450\n- GitHub Pro: ¥99\n\n### Other\n- Design assets subscription: ¥199\n- Office supplies: ¥320\n\n## Q1 Tax Prep\n- **Deadline**: April 15, 2026\n- Need to finalize DataLytics cost allocation before filing\n- If billed back to client: affects Q1 profit margin calculation\n\n## Outstanding Items\n- [ ] Confirm DataLytics upgrade billability (see [[SaaS报表模块 - DataLytics API 使用量分析]])\n- [ ] Draft cost allocation report for personal records\n- [ ] Send notification to Li Qiang if billing back\n- [ ] Update Q1 expense summary in tax prep folder",
+    "outlinks": [
+      "OBSN-38"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-25T16:00:00+08:00",
+    "last_updated": "2026-03-30T14:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-41",
+    "title": "独立开发者财务管理经验",
+    "folder": "Resources",
+    "tags": [
+      "finance",
+      "best-practices",
+      "indie-dev"
+    ],
+    "content": "# Indie Developer Finance Management Tips\n\n## Expense Attribution\n- Always track which client/project triggered infrastructure upgrades\n- Document in real-time - memory fades fast\n- Keep contract clauses handy for billing decisions\n\n## SaaS Cost Control\n- Review API usage weekly during new feature rollouts\n- Set up usage alerts before hitting tier limits\n- Consider usage-based pricing vs fixed tiers\n\n## Tax Prep\n- Monthly reconciliation >> quarterly scramble\n- Separate billable vs absorbed costs clearly\n- Keep audit trail: expense → project → contract clause\n\n## Tools\n- My Expenses GUI: transaction tracking\n- Obsidian: project notes + contract references\n- Fossify Notes: quick mobile capture\n- Gmail: cost allocation reports to self for records",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-01-15T10:00:00+08:00",
+    "last_updated": "2026-03-28T19:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-42",
+    "title": "SaaS报表模块 - 第三方服务成本追踪",
+    "folder": "Finance/Subscriptions",
+    "tags": [
+      "saas",
+      "cost-tracking",
+      "subscriptions"
+    ],
+    "content": "# SaaS报表模块 - 第三方服务成本追踪\n\n## Q1 2026 订阅清单\n\n### DataLytics Cloud\n- **当前套餐**: Pro tier ($299/月)\n- **使用情况**: API调用量仅占配额的35%，大部分高级功能未使用\n- **优化建议**: 降级到Basic tier ($149/月)，节省$150/月 = $450/季度\n- **决策**: 2026-03-05 已降级，从3月账单开始生效\n\n### 设计素材订阅\n- **费用**: $89/季度\n- **使用频率**: Q1仅下载3次素材，平均$30/次\n- **优化建议**: 取消订阅，按需购买单次素材\n- **决策**: 2026-01-20 已取消，不续订Q2\n\n### Aliyun OSS\n- **费用**: ~$12/月\n- **必要性**: 客户项目文件存储，无法取消\n- **优化**: 已清理冗余文件，节省约20%存储成本\n\n## Q1 实际节省\n- DataLytics降级: $150/月 × 1月(3月) = $150\n- 设计素材取消: $89 (Q2不再支出)\n- **Q1总节省**: $239\n- **Q2预计节省**: $150×3 + $89 = $539\n\n## 奖励预算\n根据Q1审查纪律和成本优化成果，计划奖励预算: $120用于开发工具升级",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-6"
+    ],
+    "inlinks": [
+      "OBSN-43"
+    ],
+    "created_at": "2026-01-10T15:30:00+08:00",
+    "last_updated": "2026-04-01T16:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-43",
+    "title": "DataLytics续费价格分析 - 2026 Q2",
+    "folder": "Finance/Subscriptions",
+    "tags": [
+      "datalytics",
+      "renewal",
+      "cost-optimization"
+    ],
+    "content": "# DataLytics续费价格分析 - 2026 Q2\n\n## 背景\n收到DataLytics Q2续费提醒，需要在4月10日前决策。\n\n## 当前使用情况 (2026-01 ~ 2026-03)\n- API调用总量: 约42,000次/月\n- Pro tier配额: 120,000次/月\n- 实际使用率: 35%\n- 高级功能使用: 仅用了批量导出，其他高级分析功能未启用\n\n## 套餐对比\n| 套餐 | 月费 | API配额 | 批量导出 | 高级分析 |\n|------|------|---------|----------|----------|\n| Pro  | $299 | 120k    | ✓        | ✓        |\n| Basic| $149 | 60k     | ✓        | ✗        |\n| Free | $0   | 5k      | ✗        | ✗        |\n\n## 决策\n- **选择**: Basic tier ($149/月)\n- **理由**: 60k配额足够当前使用量，批量导出功能保留\n- **节省**: $150/月 = $450/季度\n- **执行时间**: 2026-03-05 已通过邮件确认降级\n\n## 后续监控\n- 每月检查API使用量，确保不超Basic tier配额\n- 如客户需求增长导致超配额，再考虑升级",
+    "outlinks": [
+      "OBSN-42"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-02T14:20:00+08:00",
+    "last_updated": "2026-03-05T17:10:00+08:00"
+  },
+  {
+    "note_id": "OBSN-44",
+    "title": "Q1 2026 财务总结与Q2预算规划",
+    "folder": "Finance",
+    "tags": [
+      "quarterly-review",
+      "budget",
+      "planning"
+    ],
+    "content": "# Q1 2026 财务总结与Q2预算规划\n\n## Q1 收入\n- 电商小程序项目: ¥45,000 (部分到账)\n- SaaS报表模块维护: ¥18,000\n- 官网改版项目: ¥32,000 (尾款待收)\n- **总计**: ¥95,000\n\n## Q1 支出\n- SaaS订阅: $747 (DataLytics $299×2 + $149×1, 设计素材$89, 其他)\n- 云服务: $36 (Aliyun OSS)\n- 办公设备: ¥2,800\n- **总计**: ~¥8,000\n\n## Q1 SaaS成本优化成果\n- 完成季度订阅审查 (loop habit达成)\n- DataLytics降级节省: $150/月\n- 设计素材取消: $89/季度\n- Q1实际节省: $239\n- Q2预计节省: $539\n\n## Q2预算分配\n- 开发工具升级奖励: $120 (基于Q1审查纪律)\n- 预留应急资金: ¥5,000\n- 持续订阅: DataLytics Basic, Aliyun OSS\n\n## 待办\n- [ ] 4月5日前记录开发工具奖励支出到my_expenses\n- [ ] 追踪官网改版尾款到账\n- [ ] Q2第一周完成税务申报",
+    "outlinks": [
+      "OBSN-42",
+      "OBSN-6"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-01T18:30:00+08:00",
+    "last_updated": "2026-04-02T14:15:00+08:00"
+  }
+]

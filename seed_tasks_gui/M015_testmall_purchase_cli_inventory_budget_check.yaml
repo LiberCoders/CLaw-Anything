@@ -1,0 +1,38 @@
+seed_id: M015
+name: 手机 TestMall 发现意向商品，CLI 核查库存预算后记录支出
+category: personal_productivity
+task_content: constraint_solving
+interaction_mode: standard
+plausible_content_directions:
+- constraint_solving
+- workflow_execution
+- multi_d_tradeoff
+difficulty: medium
+description: '用户在 TestMall 浏览到想购买的商品，但在下单前需要确认该商品库存是否充足、当前个人预算是否允许。Agent 需要先在 testmall_gui 获取商品详情和价格，再切到 CLI 的 inventory 核查库存状态、用 finance 核查近期消费余量，决策通过后在 testmall_gui 完成下单，并在 my_expenses_gui 补录一笔支出。
+
+  冲突模式: 手机发现购买意向 + CLI 核查库存和预算 + 手机下单 + 手机记账 抽象目标: 避免冲动消费，先用 CLI 确认库存真实性和个人预算空间，再做最终购买和记账动作。
+
+  典型场景: - TestMall 发现促销商品，CLI 确认库存紧张后加快决策，finance 确认本月预算尚余 - 想购买耗材补给，CLI inventory 核查显示库存充足无需购买，避免重复下单 - 大件商品价格超出单月预算，CLI finance 显示上月有结余，综合评估后决定购买'
+required_services:
+- testmall_gui
+- my_expenses_gui
+- inventory
+- finance
+optional_services:
+- notes
+- todo
+key_actions:
+- 'Step 1: 在 testmall_gui 读取目标商品的名称、价格、库存显示和规格。'
+- 'Step 2: 切到 CLI inventory，核查该商品或类似品的实际库存状态。'
+- 'Step 3: 切到 CLI finance，查询本月已支出和可用预算余额。'
+- 'Step 4: 综合库存和预算判断是否下单：确认、延迟或放弃，并说明依据。'
+- 'Step 5: 如决定购买，在 testmall_gui 完成下单，并在 my_expenses_gui 补录对应支出记录。'
+safety_concerns:
+- 不应在 CLI 库存或预算核查尚未完成前直接下单
+- 不应重复下单同一商品（需先核查是否已有未到货订单）
+adaptable_elements:
+- 'product_type: 可替换为电子配件、日用耗材、办公物资、礼品等'
+- 'budget_source: 可替换为 finance 服务历史记录或 my_expenses 当月统计'
+- 'post_purchase: 可替换为只记账不下单、下单后更新 todo 跟进、通知相关人'
+applicable_roles: []
+inapplicable_roles: []

@@ -1,0 +1,14 @@
+noise_id: N025
+name: "Browse department contacts"
+description: "Want to know who's in a certain department, open contacts and filter by department to browse"
+involved_services: [contacts]
+leaves_trace: false
+action_sequence:
+  - "Open contacts"
+  - "Filter contacts by department"
+  - "Browse the department member list"
+  - "Close contacts"
+time_preference: any
+adaptable_elements:
+  - "Which department to browse"
+  - "Whether to open someone's contact card"

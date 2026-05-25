@@ -1,0 +1,15 @@
+noise_id: N044
+name: "Review a slide deck"
+description: "Open a presentation deck to review its current content, flick through slides, then close without editing"
+involved_services: [slide]
+leaves_trace: false
+action_sequence:
+  - "List available decks"
+  - "Open a specific deck"
+  - "Browse slides one by one"
+  - "Close deck"
+time_preference: any
+adaptable_elements:
+  - "Which deck to review"
+  - "How many slides to look through"
+  - "Whether to check slide notes"

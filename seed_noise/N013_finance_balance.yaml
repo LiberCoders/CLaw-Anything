@@ -1,0 +1,14 @@
+noise_id: N013
+name: "Check account balance"
+description: "Open the finance system to check account balance and recent transactions, close after viewing"
+involved_services: [finance]
+leaves_trace: false
+action_sequence:
+  - "Open finance system"
+  - "Check account balance"
+  - "Browse recent transactions"
+  - "Close finance system"
+time_preference: afternoon
+adaptable_elements:
+  - "View duration"
+  - "Whether to check a specific transaction"

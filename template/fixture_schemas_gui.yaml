@@ -1,0 +1,564 @@
+# Fixture record schemas for GUI apps — based on docs/android/app.txt.
+# Used by fixture_generator.py as templates for LLM-based fixture generation.
+# Each top-level key is named <app>_gui to distinguish from CLI fixture schemas.
+
+# ---- gmail_clone_gui (com.gmailclone — email inbox injected via state.json) ----
+gmail_clone_gui:
+  id_field: message_id
+  id_prefix: "GMSG-"
+  id_start: 1001
+  fields:
+    message_id: {type: string, example: "GMSG-1001"}
+    thread_id: {type: string, example: "GTHR-1001"}
+    from: {type: string, example: "alice@example.com"}
+    to: {type: string, example: "me@example.com"}
+    subject: {type: string, example: "Meeting rescheduled to Friday"}
+    date: {type: string, example: "2026-04-25T10:30:00+08:00"}
+    body: {type: string, example: "Hi, just a heads-up that our weekly sync has moved to Friday 3 PM. Please update your calendar accordingly."}
+    labels: {type: "list[string]", example: ["inbox", "work"]}
+    is_read: {type: boolean, example: false}
+    has_attachment: {type: boolean, example: false}
+  example_record: |
+    {
+      "message_id": "GMSG-1001",
+      "thread_id": "GTHR-1001",
+      "from": "alice@example.com",
+      "to": "me@example.com",
+      "subject": "Meeting rescheduled to Friday",
+      "date": "2026-04-25T10:30:00+08:00",
+      "body": "Hi, just a heads-up that our weekly sync has moved to Friday 3 PM. Please update your calendar accordingly.\n\n— Alice",
+      "labels": ["inbox", "work"],
+      "is_read": false,
+      "has_attachment": false
+    }
+
+# ---- fossify_calendar_gui (org.fossify.calendar — events injected via SQLite calendar.db) ----
+fossify_calendar_gui:
+  id_field: event_id
+  id_prefix: "FCAL-"
+  id_start: 101
+  fields:
+    event_id: {type: string, example: "FCAL-101"}
+    title: {type: string, example: "Team standup"}
+    start_time: {type: string, example: "2026-04-28T09:00:00+08:00"}
+    end_time: {type: string, example: "2026-04-28T09:30:00+08:00"}
+    location: {type: string, example: "Conference room B"}
+    description: {type: string, example: "Daily team sync — review blockers and priorities"}
+    recurring: {type: string, example: "weekly"}
+    reminder_minutes: {type: integer, example: 10}
+    color: {type: string, example: "#1565C0"}
+  example_record: |
+    {
+      "event_id": "FCAL-101",
+      "title": "Team standup",
+      "start_time": "2026-04-28T09:00:00+08:00",
+      "end_time": "2026-04-28T09:30:00+08:00",
+      "location": "Conference room B",
+      "description": "Daily team sync — review blockers and priorities",
+      "recurring": "weekly",
+      "reminder_minutes": 10,
+      "color": "#1565C0"
+    }
+
+# ---- fossify_messages_gui (org.fossify.messages — SMS/MMS threads seeded via telephony content provider) ----
+fossify_messages_gui:
+  id_field: thread_id
+  id_prefix: "FSMS-"
+  id_start: 301
+  fields:
+    thread_id: {type: string, example: "FSMS-301"}
+    participants: {type: "list[string]", example: ["+86 13912345678"]}
+    contact_name: {type: "string|null", example: "Wang Fang"}
+    last_message: {type: string, example: "See you at 3 PM then!"}
+    last_message_time: {type: string, example: "2026-04-25T14:55:00+08:00"}
+    unread_count: {type: integer, example: 2}
+    pinned: {type: boolean, example: false}
+    archived: {type: boolean, example: false}
+    messages: {type: "list[object]", example: [{"id": "MSG-001", "from": "+86 13912345678", "text": "Are you free at 3 PM?", "time": "2026-04-25T14:50:00+08:00", "is_outgoing": false}, {"id": "MSG-002", "from": "me", "text": "Yes, see you then!", "time": "2026-04-25T14:52:00+08:00", "is_outgoing": true}]}
+  example_record: |
+    {
+      "thread_id": "FSMS-301",
+      "participants": ["+86 13912345678"],
+      "contact_name": "Wang Fang",
+      "last_message": "Yes, see you then!",
+      "last_message_time": "2026-04-25T14:52:00+08:00",
+      "unread_count": 0,
+      "pinned": false,
+      "archived": false,
+      "messages": [
+        {"id": "MSG-001", "from": "+86 13912345678", "text": "Are you free at 3 PM?", "time": "2026-04-25T14:50:00+08:00", "is_outgoing": false},
+        {"id": "MSG-002", "from": "me", "text": "Yes, see you then!", "time": "2026-04-25T14:52:00+08:00", "is_outgoing": true}
+      ]
+    }
+
+# ---- fossify_notes_gui (org.fossify.notes — notes stored in app SQLite DB) ----
+fossify_notes_gui:
+  id_field: note_id
+  id_prefix: "FNOT-"
+  id_start: 201
+  fields:
+    note_id: {type: string, example: "FNOT-201"}
+    title: {type: string, example: "Project kickoff agenda"}
+    content: {type: string, example: "1. Introductions\n2. Scope review\n3. Timeline and milestones\n4. Q&A"}
+    created_at: {type: string, example: "2026-04-20T14:00:00+08:00"}
+    updated_at: {type: string, example: "2026-04-25T09:00:00+08:00"}
+    color: {type: string, example: "#F9A825"}
+    tags: {type: "list[string]", example: ["work", "project"]}
+    checklist: {type: boolean, example: false}
+  example_record: |
+    {
+      "note_id": "FNOT-201",
+      "title": "Project kickoff agenda",
+      "content": "1. Introductions\n2. Scope review\n3. Timeline and milestones\n4. Q&A",
+      "created_at": "2026-04-20T14:00:00+08:00",
+      "updated_at": "2026-04-25T09:00:00+08:00",
+      "color": "#F9A825",
+      "tags": ["work", "project"],
+      "checklist": false
+    }
+
+# ---- mastodon_gui (org.joinmastodon.android.mastodon — posts seeded via local Mastodon instance) ----
+mastodon_gui:
+  id_field: post_id
+  id_prefix: "MAST-"
+  id_start: 3001
+  fields:
+    post_id: {type: string, example: "MAST-3001"}
+    author: {type: string, example: "@user@mastodon.social"}
+    display_name: {type: string, example: "Alice Example"}
+    content: {type: string, example: "Just finished setting up my new home lab — 3 nodes, Kubernetes, the works. Happy to share notes if anyone is interested! #homelab #kubernetes"}
+    created_at: {type: string, example: "2026-04-25T08:15:00Z"}
+    visibility: {type: string, example: "public"}
+    favourites_count: {type: integer, example: 42}
+    reblogs_count: {type: integer, example: 7}
+    replies_count: {type: integer, example: 3}
+    tags: {type: "list[string]", example: ["homelab", "kubernetes"]}
+    favourited: {type: boolean, example: false}
+    reblogged: {type: boolean, example: false}
+  example_record: |
+    {
+      "post_id": "MAST-3001",
+      "author": "@user@mastodon.social",
+      "display_name": "Alice Example",
+      "content": "Just finished setting up my new home lab — 3 nodes, Kubernetes, the works. Happy to share notes if anyone is interested! #homelab #kubernetes",
+      "created_at": "2026-04-25T08:15:00Z",
+      "visibility": "public",
+      "favourites_count": 42,
+      "reblogs_count": 7,
+      "replies_count": 3,
+      "tags": ["homelab", "kubernetes"],
+      "favourited": false,
+      "reblogged": false
+    }
+
+# ---- mattermost_gui (com.mattermost.rnbeta — messages seeded via Mattermost REST API) ----
+mattermost_gui:
+  id_field: message_id
+  id_prefix: "MMSG-"
+  id_start: 4001
+  fields:
+    message_id: {type: string, example: "MMSG-4001"}
+    channel_id: {type: string, example: "general"}
+    channel_name: {type: string, example: "general"}
+    author: {type: string, example: "bob.smith"}
+    text: {type: string, example: "Hey team, deployment to staging is done. Please verify your features before EOD."}
+    created_at: {type: string, example: "2026-04-25T11:00:00+08:00"}
+    reactions: {type: "list[object]", example: [{"emoji": "thumbsup", "count": 3}]}
+    pinned: {type: boolean, example: false}
+    root_id: {type: "string|null", example: null}
+  example_record: |
+    {
+      "message_id": "MMSG-4001",
+      "channel_id": "general",
+      "channel_name": "general",
+      "author": "bob.smith",
+      "text": "Hey team, deployment to staging is done. Please verify your features before EOD.",
+      "created_at": "2026-04-25T11:00:00+08:00",
+      "reactions": [{"emoji": "thumbsup", "count": 3}],
+      "pinned": false,
+      "root_id": null
+    }
+
+# ---- testmall_gui (com.testmall.app — products seeded via app's local SQLite or JSON fixture) ----
+testmall_gui:
+  id_field: product_id
+  id_prefix: "PROD-"
+  id_start: 5001
+  fields:
+    product_id: {type: string, example: "PROD-5001"}
+    name: {type: string, example: "Wireless noise-cancelling headphones"}
+    category: {type: string, example: "Electronics"}
+    price: {type: number, example: 299.99}
+    currency: {type: string, example: "USD"}
+    description: {type: string, example: "Premium over-ear headphones with 30-hour battery life and adaptive ANC."}
+    rating: {type: number, example: 4.6}
+    review_count: {type: integer, example: 318}
+    stock_count: {type: integer, example: 52}
+    status: {type: string, example: "available"}
+    images: {type: "list[string]", example: ["/data/testmall/images/PROD-5001-front.jpg"]}
+  example_record: |
+    {
+      "product_id": "PROD-5001",
+      "name": "Wireless noise-cancelling headphones",
+      "category": "Electronics",
+      "price": 299.99,
+      "currency": "USD",
+      "description": "Premium over-ear headphones with 30-hour battery life and adaptive ANC.",
+      "rating": 4.6,
+      "review_count": 318,
+      "stock_count": 52,
+      "status": "available",
+      "images": ["/data/testmall/images/PROD-5001-front.jpg"]
+    }
+
+# ---- odf_reader_gui (at.tomtasche.reader — documents seeded via file push to shared storage) ----
+odf_reader_gui:
+  id_field: document_id
+  id_prefix: "ODOC-"
+  id_start: 601
+  fields:
+    document_id: {type: string, example: "ODOC-601"}
+    path: {type: string, example: "/sdcard/Documents/Q1_report.odt"}
+    title: {type: string, example: "Q1 Financial Report"}
+    file_type: {type: string, example: "odt"}
+    page_count: {type: integer, example: 12}
+    last_opened: {type: string, example: "2026-04-24T16:30:00+08:00"}
+    bookmarks: {type: "list[object]", example: [{"page": 4, "note": "Key findings section"}]}
+    word_count: {type: integer, example: 3840}
+  example_record: |
+    {
+      "document_id": "ODOC-601",
+      "path": "/sdcard/Documents/Q1_report.odt",
+      "title": "Q1 Financial Report",
+      "file_type": "odt",
+      "page_count": 12,
+      "last_opened": "2026-04-24T16:30:00+08:00",
+      "bookmarks": [{"page": 4, "note": "Key findings section"}],
+      "word_count": 3840
+    }
+
+# ---- photo_gallery_gui (gallery.photomanager... — media seeded via file push to /sdcard/DCIM) ----
+photo_gallery_gui:
+  id_field: media_id
+  id_prefix: "PHOT-"
+  id_start: 7001
+  fields:
+    media_id: {type: string, example: "PHOT-7001"}
+    path: {type: string, example: "/sdcard/DCIM/Camera/IMG_20260425_083012.jpg"}
+    album: {type: string, example: "Camera"}
+    media_type: {type: string, example: "photo"}
+    capture_time: {type: string, example: "2026-04-25T08:30:12+08:00"}
+    width: {type: integer, example: 4000}
+    height: {type: integer, example: 3000}
+    size_bytes: {type: integer, example: 4718592}
+    favorite: {type: boolean, example: false}
+    archived: {type: boolean, example: false}
+    tags: {type: "list[string]", example: ["landscape", "outdoor"]}
+    exif_summary: {type: object, example: {"make": "Google", "model": "Pixel 6", "iso": 100, "shutter_speed": "1/250"}}
+  example_record: |
+    {
+      "media_id": "PHOT-7001",
+      "path": "/sdcard/DCIM/Camera/IMG_20260425_083012.jpg",
+      "album": "Camera",
+      "media_type": "photo",
+      "capture_time": "2026-04-25T08:30:12+08:00",
+      "width": 4000,
+      "height": 3000,
+      "size_bytes": 4718592,
+      "favorite": false,
+      "archived": false,
+      "tags": ["landscape", "outdoor"],
+      "exif_summary": {"make": "Google", "model": "Pixel 6", "iso": 100, "shutter_speed": "1/250"}
+    }
+
+# ---- opentracks_gui (de.dennisguse.opentracks.playstore — tracks injected via GPX import or SQLite seed) ----
+opentracks_gui:
+  id_field: track_id
+  id_prefix: "TRK-"
+  id_start: 101
+  fields:
+    track_id: {type: string, example: "TRK-101"}
+    name: {type: string, example: "Morning run — Riverside Park"}
+    activity_type: {type: string, example: "run"}
+    start_time: {type: string, example: "2026-04-25T07:15:00+08:00"}
+    end_time: {type: string, example: "2026-04-25T08:02:00+08:00"}
+    duration_seconds: {type: integer, example: 2820}
+    distance_meters: {type: number, example: 6430.5}
+    avg_speed_ms: {type: number, example: 2.28}
+    max_speed_ms: {type: number, example: 3.41}
+    elevation_gain_m: {type: number, example: 42.0}
+    waypoints: {type: "list[object]", example: [{"title": "Water station", "description": "Refill point near east gate", "time": "2026-04-25T07:38:00+08:00"}]}
+    gpx_path: {type: "string|null", example: "/sdcard/OpenTracks/TRK-101.gpx"}
+  example_record: |
+    {
+      "track_id": "TRK-101",
+      "name": "Morning run — Riverside Park",
+      "activity_type": "run",
+      "start_time": "2026-04-25T07:15:00+08:00",
+      "end_time": "2026-04-25T08:02:00+08:00",
+      "duration_seconds": 2820,
+      "distance_meters": 6430.5,
+      "avg_speed_ms": 2.28,
+      "max_speed_ms": 3.41,
+      "elevation_gain_m": 42.0,
+      "waypoints": [
+        {"title": "Water station", "description": "Refill point near east gate", "time": "2026-04-25T07:38:00+08:00"}
+      ],
+      "gpx_path": "/sdcard/OpenTracks/TRK-101.gpx"
+    }
+
+# ---- contacts_gui (com.google.android.contacts UI / com.android.providers.contacts DB) ----
+# State injected via content provider insert into com.android.providers.contacts
+contacts_gui:
+  id_field: contact_id
+  id_prefix: "GCON-"
+  id_start: 801
+  fields:
+    contact_id: {type: string, example: "GCON-801"}
+    name: {type: string, example: "Li Mei"}
+    phone: {type: string, example: "+86 13812345678"}
+    email: {type: string, example: "li.mei@example.com"}
+    company: {type: string, example: "TechCo Ltd"}
+    title: {type: string, example: "Product Manager"}
+    address: {type: string, example: "388 Nanjing Rd, Shanghai"}
+    group: {type: string, example: "Work"}
+    note: {type: string, example: "Primary contact for Android platform partnerships"}
+    starred: {type: boolean, example: false}
+  example_record: |
+    {
+      "contact_id": "GCON-801",
+      "name": "Li Mei",
+      "phone": "+86 13812345678",
+      "email": "li.mei@example.com",
+      "company": "TechCo Ltd",
+      "title": "Product Manager",
+      "address": "388 Nanjing Rd, Shanghai",
+      "group": "Work",
+      "note": "Primary contact for Android platform partnerships",
+      "starred": false
+    }
+
+# ---- dialer_gui (com.google.android.dialer — call log seeded via content provider insert) ----
+dialer_gui:
+  id_field: call_id
+  id_prefix: "CALL-"
+  id_start: 9001
+  fields:
+    call_id: {type: string, example: "CALL-9001"}
+    phone_number: {type: string, example: "+86 13800138000"}
+    contact_name: {type: "string|null", example: "Wang Fang"}
+    call_type: {type: string, example: "incoming"}
+    duration_seconds: {type: integer, example: 183}
+    timestamp: {type: string, example: "2026-04-25T09:15:00+08:00"}
+    sim_slot: {type: integer, example: 1}
+  example_record: |
+    {
+      "call_id": "CALL-9001",
+      "phone_number": "+86 13800138000",
+      "contact_name": "Wang Fang",
+      "call_type": "incoming",
+      "duration_seconds": 183,
+      "timestamp": "2026-04-25T09:15:00+08:00",
+      "sim_slot": 1
+    }
+
+# ---- clock_gui (com.google.android.deskclock — alarms seeded via content provider or ADB) ----
+clock_gui:
+  id_field: alarm_id
+  id_prefix: "ALRM-"
+  id_start: 101
+  fields:
+    alarm_id: {type: string, example: "ALRM-101"}
+    time: {type: string, example: "07:30"}
+    label: {type: string, example: "Morning workout"}
+    repeat_days: {type: "list[string]", example: ["Mon", "Wed", "Fri"]}
+    enabled: {type: boolean, example: true}
+    ringtone: {type: string, example: "Default alarm sound"}
+    vibrate: {type: boolean, example: true}
+  example_record: |
+    {
+      "alarm_id": "ALRM-101",
+      "time": "07:30",
+      "label": "Morning workout",
+      "repeat_days": ["Mon", "Wed", "Fri"],
+      "enabled": true,
+      "ringtone": "Default alarm sound",
+      "vibrate": true
+    }
+
+# ---- maps_gui (com.google.android.apps.maps — saved places seeded via Maps account fixture) ----
+maps_gui:
+  id_field: place_id
+  id_prefix: "PLAC-"
+  id_start: 201
+  fields:
+    place_id: {type: string, example: "PLAC-201"}
+    name: {type: string, example: "Blue Bottle Coffee"}
+    address: {type: string, example: "300 Webster St, Oakland, CA 94607"}
+    coordinates: {type: object, example: {"lat": 37.8024, "lng": -122.2711}}
+    category: {type: string, example: "Coffee shop"}
+    rating: {type: number, example: 4.5}
+    phone: {type: "string|null", example: "+1 510-653-3394"}
+    hours: {type: "string|null", example: "Mon–Fri 07:00–18:00, Sat–Sun 08:00–17:00"}
+    saved_list: {type: "string|null", example: "Favorites"}
+  example_record: |
+    {
+      "place_id": "PLAC-201",
+      "name": "Blue Bottle Coffee",
+      "address": "300 Webster St, Oakland, CA 94607",
+      "coordinates": {"lat": 37.8024, "lng": -122.2711},
+      "category": "Coffee shop",
+      "rating": 4.5,
+      "phone": "+1 510-653-3394",
+      "hours": "Mon–Fri 07:00–18:00, Sat–Sun 08:00–17:00",
+      "saved_list": "Favorites"
+    }
+
+# ---- camera_gui (com.android.camera2 — captures seeded via file push to /sdcard/DCIM) ----
+camera_gui:
+  id_field: capture_id
+  id_prefix: "CAP-"
+  id_start: 1001
+  fields:
+    capture_id: {type: string, example: "CAP-1001"}
+    path: {type: string, example: "/sdcard/DCIM/Camera/IMG_20260425_143022.jpg"}
+    capture_time: {type: string, example: "2026-04-25T14:30:22+08:00"}
+    mode: {type: string, example: "photo"}
+    lens: {type: string, example: "rear"}
+    resolution: {type: string, example: "12MP"}
+    file_size_bytes: {type: integer, example: 5242880}
+  example_record: |
+    {
+      "capture_id": "CAP-1001",
+      "path": "/sdcard/DCIM/Camera/IMG_20260425_143022.jpg",
+      "capture_time": "2026-04-25T14:30:22+08:00",
+      "mode": "photo",
+      "lens": "rear",
+      "resolution": "12MP",
+      "file_size_bytes": 5242880
+    }
+
+# ---- loop_habit_gui (org.isoron.uhabits — habits and completions injected via SQLite uhabits.db) ----
+loop_habit_gui:
+  id_field: name
+  id_prefix: "LHBT-"
+  id_start: 101
+  fields:
+    name: {type: string, example: "Morning Exercise"}
+    description: {type: string, example: "30-minute workout before breakfast"}
+    question: {type: string, example: "Did you exercise this morning?"}
+    type: {type: string, example: "boolean"}
+    color: {type: integer, example: 3}
+    frequency: {type: "string|object", example: "daily"}
+    reminder_hour: {type: integer, example: 7}
+    reminder_min: {type: integer, example: 0}
+    reminder_days: {type: "list[string]", example: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
+    archived: {type: boolean, example: false}
+    target_value: {type: number, example: 0}
+    unit: {type: string, example: ""}
+    completions: {type: "list[string|object]", example: ["2026-04-25", "2026-04-26", {"date": "2026-04-27", "value": 2}]}
+  example_record: |
+    {
+      "name": "Morning Exercise",
+      "description": "30-minute workout before breakfast",
+      "question": "Did you exercise this morning?",
+      "type": "boolean",
+      "color": 3,
+      "frequency": "daily",
+      "reminder_hour": 7,
+      "reminder_min": 0,
+      "reminder_days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      "archived": false,
+      "target_value": 0,
+      "unit": "",
+      "completions": ["2026-04-25", "2026-04-26", "2026-04-27", "2026-04-28"]
+    }
+
+# ---- my_expenses_gui (org.totschnig.myexpenses — accounts and transactions injected via SQLite data DB) ----
+my_expenses_gui:
+  id_field: label
+  id_prefix: "MYACC-"
+  id_start: 101
+  fixture_format: compound
+  fields:
+    accounts:
+      type: "list[object]"
+      item_fields:
+        label: {type: string, example: "Cash Wallet"}
+        currency: {type: string, example: "USD"}
+        type: {type: string, example: "CASH", description: "CASH | BANK | CCARD | ASSET | LIABILITY"}
+        opening_balance: {type: integer, example: 50000, description: "Minor currency units (cents)"}
+        description: {type: string, example: "Daily cash spending"}
+        color: {type: integer, example: -3355444}
+    categories:
+      type: "list[object]"
+      item_fields:
+        label: {type: string, example: "Food & Dining"}
+        type: {type: string, example: "expense", description: "expense | income"}
+    payees:
+      type: "list[string]"
+      example: ["Starbucks", "Uber", "Amazon"]
+    transactions:
+      type: "list[object]"
+      item_fields:
+        account: {type: string, example: "Cash Wallet", description: "Must match an account label"}
+        amount: {type: integer, example: -1250, description: "Cents; negative=expense, positive=income"}
+        date: {type: string, example: "2026-04-22"}
+        category: {type: string, example: "Food & Dining"}
+        payee: {type: string, example: "Starbucks"}
+        comment: {type: string, example: "Morning coffee"}
+  example_record: |
+    {
+      "accounts": [
+        {"label": "Cash Wallet", "currency": "USD", "type": "CASH", "opening_balance": 50000, "description": "Daily spending", "color": -3355444},
+        {"label": "Checking Account", "currency": "USD", "type": "BANK", "opening_balance": 250000, "description": "Primary bank account", "color": -13388315}
+      ],
+      "categories": [
+        {"label": "Food & Dining", "type": "expense"},
+        {"label": "Transport", "type": "expense"},
+        {"label": "Salary", "type": "income"}
+      ],
+      "payees": ["Starbucks", "Uber", "Employer Inc"],
+      "transactions": [
+        {"account": "Cash Wallet", "amount": -1250, "date": "2026-04-22", "category": "Food & Dining", "payee": "Starbucks", "comment": "Morning coffee"},
+        {"account": "Checking Account", "amount": 500000, "date": "2026-04-25", "category": "Salary", "payee": "Employer Inc", "comment": "Monthly salary"}
+      ]
+    }
+
+# ---- markor_gui (net.gsantner.markor — notes injected as .md/.txt files under /sdcard/Documents/markor/) ----
+markor_gui:
+  id_field: filename
+  id_prefix: ""
+  id_start: 0
+  fields:
+    filename: {type: string, example: "Project_Alpha_Deadline.md"}
+    folder: {type: "string|null", example: "Work"}
+    content: {type: string, example: "# Project Alpha\n\nCurrent deadline: **2026-06-01**\n\n## Status\n- Backend API: 90% complete\n- Frontend: 75% complete\n- Testing: In progress"}
+  example_record: |
+    {
+      "filename": "Project_Alpha_Deadline.md",
+      "folder": "Work",
+      "content": "# Project Alpha\n\nCurrent deadline: **2026-06-01**\n\n## Status\n- Backend API: 90% complete\n- Frontend: 75% complete\n- Testing: In progress\n\n## Team\n- Lead: Zhang Wei\n- Backend: Li Fang\n- Frontend: Wang Tao"
+    }
+
+# ---- settings_gui (com.android.settings — device settings read/written via ADB or Settings API) ----
+settings_gui:
+  id_field: setting_key
+  id_prefix: ""
+  id_start: 0
+  fields:
+    setting_key: {type: string, example: "wifi_enabled"}
+    display_name: {type: string, example: "Wi-Fi"}
+    category: {type: string, example: "Network & internet"}
+    value_type: {type: string, example: "boolean"}
+    current_value: {type: "boolean|string|integer", example: true}
+    description: {type: string, example: "Enable or disable Wi-Fi connectivity"}
+  example_record: |
+    {
+      "setting_key": "wifi_enabled",
+      "display_name": "Wi-Fi",
+      "category": "Network & internet",
+      "value_type": "boolean",
+      "current_value": true,
+      "description": "Enable or disable Wi-Fi connectivity"
+    }

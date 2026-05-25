@@ -1,0 +1,529 @@
+[
+  {
+    "task_id": "TODO-501",
+    "title": "Parse Polaris infrastructure requirements and build constraint model",
+    "description": "Review NPAG-1 (infrastructure specs) and NPAG-2 (ops constraints). Extract all hard limits, shared resource caps, and tier separation rules. Build mathematical model of feasible rollout combinations.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-02-21",
+    "tags": [
+      "polaris",
+      "rollout",
+      "analysis"
+    ],
+    "created_at": "2026-02-19T16:30:00-08:00"
+  },
+  {
+    "task_id": "TODO-502",
+    "title": "Enumerate and validate rollout strategy combinations",
+    "description": "For each feasible strategy (tier-based, region-based, percentage-based rollout), model resource consumption at each wave. Verify no infrastructure cap violations, no tier-separation violations, and monitoring capacity limits respected.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-21",
+    "tags": [
+      "polaris",
+      "rollout",
+      "analysis"
+    ],
+    "created_at": "2026-02-19T16:35:00-08:00"
+  },
+  {
+    "task_id": "TODO-503",
+    "title": "Document optimal Polaris rollout plan with constraint proof",
+    "description": "Complete NPAG-3 with full rollout strategy, wave sequencing, resource allocation proof, and risk analysis. Include rollback capability assessment for each wave.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-22",
+    "tags": [
+      "polaris",
+      "rollout",
+      "documentation"
+    ],
+    "created_at": "2026-02-19T16:40:00-08:00"
+  },
+  {
+    "task_id": "TODO-504",
+    "title": "Notify engineering leadership of final Polaris rollout plan",
+    "description": "Send workmail to Priya and Marcus with link to finalized rollout strategy in Notion. Flag if any ops policy exceptions are needed and schedule alignment meeting if required.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-02-22",
+    "tags": [
+      "polaris",
+      "rollout",
+      "communication"
+    ],
+    "created_at": "2026-02-19T16:45:00-08:00"
+  },
+  {
+    "task_id": "TODO-505",
+    "title": "Review Q2 OKR conflicts with Sarah",
+    "description": "Data team's Q2 OKR proposal may conflict with Polaris infrastructure allocation. Need to discuss before Feb 26 OKR review meeting.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-02-25",
+    "tags": [
+      "okr",
+      "q2-planning"
+    ],
+    "created_at": "2026-02-20T16:00:00-08:00"
+  },
+  {
+    "task_id": "TODO-506",
+    "title": "Draft customer notification email for auth endpoint deprecation",
+    "description": "Work with Sarah (Customer Success) to draft customer-facing communication for /v1/auth deprecation. Must include: migration timeline, technical guide link, support contact, SLA commitments. HOLD sending to legal until Checkpoint 1 passes (Apr 11).",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-04-08",
+    "tags": [
+      "api-migration",
+      "customer-comms",
+      "parallel-work"
+    ],
+    "created_at": "2026-04-03T09:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-507",
+    "title": "Define Go/No-Go checkpoint criteria for auth migration",
+    "description": "Document specific pass/fail criteria for April 11 checkpoint: integration test results, health check metrics, engineering sign-off requirements. Prepare escalation path to VP Engineering if checkpoint fails. Update Notion decision log with rationale.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-04-07",
+    "tags": [
+      "api-migration",
+      "decision-framework",
+      "checkpoint"
+    ],
+    "created_at": "2026-04-04T14:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-508",
+    "title": "Calculate cascading impact if internal migration slips 1 week",
+    "description": "Model timeline scenarios: if Phase 1 completes Apr 18 instead of Apr 11, calculate impact on customer notice period, kill-switch date, and Q2 planning conflicts. Determine if 21-day minimum grace period is acceptable or if we need to push kill-switch to late May.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-06",
+    "tags": [
+      "api-migration",
+      "risk-analysis",
+      "timeline"
+    ],
+    "created_at": "2026-04-05T08:30:00-07:00"
+  },
+  {
+    "task_id": "TODO-509",
+    "title": "Prepare VP Engineering + Customer Success VP update on migration checkpoint structure",
+    "description": "Draft Workmail to David Torres (VP Eng) and Sarah Kim outlining: checkpoint structure, go/no-go criteria, escalation path if April 11 deadline is missed, tradeoff analysis (parallel vs serial work), risk mitigation for churn-risk accounts (CUS-102, 103, 104).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-08",
+    "tags": [
+      "api-migration",
+      "leadership-comms",
+      "escalation"
+    ],
+    "created_at": "2026-04-05T09:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-510",
+    "title": "Classify and triage 6 platform-team emails from April 2-4",
+    "description": "Process backlog of cross-functional requests: David Torres Q2 OKR dependency (2 emails with conflicting data), Rachel Kim TechFlow escalation (blocking), Sarah Kim OKR conflict analysis (blocking), Priya Sharma Polaris SSO clarification (medium), Marcus Chen log retention exception (low). Identify urgency tier, flag conflicts, draft responses for blocking items.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-05",
+    "tags": [
+      "triage",
+      "platform-team",
+      "q2-planning"
+    ],
+    "created_at": "2026-04-04T17:30:00-07:00"
+  },
+  {
+    "task_id": "TODO-511",
+    "title": "Draft response to TechFlow rate limit escalation - same day required",
+    "description": "Rachel Kim flagged TechFlow Industries (CUS-101, $850K ARR) hitting API rate limits on /v2/analytics/export. VP Engineering threatening to pause $200K expansion. Need to propose solution (rate limit increase OR batch API) by EOD April 5. Check with Priya on engineering feasibility before responding.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-05",
+    "tags": [
+      "customer-escalation",
+      "blocking",
+      "techflow"
+    ],
+    "created_at": "2026-04-04T17:35:00-07:00"
+  },
+  {
+    "task_id": "TODO-512",
+    "title": "Reconcile conflicting Kafka capacity numbers from David Torres emails",
+    "description": "David sent two emails about Q2 data pipeline capacity with conflicting event volume estimates: April 2 email said 2M events/day (30% Kafka capacity), April 4 correction said 5M events/day (50% capacity). This conflicts with Sarah's analysis showing only 25% headroom post-Polaris. Need to verify actual numbers and resolve before Friday OKR lock.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-04",
+    "tags": [
+      "q2-planning",
+      "data-conflict",
+      "blocking"
+    ],
+    "created_at": "2026-04-04T17:40:00-07:00"
+  },
+  {
+    "task_id": "TODO-513",
+    "title": "Route Polaris SSO scope question to product team",
+    "description": "Priya asked whether SAML 2.0 SSO is included in Polaris GA scope (May 3). Sales engineering needs answer for two Enterprise deals ($1.2M combined). Check NPAG-1 and original PRD, then route to product owner for definitive answer. Not blocking but helpful for deal closure.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-07",
+    "tags": [
+      "polaris",
+      "sales-support"
+    ],
+    "created_at": "2026-04-04T17:45:00-07:00"
+  },
+  {
+    "task_id": "TODO-514",
+    "title": "Approve log retention exception for SOC 2 audit",
+    "description": "Marcus Chen requested one-time log retention extension for Q1 2026 platform API logs (Jan 1 - Mar 31) until June 30 for SOC 2 Type II audit. ~850 GB storage, ~$20/month cost. Compliance needs confirmation by Monday April 7. Low priority, straightforward approval.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-04-07",
+    "tags": [
+      "compliance",
+      "ops"
+    ],
+    "created_at": "2026-04-04T17:50:00-07:00"
+  },
+  {
+    "task_id": "TODO-515",
+    "title": "Cross-check Polaris go-live windows against calendar and SRE constraints",
+    "description": "Review three candidate windows from Priya's email (WMSG-5015). Check: (1) calendar conflicts with locked events; (2) SRE capacity per Notion NPAG-9; (3) 72-hour rollback buffer requirement; (4) auth migration checkpoint interference. Identify feasible window.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-04-04",
+    "tags": [
+      "polaris",
+      "constraint-analysis",
+      "decision"
+    ],
+    "created_at": "2026-04-02T10:30:00-07:00"
+  },
+  {
+    "task_id": "TODO-516",
+    "title": "Confirm final Polaris go-live window to engineering leadership",
+    "description": "Send confirmation email to Priya and Marcus with constraint analysis and rationale for selected window. Include references to calendar conflicts, SRE capacity doc (NPAG-9), and rollback buffer policy compliance.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-04-04",
+    "tags": [
+      "polaris",
+      "communication",
+      "decision"
+    ],
+    "created_at": "2026-04-02T10:35:00-07:00"
+  },
+  {
+    "task_id": "TODO-517",
+    "title": "Document Polaris go-live decision in Notion with constraint proof",
+    "description": "Create decision record in Notion documenting the constraint analysis for all three windows, rationale for Window C selection, and sign-off trail. Link to calendar events, SRE capacity doc, and email confirmations.",
+    "status": "completed",
+    "priority": "medium",
+    "due_date": "2026-04-04",
+    "tags": [
+      "polaris",
+      "documentation"
+    ],
+    "created_at": "2026-04-04T15:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-518",
+    "title": "Sync with Sarah on Q2 roadmap dependencies post-Polaris launch",
+    "description": "Sarah flagged potential dependencies between Polaris launch timing and Q2 data pipeline capacity work. Schedule 15-min sync to confirm mid-May timeline for stable analytics endpoints and address Q2 OKR prioritization conflict.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-07",
+    "tags": [
+      "q2-planning",
+      "roadmap",
+      "dependencies"
+    ],
+    "created_at": "2026-04-03T11:30:00-07:00"
+  },
+  {
+    "task_id": "TODO-519",
+    "title": "Compile weekly decision digest for VP Product - Week 14",
+    "description": "Scan Notion decision pages (NPAG-11, any new pages created March 31-April 4), review Workmail threads with 'decision' or 'confirmed' labels, extract decision outcomes from completed meeting notes (MTG-7004), identify completed TODOs that closed decision points (TODO-507, TODO-509). Calculate decision velocity vs last week. Generate structured digest highlighting: decisions made, rationale, approvers, deferred decisions with reasons, patterns in deferrals, missing documentation flags.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-04-05",
+    "tags": [
+      "decision-log",
+      "weekly-digest",
+      "leadership-comms"
+    ],
+    "created_at": "2026-04-04T15:00:00-07:00",
+    "completed_at": "2026-04-05T10:30:00-07:00"
+  },
+  {
+    "task_id": "TODO-520",
+    "title": "Review deferred decision pattern - exec availability conflicts",
+    "description": "2 of 3 recent decision deferrals due to VP Product or CTO unavailability. Propose recurring decision review slot on Sarah's calendar for Q2. Draft proposal with: recommended cadence (weekly vs biweekly), time commitment (30 min), decision types that require her approval vs can be delegated, backup approval chain when she's unavailable.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-08",
+    "tags": [
+      "process-improvement",
+      "decision-velocity"
+    ],
+    "created_at": "2026-04-05T10:45:00-07:00"
+  },
+  {
+    "task_id": "TODO-521",
+    "title": "Add capacity review trigger to Polaris analytics decision",
+    "description": "David Torres requested adding review trigger to decision D-2026-031: if Polaris user adoption exceeds 150% of projection in first 30 days, revisit 40% data pipeline allocation. Update Notion page NPAG-11 with this condition. Also note Sarah's requirement for quarterly capacity review as standard operating procedure.",
+    "status": "completed",
+    "priority": "low",
+    "due_date": "2026-04-05",
+    "tags": [
+      "decision-log",
+      "polaris",
+      "data-pipeline"
+    ],
+    "created_at": "2026-04-02T14:20:00-07:00",
+    "completed_at": "2026-04-05T09:15:00-07:00"
+  },
+  {
+    "task_id": "TODO-522",
+    "title": "Flag missing approver confirmation for Q1 retrospective decisions",
+    "description": "Review Q1 retrospective notes (NPAG-4) - identify any decisions made during retro that lack written approver confirmation. Cross-reference with Workmail threads from late March. If any decisions are missing documentation, follow up with participants to get explicit confirmation or flag as 'verbal approval only' in decision log.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-07",
+    "tags": [
+      "decision-log",
+      "documentation",
+      "audit-trail"
+    ],
+    "created_at": "2026-04-03T11:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-523",
+    "title": "Extract and categorize recurring themes from 40 Q1 customer interviews",
+    "description": "Parse all 40 customer interview notes in Notion (NPAG-15 through NPAG-54) and categorize feedback into: feature requests, pain points, integration blockers, churn signals. Build frequency analysis for each theme.",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-04-04",
+    "tags": [
+      "customer-research",
+      "Q1",
+      "synthesis"
+    ],
+    "created_at": "2026-04-01T09:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-524",
+    "title": "Cross-reference customer feedback against Q2 roadmap and OKR proposals",
+    "description": "Compare extracted customer themes against Platform Roadmap (NPAG-20) and Data Team Q2 OKR proposal (NPAG-19). Identify conflicts where customer requests compete with planned initiatives for same infrastructure resources.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-05",
+    "tags": [
+      "roadmap",
+      "customer-research",
+      "Q2-planning"
+    ],
+    "created_at": "2026-04-02T10:30:00-07:00"
+  },
+  {
+    "task_id": "TODO-525",
+    "title": "Tag customer feedback by tier using CRM data",
+    "description": "For each interview note, pull customer tier from CRM (starter/professional/mid-market/enterprise) and add tier tags to frequency analysis. Identify if pain points cluster by tier.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-05",
+    "tags": [
+      "customer-research",
+      "crm",
+      "analysis"
+    ],
+    "created_at": "2026-04-02T14:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-526",
+    "title": "Synthesize Q1 customer insights into comprehensive Notion deck",
+    "description": "Create new Notion page under customer research database with: executive summary, frequency analysis by theme, verbatim quotes tagged by tier, roadmap alignment matrix showing conflicts with Q2 OKRs, churn risk callouts. Apply tags: Q1, platform-team, churn-risk.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-07",
+    "tags": [
+      "customer-research",
+      "synthesis",
+      "deliverable"
+    ],
+    "created_at": "2026-04-02T14:15:00-07:00"
+  },
+  {
+    "task_id": "TODO-527",
+    "title": "Review Q2 OKR alignment meeting agenda and attendee list",
+    "description": "Confirm all key stakeholders are invited to Monday's cross-team OKR meeting. Verify Sarah (data), Priya (platform eng), David (VP eng), Marcus (SRE) are all attending. Check if we need Finance or Marketing representation.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-04-04",
+    "tags": [
+      "okr",
+      "q2-planning",
+      "meeting-prep"
+    ],
+    "created_at": "2026-04-03T16:30:00-07:00"
+  },
+  {
+    "task_id": "TODO-528",
+    "title": "Compile conflict summary for Q2 OKR cross-team meeting",
+    "description": "Create structured summary of platform vs data team OKR conflicts: 1) Core conflict points (analytics timeline, capacity constraints), 2) Stakeholder positions (platform needs adoption metrics, data team at capacity), 3) Proposed compromise (phased approach), 4) Decision points for Monday meeting (scope agreement, timeline confirmation, dependency management)",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-04-06",
+    "tags": [
+      "okr",
+      "q2-planning",
+      "meeting-prep",
+      "urgent"
+    ],
+    "created_at": "2026-04-04T10:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-529",
+    "title": "Review Notion pages for platform and data team Q2 OKR proposals",
+    "description": "Read through both team's Q2 OKR documentation in Notion. Extract key objectives, success metrics, resource requirements, and dependency chains. Identify specific line items where proposals conflict.",
+    "status": "completed",
+    "priority": "high",
+    "due_date": "2026-04-05",
+    "tags": [
+      "okr",
+      "q2-planning",
+      "research"
+    ],
+    "created_at": "2026-04-04T11:15:00-07:00"
+  },
+  {
+    "task_id": "TODO-530",
+    "title": "Follow up with Finance on Q3 revenue attribution timeline",
+    "description": "Confirm with Rachel Kim that Finance can wait until Q3 for advanced revenue attribution analytics from Polaris. Need written confirmation for the OKR descoping justification.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-08",
+    "tags": [
+      "okr",
+      "finance",
+      "stakeholder-management"
+    ],
+    "created_at": "2026-04-04T14:20:00-07:00"
+  },
+  {
+    "task_id": "TODO-531",
+    "title": "Calculate maximum safe rate limit allocation for TechFlow within Q2 hard cap",
+    "description": "TechFlow requesting 12K calls/hour (up from 5K). Current total allocated: 267.5K of 285K hard cap. Available headroom: 17.5K, but must maintain 5% buffer (14.25K minimum unallocated). Calculate: (1) Maximum immediate allocation without violating cap or SLA safety constraint, (2) Whether 12K request can be satisfied, (3) If not, what partial allocation is safe and when remaining capacity becomes available post-Polaris-GA.",
+    "status": "in-progress",
+    "priority": "urgent",
+    "due_date": "2026-04-07",
+    "tags": [
+      "capacity-planning",
+      "customer-escalation",
+      "constraint-solving"
+    ],
+    "created_at": "2026-04-04T15:45:00-07:00"
+  },
+  {
+    "task_id": "TODO-532",
+    "title": "Review TechFlow CRM record and assess churn risk vs. capacity constraint trade-off",
+    "description": "TechFlow is at-risk account (1 of 3 mid-market churn risks). $480K ARR, renewal April 15. Need to assess: (1) Business impact of denying/delaying rate limit increase, (2) Whether losing TechFlow is acceptable vs. risk of SLA violations for other customers if we exceed cap, (3) Alternative solutions (staged allocation, temporary reallocation from under-utilizing customer like DataSync Solutions).",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-05",
+    "tags": [
+      "customer-success",
+      "risk-assessment",
+      "crm"
+    ],
+    "created_at": "2026-04-04T16:00:00-07:00"
+  },
+  {
+    "task_id": "TODO-533",
+    "title": "Confirm Polaris GA and auth migration capacity release timelines with Priya",
+    "description": "Need confirmed dates for capacity releases: (1) Polaris GA launch window (April 28-30 vs May 5-7?) adds 35K calls/hour, (2) Auth migration completion (May 15 target?) frees 22K calls/hour. If TechFlow can't get full 12K immediately, staged allocation depends on these dates. Check Notion pages NPAG-25 and NPAG-6 for latest status, then confirm with Priya.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-05",
+    "tags": [
+      "infrastructure",
+      "timeline-validation"
+    ],
+    "created_at": "2026-04-04T16:10:00-07:00"
+  },
+  {
+    "task_id": "TODO-534",
+    "title": "Draft response to Rachel/Amanda with TechFlow rate limit decision and constraint rationale",
+    "description": "Once capacity analysis complete, draft Workmail response to Rachel Kim (Customer Success VP) and Amanda Rodriguez (TechFlow VP Eng) with: (1) Approved allocation (immediate + staged if applicable), (2) Technical constraint explanation (hard cap, SLA risk, safety buffer requirement), (3) Timeline for any deferred capacity, (4) Escalation path if cap-override exception needed. Must document safety constraint proof to justify decision.",
+    "status": "pending",
+    "priority": "urgent",
+    "due_date": "2026-04-07",
+    "tags": [
+      "customer-communication",
+      "documentation",
+      "decision-rationale"
+    ],
+    "created_at": "2026-04-04T16:20:00-07:00"
+  },
+  {
+    "task_id": "TODO-535",
+    "title": "Prepare Polaris v1 GA Go/No-Go decision document",
+    "description": "Compile final readiness assessment for Polaris v1 GA launch covering: infrastructure capacity validation, rollback plan verification, customer communication status, SRE monitoring coverage, and outstanding risk items. Required for EVT-324 decision meeting on April 7.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-06",
+    "tags": [
+      "polaris",
+      "launch",
+      "decision-doc"
+    ],
+    "created_at": "2026-04-02T16:30:00-07:00"
+  },
+  {
+    "task_id": "TODO-536",
+    "title": "Review customer health metrics for TechFlow and Meridian Health before meeting",
+    "description": "Pull latest usage analytics, support ticket trends, and engagement scores for TechFlow Industries (CUS-101) and Meridian Health Systems (CUS-102) ahead of customer success review on April 8. Cross-reference with churn risk indicators from NPAG-17.",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-04-07",
+    "tags": [
+      "customer-success",
+      "churn-risk",
+      "prep"
+    ],
+    "created_at": "2026-04-03T11:15:00-07:00"
+  },
+  {
+    "task_id": "TODO-537",
+    "title": "Draft Q2 Platform Team OKR proposal - final version",
+    "description": "Incorporate feedback from data team conflict resolution session and finalize Q2 OKR proposal for platform team. Address dependency concerns raised by Sarah Kim and align with Polaris post-launch roadmap priorities.",
+    "status": "pending",
+    "priority": "medium",
+    "due_date": "2026-04-09",
+    "tags": [
+      "okr",
+      "q2-planning"
+    ],
+    "created_at": "2026-04-04T09:45:00-07:00"
+  },
+  {
+    "task_id": "TODO-538",
+    "title": "Schedule follow-up with Marcus on SRE capacity for Q2",
+    "description": "Need to confirm SRE team capacity allocation for Q2 roadmap items post-Polaris launch. Marcus mentioned potential constraint in last standup - clarify before all-hands kickoff.",
+    "status": "pending",
+    "priority": "low",
+    "due_date": "2026-04-08",
+    "tags": [
+      "sre",
+      "capacity-planning"
+    ],
+    "created_at": "2026-04-05T10:20:00-07:00"
+  }
+]

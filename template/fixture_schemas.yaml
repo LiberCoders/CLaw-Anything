@@ -1,0 +1,944 @@
+# Fixture record schemas — extracted from E01 gold environment.
+# Used by fixture_generator.py as templates for LLM-based fixture generation.
+
+gmail:
+  id_field: message_id
+  id_prefix: "MSG-"
+  id_start: 5001
+  fields:
+    message_id: {type: string, example: "MSG-5001"}
+    from: {type: string, example: "zhang.wei@acmecorp.com"}
+    to: {type: string, example: "support@ourcompany.com"}
+    subject: {type: string, example: "Order shipment delay - Urgent"}
+    date: {type: string, example: "2026-03-25T09:30:00+08:00"}
+    body: {type: string, example: "Hello, our company (ACME Corp, customer ID CUS-101) placed an order on March 20..."}
+    labels: {type: "list[string]", example: ["urgent", "customer"]}
+    is_read: {type: boolean, example: false}
+  example_record: |
+    {
+      "message_id": "MSG-5001",
+      "from": "zhang.wei@acmecorp.com",
+      "to": "support@ourcompany.com",
+      "subject": "Order shipment delay - Urgent",
+      "date": "2026-03-25T09:30:00+08:00",
+      "body": "Hello, our company (ACME Corp, customer ID CUS-101) placed an order on March 20 (ticket TK-801) and has not received a shipment notification. The contractual delivery date was March 24, and it is now one day overdue. Our production line is waiting for this batch of parts to start, and each day of delay causes approximately $7,000 in downtime losses. Please process this promptly and let us know the estimated shipping date.\n\nZhang Wei\nACME Corp Procurement Manager\nPhone: +86 13912345678",
+      "labels": ["urgent", "customer"],
+      "is_read": false
+    }
+
+calendar:
+  id_field: event_id
+  id_prefix: "EVT-"
+  id_start: 301
+  fields:
+    event_id: {type: string, example: "EVT-301"}
+    title: {type: string, example: "Monday standup"}
+    start_time: {type: string, example: "2026-03-25T09:00:00+08:00"}
+    end_time: {type: string, example: "2026-03-25T09:45:00+08:00"}
+    attendees: {type: "list[string]", example: ["all staff"]}
+    location: {type: string, example: "3F main conference room"}
+    recurring: {type: string, example: "weekly"}
+  example_record: |
+    {
+      "event_id": "EVT-301",
+      "title": "Monday standup",
+      "start_time": "2026-03-25T09:00:00+08:00",
+      "end_time": "2026-03-25T09:45:00+08:00",
+      "attendees": ["all staff"],
+      "location": "3F main conference room",
+      "recurring": "weekly"
+    }
+
+contacts:
+  id_field: contact_id
+  id_prefix: "CON-"
+  id_start: 201
+  fields:
+    contact_id: {type: string, example: "CON-201"}
+    name: {type: string, example: "Zhang Wei"}
+    department: {type: string, example: "Procurement"}
+    title: {type: string, example: "Procurement Manager"}
+    email: {type: string, example: "zhang.wei@acmecorp.com"}
+    phone: {type: string, example: "+86 13912345678"}
+    location: {type: string, example: "ACME Corp HQ"}
+    note: {type: string, example: "VIP customer primary contact, prefers email communication"}
+  example_record: |
+    {
+      "contact_id": "CON-201",
+      "name": "Zhang Wei",
+      "department": "Procurement",
+      "title": "Procurement Manager",
+      "email": "zhang.wei@acmecorp.com",
+      "phone": "+86 13912345678",
+      "location": "ACME Corp HQ",
+      "note": "VIP customer primary contact, prefers email communication"
+    }
+
+crm:
+  id_field: customer_id
+  id_prefix: "CUS-"
+  id_start: 101
+  fields:
+    customer_id: {type: string, example: "CUS-101"}
+    name: {type: string, example: "ACME Corp"}
+    contact_person: {type: string, example: "Zhang Wei"}
+    email: {type: string, example: "zhang.wei@acmecorp.com"}
+    phone: {type: string, example: "+86 13912345678"}
+    industry: {type: string, example: "Manufacturing"}
+    tier: {type: string, example: "vip"}
+    annual_revenue: {type: number, example: 8500000}
+    last_contact_date: {type: string, example: "2026-03-24"}
+    status: {type: string, example: "active"}
+    notes: {type: string, example: "Key customer, $1.2M annual purchases, contract includes late delivery penalty clause (0.5% per day). 3-year partnership history, no prior delivery delays."}
+  example_record: |
+    {
+      "customer_id": "CUS-101",
+      "name": "ACME Corp",
+      "contact_person": "Zhang Wei",
+      "email": "zhang.wei@acmecorp.com",
+      "phone": "+86 13912345678",
+      "industry": "Manufacturing",
+      "tier": "vip",
+      "annual_revenue": 8500000,
+      "last_contact_date": "2026-03-24",
+      "status": "active",
+      "notes": "Key customer, $1.2M annual purchases, contract includes late delivery penalty clause (0.5% per day). 3-year partnership history, no prior delivery delays."
+    }
+
+finance:
+  id_field: transaction_id
+  id_prefix: "TXN-"
+  id_start: 6001
+  fields:
+    transaction_id: {type: string, example: "TXN-6001"}
+    date: {type: string, example: "2026-03-20"}
+    amount: {type: number, example: 425000.00}
+    currency: {type: string, example: "USD"}
+    merchant: {type: string, example: "ACME Corp"}
+    category: {type: string, example: "sales_order"}
+    description: {type: string, example: "ACME Corp order - Precision bearing assembly SKU-2080 x 50 units"}
+    receipt_url: {type: string, example: ""}
+  example_record: |
+    {
+      "transaction_id": "TXN-6001",
+      "date": "2026-03-20",
+      "amount": 425000.00,
+      "currency": "USD",
+      "merchant": "ACME Corp",
+      "category": "sales_order",
+      "description": "ACME Corp order - Precision bearing assembly SKU-2080 x 50 units",
+      "receipt_url": ""
+    }
+
+helpdesk:
+  id_field: ticket_id
+  id_prefix: "TK-"
+  id_start: 801
+  fields:
+    ticket_id: {type: string, example: "TK-801"}
+    title: {type: string, example: "ACME Corp order shipment delay"}
+    reporter: {type: string, example: "zhang.wei@acmecorp.com"}
+    created_at: {type: string, example: "2026-03-24T10:00:00+08:00"}
+    priority: {type: string, example: "high"}
+    status: {type: string, example: "open"}
+    description: {type: string, example: "Customer ACME Corp (CUS-101) reports that the precision bearing assembly (SKU-2080) ordered on March 20 was not shipped by the contractual delivery date of March 24."}
+    tags: {type: "list[string]", example: ["delivery", "urgent", "vip-customer"]}
+    assignee: {type: string, example: "Customer Service Team"}
+    department: {type: string, example: "Customer Service"}
+  example_record: |
+    {
+      "ticket_id": "TK-801",
+      "title": "ACME Corp order shipment delay",
+      "reporter": "zhang.wei@acmecorp.com",
+      "created_at": "2026-03-24T10:00:00+08:00",
+      "priority": "high",
+      "status": "open",
+      "description": "Customer ACME Corp (CUS-101) reports that the precision bearing assembly (SKU-2080) ordered on March 20 was not shipped by the contractual delivery date of March 24. The customer states their production line is idle, causing approximately $7,000 in daily losses. Need to coordinate shipment or provide an alternative solution ASAP.",
+      "tags": ["delivery", "urgent", "vip-customer"],
+      "assignee": "Customer Service Team",
+      "department": "Customer Service"
+    }
+
+inventory:
+  id_field: product_id
+  id_prefix: "SKU-"
+  id_start: 2080
+  fields:
+    product_id: {type: string, example: "SKU-2080"}
+    name: {type: string, example: "Precision bearing assembly"}
+    category: {type: string, example: "Precision parts"}
+    current_stock: {type: integer, example: 0}
+    min_stock_threshold: {type: integer, example: 20}
+    reorder_quantity: {type: integer, example: 50}
+    status: {type: string, example: "out_of_stock"}
+    unit_price: {type: number, example: 8500}
+    supplier: {type: string, example: "Precision Parts Supplier"}
+    lead_time_days: {type: integer, example: 8}
+    last_reorder_date: {type: string, example: "2026-03-15"}
+    notes: {type: string, example: "Supplier has limited capacity, restock scheduled for March 28. VIP customer ACME Corp pending order affected."}
+  example_record: |
+    {
+      "product_id": "SKU-2080",
+      "name": "Precision bearing assembly",
+      "category": "Precision parts",
+      "current_stock": 0,
+      "min_stock_threshold": 20,
+      "reorder_quantity": 50,
+      "status": "out_of_stock",
+      "unit_price": 8500,
+      "supplier": "Precision Parts Supplier",
+      "lead_time_days": 8,
+      "last_reorder_date": "2026-03-15",
+      "notes": "Supplier has limited capacity, restock scheduled for March 28. VIP customer ACME Corp pending order affected."
+    }
+
+kb:
+  id_field: article_id
+  id_prefix: "KB-"
+  id_start: 401
+  fields:
+    article_id: {type: string, example: "KB-401"}
+    title: {type: string, example: "Customer complaint handling process"}
+    category: {type: string, example: "Customer Service SOP"}
+    tags: {type: "list[string]", example: ["SOP", "customer-service", "complaint"]}
+    created_at: {type: string, example: "2026-01-15T10:00:00+08:00"}
+    content: {type: string, example: "Standard customer complaint handling process:\n1. Acknowledge receipt within 1 hour of complaint\n2. Look up related tickets and order status..."}
+    last_updated: {type: string, example: "2026-01-15T10:00:00+08:00"}
+    views: {type: integer, example: 128}
+  example_record: |
+    {
+      "article_id": "KB-401",
+      "title": "Customer complaint handling process",
+      "category": "Customer Service SOP",
+      "tags": ["SOP", "customer-service", "complaint"],
+      "created_at": "2026-01-15T10:00:00+08:00",
+      "content": "Standard customer complaint handling process:\n1. Acknowledge receipt within 1 hour of complaint\n2. Look up related tickets and order status\n3. Contact relevant internal departments to confirm the situation\n4. Provide a solution to the customer within 24 hours\n5. VIP customers must receive a response within 4 hours\n6. Cases involving penalty clauses must be reported to the legal department\n\nEscalation rules:\n- Auto-escalate to supervisor if unresolved past deadline\n- VIP customer complaints escalate directly to manager",
+      "last_updated": "2026-01-15T10:00:00+08:00",
+      "views": 128
+    }
+
+notes:
+  id_field: note_id
+  id_prefix: "NOTE-"
+  id_start: 101
+  fields:
+    note_id: {type: string, example: "NOTE-101"}
+    title: {type: string, example: "ACME Corp client relationship review meeting"}
+    created_at: {type: string, example: "2026-03-15T10:00:00+08:00"}
+    participants: {type: "list[string]", example: ["Huang Tao", "Sun Li", "Wang Qiang"]}
+    content: {type: string, example: "Discussed ACME Corp Q2 collaboration plan. Customer feedback is positive about current service..."}
+    duration_minutes: {type: integer, example: 45}
+  example_record: |
+    {
+      "note_id": "NOTE-101",
+      "title": "ACME Corp client relationship review meeting",
+      "created_at": "2026-03-15T10:00:00+08:00",
+      "participants": ["Huang Tao", "Sun Li", "Wang Qiang"],
+      "content": "Discussed ACME Corp Q2 collaboration plan. Customer feedback is positive about current service but emphasizes delivery timeliness as top priority. Q2 projected purchase volume increase of 20%. Need to ensure supply chain stability.\n\nAction items:\n1. Pre-stock SKU-2080 and SKU-2081\n2. Sign Q2 framework agreement with supplier\n3. Schedule end-of-March quarterly business review",
+      "duration_minutes": 45
+    }
+
+rss:
+  id_field: article_id
+  id_prefix: "RSS-"
+  id_start: 901
+  fields:
+    article_id: {type: string, example: "RSS-901"}
+    title: {type: string, example: "Global supply chain crisis continues: semiconductor lead times extend to 20 weeks"}
+    source: {type: string, example: "Supply Chain Observer"}
+    category: {type: string, example: "Industry news"}
+    published_at: {type: string, example: "2026-03-24T08:00:00+08:00"}
+    summary: {type: string, example: "Due to geopolitical tensions and surging demand, multiple semiconductor manufacturers have extended lead times. Analysts expect possible relief in the second half of 2026."}
+    content: {type: string, example: "The global semiconductor supply chain remains strained. Major foundries including TSMC and Samsung are operating at over 95% capacity utilization..."}
+    relevance_tags: {type: "list[string]", example: ["supply-chain", "semiconductor", "industry"]}
+    word_count: {type: integer, example: 180}
+  example_record: |
+    {
+      "article_id": "RSS-901",
+      "title": "Global supply chain crisis continues: semiconductor lead times extend to 20 weeks",
+      "source": "Supply Chain Observer",
+      "category": "Industry news",
+      "published_at": "2026-03-24T08:00:00+08:00",
+      "summary": "Due to geopolitical tensions and surging demand, multiple semiconductor manufacturers have extended lead times. Analysts expect possible relief in the second half of 2026.",
+      "content": "The global semiconductor supply chain remains strained. Major foundries including TSMC and Samsung are operating at over 95% capacity utilization, causing non-priority order lead times to extend beyond 20 weeks. The automotive and industrial equipment sectors are most affected. Industry analysts recommend enterprises plan procurement 6 months in advance to cope with supply uncertainties.",
+      "relevance_tags": ["supply-chain", "semiconductor", "industry"],
+      "word_count": 180
+    }
+
+scheduler:
+  id_field: job_id
+  id_prefix: "JOB-"
+  id_start: 701
+  fields:
+    job_id: {type: string, example: "JOB-701"}
+    name: {type: string, example: "daily_inventory_sync"}
+    description: {type: string, example: "Daily sync of ERP inventory data to the warehouse management system"}
+    cron_expression: {type: string, example: "0 6 * * *"}
+    enabled: {type: boolean, example: true}
+    last_status: {type: string, example: "success"}
+    last_run: {type: string, example: "2026-03-25T06:00:00+08:00"}
+    action: {type: string, example: "sync_inventory_to_wms"}
+    created_by: {type: string, example: "IT Operations Team"}
+    tags: {type: "list[string]", example: ["inventory", "sync", "daily"]}
+    notes: {type: string, example: "Runs daily at 6 AM, typically takes 5-10 minutes"}
+    execution_history: {type: "list[object]", example: [{"run_time": "2026-03-25T06:00:00+08:00", "status": "success", "duration_seconds": 420, "notes": ""}]}
+  example_record: |
+    {
+      "job_id": "JOB-701",
+      "name": "daily_inventory_sync",
+      "description": "Daily sync of ERP inventory data to the warehouse management system",
+      "cron_expression": "0 6 * * *",
+      "enabled": true,
+      "last_status": "success",
+      "last_run": "2026-03-25T06:00:00+08:00",
+      "action": "sync_inventory_to_wms",
+      "created_by": "IT Operations Team",
+      "tags": ["inventory", "sync", "daily"],
+      "notes": "Runs daily at 6 AM, typically takes 5-10 minutes",
+      "execution_history": [
+        {"run_time": "2026-03-25T06:00:00+08:00", "status": "success", "duration_seconds": 420, "notes": ""},
+        {"run_time": "2026-03-24T06:00:00+08:00", "status": "success", "duration_seconds": 380, "notes": ""}
+      ]
+    }
+
+todo:
+  id_field: task_id
+  id_prefix: "TODO-"
+  id_start: 501
+  fields:
+    task_id: {type: string, example: "TODO-501"}
+    title: {type: string, example: "Follow up on ACME Corp order delay"}
+    description: {type: string, example: "Customer has filed a complaint; need to coordinate with warehouse and supplier, provide a solution ASAP"}
+    status: {type: string, example: "pending"}
+    priority: {type: string, example: "high"}
+    due_date: {type: string, example: "2026-03-25"}
+    tags: {type: "list[string]", example: ["urgent", "customer", "delivery"]}
+    created_at: {type: string, example: "2026-03-24T17:00:00+08:00"}
+  example_record: |
+    {
+      "task_id": "TODO-501",
+      "title": "Follow up on ACME Corp order delay",
+      "description": "Customer has filed a complaint; need to coordinate with warehouse and supplier, provide a solution ASAP",
+      "status": "pending",
+      "priority": "high",
+      "due_date": "2026-03-25",
+      "tags": ["urgent", "customer", "delivery"],
+      "created_at": "2026-03-24T17:00:00+08:00"
+    }
+
+config:
+  id_field: integration_id
+  id_prefix: "INT-"
+  id_start: 101
+  fields:
+    integration_id: {type: string, example: "INT-101"}
+    name: {type: string, example: "erp_crm_sync"}
+    display_name: {type: string, example: "ERP-CRM data sync"}
+    status: {type: string, example: "active"}
+    error_rate: {type: number, example: 0.5}
+    notes: {type: string, example: "Bidirectional sync of customer and order data between ERP and CRM systems, runs hourly"}
+    service: {type: string, example: "data_sync"}
+    last_verified: {type: string, example: "2026-03-25T08:00:00+08:00"}
+    monthly_calls: {type: integer, example: 720}
+  example_record: |
+    {
+      "integration_id": "INT-101",
+      "name": "erp_crm_sync",
+      "display_name": "ERP-CRM data sync",
+      "status": "active",
+      "error_rate": 0.5,
+      "notes": "Bidirectional sync of customer and order data between ERP and CRM systems, runs hourly",
+      "service": "data_sync",
+      "last_verified": "2026-03-25T08:00:00+08:00",
+      "monthly_calls": 720
+    }
+
+# ---- Workmail (company-internal email; gmail handles external) ----
+workmail:
+  id_field: message_id
+  id_prefix: "WMSG-"
+  id_start: 5001
+  fields:
+    message_id: {type: string, example: "WMSG-5001"}
+    from: {type: string, example: "li.qing@ourcompany.com"}
+    to: {type: string, example: "ops-team@ourcompany.com"}
+    subject: {type: string, example: "Weekly procurement standup notes"}
+    date: {type: string, example: "2026-03-25T09:30:00+08:00"}
+    body: {type: string, example: "Hi team,\n\nNotes from this morning's standup are below..."}
+    labels: {type: "list[string]", example: ["internal", "team"]}
+    is_read: {type: boolean, example: false}
+  example_record: |
+    {
+      "message_id": "WMSG-5001",
+      "from": "li.qing@ourcompany.com",
+      "to": "ops-team@ourcompany.com",
+      "subject": "Weekly procurement standup notes",
+      "date": "2026-03-25T09:30:00+08:00",
+      "body": "Hi team,\n\nNotes from this morning's standup: ACME Corp shipment (ticket TK-801) is now 1 day late and needs an internal escalation by EOD; please review the linked KB article and respond on this thread by 17:00.\n\n— Li Qing",
+      "labels": ["internal", "team"],
+      "is_read": false
+    }
+
+# ---- Claw-Notion (page + block + database knowledge tree) ----
+claw_notion:
+  id_field: page_id
+  id_prefix: "NPAG-"
+  id_start: 1            # zero-padded to 4 digits → NPAG-0001
+  fields:
+    page_id: {type: string, example: "NPAG-0001"}
+    title: {type: string, example: "Q1 Procurement OKRs"}
+    parent_page_id: {type: "string|null", example: null}
+    database_id: {type: "string|null", example: null}
+    properties: {type: object, example: {"owner": "Li Qing", "quarter": "Q1"}}
+    blocks: {type: "list[object]", example: [{"type": "paragraph", "text": "Reduce supplier lead time by 15%."}]}
+    archived: {type: boolean, example: false}
+    created_at: {type: string, example: "2026-03-20T10:00:00+08:00"}
+    last_updated: {type: string, example: "2026-03-25T11:00:00+08:00"}
+  example_record: |
+    {
+      "page_id": "NPAG-0001",
+      "title": "Q1 Procurement OKRs",
+      "parent_page_id": null,
+      "database_id": null,
+      "properties": {"owner": "Li Qing", "quarter": "Q1"},
+      "blocks": [
+        {"type": "heading_1", "text": "Objectives"},
+        {"type": "paragraph", "text": "Reduce supplier lead time by 15% for all VIP customers (incl. ACME Corp)."},
+        {"type": "bulleted_list_item", "text": "KR1: Renegotiate top-3 supplier SLAs by 2026-03-31"}
+      ],
+      "archived": false,
+      "created_at": "2026-03-20T10:00:00+08:00",
+      "last_updated": "2026-03-25T11:00:00+08:00"
+    }
+
+# ---- Claw-Obsidian (markdown vault with bidirectional links + tags) ----
+claw_obsidian:
+  id_field: note_id
+  id_prefix: "OBSN-"
+  id_start: 1            # zero-padded to 4 digits → OBSN-0001
+  fields:
+    note_id: {type: string, example: "OBSN-0001"}
+    title: {type: string, example: "Supplier escalation playbook"}
+    folder: {type: "string|null", example: "Procurement/Playbooks"}
+    tags: {type: "list[string]", example: ["procurement", "escalation"]}
+    content: {type: string, example: "# Escalation Playbook\n\nWhen a VIP customer (e.g. ACME Corp) ..."}
+    outlinks: {type: "list[string]", example: ["OBSN-0002"]}
+    inlinks: {type: "list[string]", example: []}
+    created_at: {type: string, example: "2026-03-18T09:00:00+08:00"}
+    last_updated: {type: string, example: "2026-03-25T16:00:00+08:00"}
+  example_record: |
+    {
+      "note_id": "OBSN-0001",
+      "title": "Supplier escalation playbook",
+      "folder": "Procurement/Playbooks",
+      "tags": ["procurement", "escalation"],
+      "content": "# Escalation Playbook\n\nWhen a VIP customer (e.g. ACME Corp, customer ID CUS-101) reports a shipment delay >24h, open ticket TK-XXX, page the supplier owner within 2h, and post status to [[OBSN-0002]] (weekly war-room note).",
+      "outlinks": ["OBSN-0002"],
+      "inlinks": [],
+      "created_at": "2026-03-18T09:00:00+08:00",
+      "last_updated": "2026-03-25T16:00:00+08:00"
+    }
+
+# ---- Meeting (Zoom-like lifecycle: scheduled -> started -> ended | cancelled) ----
+meeting:
+  id_field: meeting_id
+  id_prefix: "MTG-"
+  id_start: 7001
+  fields:
+    meeting_id: {type: string, example: "MTG-7001"}
+    topic: {type: string, example: "ACME Corp shipment war-room"}
+    host: {type: string, example: "li.qing@ourcompany.com"}
+    start_time: {type: string, example: "2026-03-25T14:00:00+08:00"}
+    duration_minutes: {type: integer, example: 30}
+    join_url: {type: string, example: "https://meet.internal/mtg-7001"}
+    passcode: {type: string, example: "428193"}
+    status: {type: string, example: "scheduled"}
+    participants: {type: "list[object]", example: [{"email": "li.qing@ourcompany.com", "role": "host", "status": "invited"}]}
+    recordings: {type: "list[object]", example: []}
+    created_at: {type: string, example: "2026-03-25T11:00:00+08:00"}
+    updated_at: {type: string, example: "2026-03-25T11:00:00+08:00"}
+  example_record: |
+    {
+      "meeting_id": "MTG-7001",
+      "topic": "ACME Corp shipment war-room",
+      "host": "li.qing@ourcompany.com",
+      "start_time": "2026-03-25T14:00:00+08:00",
+      "duration_minutes": 30,
+      "join_url": "https://meet.internal/mtg-7001",
+      "passcode": "428193",
+      "status": "scheduled",
+      "participants": [
+        {"email": "li.qing@ourcompany.com", "role": "host", "status": "invited"},
+        {"email": "ops-lead@ourcompany.com", "role": "panelist", "status": "invited"}
+      ],
+      "recordings": [],
+      "created_at": "2026-03-25T11:00:00+08:00",
+      "updated_at": "2026-03-25T11:00:00+08:00"
+    }
+
+# ---- Claw-Zotero (literature manager: items + collections + per-item notes) ----
+claw_zotero:
+  id_field: item_id
+  id_prefix: "ZOT-"
+  id_start: 1            # zero-padded to 4 digits → ZOT-0001
+  fields:
+    item_id: {type: string, example: "ZOT-0001"}
+    item_type: {type: string, example: "article"}
+    title: {type: string, example: "Supply chain resilience under demand shocks"}
+    authors: {type: "list[string]", example: ["Chen, J.", "Smith, R."]}
+    year: {type: integer, example: 2024}
+    venue: {type: string, example: "Manufacturing & Service Operations Management"}
+    doi: {type: "string|null", example: "10.1287/msom.2024.0001"}
+    url: {type: "string|null", example: "https://doi.org/10.1287/msom.2024.0001"}
+    abstract: {type: "string|null", example: "We study how multi-tier sourcing buffers manufacturers..."}
+    tags: {type: "list[string]", example: ["supply-chain", "resilience"]}
+    citation_key: {type: "string|null", example: "chen2024supply"}
+    collection_ids: {type: "list[string]", example: ["COL-1"]}
+    notes: {type: "list[object]", example: []}
+    date_added: {type: string, example: "2026-03-19T10:00:00+08:00"}
+    date_modified: {type: string, example: "2026-03-25T15:00:00+08:00"}
+  example_record: |
+    {
+      "item_id": "ZOT-0001",
+      "item_type": "article",
+      "title": "Supply chain resilience under demand shocks",
+      "authors": ["Chen, J.", "Smith, R."],
+      "year": 2024,
+      "venue": "Manufacturing & Service Operations Management",
+      "doi": "10.1287/msom.2024.0001",
+      "url": "https://doi.org/10.1287/msom.2024.0001",
+      "abstract": "We study how multi-tier sourcing buffers manufacturers against demand shocks similar to the ACME Corp case.",
+      "tags": ["supply-chain", "resilience"],
+      "citation_key": "chen2024supply",
+      "collection_ids": ["COL-1"],
+      "notes": [],
+      "date_added": "2026-03-19T10:00:00+08:00",
+      "date_modified": "2026-03-25T15:00:00+08:00"
+    }
+
+stumail:
+  description: "Student/campus email messages"
+  fixture_file: stumail/inbox.json
+  id_field: message_id
+  id_prefix: "STUM-"
+  id_start: 3001
+  fields:
+    message_id: {type: string, example: "STUM-3001"}
+    from: {type: string, example: "advisor@university.edu"}
+    to: {type: string, example: "user@student.university.edu"}
+    subject: {type: string, example: "Thesis review feedback"}
+    body: {type: "string|null", example: "Please see attached comments on Chapter 3..."}
+    date: {type: string, example: "2026-04-20T09:15:00+08:00"}
+    is_read: {type: boolean, example: false}
+    labels: {type: "list[string]", example: ["inbox"]}
+    reply_to_message_id: {type: "string|null", example: null}
+  example_record: |
+    {
+      "message_id": "STUM-3001",
+      "from": "advisor@university.edu",
+      "to": "user@student.university.edu",
+      "subject": "Thesis review feedback",
+      "body": "Please see attached comments on Chapter 3. I suggest restructuring the methodology section before the next committee meeting.",
+      "date": "2026-04-20T09:15:00+08:00",
+      "is_read": false,
+      "labels": ["inbox"],
+      "reply_to_message_id": null
+    }
+
+claw_feishu:
+  description: "Feishu/Lark workspace: groups containing messages, meetings, and docs"
+  fixture_file: claw_feishu/workspace.json
+  id_field: group_id
+  id_prefix: "FSGRP-"
+  id_start: 1
+  fields:
+    group_id: {type: string, example: "FSGRP-0001"}
+    name: {type: string, example: "Project Alpha"}
+    members: {type: "list[string]", example: ["alice@acme.com", "bob@acme.com"]}
+    owner: {type: string, example: "alice@acme.com"}
+    announcement: {type: string, example: "Weekly sync every Monday 10am"}
+    archived: {type: boolean, example: false}
+    last_updated: {type: string, example: "2026-04-22T14:30:00+08:00"}
+    messages: {type: "list[object]", example: []}
+    meetings: {type: "list[object]", example: []}
+    docs: {type: "list[object]", example: []}
+  example_record: |
+    {
+      "group_id": "FSGRP-0001",
+      "name": "Project Alpha",
+      "members": ["alice@acme.com", "bob@acme.com", "carol@acme.com"],
+      "owner": "alice@acme.com",
+      "announcement": "Weekly sync every Monday 10am",
+      "archived": false,
+      "last_updated": "2026-04-22T14:30:00+08:00",
+      "messages": [
+        {"message_id": "FSMSG-0001", "sender": "bob@acme.com", "text": "Updated the Q2 roadmap doc.", "mentions": [], "pinned": false, "timestamp": "2026-04-22T14:30:00+08:00"}
+      ],
+      "meetings": [
+        {"meeting_id": "FSMTG-0001", "title": "Q2 Planning", "start_time": "2026-04-24T10:00:00+08:00", "duration_minutes": 60, "attendees": ["alice@acme.com", "bob@acme.com"], "status": "scheduled", "minutes": "", "created_at": "2026-04-21T09:00:00+08:00"}
+      ],
+      "docs": [
+        {"doc_id": "FSDOC-0001", "title": "Q2 Roadmap", "content": "Q2 priorities: ...", "author": "alice@acme.com", "created_at": "2026-04-18T11:00:00+08:00", "last_updated": "2026-04-22T14:30:00+08:00"}
+      ]
+    }
+
+claw_slack:
+  description: "Slack workspace: channels containing messages with threads, reactions, and pins"
+  fixture_file: claw_slack/workspace.json
+  id_field: channel_id
+  id_prefix: "SLKC-"
+  id_start: 1
+  fields:
+    channel_id: {type: string, example: "SLKC-0001"}
+    name: {type: string, example: "general"}
+    is_private: {type: boolean, example: false}
+    topic: {type: string, example: "Company-wide announcements"}
+    purpose: {type: string, example: "Share updates and news"}
+    members: {type: "list[string]", example: ["alice@acme.com", "bob@acme.com"]}
+    archived: {type: boolean, example: false}
+    pinned_message_ids: {type: "list[string]", example: []}
+    created_at: {type: string, example: "2026-01-10T08:00:00+08:00"}
+    last_updated: {type: string, example: "2026-04-23T17:00:00+08:00"}
+    messages: {type: "list[object]", example: []}
+  example_record: |
+    {
+      "channel_id": "SLKC-0001",
+      "name": "general",
+      "is_private": false,
+      "topic": "Company-wide announcements",
+      "purpose": "Share updates and news",
+      "members": ["alice@acme.com", "bob@acme.com", "carol@acme.com"],
+      "archived": false,
+      "pinned_message_ids": ["SLKM-0002"],
+      "created_at": "2026-01-10T08:00:00+08:00",
+      "last_updated": "2026-04-23T17:00:00+08:00",
+      "messages": [
+        {"message_id": "SLKM-0001", "sender": "alice@acme.com", "text": "Welcome to #general!", "parent_message_id": null, "reactions": {":thumbsup:": ["bob@acme.com"]}, "timestamp": "2026-01-10T08:05:00+08:00"},
+        {"message_id": "SLKM-0002", "sender": "bob@acme.com", "text": "Q2 kickoff meeting scheduled for April 28.", "parent_message_id": null, "reactions": {}, "timestamp": "2026-04-23T17:00:00+08:00"}
+      ]
+    }
+
+claw_facebook:
+  description: "Facebook posts (browse + like + save + repost)"
+  fixture_file: claw_facebook/posts.json
+  id_field: post_id
+  id_prefix: "FB-"
+  id_start: 1
+  fields:
+    post_id: {type: string, example: "FB-0001"}
+    author: {type: string, example: "alice@acme.com"}
+    content: {type: string, example: "Just shipped a new release!"}
+    tags: {type: "list[string]", example: ["product", "release"]}
+    likes: {type: integer, example: 12}
+    liked: {type: boolean, example: false}
+    saved: {type: boolean, example: false}
+    reposted: {type: boolean, example: false}
+    timestamp: {type: string, example: "2026-04-23T10:00:00+08:00"}
+  example_record: |
+    {
+      "post_id": "FB-0001",
+      "author": "alice@acme.com",
+      "content": "Just shipped Q2 release. Huge thanks to the team!",
+      "tags": ["product", "release"],
+      "likes": 12,
+      "liked": false,
+      "saved": false,
+      "reposted": false,
+      "timestamp": "2026-04-23T10:00:00+08:00"
+    }
+
+claw_zhihu:
+  description: "Zhihu Q&A: questions with answers (upvote / collect / follow / post)"
+  fixture_file: claw_zhihu/questions.json
+  id_field: question_id
+  id_prefix: "ZHQ-"
+  id_start: 1
+  fields:
+    question_id: {type: string, example: "ZHQ-0001"}
+    title: {type: string, example: "How to design resilient supply chains?"}
+    topic: {type: "list[string]", example: ["supply-chain", "operations"]}
+    follow_count: {type: integer, example: 245}
+    answer_count: {type: integer, example: 3}
+    followed: {type: boolean, example: false}
+    answers: {type: "list[object]", example: []}
+    created_at: {type: string, example: "2026-04-15T09:00:00+08:00"}
+  example_record: |
+    {
+      "question_id": "ZHQ-0001",
+      "title": "How to design resilient supply chains under demand shocks?",
+      "topic": ["supply-chain", "operations"],
+      "follow_count": 245,
+      "answer_count": 1,
+      "followed": false,
+      "answers": [
+        {"answer_id": "ZHA-0001", "author": "expert@acme.com", "content": "Multi-tier sourcing is key...", "upvotes": 88, "upvoted": false, "collected": false, "created_at": "2026-04-16T10:00:00+08:00"}
+      ],
+      "created_at": "2026-04-15T09:00:00+08:00"
+    }
+
+claw_wechat:
+  description: "WeChat chats (1-1 / group). Moments (朋友圈) are a separate companion fixture; see `claw_wechat_moments` for that schema."
+  fixture_file: claw_wechat/chats.json
+  id_field: chat_id
+  id_prefix: "WCC-"
+  id_start: 1
+  fields:
+    chat_id: {type: string, example: "WCC-0001"}
+    name: {type: string, example: "Project Alpha"}
+    type: {type: string, example: "group"}
+    members: {type: "list[string]", example: ["alice@acme.com", "bob@acme.com"]}
+    last_message: {type: "string|null", example: "See you tomorrow!"}
+    unread_count: {type: integer, example: 0}
+    muted: {type: boolean, example: false}
+    messages: {type: "list[object]", example: []}
+    last_updated: {type: string, example: "2026-04-23T18:00:00+08:00"}
+  example_record: |
+    {
+      "chat_id": "WCC-0001",
+      "name": "Project Alpha",
+      "type": "group",
+      "members": ["alice@acme.com", "bob@acme.com", "carol@acme.com"],
+      "last_message": "See you tomorrow!",
+      "unread_count": 0,
+      "muted": false,
+      "messages": [
+        {"message_id": "WCM-0001", "sender": "bob@acme.com", "content": "Quick sync at 10?", "timestamp": "2026-04-23T17:55:00+08:00"},
+        {"message_id": "WCM-0002", "sender": "alice@acme.com", "content": "See you tomorrow!", "timestamp": "2026-04-23T18:00:00+08:00"}
+      ],
+      "last_updated": "2026-04-23T18:00:00+08:00"
+    }
+
+claw_wechat_moments:
+  description: "WeChat Moments (朋友圈) feed: posts authored by the persona's contacts (and occasionally the persona). Companion fixture to `claw_wechat`; same identity space (author values should match members in claw_wechat chats / contacts when relevant)."
+  fixture_file: claw_wechat/moments.json
+  id_field: post_id
+  id_prefix: "WXPYQ-"
+  id_start: 1
+  fields:
+    post_id: {type: string, example: "WXPYQ-0001"}
+    author: {type: string, example: "alice@acme.com"}
+    content: {type: string, example: "Quarterly offsite was a blast 🎉"}
+    images: {type: "list[string]", example: ["https://cdn.example.com/img/offsite-1.jpg"]}
+    posted_at: {type: string, example: "2026-04-22T20:30:00+08:00"}
+    visibility: {type: string, example: "friends"}
+    likes: {type: "list[string]", example: ["bob@acme.com", "carol@acme.com"]}
+    comments: {type: "list[object]", example: []}
+    liked_by_me: {type: boolean, example: false}
+    commented_by_me: {type: boolean, example: false}
+  example_record: |
+    {
+      "post_id": "WXPYQ-0001",
+      "author": "alice@acme.com",
+      "content": "Quarterly offsite was a blast 🎉 Proud of the team.",
+      "images": ["https://cdn.example.com/img/offsite-1.jpg", "https://cdn.example.com/img/offsite-2.jpg"],
+      "posted_at": "2026-04-22T20:30:00+08:00",
+      "visibility": "friends",
+      "likes": ["bob@acme.com", "carol@acme.com"],
+      "comments": [
+        {"author": "bob@acme.com", "content": "Looked amazing!", "ts": "2026-04-22T20:45:00+08:00"}
+      ],
+      "liked_by_me": false,
+      "commented_by_me": false
+    }
+
+claw_qq:
+  description: "QQ chats (private / group). QZone (空间) posts are a separate companion fixture; see `claw_qq_zone` for that schema."
+  fixture_file: claw_qq/chats.json
+  id_field: chat_id
+  id_prefix: "QQC-"
+  id_start: 1
+  fields:
+    chat_id: {type: string, example: "QQC-0001"}
+    name: {type: string, example: "Friends"}
+    type: {type: string, example: "group"}
+    members: {type: "list[string]", example: ["alice@acme.com", "bob@acme.com"]}
+    last_message: {type: "string|null", example: "Lunch at 12?"}
+    unread_count: {type: integer, example: 1}
+    muted: {type: boolean, example: false}
+    messages: {type: "list[object]", example: []}
+    last_updated: {type: string, example: "2026-04-23T11:30:00+08:00"}
+  example_record: |
+    {
+      "chat_id": "QQC-0001",
+      "name": "Old Friends",
+      "type": "group",
+      "members": ["alice@acme.com", "bob@acme.com", "dan@acme.com"],
+      "last_message": "Lunch at 12?",
+      "unread_count": 1,
+      "muted": false,
+      "messages": [
+        {"message_id": "QQM-0001", "sender": "dan@acme.com", "content": "Lunch at 12?", "timestamp": "2026-04-23T11:30:00+08:00"}
+      ],
+      "last_updated": "2026-04-23T11:30:00+08:00"
+    }
+
+claw_qq_zone:
+  description: "QZone (QQ 空间) posts: timeline-style entries authored by the persona's QQ contacts (and occasionally the persona). Companion fixture to `claw_qq`; same identity space (author values should match members in claw_qq chats when relevant)."
+  fixture_file: claw_qq/zone.json
+  id_field: post_id
+  id_prefix: "QQZONE-"
+  id_start: 1
+  fields:
+    post_id: {type: string, example: "QQZONE-0001"}
+    author: {type: string, example: "dan@acme.com"}
+    content: {type: string, example: "周末爬山 🏔"}
+    images: {type: "list[string]", example: ["https://cdn.example.com/img/hike-1.jpg"]}
+    mood: {type: string, example: "happy"}
+    posted_at: {type: string, example: "2026-04-21T15:10:00+08:00"}
+    visibility: {type: string, example: "public"}
+    likes: {type: "list[string]", example: ["alice@acme.com"]}
+    comments: {type: "list[object]", example: []}
+    liked_by_me: {type: boolean, example: false}
+    commented_by_me: {type: boolean, example: false}
+  example_record: |
+    {
+      "post_id": "QQZONE-0001",
+      "author": "dan@acme.com",
+      "content": "周末爬山，山顶视野超棒！",
+      "images": ["https://cdn.example.com/img/hike-1.jpg"],
+      "mood": "happy",
+      "posted_at": "2026-04-21T15:10:00+08:00",
+      "visibility": "public",
+      "likes": ["alice@acme.com", "bob@acme.com"],
+      "comments": [
+        {"author": "alice@acme.com", "content": "下次叫上我！", "ts": "2026-04-21T15:30:00+08:00"}
+      ],
+      "liked_by_me": false,
+      "commented_by_me": false
+    }
+
+claw_linkedin:
+  description: "LinkedIn job postings (browse / save / apply / follow_company)"
+  fixture_file: claw_linkedin/jobs.json
+  id_field: job_id
+  id_prefix: "LNK-"
+  id_start: 1
+  fields:
+    job_id: {type: string, example: "LNK-0001"}
+    title: {type: string, example: "Senior Operations Manager"}
+    company: {type: string, example: "ACME Corp"}
+    location: {type: string, example: "Shanghai, China"}
+    skills: {type: "list[string]", example: ["operations", "supply-chain", "leadership"]}
+    experience_level: {type: string, example: "senior"}
+    job_type: {type: string, example: "full-time"}
+    description: {type: string, example: "Lead the operations team..."}
+    applicants_count: {type: integer, example: 42}
+    saved: {type: boolean, example: false}
+    applied: {type: boolean, example: false}
+    applied_at: {type: "string|null", example: null}
+    posted_at: {type: string, example: "2026-04-20T09:00:00+08:00"}
+  example_record: |
+    {
+      "job_id": "LNK-0001",
+      "title": "Senior Operations Manager",
+      "company": "ACME Corp",
+      "location": "Shanghai, China",
+      "skills": ["operations", "supply-chain", "leadership"],
+      "experience_level": "senior",
+      "job_type": "full-time",
+      "description": "Lead the operations team for ACME's APAC region. 5+ years of supply-chain experience required.",
+      "applicants_count": 42,
+      "saved": false,
+      "applied": false,
+      "applied_at": null,
+      "posted_at": "2026-04-20T09:00:00+08:00"
+    }
+
+sheet:
+  description: "Spreadsheet workbooks (open / get_range / set_cell / compute / etc.)"
+  fixture_file: sheet/workbooks.json
+  id_field: workbook_id
+  id_prefix: "WB-"
+  id_start: 1
+  fields:
+    workbook_id: {type: string, example: "WB-0001"}
+    name: {type: string, example: "Q2 Forecast"}
+    owner: {type: string, example: "alice@acme.com"}
+    sheets: {type: "list[object]", example: []}
+    created_at: {type: string, example: "2026-04-01T09:00:00+08:00"}
+    last_modified: {type: string, example: "2026-04-22T15:00:00+08:00"}
+  example_record: |
+    {
+      "workbook_id": "WB-0001",
+      "name": "Q2 Forecast",
+      "owner": "alice@acme.com",
+      "sheets": [
+        {"name": "Revenue", "cells": {"A1": "Region", "B1": "Q1", "C1": "Q2", "A2": "APAC", "B2": 1200000, "C2": 1380000, "A3": "EMEA", "B3": 950000, "C3": 1020000}}
+      ],
+      "created_at": "2026-04-01T09:00:00+08:00",
+      "last_modified": "2026-04-22T15:00:00+08:00"
+    }
+
+slide:
+  description: "Slide decks (presentations) — open / get_slide / add_slide / etc."
+  fixture_file: slide/decks.json
+  id_field: deck_id
+  id_prefix: "DECK-"
+  id_start: 1
+  fields:
+    deck_id: {type: string, example: "DECK-0001"}
+    name: {type: string, example: "Q2 Strategy Review"}
+    owner: {type: string, example: "alice@acme.com"}
+    slides: {type: "list[object]", example: []}
+    created_at: {type: string, example: "2026-04-10T09:00:00+08:00"}
+    last_modified: {type: string, example: "2026-04-22T16:00:00+08:00"}
+  example_record: |
+    {
+      "deck_id": "DECK-0001",
+      "name": "Q2 Strategy Review",
+      "owner": "alice@acme.com",
+      "slides": [
+        {"slide_index": 0, "title": "Q2 Strategy Review", "layout": "title", "notes": "Welcome and agenda", "elements": []},
+        {"slide_index": 1, "title": "Revenue Highlights", "layout": "content", "notes": "Walk through APAC growth", "elements": [{"element_id": "el-1", "type": "text", "content": "APAC: +15% QoQ"}]}
+      ],
+      "created_at": "2026-04-10T09:00:00+08:00",
+      "last_modified": "2026-04-22T16:00:00+08:00"
+    }
+
+claw_news:
+  id_field: post_id
+  id_prefix: "NEWS-"
+  id_start: 1
+  fields:
+    post_id:        {type: string,         example: "NEWS-0001"}
+    title:          {type: string,         example: "Fed signals possible rate cut as inflation eases to 2.4%"}
+    content:        {type: string,         example: "March CPI came in at 2.4%, below the 2.6% consensus. Fed Chair hinted at a potential 25 basis point cut at the next FOMC meeting if labor market data remains soft."}
+    source:         {type: string,         example: "Reuters Wire"}
+    author:         {type: string,         example: "j_chen_reporter"}
+    category:       {type: string,         example: "Business"}
+    tags:           {type: "list[string]", example: ["Federal Reserve", "inflation", "monetary policy"]}
+    posted_at:      {type: string,         example: "2026-04-25T09:30:00+00:00"}
+    is_breaking:    {type: boolean,        example: false}
+    credibility:    {type: string,         example: "verified"}
+    likes_count:    {type: integer,        example: 1284}
+    reposts_count:  {type: integer,        example: 342}
+    saves_count:    {type: integer,        example: 187}
+    liked:          {type: boolean,        example: false}
+    saved:          {type: boolean,        example: false}
+    reposted:       {type: boolean,        example: false}
+    repost_comment: {type: "string|null",  example: null}
+    top_comments:   {type: "list[object]", example: [{"author": "macro_trader", "text": "60% is already priced — actual move would only matter if it deviates from consensus."}]}
+  example_record: |
+    {
+      "post_id": "NEWS-0001",
+      "title": "Fed signals possible rate cut as inflation eases to 2.4%",
+      "content": "March CPI came in at 2.4%, below the 2.6% consensus. Fed Chair hinted at a potential 25 basis point cut at the next FOMC meeting if labor market data remains soft.",
+      "source": "Reuters Wire",
+      "author": "j_chen_reporter",
+      "category": "Business",
+      "tags": ["Federal Reserve", "inflation", "monetary policy"],
+      "posted_at": "2026-04-25T09:30:00+00:00",
+      "is_breaking": false,
+      "credibility": "verified",
+      "likes_count": 1284,
+      "reposts_count": 342,
+      "saves_count": 187,
+      "liked": false,
+      "saved": false,
+      "reposted": false,
+      "repost_comment": null,
+      "top_comments": [
+        {"author": "macro_trader", "text": "60% is already priced — actual move would only matter if it deviates from consensus."},
+        {"author": "fixed_income_dev", "text": "Watch the dot plot more than the rate decision itself."}
+      ]
+    }

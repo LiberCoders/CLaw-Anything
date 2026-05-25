@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+.pytest_cache/
+.ipynb_checkpoints/
+uv.lock
+
+# OS
+.DS_Store
+
+# Local config (copied from config.example.yaml and filled in)
+config.yaml
+.env
+.env.local
+
+# External source cloned at build time (e.g. scripts/build_oh_ext_image.sh
+# clones OpenHarnessExtended into vendor/ when OH_EXT_DIR is unset).
+vendor/
+
+# Generated / runtime output
+model_traces/
+traces/
+traces_*/
+out/
+gen_tasks/
+gold_envs/
+*.log
+*.out
+*.jsonl

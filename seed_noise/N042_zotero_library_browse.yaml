@@ -1,0 +1,15 @@
+noise_id: N042
+name: "Browse Zotero library"
+description: "Open Zotero to browse literature in a collection, look at the abstract of a few items, then close"
+involved_services: [claw_zotero]
+leaves_trace: false
+action_sequence:
+  - "List Zotero collections"
+  - "Browse items in a collection"
+  - "Open one item to read its abstract and notes"
+  - "Close"
+time_preference: any
+adaptable_elements:
+  - "Which collection to browse"
+  - "Filter by item type or year"
+  - "Whether to search by keyword"

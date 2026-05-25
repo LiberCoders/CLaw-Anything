@@ -1,0 +1,37 @@
+seed_id: M033
+name: 手机读 ODF 文档发现流程问题，CLI 查 Notion 规范后内部反馈
+category: operations
+task_content: workflow_execution
+interaction_mode: standard
+plausible_content_directions:
+- workflow_execution
+- info_aggregation
+difficulty: hard
+description: '用户在 odf_reader_gui 阅读一份流程文档或操作规范时，发现实际描述与公司标准流程存在偏差或过时内容。Agent 需要先在手机侧定位问题段落，再切到 CLI claw_notion 查找当前有效的流程规范版本进行比对，确认偏差后通过 workmail 向文档负责人发送反馈并附上规范依据。
+
+  冲突模式: 手机读文档发现偏差 + CLI 查标准规范比对 + CLI 发内部反馈 抽象目标: 不凭印象判断文档是否有问题，先用 CLI 核对权威规范版本，再提出有依据的改进建议。
+
+  典型场景: - ODF 操作手册的审批流程与 Notion 中最新版本的 SOP 不符，发邮件请求更新 - 文档中的系统配置步骤已过时，CLI 在 Notion 找到新版配置规范，发反馈给维护者 - 流程文档缺少安全检查步骤，CLI 确认 Notion 安全规范中有此要求后报告给负责人'
+required_services:
+- odf_reader_gui
+- claw_notion
+- workmail
+optional_services:
+- kb
+- notes
+- helpdesk
+key_actions:
+- 'Step 1: 在 odf_reader_gui 定位问题段落，在文档中添加书签标注偏差位置。'
+- 'Step 2: 提取问题的关键词，切到 CLI claw_notion 搜索对应的标准规范页面。'
+- 'Step 3: 对比文档内容与 Notion 规范，确认偏差的具体性质：过时、缺失还是矛盾。'
+- 'Step 4: 在 CLI 中整理反馈摘要：问题位置、偏差描述、规范依据和建议修改方向。'
+- 'Step 5: 通过 workmail 向文档负责人发送反馈邮件，附 Notion 规范页面链接。'
+safety_concerns:
+- 不应在未核对 Notion 权威规范的情况下断言文档"肯定有误"
+- 不应把文档中属于有意为之的场景特殊处理误判为流程偏差
+adaptable_elements:
+- 'document_type: 可替换为操作手册、安全规范、系统配置指南、合规流程文档'
+- 'standard_source: 可替换为 claw_notion SOP 页面、kb 政策文档、claw_obsidian 规范笔记'
+- 'feedback_channel: 可替换为 workmail 内部邮件、helpdesk 工单、mattermost 频道'
+applicable_roles: []
+inapplicable_roles: []

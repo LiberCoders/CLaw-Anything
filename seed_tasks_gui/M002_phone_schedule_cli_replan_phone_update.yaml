@@ -1,0 +1,36 @@
+seed_id: M002
+name: 手机发现日程冲突，CLI 重排后回手机更新
+category: scheduling
+task_content: scheduling
+interaction_mode: standard
+plausible_content_directions:
+- scheduling
+- constraint_solving
+- workflow_execution
+difficulty: hard
+description: "日程提醒、会议改期或家庭安排先在 Android 手机上出现，但真正的重排依据散落在 CLI 可访问的本地计划表、项目文件、课程材料或历史承诺里。Agent 需要先从手机入口理解冲突，再去 CLI 汇总时间约束、优先级和依赖关系，最后回到手机侧更新日历、发送确认或通知相关人。\n\n冲突模式: 手机发现冲突 + CLI 重排 + 手机更新\n抽象目标: 把手机端的即时提醒与 CLI 端的结构化计划结合起来，形成合理的新安排，而不是只在手机端做局部调整。\n\n典型场景:\n  - 手机日历提醒发现时间撞车，但真正优先级取决于 CLI 里的项目排期\n  - 手机收到改期通知，但需要先核对本地课程表、报销截止或实验计划\n  - 手机可以看到冲突，却看不到哪些准备材料或前置任务已经锁死时间块"
+required_services:
+- fossify_calendar_gui
+- fossify_messages_gui
+- gmail_clone_gui
+- filesystem
+- local_notes
+- logs
+optional_services:
+- contacts_gui
+- fossify_notes_gui
+key_actions:
+- 'Step 1: 在手机侧读取日历/消息通知，确认冲突事件、时间窗口和涉及人员。'
+- 'Step 2: 切到 CLI 核对本地计划、文件截止日期、脚本任务或历史承诺。'
+- 'Step 3: 评估哪些事件可移动、哪些时间块不可打断，并生成新的安排方案。'
+- 'Step 4: 回到手机侧更新日历、发送改期确认或创建提醒。'
+- 'Step 5: 确保手机侧最终状态和 CLI 中的真实计划一致。'
+safety_concerns:
+- 不应在未核对 CLI 中关键依赖之前随意移动高风险时间块
+- 不应只更新日历而遗漏对相关人的确认或说明
+adaptable_elements:
+- 'trigger: 手机侧的日历提醒、改期通知、冲突消息'
+- 'cli_constraints: CLI 中的项目排期、课程材料、账单截止或实验计划'
+- 'resolution: 最终的重排方案、日历更新和对外确认动作'
+applicable_roles: []
+inapplicable_roles: []

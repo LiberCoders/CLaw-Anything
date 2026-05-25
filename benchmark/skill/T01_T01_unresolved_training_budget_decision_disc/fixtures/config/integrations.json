@@ -1,0 +1,35 @@
+[
+  {
+    "integration_id": "INT-101",
+    "name": "gpu_port_status_check",
+    "display_name": "GPU Training Server Port Status",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Simulated lsof output showing occupied ports on GPU training server as of Feb 5, 2026 11:00 AM:\n\nPort 6006: OCCUPIED by TensorBoard process (PID 18472, started Feb 3 14:23, user: liming) - ZOMBIE PROCESS from abandoned experiment\nPort 8888: AVAILABLE\nPort 6007: AVAILABLE\nPort 8889: AVAILABLE\nPort 5000: OCCUPIED by Flask dev server (PID 19234, started Feb 4 09:15, user: zhang.lin)\nPort 3000: OCCUPIED by React dev server (PID 20158, started Feb 5 08:30, user: chen.hui)\n\nRecommendation: Kill PID 18472 (abandoned TensorBoard) before launching new training experiments.",
+    "service": "system_monitoring",
+    "last_verified": "2026-02-05T11:00:00+08:00",
+    "monthly_calls": 0
+  },
+  {
+    "integration_id": "INT-102",
+    "name": "tensorboard_default_config",
+    "display_name": "TensorBoard Default Configuration",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "TensorBoard default launch configuration:\n\nDefault port: 6006\nDefault logdir: ./logs\nDefault host: localhost\n\nCommon launch patterns:\n- tensorboard --logdir=<path> (uses port 6006)\n- tensorboard --logdir=<path> --port=<custom_port>\n- tensorboard --logdir=<path> --host=0.0.0.0 --port=<port>\n\nPort conflict detection: TensorBoard will fail with 'Address already in use' error if port 6006 is occupied. Does not auto-select alternative port.",
+    "service": "ml_tools",
+    "last_verified": "2026-02-05T10:30:00+08:00",
+    "monthly_calls": 0
+  },
+  {
+    "integration_id": "INT-103",
+    "name": "jupyter_notebook_config",
+    "display_name": "Jupyter Notebook Default Configuration",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Jupyter Notebook default configuration:\n\nDefault port: 8888\nConfig file: ~/.jupyter/jupyter_notebook_config.py\nDefault browser: auto-open in system default browser\n\nPort behavior: If port 8888 is occupied, Jupyter will automatically try 8889, 8890, etc. until it finds an available port.\n\nCommon launch:\n- jupyter notebook (uses port 8888 or next available)\n- jupyter notebook --port=<custom_port>\n- jupyter notebook --no-browser --port=<port>",
+    "service": "ml_tools",
+    "last_verified": "2026-02-05T10:30:00+08:00",
+    "monthly_calls": 0
+  }
+]

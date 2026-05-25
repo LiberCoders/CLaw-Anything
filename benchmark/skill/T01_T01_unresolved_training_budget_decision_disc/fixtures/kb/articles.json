@@ -1,0 +1,209 @@
+[
+  {
+    "article_id": "KB-401",
+    "title": "Algorithm Team Code Review Guidelines",
+    "category": "Engineering Standards",
+    "tags": [
+      "code-review",
+      "best-practices",
+      "algorithm"
+    ],
+    "created_at": "2026-01-15T10:00:00+08:00",
+    "content": "# Code Review Guidelines for Algorithm Team\n\n## Review Checklist\n1. **Correctness**: Does the code do what it claims?\n2. **Performance**: Any potential bottlenecks or inefficiencies?\n3. **Testing**: Adequate unit tests and edge case coverage?\n4. **Thread Safety**: Proper synchronization for concurrent access?\n5. **Memory Management**: No leaks or unnecessary allocations?\n\n## Response Time Expectations\n- Initial review: Within 24 hours\n- Follow-up on comments: Within 24 hours\n- Approval/merge: Within 48 hours of final approval\n\n## Blocking vs Non-blocking Issues\n**Blocking**: Security vulnerabilities, correctness bugs, memory leaks, thread safety issues\n**Non-blocking**: Style suggestions, performance optimizations, documentation improvements\n\n## Escalation\nIf a PR is blocked for >3 days, escalate to the tech lead (Chen Hui).",
+    "last_updated": "2026-02-01T14:00:00+08:00",
+    "views": 245
+  },
+  {
+    "article_id": "KB-402",
+    "title": "Production Incident Response Playbook",
+    "category": "Operations",
+    "tags": [
+      "incident",
+      "production",
+      "sop"
+    ],
+    "created_at": "2026-01-20T09:00:00+08:00",
+    "content": "# Production Incident Response\n\n## Severity Levels\n- **P0 (Critical)**: Service down, major feature broken, >5% metric regression\n- **P1 (High)**: Significant degradation, 2-5% metric regression\n- **P2 (Medium)**: Minor issues, <2% impact\n\n## Response Steps\n1. **Acknowledge** (within 15 minutes)\n2. **Assess Impact**: Check dashboards, user reports, A/B test metrics\n3. **Communicate**: Update incident channel with status\n4. **Investigate**: Pull logs, compare recent deployments\n5. **Mitigate**: Rollback or hotfix\n6. **Post-mortem**: Document root cause and prevention\n\n## Key Contacts\n- On-call engineer: Check PagerDuty\n- Tech lead: Chen Hui\n- VP Engineering: For P0 incidents\n\n## Rollback Procedure\n```bash\n./scripts/rollback.sh --service=recommendation --version=previous\n```",
+    "last_updated": "2026-02-05T11:00:00+08:00",
+    "views": 189
+  },
+  {
+    "article_id": "KB-403",
+    "title": "Mentor Meeting Preparation Guidelines for Interns",
+    "category": "Intern Onboarding",
+    "tags": [
+      "intern",
+      "mentorship",
+      "best-practices"
+    ],
+    "created_at": "2026-01-10T10:00:00+08:00",
+    "content": "# Mentor Meeting Preparation Guidelines\n\n## Before the Meeting\n\n### Technical Preparation (24-48 hours ahead)\n1. **Document your approach**: Write a clear summary of your methodology and design decisions\n2. **Organize results**: Prepare charts, metrics, and performance data in a digestible format\n3. **Identify blockers**: List specific technical challenges and questions\n4. **Review context**: Re-read relevant documentation and previous discussion notes\n\n### Materials Checklist\n- Architecture diagrams or flowcharts\n- Experiment results with statistical significance\n- Code snippets highlighting key implementations\n- List of open questions prioritized by importance\n- Progress timeline and milestones\n\n### Time Management\n- Block 2-3 hours for preparation\n- Don't schedule back-to-back meetings before mentor discussions\n- Allow buffer time for unexpected preparation needs\n\n## During the Meeting\n- Start with a brief overview (2-3 minutes)\n- Present data and results clearly\n- Ask specific questions rather than general ones\n- Take notes on feedback and action items\n- Confirm next steps and deadlines\n\n## After the Meeting\n- Send follow-up email summarizing discussion and action items\n- Update project documentation based on feedback\n- Schedule any follow-up sessions if needed\n\n## Common Pitfalls for Interns\n- Waiting until last minute to prepare (especially problematic for those who procrastinate)\n- Not checking calendar conflicts before confirming meeting times\n- Presenting raw data without analysis or insights\n- Failing to identify specific questions or areas needing guidance",
+    "last_updated": "2026-02-15T14:00:00+08:00",
+    "views": 234
+  },
+  {
+    "article_id": "KB-404",
+    "title": "Cognitive Load Management for Algorithm Engineers",
+    "category": "Engineering Best Practices",
+    "tags": [
+      "productivity",
+      "mental-health",
+      "task-management"
+    ],
+    "created_at": "2026-01-20T10:00:00+08:00",
+    "content": "# Cognitive Load Management Guide\n\n## Task Classification\n\n### High Cognitive Load Tasks\n- Algorithm debugging and root cause analysis\n- Complex system design decisions\n- Novel algorithm development\n\n**Best practices:**\n- Schedule during peak mental energy (typically morning)\n- Require 2-4 hour uninterrupted blocks\n- Avoid after meetings or late in day\n\n### Medium Cognitive Load Tasks\n- Code reviews with discussion\n- Technical documentation writing\n- Presentation preparation\n\n**Best practices:**\n- Can be done in 1-2 hour blocks\n- Consider delegation for routine aspects\n- Pair programming can reduce individual load\n\n### Low Cognitive Load Tasks\n- Routine data updates\n- Email responses\n- Meeting attendance\n- Experiment tracking updates\n\n**Best practices:**\n- Good for low-energy periods\n- Can be batched together\n- Ideal for post-meeting or evening hours\n\n## Delegation Framework\n\nConsider delegating when:\n1. Task is medium-load but you're in low-energy state\n2. Teammate has relevant expertise\n3. Task is blocking but not learning-critical\n4. You have higher-priority items requiring your unique skills\n\n## Energy State Signals\n\n**Low energy indicators:**\n- Multiple consecutive late nights\n- High meeting density (>4 hours/day)\n- After 6 PM on weekdays\n- Post-lunch period (2-3 PM)\n\n**Peak energy periods:**\n- First 2-3 hours of workday\n- After short breaks\n- Low-meeting days",
+    "last_updated": "2026-02-10T15:00:00+08:00",
+    "views": 234
+  },
+  {
+    "article_id": "KB-405",
+    "title": "Intern Credential Setup - Dependency Map and Timeline Guide",
+    "category": "Onboarding",
+    "tags": [
+      "onboarding",
+      "credentials",
+      "interns",
+      "setup"
+    ],
+    "created_at": "2025-12-15T10:00:00+08:00",
+    "content": "# Intern Credential Setup Guide\n\n## Overview\nNew algorithm interns require 5 core credentials for full productivity:\n\n1. **HR Onboarding Portal** (Entry Point)\n   - Duration: 2 hours\n   - Unlocks: Security training access, KB account, employee ID\n   - No prerequisites\n\n2. **Security Training Certificate**\n   - Duration: 2 days (includes quiz)\n   - Prerequisites: HR onboarding completion\n   - **IMPORTANT**: Certificate valid only 14 days\n   - Unlocks: GPU cluster access\n\n3. **VPN Access**\n   - Duration: 3-5 business days after approval\n   - Prerequisites: Mentor sign-off\n   - Process: Submit IT ticket → Mentor approves ticket → IT processes\n   - Unlocks: GitLab access, internal network resources\n\n4. **GPU Cluster Permissions**\n   - Duration: 1-2 business days\n   - Prerequisites: Valid security training cert (within 14 days)\n   - Critical for: Running training jobs, sprint demos\n\n5. **GitLab Code Repository Access**\n   - Duration: 1 business day\n   - Prerequisites: Active VPN + Security clearance\n   - Critical for: Code submission, collaboration\n\n## Critical Path Analysis\n**Serial timeline**: 20-25 days\n- HR onboarding: Day 0-1\n- Security training: Day 2-4\n- VPN approval: Day 5-10\n- GPU cluster: Day 11-12\n- GitLab: Day 13\n\n**Parallel optimization strategies**:\n- Start VPN approval process immediately after HR onboarding\n- Begin security training while waiting for VPN approval\n- Time security training completion to be within 14 days of GPU cluster request\n\n## Common Issues\n\n### Circular Dependency: VPN Approval\nSome interns report conflicting instructions:\n- IT policy: Requires mentor pre-approval before ticket submission\n- Mentors: Request ticket number before approving\n\n**Resolution**: Contact IT support and mentor simultaneously, clarify which process takes precedence. Some mentors provide conditional approval email that IT accepts.\n\n### Security Certificate Expiration\nCertificate expires in 14 days but full credential chain takes 20+ days serially.\n\n**Solution**: Complete security training AFTER VPN approval is confirmed, not at the beginning of onboarding.\n\n## See Also\n- KB-403: Supervised Access Policy (temporary access options)\n- KB-401: Code Review Guidelines\n- KB-402: Production Incident Response",
+    "last_updated": "2026-02-01T14:30:00+08:00",
+    "views": 247
+  },
+  {
+    "article_id": "KB-406",
+    "title": "Supervised Access Policy for Interns - Temporary GPU Cluster Access",
+    "category": "Infrastructure",
+    "tags": [
+      "gpu",
+      "interns",
+      "temporary-access",
+      "policy"
+    ],
+    "created_at": "2025-11-20T09:00:00+08:00",
+    "content": "# Supervised Access Policy for Interns\n\n## Purpose\nAllow interns to begin productive work while full credential setup is in progress, particularly when sprint deadlines conflict with credential processing timelines.\n\n## Temporary GPU Cluster Access\n\n### Eligibility\n- Active intern with confirmed start date\n- Mentor approval on file\n- HR onboarding completed\n- Security training in progress OR scheduled\n\n### Access Level\n- Limited to 8 GPU hours per day\n- Jobs run under mentor's supervision account\n- Code must be reviewed before execution\n- No access to production data\n\n### Request Process\n1. Mentor submits supervised access request at https://compute.bytedance.com/supervised-access\n2. Include: Intern name, employee ID, sprint deadline justification\n3. Approval time: 4-6 hours (same business day if submitted before 2 PM)\n4. Valid for: 14 days or until full credentials granted, whichever is sooner\n\n### Limitations\n- Cannot submit jobs directly (mentor must submit)\n- Limited to training jobs only (no inference/deployment)\n- Automatic expiration after 14 days\n\n## Temporary VPN Access\nNot available. VPN requires full security clearance due to network access scope.\n\n## Temporary GitLab Access\nRead-only access available:\n- Request via: https://git.bytedance.com/readonly-access\n- Duration: 7 days\n- Cannot commit code (can only view)\n\n## Converting to Full Access\nOnce full credentials are approved:\n1. Supervised access automatically terminates\n2. Job history transfers to intern's permanent account\n3. No action required from intern or mentor\n\n## Contact\nFor questions: compute-admin@bytedance.com",
+    "last_updated": "2026-01-10T11:00:00+08:00",
+    "views": 89
+  },
+  {
+    "article_id": "KB-407",
+    "title": "Email Triage Strategy for Algorithm Engineers During Sprint Periods",
+    "category": "Productivity & Time Management",
+    "tags": [
+      "productivity",
+      "email-management",
+      "sprint",
+      "triage"
+    ],
+    "created_at": "2025-11-20T10:00:00+08:00",
+    "content": "# Email Triage Strategy for Algorithm Engineers\n\n## Overview\nAlgorithm engineers often accumulate notification backlogs during deep-work periods (model training, debugging, experimentation). This guide provides a systematic approach to triage accumulated emails efficiently.\n\n## Urgency Classification Framework\n\n### CRITICAL (respond within 2 hours)\n- Production alerts with user impact\n- Mentor requests with same-day deadlines\n- Code review blocking team members' work\n- Security incidents\n\n### HIGH (respond within 24 hours)\n- Code review requests with explicit deadlines\n- Technical questions from mentor requiring detailed analysis\n- HR deadlines within 5 days\n- Meeting schedule requests from senior staff\n\n### MEDIUM (respond within 3 days)\n- Technical discussions without immediate deadlines\n- Teammate questions (non-blocking)\n- Infrastructure maintenance notifications\n- General team announcements\n\n### LOW (batch process weekly)\n- Automated CI/CD success notifications\n- Optional tech talks and learning resources\n- General company announcements\n- Newsletter subscriptions\n\n## Sender Priority Matrix\n\n**Tier 1 (immediate attention):**\n- Direct mentor\n- Tech lead\n- Production monitoring systems (with HIGH severity)\n\n**Tier 2 (prioritize over automation):**\n- Teammates with explicit requests\n- HR for deadline-driven items\n- Cross-team collaborators\n\n**Tier 3 (batch process):**\n- Automated systems (CI/CD, GitLab bots)\n- Company-wide announcements\n- Optional event invitations\n\n## Triage Process\n\n1. **First pass: Identify CRITICAL items** (5 min)\n   - Scan subjects for keywords: URGENT, PROD, ALERT, deadline dates\n   - Check sender: mentor, tech lead, monitoring systems\n   - Flag for immediate action\n\n2. **Second pass: Separate signal from noise** (10 min)\n   - Filter automated notifications (CI/CD, system alerts without action items)\n   - Identify code review requests with deadlines\n   - Mark HR/evaluation deadlines\n\n3. **Third pass: Draft responses** (30-60 min)\n   - Start with mentor technical questions (highest evaluation impact)\n   - Then code review responses (team blocker impact)\n   - Then acknowledgment-only replies\n\n4. **Create TODO tasks** (10 min)\n   - Convert emails requiring deep work into TODO items\n   - Set due dates based on explicit deadlines or urgency tier\n   - Add tags for easy filtering\n\n## Common Pitfalls\n\n- **Sunk cost trap**: Don't feel obligated to read every automated email. GitLab pipeline failures can be batch-reviewed.\n- **Perfectionism paralysis**: Acknowledge receipt of complex technical questions even if you don't have a complete answer yet.\n- **Social anxiety avoidance**: Respond to teammate requests promptly even if brief - \"Will look into this by [date]\" is better than silence.\n\n## Integration with Other Systems\n\n- **Calendar**: Check calendar context before responding to meeting requests\n- **Contacts**: Reference contact notes for relationship context (e.g., mentor evaluation criteria, teammate collaboration history)\n- **TODO**: Convert any email requiring >30 min work into a TODO task\n\n## Recommended Tools\n\n- Gmail filters for automated senders\n- Labels: urgent, mentor, code-review, automated, fyi\n- Keyboard shortcuts for fast triage\n\nLast updated: 2025-11-20",
+    "last_updated": "2025-11-20T10:00:00+08:00",
+    "views": 47
+  },
+  {
+    "article_id": "KB-408",
+    "title": "GPU Training Server Port Management Best Practices",
+    "category": "ML Infrastructure",
+    "tags": [
+      "gpu",
+      "training",
+      "ports",
+      "best-practices"
+    ],
+    "created_at": "2026-01-20T14:00:00+08:00",
+    "content": "# GPU Training Server Port Management Best Practices\n\n## Common Port Conflicts\n\nWhen running multiple training experiments simultaneously, port conflicts are common. Default ports for common tools:\n\n- **TensorBoard**: 6006\n- **Jupyter Notebook**: 8888 (auto-increments if occupied)\n- **MLflow**: 5000\n- **Ray Dashboard**: 8265\n- **Distributed Training Coordinators**: Often 6006 or 8080\n\n## Pre-Launch Checklist\n\n1. **Check occupied ports**:\n   ```bash\n   lsof -i -P -n | grep LISTEN\n   ```\n\n2. **Identify zombie processes**:\n   Look for processes older than 24 hours that may be abandoned experiments\n\n3. **Plan port assignments**:\n   Document which service uses which port before launching\n\n4. **Kill abandoned processes safely**:\n   ```bash\n   kill -9 <PID>\n   ```\n   Only kill processes you own!\n\n## Custom Port Configuration\n\n### TensorBoard\n```bash\ntensorboard --logdir=<path> --port=<custom_port>\n```\n\n### Jupyter\n```bash\njupyter notebook --port=<custom_port>\n```\n\n### Distributed Training\nCheck config files - many coordinators have hardcoded port references in multiple locations.\n\n## Documentation\n\nAlways document your port assignments, especially when preparing demos or sharing results with mentors. Create a reference note with:\n- Service name\n- Port number\n- Access URL\n- Purpose/experiment name\n\n## Common Mistakes\n\n1. **Forgetting to kill zombie processes** from previous experiments\n2. **Not checking for conflicts before launching** multiple services\n3. **Hardcoding ports in scripts** without checking availability\n4. **Poor documentation** leading to confusion about which URL shows which experiment\n\nSee also: [[GPU Cluster Access Guide]], [[Experiment Tracking Best Practices]]",
+    "last_updated": "2026-01-20T14:00:00+08:00",
+    "views": 47
+  },
+  {
+    "article_id": "KB-409",
+    "title": "Distributed Training Coordinator Configuration Guide",
+    "category": "ML Infrastructure",
+    "tags": [
+      "distributed-training",
+      "coordinator",
+      "configuration"
+    ],
+    "created_at": "2026-01-15T10:00:00+08:00",
+    "content": "# Distributed Training Coordinator Configuration Guide\n\n## Overview\n\nThe distributed training coordinator manages worker synchronization and gradient aggregation for multi-GPU training jobs.\n\n## Configuration Files\n\nThe coordinator uses three main config files:\n\n1. **config.yaml**: Main coordinator settings\n2. **worker_config.yaml**: Worker node configuration\n3. **network.yaml**: Network and port settings\n\n## Port Configuration\n\n**Default port**: 6006\n\n⚠️ **Warning**: The coordinator port is hardcoded in multiple locations:\n- network.yaml (network.coordinator_port)\n- worker_config.yaml (coordinator_address)\n- health_check.py (COORDINATOR_PORT constant)\n\nChanging the port requires updating all three files. Consider using default port and moving other services if conflicts occur.\n\n## Launch Command\n\n```bash\npython distributed_coordinator.py --config=config.yaml --port=6006\n```\n\n## Health Check\n\nCoordinator exposes health check endpoint:\n```\nhttp://localhost:6006/status\n```\n\nReturns JSON with worker status and training progress.\n\n## Troubleshooting\n\n**Port already in use**: Check for conflicting services (TensorBoard often uses 6006 by default). Use `lsof -i :6006` to identify the process.\n\n**Workers not connecting**: Verify coordinator_address in worker_config.yaml matches actual coordinator host and port.\n\nSee also: [[GPU Training Server Port Management]], [[Multi-GPU Training Best Practices]]",
+    "last_updated": "2026-01-15T10:00:00+08:00",
+    "views": 89
+  },
+  {
+    "article_id": "KB-410",
+    "title": "GPU Cluster Pricing Policy - Q1 2026 Discount Tiers and Stacking Rules",
+    "category": "Compute Infrastructure",
+    "tags": [
+      "gpu",
+      "pricing",
+      "compute",
+      "discount",
+      "intern"
+    ],
+    "created_at": "2025-12-15T10:00:00+08:00",
+    "content": "# GPU Cluster Pricing Policy - Q1 2026\n\n## Base Pricing\nStandard GPU-hour rate: ¥120/hour (V100 equivalent)\n\n## Available Discount Tiers\n\n### 1. Base Intern Allocation Discount\n- **Discount**: 20% off standard rate\n- **Eligibility**: All interns with active compute allocation\n- **Application**: Automatically applied first in stacking order\n- **Final rate**: ¥96/GPU-hour\n\n### 2. Bulk Hour Commitment Discount\n- **Discount**: Additional 15% off after base discount\n- **Threshold**: Commit to 100+ GPU hours in single job submission\n- **Application**: Applied after base discount\n- **Stacking**: ¥96 × 0.85 = ¥81.60/GPU-hour\n- **Important**: Preemption discount reduces effective hours counted toward threshold (see interaction rules)\n\n### 3. Off-Peak Scheduling Discount\n- **Discount**: 25% off standard rate\n- **Window**: Jobs scheduled between 2:00 AM - 6:00 AM Beijing time\n- **Application**: Replaces bulk commitment discount (mutually exclusive with preemption)\n- **Stacking**: ¥96 × 0.75 = ¥72/GPU-hour (after base)\n- **Requirement**: User must be available for monitoring during execution window\n- **Risk**: Job failures during off-peak have slower support response (avg 45min vs 10min during business hours)\n\n### 4. Preemption-Tolerant Discount\n- **Discount**: 30% off standard rate\n- **Risk**: Job can be killed if higher-priority workload needs resources\n- **Application**: Replaces bulk/off-peak discounts\n- **Stacking**: ¥96 × 0.70 = ¥67.20/GPU-hour (after base)\n- **Mutual exclusion**: Cannot combine with off-peak scheduling\n- **Threshold interaction**: Preempted hours do NOT count toward bulk commitment threshold. If job is killed at 60 hours, only 60 hours count toward 100-hour threshold, potentially breaking bulk discount eligibility for the job.\n\n### 5. Team Budget Pooling\n- **Discount**: Variable (depends on team underspend)\n- **Mechanism**: Access unused allocation from other team members\n- **Current availability (Jan 2026)**: Chen Hui has 85 GPU-hours unused (expires Jan 31), Zhang Lin has 42 hours (expires Feb 15)\n- **Application**: Requires approval from team member + mentor sign-off\n- **Processing time**: 2-3 business days for approval workflow\n- **Stacking**: Can combine with any other discount tier, applied as credit rather than percentage discount\n\n## Stacking Rules Summary\n\n### Valid Combinations:\n1. **Base + Bulk**: ¥96 × 0.85 = ¥81.60/hour (most common for large jobs)\n2. **Base + Off-Peak**: ¥96 × 0.75 = ¥72/hour (best rate but requires night monitoring)\n3. **Base + Preemption**: ¥96 × 0.70 = ¥67.20/hour (cheapest but risky)\n4. **Base only**: ¥96/hour (safest, no commitments)\n5. **Any above + Team Pooling**: Reduces out-of-pocket cost by using borrowed hours\n\n### Mutual Exclusions:\n- Off-Peak and Preemption cannot combine\n- Bulk commitment requires >100 hours; preemption risk may break this threshold\n- Team pooling approval delay may conflict with urgent deadlines\n\n## Application Order\n1. Base intern discount (always first)\n2. Choose ONE of: Bulk / Off-Peak / Preemption\n3. Team pooling credits (if approved)\n\n## Important Notes for Interns\n- Q1 intern compute allocation cap: 500 GPU-hours total\n- Unused allocation does NOT roll over to Q2\n- Budget tracking available in finance service (transaction category: compute_allocation)\n- For jobs with hard deadlines, recommend avoiding preemption tier\n- Off-peak discount requires documented monitoring plan (see KB-408)\n\nLast updated: 2025-12-15 by Compute Infrastructure Team",
+    "last_updated": "2025-12-15T10:00:00+08:00",
+    "views": 234
+  },
+  {
+    "article_id": "KB-411",
+    "title": "Intern Compute Budget Tracking and Quota Management",
+    "category": "Compute Infrastructure",
+    "tags": [
+      "intern",
+      "budget",
+      "quota",
+      "finance"
+    ],
+    "created_at": "2026-01-10T14:00:00+08:00",
+    "content": "# Intern Compute Budget Tracking\n\n## Quota Overview\n- Q1 2026 intern allocation: 500 GPU-hours per intern\n- Allocation period: Jan 1 - Mar 31, 2026\n- No rollover to Q2\n\n## Checking Your Balance\n1. Access finance service: filter by category 'compute_allocation'\n2. Each training job creates a TXN record with negative amount (deduction)\n3. Initial allocation shows as positive TXN at quarter start\n4. Current balance = sum of all compute_allocation transactions\n\n## Budget Planning Tips\n- Reserve 50-100 hours buffer for emergency re-runs\n- Sprint demo deadline jobs should avoid preemption tier\n- Consider team pooling for end-of-quarter experiments\n- Monitor balance weekly to avoid quota exhaustion\n\n## Overage Policy\n- Exceeding quota requires mentor approval\n- Overage charged to team's research budget\n- Approval typically takes 3-5 business days\n\nLast updated: 2026-01-10 by Finance Team",
+    "last_updated": "2026-01-10T14:00:00+08:00",
+    "views": 89
+  },
+  {
+    "article_id": "KB-412",
+    "title": "GPU Cluster Intern Discount Bundle - Policy Details and Eligibility Rules",
+    "category": "Compute Infrastructure",
+    "tags": [
+      "gpu-cluster",
+      "pricing",
+      "intern",
+      "discount",
+      "policy"
+    ],
+    "created_at": "2026-02-03T14:00:00+08:00",
+    "content": "# GPU Cluster Intern Discount Bundle - Policy Details\n\n## Effective Date\nFebruary 3, 2026, 2:00 PM Beijing Time\n\n## Discount Terms\n- **Discount Rate:** 40% off base GPU-hour pricing\n- **Eligibility:** Jobs over 36 GPU-hours (e.g., 36+ hours on 1 GPU, 18+ hours on 2 GPUs, etc.)\n- **Submission Interface:** Must use new intern-portal (https://intern-portal.bytedance.com/gpu)\n- **Applies To:** New job submissions only; existing queued jobs are NOT eligible\n\n## Discount Stacking Rules\n- Intern Discount Bundle (40%) REPLACES base intern allocation discount (20%)\n- Does NOT stack with bulk hour commitment discount (15%)\n- Does NOT stack with off-peak scheduling discount (25%)\n- Does NOT stack with preemption-tolerant discount (30%)\n- CAN stack with team budget pooling (variable, requires mentor approval)\n- **Maximum effective discount:** 40% + team pooling (typically 5-10%) = 45-50%\n\n## Job Splitting and Eligibility\n- **Single Job Rule:** Each job must individually exceed 36 GPU-hours to qualify\n- **Split Jobs:** If you split a 48-hour job into 2×24-hour jobs, NEITHER qualifies (24 < 36)\n- **Chained Jobs:** Sequential job chains are treated as separate submissions; each evaluated independently\n- **Workaround:** Minimum qualifying split is 2×36-hour jobs (72 total hours)\n\n## Cancellation and Refund Policy\n- **Legacy Interface Jobs:** Full refund if cancelled within 24 hours of submission\n- **Refund Processing Time:** 2 hours (credits returned to Q1 budget)\n- **Resubmission:** No penalty for canceling and resubmitting to access discount\n- **Time Slot:** Original time slots are NOT preserved; resubmitted jobs enter standard queue\n\n## Queue Priority and Wait Times\n- **Intern-Portal Queue:** Separate from legacy interface queue\n- **Current Wait Time:** 8-12 hours baseline (as of Feb 3, 2:00 PM)\n- **Priority Rules:** FIFO within intern tier; no priority for cancelled/resubmitted jobs\n- **Peak Periods:** Wait times may increase 2-3× during policy change windows (24-48 hours)\n- **Queue Transparency:** Real-time status at https://intern-portal.bytedance.com/gpu/queue\n\n## Decision Framework for Cancellation\n### When to Cancel and Resubmit:\n- Deadline buffer > 7 days beyond worst-case queue + job duration\n- Q1 budget is constrained (savings > 10% of remaining allocation)\n- Job is fault-tolerant (can restart if queue delays cause issues)\n\n### When to Keep Original Job:\n- Hard deadline within 7 days of job completion\n- Time slot is during low-contention period (night/weekend)\n- Poor time management skills (uncertainty monitoring is risky)\n- Job has complex dependencies requiring precise timing\n\n## Cost Comparison Example (48-hour job, 192 GPU-hours)\n- **Legacy Interface (20% base discount):** 1,536 credits\n- **Intern-Portal (40% discount):** 1,152 credits\n- **Savings:** 384 credits (25% additional savings)\n- **Savings as % of typical Q1 intern budget (3,000 credits):** 12.8%\n\n## Support Contacts\n- Intern Portal Technical Support: intern-portal-support@bytedance.com\n- Billing Questions: compute-admin@bytedance.com\n- Policy Clarifications: gpu-policy@bytedance.com",
+    "last_updated": "2026-02-03T14:00:00+08:00",
+    "views": 247
+  },
+  {
+    "article_id": "KB-413",
+    "title": "GPU Cluster Job Splitting Strategies for Long Training Runs",
+    "category": "Compute Infrastructure Best Practices",
+    "tags": [
+      "gpu-cluster",
+      "training",
+      "job-splitting",
+      "checkpointing"
+    ],
+    "created_at": "2026-01-10T14:00:00+08:00",
+    "content": "# GPU Cluster Job Splitting Strategies\n\nWhen your training workload exceeds cluster tier time limits, you have several options:\n\n## Option 1: Sequential Job Chain (Recommended)\n- Split single long job into multiple shorter jobs\n- Use checkpointing to maintain training state between jobs\n- Pros: Stays within tier limits, allows monitoring between stages, can adjust hyperparams mid-training\n- Cons: Small overhead from checkpoint I/O, requires manual job submission (or scheduler automation)\n- Best for: Jobs that can be naturally divided (e.g., 3×24hr instead of 1×72hr)\n\n## Option 2: Upgrade to Higher Tier\n- Move from Intern Discount Bundle to Standard or Priority tier\n- Pros: No architectural changes, simpler workflow\n- Cons: Higher cost (2-4x), may exceed intern budget allocation\n- Best for: Jobs with hard time constraints and available budget\n\n## Option 3: Architecture Optimization\n- Reduce training time through model/training efficiency improvements\n- Examples: Mixed precision training, gradient accumulation, learning rate warmup optimization\n- Pros: Stays within budget, improves overall efficiency\n- Cons: Requires upfront engineering work, may affect convergence\n- Best for: Research projects with flexibility on approach\n\n## Checkpoint Best Practices\n- Save optimizer state, not just model weights\n- Include RNG state for reproducibility\n- Verify checkpoint integrity before ending job\n- Use versioned checkpoint naming (checkpoint_step_10000.pt)\n\nSee also: KB-412 (Intern Discount Bundle Policy), KB-408 (GPU Training Server Port Management)",
+    "last_updated": "2026-01-10T14:00:00+08:00",
+    "views": 43
+  },
+  {
+    "article_id": "KB-414",
+    "title": "Checkpoint Resumption Reliability - Known Issues and Workarounds",
+    "category": "GPU Training Best Practices",
+    "tags": [
+      "gpu-training",
+      "checkpoint",
+      "reliability",
+      "troubleshooting"
+    ],
+    "created_at": "2025-11-20T10:00:00+08:00",
+    "content": "# Checkpoint Resumption Reliability\n\n## Overview\nCheckpoint-based training resumption is critical for long-running GPU jobs, but several known issues can cause silent failures or data corruption.\n\n## Known Issues\n\n### 1. State Dictionary Mismatch (Severity: High)\n- **Symptom**: Training resumes but loss diverges after 2-3 epochs\n- **Root cause**: Optimizer state not properly saved/restored\n- **Workaround**: Always save full state dict including scheduler state\n\n### 2. Random Seed Desynchronization (Severity: Medium)\n- **Symptom**: Non-reproducible results after resumption\n- **Root cause**: DataLoader worker seeds not checkpointed\n- **Workaround**: Use deterministic DataLoader with explicit seed management\n\n### 3. Distributed Training Rank Mismatch (Severity: High)\n- **Symptom**: Hanging or crash on resumption with multi-GPU jobs\n- **Root cause**: Process group state not restored\n- **Workaround**: Reinitialize process group before loading checkpoint\n\n## Checkpoint Overhead Analysis\n- Small models (<500M params): 2-3% overhead per checkpoint\n- Large models (>2B params): 5-8% overhead per checkpoint\n- Recommendation: checkpoint every 4-6 hours for optimal balance\n\n## Monitoring Requirements\n- Check job status every 2-4 hours during business hours\n- Set up alert for job failures (email/Slack)\n- Plan for 10-15% time buffer for recovery attempts\n\n## Related Articles\n- KB-413: Job Splitting Best Practices\n- KB-408: GPU Training Server Port Management\n\n*Last updated: 2025-12-15*",
+    "last_updated": "2025-12-15T16:00:00+08:00",
+    "views": 342
+  }
+]

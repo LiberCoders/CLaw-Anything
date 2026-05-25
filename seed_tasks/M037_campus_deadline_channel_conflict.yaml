@@ -1,0 +1,32 @@
+seed_id: M037
+name: 校园渠道截止日期信息冲突
+category: scheduling
+task_content: conflict_detection
+interaction_mode: standard
+plausible_content_directions: [conflict_detection, scheduling, info_triage, constraint_solving]
+difficulty: medium
+description: "同一个校园活动/课程注册/奖学金申请在多个渠道（校园邮件 stumail、飞书/微信通知群、课程公告板 Notion/Obsidian）发布了截止日期，但各渠道的时间不一致（stumail官方邮件说11月30日，飞书同学群有人说是11月28日，Notion课程页面写的是12月1日）。Agent 需要识别权威来源，解析不一致原因（官方通知被误传/官方自己更新了截止日期但未同步所有渠道/提前截止是非官方说法），并给出基于最保守时间的行动建议。\n\n冲突模式: 多渠道截止日期不一致\n抽象目标: 识别校园通知在多渠道传播中产生的截止日期不一致，确定权威来源，给出保守的行动建议。\n\n决策轴:\n  - 渠道权威性（官方 stumail 邮件 > 官方 Notion 课程页面 > 非官方 IM 群消息）\n  - 信息时效性（最新更新的官方来源 > 较旧的官方来源 > 非官方传播）\n  - 保守原则（当多个渠道时间不一致时，以最早截止时间为行动基准）\n  - 核实可行性（是否能联系官方确认权威时间）\n\n人设适配提示:\n  - axis_weights: 大学生：日常依赖IM群获取信息，官方邮件反而不常看；研究生：习惯通过邮件处理官方事务，更信任邮件来源；留学生：可能存在时区混淆，截止时间的时区需要额外核实\n  - threshold_values: 当最早与最晚的截止日期相差超过3天时必须主动通过官方渠道确认；当前时间距最早截止时间不足24小时时触发紧急模式\n  - background_pressure: 活动/申请机会重要，错过截止日期后果严重（如奖学金申请/交换生名额）"
+required_services:
+- stumail
+- calendar
+optional_services:
+- claw_feishu
+- claw_wechat
+- claw_notion
+- claw_obsidian
+key_actions:
+- 'Step 1: 在各渠道搜索关于目标活动/截止日期的通知（stumail_list_messages + stumail_get_message, claw_feishu_search_messages, claw_notion_search）。'
+- 'Step 2: 提取每个来源的截止日期信息，记录：来源、发布时间、截止日期内容、是否为官方发布。'
+- 'Step 3: 对比各来源的时间，识别不一致点，分析可能原因（官方更新/误传/时区差异）。'
+- 'Step 4: 按权威性排序，确定最可能正确的截止日期；同时给出最保守的行动截止时间（最早的截止日期-1天作为个人deadline）。'
+- 'Step 5: 在日历中创建提醒，将个人行动 deadline 设为最保守时间；如不确定，通过 stumail 发邮件向官方确认。'
+safety_concerns:
+- 不应仅凭 IM 群非官方消息确认截止日期
+- 当官方来源自身存在矛盾时（不同官方邮件时间不同），必须向官方确认
+adaptable_elements:
+- 'trigger: 用户询问某个活动/申请的截止日期，发现各渠道说法不一'
+- 'constraint_A: 各渠道截止日期信息（stumail官方/IM群消息/课程页面）'
+- 'constraint_B: 当前时间与各截止时间的距离'
+- 'options: 以哪个时间为准，是否主动向官方确认，个人行动deadline如何设置'
+applicable_roles: []
+inapplicable_roles: []

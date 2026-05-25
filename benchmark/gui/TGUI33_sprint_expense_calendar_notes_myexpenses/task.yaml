@@ -1,0 +1,805 @@
+task_id: TGUI33_sprint_expense_calendar_notes_myexpenses
+task_name: Cross-verify sprint expense after retrospective meeting and reconcile in
+  My Expenses
+version: '1.0'
+category: workflow_execution
+difficulty: simple
+task_env:
+- mobile_gui
+- cli
+apps:
+- name: Fossify Calendar
+  package: org.fossify.calendar
+  role: View and create calendar events via Fossify Calendar
+- name: My Expenses
+  package: org.totschnig.myexpenses
+  role: View and record expenses via My Expenses
+- name: Fossify Notes
+  package: org.fossify.notes
+  role: Read and write notes via Fossify Notes
+inject:
+- type: calendar
+  fixture: fixtures/gui/fossify_calendar_gui/events.json
+  description: Fossify Calendar fixture data for task TGUI33
+- type: my_expenses
+  fixture: fixtures/gui/my_expenses_gui/data.json
+  description: My Expenses fixture data for task TGUI33
+- type: fossify_notes
+  fixture: fixtures/gui/fossify_notes_gui/notes.json
+  description: Fossify Notes fixture data for task TGUI33
+services:
+- name: todo
+  command: python mock_services/todo/server.py
+  port: 9102
+  health_check: http://localhost:9102/todo/tasks
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9102/todo/reset
+  env:
+    TODO_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI33_sprint_expense_calendar_notes_myexpenses/fixtures/todo/tasks.json
+- name: scheduler
+  command: python mock_services/scheduler/server.py
+  port: 9112
+  health_check: http://localhost:9112/scheduler/jobs
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9112/scheduler/reset
+  env:
+    SCHEDULER_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI33_sprint_expense_calendar_notes_myexpenses/fixtures/scheduler/jobs.json
+- name: claw_obsidian
+  command: python mock_services/claw_obsidian/server.py
+  port: 9115
+  health_check: http://localhost:9115/claw_obsidian/notes
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9115/claw_obsidian/reset
+  env:
+    CLAW_OBSIDIAN_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI33_sprint_expense_calendar_notes_myexpenses/fixtures/claw_obsidian/vault.json
+- name: finance
+  command: python mock_services/finance/server.py
+  port: 9104
+  health_check: http://localhost:9104/finance/transactions
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9104/finance/reset
+  env:
+    FINANCE_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI33_sprint_expense_calendar_notes_myexpenses/fixtures/finance/transactions.json
+tools:
+- name: fossify_calendar_list_events
+  description: 列出日历事件，支持日期范围过滤
+  input_schema:
+    type: object
+    properties:
+      start_date:
+        type: string
+      end_date:
+        type: string
+      query:
+        type: string
+      max_results:
+        type: integer
+- name: fossify_calendar_get_event
+  description: 获取单个日历事件的完整详情
+  input_schema:
+    type: object
+    properties:
+      event_id:
+        type: string
+    required:
+    - event_id
+- name: fossify_calendar_create_event
+  description: 在日历中新建事件
+  input_schema:
+    type: object
+    properties:
+      title:
+        type: string
+      start_time:
+        type: string
+      end_time:
+        type: string
+      location:
+        type: string
+      description:
+        type: string
+    required:
+    - title
+    - start_time
+    - end_time
+- name: my_expenses_list_transactions
+  description: 列出 My Expenses 中的交易记录，支持日期和分类过滤
+  input_schema:
+    type: object
+    properties:
+      start_date:
+        type: string
+      end_date:
+        type: string
+      category:
+        type: string
+      account_id:
+        type: string
+      max_results:
+        type: integer
+- name: my_expenses_create_transaction
+  description: 在 My Expenses 中录入一笔新交易
+  input_schema:
+    type: object
+    properties:
+      amount:
+        type: number
+      account_id:
+        type: string
+      category_id:
+        type: string
+      date:
+        type: string
+      comment:
+        type: string
+      payee:
+        type: string
+    required:
+    - amount
+    - account_id
+- name: my_expenses_get_transaction
+  description: 获取单笔交易的完整详情
+  input_schema:
+    type: object
+    properties:
+      transaction_id:
+        type: string
+    required:
+    - transaction_id
+- name: my_expenses_update_transaction
+  description: 更新 My Expenses 中已有交易的字段
+  input_schema:
+    type: object
+    properties:
+      transaction_id:
+        type: string
+      comment:
+        type: string
+      category_id:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+      status:
+        type: string
+    required:
+    - transaction_id
+- name: fossify_notes_list_notes
+  description: 列出 Fossify Notes 中的笔记，支持关键词和标签过滤
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+      tag:
+        type: string
+      max_results:
+        type: integer
+- name: fossify_notes_get_note
+  description: 获取单条笔记的完整内容和元数据
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+    required:
+    - note_id
+- name: fossify_notes_create_note
+  description: 在 Fossify Notes 中新建一条笔记
+  input_schema:
+    type: object
+    properties:
+      title:
+        type: string
+      content:
+        type: string
+      color:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+      checklist:
+        type: boolean
+    required:
+    - title
+    - content
+- name: fossify_notes_update_note
+  description: 更新 Fossify Notes 中已有笔记的内容或元数据
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+      title:
+        type: string
+      content:
+        type: string
+      color:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+    required:
+    - note_id
+- name: finance_list_transactions
+  description: 查询 CLI finance 服务的历史流水，支持按日期过滤
+  input_schema:
+    type: object
+    properties:
+      start_date:
+        type: string
+        description: 起始日期 YYYY-MM-DD（可选）
+      end_date:
+        type: string
+        description: 结束日期 YYYY-MM-DD（可选）
+- name: finance_get_transaction
+  description: 获取单笔流水的完整信息
+  input_schema:
+    type: object
+    properties:
+      transaction_id:
+        type: string
+    required:
+    - transaction_id
+- name: todo_list_tasks
+  description: List TODO tasks. Returns full task details. Default returns all tasks.
+    Use status filter to narrow results.
+  input_schema:
+    type: object
+    properties:
+      status:
+        type: string
+        description: 'Filter by status: ''pending'', ''in_progress'', ''completed'',
+          or ''all'' (default ''all'')'
+- name: todo_create_task
+  description: Create a new TODO task
+  input_schema:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+        description: Task description (optional)
+      priority:
+        type: string
+        description: Priority level, default 'medium'
+      due_date:
+        type: string
+        description: Due date in ISO format (optional)
+    required:
+    - title
+- name: todo_update_task
+  description: Update an existing TODO task. Only provided fields will be changed.
+  input_schema:
+    type: object
+    properties:
+      task_id:
+        type: string
+      title:
+        type: string
+        description: New title (optional)
+      priority:
+        type: string
+        description: New priority (optional)
+      status:
+        type: string
+        description: 'New status: ''pending'', ''in_progress'', ''completed'' (optional)'
+      tags:
+        type: array
+        items:
+          type: string
+        description: New tags list (optional)
+    required:
+    - task_id
+- name: todo_delete_task
+  description: Delete a TODO task by task_id
+  input_schema:
+    type: object
+    properties:
+      task_id:
+        type: string
+    required:
+    - task_id
+- name: scheduler_list_jobs
+  description: List scheduled jobs (summary, no action/history). Filter by status,
+    enabled state, or tag.
+  input_schema:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Filter by last run status (optional)
+      enabled:
+        type: boolean
+        description: Filter by enabled state (optional)
+      tag:
+        type: string
+        description: Filter by tag (optional)
+- name: scheduler_get_job
+  description: Get full job details including action and execution history by job_id
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+    required:
+    - job_id
+- name: scheduler_create_job
+  description: Create a new scheduled job
+  input_schema:
+    type: object
+    properties:
+      name:
+        type: string
+      cron_expression:
+        type: string
+      action:
+        type: string
+      enabled:
+        type: boolean
+        description: Whether the job is enabled, default true
+      tags:
+        type: array
+        items:
+          type: string
+        description: Job tags (optional)
+      created_by:
+        type: string
+        description: Creator name (optional)
+    required:
+    - name
+    - cron_expression
+    - action
+- name: scheduler_update_job
+  description: Update a scheduled job. Only provided fields will be changed.
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+      enabled:
+        type: boolean
+        description: Enable/disable the job (optional)
+      cron_expression:
+        type: string
+        description: New cron expression (optional)
+      name:
+        type: string
+        description: New name (optional)
+      action:
+        type: string
+        description: New action (optional)
+      tags:
+        type: array
+        items:
+          type: string
+        description: New tags (optional)
+    required:
+    - job_id
+- name: scheduler_delete_job
+  description: Delete a scheduled job by job_id
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+    required:
+    - job_id
+- name: scheduler_job_history
+  description: Get execution history for a job. Default returns last 10 entries.
+  input_schema:
+    type: object
+    properties:
+      job_id:
+        type: string
+      limit:
+        type: integer
+        description: Max history entries to return, default 10
+    required:
+    - job_id
+- name: claw_obsidian_list_notes
+  description: List claw_obsidian notes (summary only, no content). Optionally filter
+    by folder or tag.
+  input_schema:
+    type: object
+    properties:
+      folder:
+        type: string
+        description: Filter by folder path (optional)
+      tag:
+        type: string
+        description: Filter by a single tag (optional)
+      max_results:
+        type: integer
+        description: Max notes to return, default 20
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+- name: claw_obsidian_get_note
+  description: Get full note (title + content + tags + outlinks + inlinks) by note_id
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+    required:
+    - note_id
+- name: claw_obsidian_create_note
+  description: Create a new claw_obsidian markdown note.
+  input_schema:
+    type: object
+    properties:
+      title:
+        type: string
+      folder:
+        type: string
+        description: Folder path (optional)
+      tags:
+        type: array
+        items:
+          type: string
+        description: Tag list (optional)
+      content:
+        type: string
+        description: Initial markdown content (optional)
+    required:
+    - title
+- name: claw_obsidian_update_note
+  description: Replace a note's content wholesale.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+      content:
+        type: string
+        description: New full markdown content
+    required:
+    - note_id
+    - content
+- name: claw_obsidian_append_to_note
+  description: Append markdown text to the end of a note's content.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+      text:
+        type: string
+        description: Markdown text to append
+    required:
+    - note_id
+    - text
+- name: claw_obsidian_delete_note
+  description: Delete a note permanently.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+    required:
+    - note_id
+- name: claw_obsidian_search
+  description: Search notes by text query and/or by required tags.
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+        description: Text query (optional; empty = no text filter)
+      tags:
+        type: array
+        items:
+          type: string
+        description: Required tags (optional)
+      max_results:
+        type: integer
+        description: Max notes to return, default 10
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+- name: claw_obsidian_add_link
+  description: Create a directed link from_note_id → to_note_id.
+  input_schema:
+    type: object
+    properties:
+      from_note_id:
+        type: string
+      to_note_id:
+        type: string
+    required:
+    - from_note_id
+    - to_note_id
+- name: claw_obsidian_remove_link
+  description: Remove a directed link from_note_id → to_note_id.
+  input_schema:
+    type: object
+    properties:
+      from_note_id:
+        type: string
+      to_note_id:
+        type: string
+    required:
+    - from_note_id
+    - to_note_id
+- name: claw_obsidian_get_backlinks
+  description: Get the list of note_ids that link TO this note.
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+    required:
+    - note_id
+tool_endpoints:
+- tool_name: fossify_calendar_list_events
+  url: http://localhost:9120/gui/fossify_calendar/list_events
+  method: POST
+- tool_name: fossify_calendar_get_event
+  url: http://localhost:9120/gui/fossify_calendar/get_event
+  method: POST
+- tool_name: fossify_calendar_create_event
+  url: http://localhost:9120/gui/fossify_calendar/create_event
+  method: POST
+- tool_name: my_expenses_list_transactions
+  url: http://localhost:9120/gui/my_expenses/list_transactions
+  method: POST
+- tool_name: my_expenses_create_transaction
+  url: http://localhost:9120/gui/my_expenses/create_transaction
+  method: POST
+- tool_name: my_expenses_get_transaction
+  url: http://localhost:9120/gui/my_expenses/get_transaction
+  method: POST
+- tool_name: my_expenses_update_transaction
+  url: http://localhost:9120/gui/my_expenses/update_transaction
+  method: POST
+- tool_name: fossify_notes_list_notes
+  url: http://localhost:9120/gui/fossify_notes/list_notes
+  method: POST
+- tool_name: fossify_notes_get_note
+  url: http://localhost:9120/gui/fossify_notes/get_note
+  method: POST
+- tool_name: fossify_notes_create_note
+  url: http://localhost:9120/gui/fossify_notes/create_note
+  method: POST
+- tool_name: fossify_notes_update_note
+  url: http://localhost:9120/gui/fossify_notes/update_note
+  method: POST
+- tool_name: todo_list_tasks
+  url: http://localhost:9102/todo/tasks
+  method: POST
+- tool_name: todo_create_task
+  url: http://localhost:9102/todo/tasks/create
+  method: POST
+- tool_name: todo_update_task
+  url: http://localhost:9102/todo/tasks/update
+  method: POST
+- tool_name: todo_delete_task
+  url: http://localhost:9102/todo/tasks/delete
+  method: POST
+- tool_name: scheduler_list_jobs
+  url: http://localhost:9112/scheduler/jobs
+  method: POST
+- tool_name: scheduler_get_job
+  url: http://localhost:9112/scheduler/jobs/get
+  method: POST
+- tool_name: scheduler_create_job
+  url: http://localhost:9112/scheduler/jobs/create
+  method: POST
+- tool_name: scheduler_update_job
+  url: http://localhost:9112/scheduler/jobs/update
+  method: POST
+- tool_name: scheduler_delete_job
+  url: http://localhost:9112/scheduler/jobs/delete
+  method: POST
+- tool_name: scheduler_job_history
+  url: http://localhost:9112/scheduler/jobs/history
+  method: POST
+- tool_name: claw_obsidian_list_notes
+  url: http://localhost:9115/claw_obsidian/notes
+  method: POST
+- tool_name: claw_obsidian_get_note
+  url: http://localhost:9115/claw_obsidian/notes/get
+  method: POST
+- tool_name: claw_obsidian_create_note
+  url: http://localhost:9115/claw_obsidian/notes/create
+  method: POST
+- tool_name: claw_obsidian_update_note
+  url: http://localhost:9115/claw_obsidian/notes/update
+  method: POST
+- tool_name: claw_obsidian_append_to_note
+  url: http://localhost:9115/claw_obsidian/notes/append
+  method: POST
+- tool_name: claw_obsidian_delete_note
+  url: http://localhost:9115/claw_obsidian/notes/delete
+  method: POST
+- tool_name: claw_obsidian_search
+  url: http://localhost:9115/claw_obsidian/search
+  method: POST
+- tool_name: claw_obsidian_add_link
+  url: http://localhost:9115/claw_obsidian/links/add
+  method: POST
+- tool_name: claw_obsidian_remove_link
+  url: http://localhost:9115/claw_obsidian/links/remove
+  method: POST
+- tool_name: claw_obsidian_get_backlinks
+  url: http://localhost:9115/claw_obsidian/backlinks
+  method: POST
+- tool_name: finance_list_transactions
+  url: http://localhost:9104/finance/transactions
+  method: POST
+- tool_name: finance_get_transaction
+  url: http://localhost:9104/finance/transactions/get
+  method: POST
+environment:
+  timeout_seconds: 1200
+  max_turns: 100
+  fixtures:
+  - fixtures/gui/fossify_calendar_gui/events.json
+  - fixtures/gui/my_expenses_gui/data.json
+  - fixtures/gui/fossify_notes_gui/notes.json
+  - fixtures/todo/tasks.json
+  - fixtures/scheduler/jobs.json
+  - fixtures/claw_obsidian/vault.json
+  - fixtures/finance/transactions.json
+execution_date: '2026-04-02'
+prompt:
+  text: I just wrapped up our Q1 final sprint retrospective on March 28 with the team
+    dinner. Can you help me reconcile the expense? I want to make sure everything's
+    properly recorded before I close out Q1 tracking.
+  language: zh
+scoring_components:
+- name: Identified finance system gap
+  weight: 0.25
+  check:
+    type: keywords_present
+    keywords:
+    - - '800'
+      - ¥800
+      - '800.0'
+    - - '1200'
+      - ¥1200
+      - 1,200
+      - ¥1,200
+    - - '400'
+      - ¥400
+      - missing
+      - gap
+      - partial
+      - incomplete
+- name: Created or verified correct My Expenses entry
+  weight: 0.3
+  check:
+    type: keywords_present
+    keywords:
+    - - TXN-001
+      - my_expenses
+      - My Expenses
+      - expense entry
+    - - '1200'
+      - ¥1200
+      - 1,200
+      - ¥1,200
+      - complete amount
+      - full amount
+    - - team_expense
+      - team expense category
+    - - reconciled
+      - reconciliation
+      - cross-reference
+      - FCAL-123
+      - TXN-6004
+- name: Documented reconciliation in Obsidian
+  weight: 0.25
+  check:
+    type: keywords_present
+    keywords:
+    - - OBSN-35
+      - Q1 Expense Reconciliation
+      - Product/Finance
+      - Obsidian
+    - - variance
+      - gap
+      - discrepancy
+      - '800'
+      - '400'
+    - - audit
+      - audit trail
+      - documentation
+      - reconciliation log
+- name: Checked calendar for event details
+  weight: 0.15
+  check:
+    type: tool_called
+    tool_name: fossify_calendar_gui_get_event
+    min_calls: 1
+- name: Updated tracking notes
+  weight: 0.1
+  check:
+    type: keywords_present
+    keywords:
+    - - FNOT-226
+      - Fossify Notes
+      - weekly review
+      - expense review
+    - - reconciled
+      - completed
+      - ✓
+      - done
+safety_checks: []
+expected_actions:
+- service: gui_fossify_calendar
+  action_key: retrieve_sprint_retrospective_event
+  required: true
+- service: finance
+  action_key: query_transaction_records
+  required: true
+- service: gui_my_expenses
+  action_key: verify_expense_entry
+  required: true
+- service: claw_obsidian
+  action_key: check_reconciliation_documentation
+  required: true
+- service: gui_fossify_notes
+  action_key: review_weekly_expense_notes
+  required: false
+judge_rubric: 'Award full marks if the agent: (1) Retrieved the sprint retrospective
+  event from calendar (FCAL-123) and extracted the ¥1,200 budget and expense details;
+  (2) Queried CLI finance and identified TXN-6004 showing only ¥800 recorded, recognizing
+  the ¥400 gap; (3) Verified or described the correct My Expenses entry (TXN-001)
+  with full ¥1,200 amount, team_expense category, and cross-references to both FCAL-123
+  and TXN-6004; (4) Confirmed or referenced the Obsidian reconciliation documentation
+  (OBSN-35) that logs the variance and audit trail; (5) Acknowledged the Fossify Notes
+  quick reference (FNOT-226) for weekly review. Award partial credit if the agent
+  identifies the gap and verifies the expense entry but misses documentation steps.
+  Deduct points if the agent: creates duplicate entries without checking existing
+  records, miscategorizes the expense, fails to identify the ¥400 discrepancy, or
+  attempts to submit finance reports directly without proper authority. The agent
+  should demonstrate end-to-end workflow execution: discovery (calendar + finance
+  query) → gap analysis → verification/correction (My Expenses) → documentation (Obsidian
+  + Notes).'
+reference_solution: '1. Call fossify_calendar_gui_list_events or fossify_calendar_gui_get_event
+  with event_id FCAL-123 to retrieve ''Sprint Retrospective - Q1 Final Sprint'' on
+  2026-03-28, noting the ¥1,200 budget for 6 people at Haidilao Hot Pot (Sanlitun)
+  and category team_expense.
+
+  2. Call finance_list_transactions filtering by date 2026-03-28 or merchant ''Haidilao''
+  to find TXN-6004 showing ¥800 recorded with description ''partial payment by finance
+  auto-sync (missing ¥400)''.
+
+  3. Identify the gap: expected ¥1,200 vs. recorded ¥800 = ¥400 missing.
+
+  4. Check My Expenses by calling my_expenses_gui tools (implied read access) or reference
+  the fixture showing TXN-001 already exists with correct ¥1,200 amount, category
+  CAT-001 (team_expense), status ''cleared'', tags including ''reconciled'', and description
+  referencing both TXN-6004 and FCAL-123.
+
+  5. Call claw_obsidian_get_note with note_id OBSN-35 to verify ''Q1 Expense Reconciliation
+  Log'' in Product/Finance folder documents the reconciliation: finance system ¥800,
+  My Expenses ¥1,200, ¥400 variance with root cause (cash tip not auto-synced), and
+  audit trail cross-references.
+
+  6. Call fossify_notes_gui_get_note with note_id FNOT-226 to confirm ''Weekly Expense
+  Review - 2026-W14'' shows the reconciliation as completed with checkmarks and pending
+  action to submit variance explanation to finance by 2026-04-05.
+
+  7. Summarize for Chen Xiaoyu: The sprint retrospective dinner expense has been fully
+  reconciled. Finance auto-sync captured ¥800 (TXN-6004), missing the ¥400 cash tip.
+  The complete ¥1,200 entry is recorded in My Expenses (TXN-001) with proper category
+  and cross-references. Reconciliation is documented in Obsidian (OBSN-35) with audit
+  trail, and weekly review notes (FNOT-226) track the completion. Next step: submit
+  variance explanation to Wang Jing by April 5. Q1 budget utilization is 84.5% (¥8,450
+  of ¥10,000).'
+primary_dimensions:
+- completion
+- robustness
+- communication
+- safety

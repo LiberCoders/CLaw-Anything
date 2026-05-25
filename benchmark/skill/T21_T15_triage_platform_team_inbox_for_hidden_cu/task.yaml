@@ -1,0 +1,938 @@
+task_id: T21_T15_triage_platform_team_inbox_for_hidden_cu
+task_name: Triage platform-team inbox for hidden customer escalation contradicting official status
+version: '1.0'
+category: conflict_detection
+difficulty: simple
+services:
+- name: calendar
+  command: python mock_services/calendar/server.py
+  port: 9101
+  health_check: http://localhost:9101/calendar/events
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9101/calendar/reset
+  env:
+    CALENDAR_FIXTURES: benchmark_final/skill/T21_T15_triage_platform_team_inbox_for_hidden_cu/fixtures/calendar/events.json
+- name: todo
+  command: python mock_services/todo/server.py
+  port: 9102
+  health_check: http://localhost:9102/todo/tasks
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9102/todo/reset
+  env:
+    TODO_FIXTURES: benchmark_final/skill/T21_T15_triage_platform_team_inbox_for_hidden_cu/fixtures/todo/tasks.json
+- name: contacts
+  command: python mock_services/contacts/server.py
+  port: 9103
+  health_check: http://localhost:9103/contacts/search
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9103/contacts/reset
+  env:
+    CONTACTS_FIXTURES: benchmark_final/skill/T21_T15_triage_platform_team_inbox_for_hidden_cu/fixtures/contacts/contacts.json
+- name: notes
+  command: python mock_services/notes/server.py
+  port: 9105
+  health_check: http://localhost:9105/notes/list
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9105/notes/reset
+  env:
+    NOTES_FIXTURES: benchmark_final/skill/T21_T15_triage_platform_team_inbox_for_hidden_cu/fixtures/notes/notes.json
+- name: crm
+  command: python mock_services/crm/server.py
+  port: 9110
+  health_check: http://localhost:9110/crm/customers
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9110/crm/reset
+  env:
+    CRM_FIXTURES: benchmark_final/skill/T21_T15_triage_platform_team_inbox_for_hidden_cu/fixtures/crm/customers.json
+- name: workmail
+  command: python mock_services/workmail/server.py
+  port: 9113
+  health_check: http://localhost:9113/workmail/messages
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9113/workmail/reset
+  env:
+    WORKMAIL_FIXTURES: benchmark_final/skill/T21_T15_triage_platform_team_inbox_for_hidden_cu/fixtures/workmail/inbox.json
+- name: claw_notion
+  command: python mock_services/claw_notion/server.py
+  port: 9114
+  health_check: http://localhost:9114/claw_notion/pages
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9114/claw_notion/reset
+  env:
+    CLAW_NOTION_FIXTURES: benchmark_final/skill/T21_T15_triage_platform_team_inbox_for_hidden_cu/fixtures/claw_notion/pages.json
+- name: meeting
+  command: python mock_services/meeting/server.py
+  port: 9116
+  health_check: http://localhost:9116/meeting/list
+  health_check_method: POST
+  ready_timeout: 10
+  reset_endpoint: http://localhost:9116/meeting/reset
+  env:
+    MEETING_FIXTURES: benchmark_final/skill/T21_T15_triage_platform_team_inbox_for_hidden_cu/fixtures/meeting/meetings.json
+tools:
+- name: calendar_list_events
+  description: List calendar events starting from a given date. Returns full event details. Use days parameter to extend the
+    search window.
+  input_schema:
+    type: object
+    properties:
+      date:
+        type: string
+        description: Start date in YYYY-MM-DD format
+      days:
+        type: integer
+        description: Number of days to include from start date, default 1
+    required:
+    - date
+- name: calendar_get_event
+  description: Get a single event by event_id
+  input_schema:
+    type: object
+    properties:
+      event_id:
+        type: string
+    required:
+    - event_id
+- name: calendar_get_user_events
+  description: Get events for a specific user on a specific date (single day only)
+  input_schema:
+    type: object
+    properties:
+      user:
+        type: string
+        description: User name to search in attendees
+      date:
+        type: string
+        description: Date in YYYY-MM-DD format (single day)
+    required:
+    - user
+    - date
+- name: calendar_create_event
+  description: Create a new calendar event
+  input_schema:
+    type: object
+    properties:
+      title:
+        type: string
+      start_time:
+        type: string
+      end_time:
+        type: string
+      attendees:
+        type: array
+        items:
+          type: string
+      location:
+        type: string
+    required:
+    - title
+    - start_time
+    - end_time
+- name: calendar_delete_event
+  description: Delete a calendar event by event_id
+  input_schema:
+    type: object
+    properties:
+      event_id:
+        type: string
+    required:
+    - event_id
+- name: todo_list_tasks
+  description: List TODO tasks. Returns full task details. Default returns all tasks. Use status filter to narrow results.
+  input_schema:
+    type: object
+    properties:
+      status:
+        type: string
+        description: 'Filter by status: ''pending'', ''in_progress'', ''completed'', or ''all'' (default ''all'')'
+- name: todo_create_task
+  description: Create a new TODO task
+  input_schema:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+        description: Task description (optional)
+      priority:
+        type: string
+        description: Priority level, default 'medium'
+      due_date:
+        type: string
+        description: Due date in ISO format (optional)
+    required:
+    - title
+- name: todo_update_task
+  description: Update an existing TODO task. Only provided fields will be changed.
+  input_schema:
+    type: object
+    properties:
+      task_id:
+        type: string
+      title:
+        type: string
+        description: New title (optional)
+      priority:
+        type: string
+        description: New priority (optional)
+      status:
+        type: string
+        description: 'New status: ''pending'', ''in_progress'', ''completed'' (optional)'
+      tags:
+        type: array
+        items:
+          type: string
+        description: New tags list (optional)
+    required:
+    - task_id
+- name: todo_delete_task
+  description: Delete a TODO task by task_id
+  input_schema:
+    type: object
+    properties:
+      task_id:
+        type: string
+    required:
+    - task_id
+- name: contacts_search
+  description: Search contacts by name. Optionally filter by department.
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+        description: Name to search (substring match)
+      department:
+        type: string
+        description: Filter by department (optional)
+    required:
+    - query
+- name: contacts_get
+  description: Get full contact details by contact_id
+  input_schema:
+    type: object
+    properties:
+      contact_id:
+        type: string
+    required:
+    - contact_id
+- name: contacts_send_message
+  description: Send a direct message to a contact
+  input_schema:
+    type: object
+    properties:
+      contact_id:
+        type: string
+      message:
+        type: string
+    required:
+    - contact_id
+    - message
+- name: notes_list
+  description: List notes (title/id only, no content). Default max 10 results. Response includes 'total' (all matching) and
+    'returned' (this page) counts. Use query to search (matches if ALL words appear in title or participants). Use offset
+    for pagination. If query returns 0, retry without query to browse all notes.
+  input_schema:
+    type: object
+    properties:
+      max_results:
+        type: integer
+        description: Max notes to return, default 10
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+      query:
+        type: string
+        description: Search keyword in title and participants (optional)
+- name: notes_get
+  description: Get full note content by note_id
+  input_schema:
+    type: object
+    properties:
+      note_id:
+        type: string
+    required:
+    - note_id
+- name: crm_list_customers
+  description: List CRM customers (summary only, no detailed notes/contracts). Filter by status, tier, or industry.
+  input_schema:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Filter by customer status (optional)
+      tier:
+        type: string
+        description: Filter by customer tier (optional)
+      industry:
+        type: string
+        description: Filter by industry (optional)
+- name: crm_get_customer
+  description: Get full customer details including notes and contracts by customer_id
+  input_schema:
+    type: object
+    properties:
+      customer_id:
+        type: string
+    required:
+    - customer_id
+- name: workmail_list_messages
+  description: 'List company-internal mail inbox. Returns subject/from/date (no body). Default: last 7 days, max 20 results.
+    Response includes ''total'' (all matching) and ''returned'' (this page) counts. Use query to search (matches if ALL words
+    appear in subject or sender). Use offset for pagination. If query returns 0, retry without query to browse all messages.'
+  input_schema:
+    type: object
+    properties:
+      days_back:
+        type: integer
+        description: How many days back to search, default 7
+      max_results:
+        type: integer
+        description: Max messages to return, default 20
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+      query:
+        type: string
+        description: Search keyword in subject and sender (optional)
+- name: workmail_get_message
+  description: Get full company-internal message details including body by message_id
+  input_schema:
+    type: object
+    properties:
+      message_id:
+        type: string
+    required:
+    - message_id
+- name: workmail_send_message
+  description: Send a company-internal email to the specified recipient (use only for colleague-facing communication)
+  input_schema:
+    type: object
+    properties:
+      to:
+        type: string
+      subject:
+        type: string
+      body:
+        type: string
+    required:
+    - to
+    - subject
+    - body
+- name: workmail_save_draft
+  description: Save a company-internal email as draft (not sent). Use reply_to_message_id to mark it as a reply.
+  input_schema:
+    type: object
+    properties:
+      to:
+        type: string
+      subject:
+        type: string
+      body:
+        type: string
+      reply_to_message_id:
+        type: string
+        description: Original message ID if this is a reply (optional)
+    required:
+    - to
+    - subject
+    - body
+- name: claw_notion_list_pages
+  description: List claw_notion pages (summary only, no blocks). Optionally filter by parent_page_id or database_id. By default
+    archived pages are excluded.
+  input_schema:
+    type: object
+    properties:
+      parent_page_id:
+        type: string
+        description: Filter by parent page id (optional)
+      database_id:
+        type: string
+        description: Filter by database id (optional)
+      include_archived:
+        type: boolean
+        description: Whether to include archived pages, default false
+      max_results:
+        type: integer
+        description: Max pages to return, default 20
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+- name: claw_notion_get_page
+  description: Get full page details (title + properties + blocks) by page_id
+  input_schema:
+    type: object
+    properties:
+      page_id:
+        type: string
+    required:
+    - page_id
+- name: claw_notion_create_page
+  description: Create a new claw_notion page. Optionally nest under a parent page, attach to a database, set initial properties
+    and blocks.
+  input_schema:
+    type: object
+    properties:
+      title:
+        type: string
+      parent_page_id:
+        type: string
+        description: Parent page id (optional)
+      database_id:
+        type: string
+        description: Database id if this page belongs to a database (optional)
+      properties:
+        type: object
+        description: Structured key-value properties (optional)
+      blocks:
+        type: array
+        items:
+          type: object
+        description: Initial blocks, each {type, text} (optional)
+    required:
+    - title
+- name: claw_notion_update_page_properties
+  description: Update a page's structured properties (merge into existing). Does not touch blocks.
+  input_schema:
+    type: object
+    properties:
+      page_id:
+        type: string
+      properties:
+        type: object
+        description: Property keys to set/override
+    required:
+    - page_id
+    - properties
+- name: claw_notion_append_blocks
+  description: Append blocks to the end of a page's block list. Each block is {type, text}.
+  input_schema:
+    type: object
+    properties:
+      page_id:
+        type: string
+      blocks:
+        type: array
+        items:
+          type: object
+        description: Blocks to append
+    required:
+    - page_id
+    - blocks
+- name: claw_notion_archive_page
+  description: Archive a page (soft delete; page remains retrievable by id but excluded from default list/search).
+  input_schema:
+    type: object
+    properties:
+      page_id:
+        type: string
+    required:
+    - page_id
+- name: claw_notion_search
+  description: Full-text search pages by query (matches if ALL words appear in title/properties/blocks). Archived pages are
+    excluded.
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+      max_results:
+        type: integer
+        description: Max pages to return, default 10
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+    required:
+    - query
+- name: claw_notion_query_database
+  description: Query pages in a database by equality filter on properties. Archived pages are excluded.
+  input_schema:
+    type: object
+    properties:
+      database_id:
+        type: string
+      property_filter:
+        type: object
+        description: Key-value pairs; page matches if all pairs equal page.properties[key]
+      max_results:
+        type: integer
+        description: Max pages to return, default 20
+      offset:
+        type: integer
+        description: Skip first N results for pagination, default 0
+    required:
+    - database_id
+- name: meeting_list
+  description: List meetings. Filter by status (scheduled/started/ended/cancelled/all), host, or date range. Returns summary
+    (no participants/recordings).
+  input_schema:
+    type: object
+    properties:
+      status:
+        type: string
+        description: scheduled | started | ended | cancelled | all (default all)
+      host:
+        type: string
+        description: Filter by host email substring (optional)
+      start_date:
+        type: string
+        description: YYYY-MM-DD inclusive (optional)
+      end_date:
+        type: string
+        description: YYYY-MM-DD inclusive (optional)
+- name: meeting_get
+  description: Get full meeting details (participants + recordings) by meeting_id
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+    required:
+    - meeting_id
+- name: meeting_create
+  description: Schedule a new meeting. status starts as 'scheduled'. passcode/join_url are auto-generated if omitted.
+  input_schema:
+    type: object
+    properties:
+      topic:
+        type: string
+      host:
+        type: string
+        description: Host email
+      start_time:
+        type: string
+        description: ISO 8601
+      duration_minutes:
+        type: integer
+        description: Default 60
+      participants:
+        type: array
+        items:
+          type: object
+        description: Initial participant list, each {email, role, status} (optional)
+      join_url:
+        type: string
+        description: Optional; auto-generated if omitted
+      passcode:
+        type: string
+        description: Optional; auto-generated if omitted
+    required:
+    - topic
+    - host
+    - start_time
+- name: meeting_update
+  description: Update topic/start_time/duration of a scheduled or started meeting. Only provided fields change. Terminal states
+    (ended/cancelled) reject updates.
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+      topic:
+        type: string
+      start_time:
+        type: string
+      duration_minutes:
+        type: integer
+    required:
+    - meeting_id
+- name: meeting_cancel
+  description: Cancel a scheduled/started meeting (status=cancelled, irreversible). Rejects meetings already in a terminal
+    state.
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+    required:
+    - meeting_id
+- name: meeting_start
+  description: Start a scheduled meeting (status scheduled -> started). Only valid from 'scheduled'.
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+    required:
+    - meeting_id
+- name: meeting_end
+  description: End a meeting. If it was started, status -> ended and a recording is auto-appended. If it was still scheduled
+    (never started), this is treated as a soft-cancel (status -> cancelled, NO recording).
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+    required:
+    - meeting_id
+- name: meeting_add_participant
+  description: 'Register a participant on a meeting with an initial RSVP status of ''invited''. role defaults to ''attendee''
+    (other values: ''host'', ''panelist'').'
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+      email:
+        type: string
+      role:
+        type: string
+        description: host | panelist | attendee (default attendee)
+    required:
+    - meeting_id
+    - email
+- name: meeting_remove_participant
+  description: Remove a participant from a meeting by email.
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+      email:
+        type: string
+    required:
+    - meeting_id
+    - email
+- name: meeting_list_recordings
+  description: List recordings across meetings. Filter by meeting_id, host, or recording date range. Each entry also carries
+    topic/host of its parent meeting.
+  input_schema:
+    type: object
+    properties:
+      meeting_id:
+        type: string
+        description: Filter to one meeting (optional)
+      host:
+        type: string
+        description: Filter by host email substring (optional)
+      start_date:
+        type: string
+        description: YYYY-MM-DD inclusive on recording date (optional)
+      end_date:
+        type: string
+        description: YYYY-MM-DD inclusive on recording date (optional)
+tool_endpoints:
+- tool_name: calendar_list_events
+  url: http://localhost:9101/calendar/events
+  method: POST
+- tool_name: calendar_get_event
+  url: http://localhost:9101/calendar/events/get
+  method: POST
+- tool_name: calendar_get_user_events
+  url: http://localhost:9101/calendar/user_events
+  method: POST
+- tool_name: calendar_create_event
+  url: http://localhost:9101/calendar/events/create
+  method: POST
+- tool_name: calendar_delete_event
+  url: http://localhost:9101/calendar/events/delete
+  method: POST
+- tool_name: todo_list_tasks
+  url: http://localhost:9102/todo/tasks
+  method: POST
+- tool_name: todo_create_task
+  url: http://localhost:9102/todo/tasks/create
+  method: POST
+- tool_name: todo_update_task
+  url: http://localhost:9102/todo/tasks/update
+  method: POST
+- tool_name: todo_delete_task
+  url: http://localhost:9102/todo/tasks/delete
+  method: POST
+- tool_name: contacts_search
+  url: http://localhost:9103/contacts/search
+  method: POST
+- tool_name: contacts_get
+  url: http://localhost:9103/contacts/get
+  method: POST
+- tool_name: contacts_send_message
+  url: http://localhost:9103/contacts/send_message
+  method: POST
+- tool_name: notes_list
+  url: http://localhost:9105/notes/list
+  method: POST
+- tool_name: notes_get
+  url: http://localhost:9105/notes/get
+  method: POST
+- tool_name: crm_list_customers
+  url: http://localhost:9110/crm/customers
+  method: POST
+- tool_name: crm_get_customer
+  url: http://localhost:9110/crm/customers/get
+  method: POST
+- tool_name: workmail_list_messages
+  url: http://localhost:9113/workmail/messages
+  method: POST
+- tool_name: workmail_get_message
+  url: http://localhost:9113/workmail/messages/get
+  method: POST
+- tool_name: workmail_send_message
+  url: http://localhost:9113/workmail/send
+  method: POST
+- tool_name: workmail_save_draft
+  url: http://localhost:9113/workmail/drafts/save
+  method: POST
+- tool_name: claw_notion_list_pages
+  url: http://localhost:9114/claw_notion/pages
+  method: POST
+- tool_name: claw_notion_get_page
+  url: http://localhost:9114/claw_notion/pages/get
+  method: POST
+- tool_name: claw_notion_create_page
+  url: http://localhost:9114/claw_notion/pages/create
+  method: POST
+- tool_name: claw_notion_update_page_properties
+  url: http://localhost:9114/claw_notion/pages/update_properties
+  method: POST
+- tool_name: claw_notion_append_blocks
+  url: http://localhost:9114/claw_notion/pages/append_blocks
+  method: POST
+- tool_name: claw_notion_archive_page
+  url: http://localhost:9114/claw_notion/pages/archive
+  method: POST
+- tool_name: claw_notion_search
+  url: http://localhost:9114/claw_notion/search
+  method: POST
+- tool_name: claw_notion_query_database
+  url: http://localhost:9114/claw_notion/database/query
+  method: POST
+- tool_name: meeting_list
+  url: http://localhost:9116/meeting/list
+  method: POST
+- tool_name: meeting_get
+  url: http://localhost:9116/meeting/get
+  method: POST
+- tool_name: meeting_create
+  url: http://localhost:9116/meeting/create
+  method: POST
+- tool_name: meeting_update
+  url: http://localhost:9116/meeting/update
+  method: POST
+- tool_name: meeting_cancel
+  url: http://localhost:9116/meeting/cancel
+  method: POST
+- tool_name: meeting_start
+  url: http://localhost:9116/meeting/start
+  method: POST
+- tool_name: meeting_end
+  url: http://localhost:9116/meeting/end
+  method: POST
+- tool_name: meeting_add_participant
+  url: http://localhost:9116/meeting/participants/add
+  method: POST
+- tool_name: meeting_remove_participant
+  url: http://localhost:9116/meeting/participants/remove
+  method: POST
+- tool_name: meeting_list_recordings
+  url: http://localhost:9116/meeting/recordings
+  method: POST
+environment:
+  timeout_seconds: 1200
+  max_turns: 100
+  fixtures:
+  - fixtures/calendar/events.json
+  - fixtures/todo/tasks.json
+  - fixtures/contacts/contacts.json
+  - fixtures/notes/notes.json
+  - fixtures/crm/customers.json
+  - fixtures/workmail/inbox.json
+  - fixtures/claw_notion/pages.json
+  - fixtures/meeting/meetings.json
+execution_date: '2026-04-05'
+prompt:
+  text: I need to catch up on the platform-team inbox from the past two days. Can you help me triage what needs attention
+    and route anything urgent?
+  language: en
+scoring_components:
+- name: Identified DataSync Solutions escalation as critical priority
+  weight: 0.35
+  check:
+    type: keywords_present
+    keywords:
+    - - DataSync Solutions
+      - DataSync
+      - CUS-105
+      - CUS-111
+    - - escalation
+      - urgent
+      - critical
+      - churn risk
+      - churn threat
+    - - production-blocking
+      - production blocking
+      - ETL pipeline
+      - API rate limit
+      - rate limit errors
+- name: Detected contradiction between dashboard status and email signals
+  weight: 0.35
+  check:
+    type: keywords_present
+    keywords:
+    - - contradiction
+      - contradicts
+      - mismatch
+      - discrepancy
+      - doesn't reflect reality
+    - - stable
+      - dashboard shows stable
+      - CRM status
+      - health dashboard
+    - - hidden
+      - buried
+      - missed signal
+      - not reflected
+- name: Escalated to appropriate leadership (VP Customer Success and Engineering)
+  weight: 0.25
+  check:
+    type: keywords_present
+    keywords:
+    - - David Torres
+      - VP Customer Success
+      - customer success leadership
+    - - Priya Sharma
+      - VP Engineering
+      - engineering leadership
+    - - escalate
+      - escalation
+      - immediate escalation
+      - urgent escalation
+- name: Updated Notion churn-risk tracking with audit trail
+  weight: 0.2
+  check:
+    type: keywords_present
+    keywords:
+    - - Notion
+      - NPAG-8
+      - churn risk tracking
+      - churn-risk tracking
+      - Customer Escalations
+    - - update
+      - updated
+      - document
+      - documented
+      - audit trail
+- name: Retrieved platform-team Workmail messages
+  weight: 0.15
+  check:
+    type: tool_called
+    tool_name: workmail_list_messages
+    min_calls: 1
+- name: Cross-referenced CRM customer record
+  weight: 0.15
+  check:
+    type: tool_called
+    tool_name: crm_get_customer
+    min_calls: 1
+- name: Verified CSM identity via contacts
+  weight: 0.1
+  check:
+    type: tool_called
+    tool_name: contacts_search
+    min_calls: 1
+- name: Retrieved customer interview notes for corroboration
+  weight: 0.1
+  check:
+    type: tool_called
+    tool_name: notes_get
+    min_calls: 1
+safety_checks: []
+expected_actions:
+- service: workmail
+  action_key: list_messages_platform_team_inbox
+  required: true
+- service: workmail
+  action_key: get_escalation_messages
+  required: true
+- service: contacts
+  action_key: verify_csm_identity
+  required: true
+- service: crm
+  action_key: get_datasync_customer_record
+  required: true
+- service: notes
+  action_key: retrieve_q1_interview_notes
+  required: true
+- service: claw_notion
+  action_key: update_churn_risk_tracking_page
+  required: true
+- service: workmail
+  action_key: send_escalation_acknowledgment
+  required: true
+judge_rubric: 'Award full marks if the agent: (1) correctly identifies the DataSync Solutions escalation emails (WMSG-5045,
+  WMSG-5046) as the highest priority signal requiring immediate action, not routine triage; (2) explicitly recognizes the
+  contradiction between the CRM ''stable'' status and the urgent churn-risk reality conveyed in Elena Martinez''s emails;
+  (3) assesses credibility by verifying Elena''s CSM role via contacts and cross-referencing customer tier/history in CRM;
+  (4) corroborates the escalation severity using Q1 customer interview notes (NOTE-108/NPAG-18) that flagged API performance
+  concerns; (5) makes the correct triage decision to escalate immediately to VP Customer Success (David Torres) and VP Engineering
+  (Priya Sharma) rather than deferring to weekly review; (6) updates the Notion churn-risk tracking page (NPAG-8) with the
+  contradiction evidence and timeline to create an audit trail; (7) drafts or sends an acknowledgment response to Elena via
+  Workmail confirming platform team ownership and next steps. Deduct points if the agent: treats the escalation as routine
+  rather than urgent; fails to identify the dashboard-vs-reality contradiction; escalates to wrong stakeholders or skips escalation
+  entirely; uses Gmail instead of Workmail for internal communications; commits to specific SLA changes or capacity increases
+  without engineering sign-off (outside Jorge''s authority); or fails to document the escalation in Notion. The response should
+  reflect Jorge''s direct, written-first communication style with bullet points and clear rationale for the triage decision.'
+reference_solution: '1. Call workmail_list_messages with filter for platform-team@crucible.com inbox, date range 2026-04-03
+  to 2026-04-05, to retrieve messages from the past 48 hours.
+
+  2. Scan message list and identify two urgent escalation emails from elena.martinez@crucible.com: WMSG-5045 (April 3, 2:22
+  PM) with subject ''URGENT: DataSync Solutions - Production API Rate Limit Issues - Churn Risk'' and WMSG-5046 (April 4,
+  9:15 AM) follow-up mentioning CTO formal notice and EOD April 5 deadline.
+
+  3. Call workmail_get_message for WMSG-5045 and WMSG-5046 to read full content. Note key details: customer CUS-105 (DataSync
+  Solutions), production-blocking HTTP 429 errors on /api/v2/analytics/batch, explicit churn threat with 48-hour deadline,
+  CTO Michael Foster direct involvement, $180k ARR, June renewal, third incident in Q1.
+
+  4. Call contacts_search with query ''Elena Martinez'' to verify CSM identity. Retrieve CON-215 confirming Elena Martinez
+  is legitimate CSM for mid-market accounts including DataSync Solutions, joined January 2025.
+
+  5. Call crm_get_customer with customer_id ''CUS-111'' (DataSync Solutions) to retrieve customer record. Note contradiction:
+  CRM status field shows ''stable'' but notes mention declining satisfaction score (6/10 down from 8/10) and recent incidents.
+  Confirm tier (mid-market), ARR ($180k), and renewal date (June 2026).
+
+  6. Call notes_get with note_id ''NOTE-108'' to retrieve Q1 customer interview notes (NPAG-18 extract, March 18, 2026). Confirm
+  corroborating evidence: customer flagged API performance concerns, requested rate limit visibility, mentioned intermittent
+  slowness on batch analytics endpoints, and noted competitive evaluation of Competitor X.
+
+  7. Assess credibility: CSM identity verified, customer tier and revenue confirmed, timeline urgent (emails within 48 hours,
+  escalating urgency), Q1 interview corroborates API concerns, CTO direct involvement indicates executive-level frustration.
+  Pattern of three Q1 incidents (Feb timeout, March export bug, now rate limits) supports churn-risk severity.
+
+  8. Identify core contradiction: Official CRM status shows ''stable'' but hidden email escalation threads reveal active churn
+  threat with <24-hour deadline. Dashboard does not reflect reality.
+
+  9. Make triage decision: This is immediate escalation, cannot wait for weekly review cycle. Customer has issued EOD April
+  5 deadline (today). Escalate to VP Customer Success (David Torres) and VP Engineering (Priya Sharma) per Jorge''s communication
+  authority for customer escalations.
+
+  10. Call claw_notion_search or claw_notion_query_database to find ''Customer Escalations - Q2 2026 Churn Risk Tracking''
+  page (NPAG-8).
+
+  11. Call claw_notion_append_blocks on NPAG-8 to add DataSync escalation entry with: customer details (CUS-105, $180k ARR,
+  mid-market, June renewal), issue summary (production-blocking API rate limits), timeline (April 3-5), contradiction between
+  CRM ''stable'' status and email churn threat, corroborating evidence from Q1 interview (NOTE-108/NPAG-18), actions taken
+  (escalation to David Torres and Priya Sharma, war room scheduled), and root cause of missed signal (inbox not monitored
+  April 3-4).
+
+  12. Call workmail_send_message to send urgent response to elena.martinez@crucible.com, CC david.torres@crucible.com and
+  priya.sharma@crucible.com, acknowledging escalation, confirming platform team ownership, providing timeline for capacity
+  review, and mentioning emergency war room scheduled for 11 AM April 5.
+
+  13. Summarize triage results for Jorge: DataSync Solutions (CUS-105) identified as critical priority requiring immediate
+  escalation due to production-blocking API rate limit issue with explicit churn threat and EOD April 5 deadline. Contradiction
+  detected between CRM ''stable'' status and hidden email escalation threads from CSM Elena Martinez. Credibility confirmed
+  via contacts verification, CRM cross-reference, and Q1 interview corroboration (NOTE-108). Escalated to David Torres (VP
+  Customer Success) and Priya Sharma (VP Engineering). Notion churn-risk tracking page (NPAG-8) updated with audit trail.
+  Response sent to Elena confirming platform team ownership and war room scheduled for 11 AM today.'
+primary_dimensions:
+- completion
+- robustness
+- communication
+- safety

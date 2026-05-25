@@ -1,0 +1,15 @@
+noise_id: N040
+name: "Browse Notion pages"
+description: "Open Notion to browse project pages or notes, read the content of one page, then close without making changes"
+involved_services: [claw_notion]
+leaves_trace: false
+action_sequence:
+  - "List Notion pages"
+  - "Open a specific project or notes page"
+  - "Read the content"
+  - "Close"
+time_preference: any
+adaptable_elements:
+  - "Which page or database to browse"
+  - "Whether to search for a specific topic"
+  - "Whether to browse a database view"

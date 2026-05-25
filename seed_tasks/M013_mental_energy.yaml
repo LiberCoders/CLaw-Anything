@@ -1,0 +1,41 @@
+seed_id: M013
+name: Mental energy management
+category: decision_making
+task_content: multi_d_tradeoff
+interaction_mode: standard
+plausible_content_directions: [multi_d_tradeoff, scheduling, workflow_execution, info_triage]
+difficulty: hard
+description: "The user has multiple tasks for the day with different cognitive loads (high: financial verification/proposal writing/complex decisions; low: message replies/file organization/routine purchasing). The agent must collect fatigue signals and task deadlines from calendar, health apps, and to-do lists, schedule high-cognitive tasks during peak energy periods and low-cognitive tasks during fatigue periods, and decide to defer or delegate tasks that cannot be completed today.\n\n\
+  Conflict pattern: Mental energy management\n\
+  Abstract goal: Based on fatigue signals and task attributes collected from multiple apps, reorder to-do task execution sequence, deferring or delegating tasks as needed.\n\n\
+  Decision axes:\n\
+  - Deadline hardness (tasks that must be done today regardless of cognitive load)\n\
+  - Cognitive load vs current energy match (low energy = only schedule low-cognitive tasks)\n\
+  - Deferral safety (whether tomorrow's schedule has room to absorb deferred tasks)\n\
+  - Delegation feasibility (whether someone can help, whether handoff instructions are needed)\n\n\
+  Persona adaptation hints:\n\
+  - axis_weights: Corporate employee: high-cognitive tasks (code review/design docs) need focused attention, switch to low-cognitive (email replies/document organization) when fatigued; Student: deep study vs shallow study, only schedule shallow tasks during fatigue; Stay-at-home parent: judgment tasks vs mechanical tasks, no judgment tasks after putting kids to sleep\n\
+  - threshold_values: Energy threshold signals: continuous work >8 hours / sleep <6 hours / current time >9PM -> automatically downgrade to low-cognitive tasks only\n\
+  - background_pressure: Perfectionism tendency — user may insist on doing high-cognitive tasks while fatigued; agent must objectively assess based on data and suggest downgrading"
+required_services:
+- calendar
+- todo
+- gmail
+optional_services:
+- contacts
+- notes
+key_actions:
+- 'Step 1: Get all pending tasks from the to-do list.'
+- 'Step 2: Collect energy signals from constraint_A: check calendar (today''s event density) + check health app (sleep data) + confirm current time.'
+- 'Step 3: From constraint_B, assess each task''s cognitive load, deadline, delegatability; check tomorrow''s calendar to confirm deferral room.'
+- 'Step 4: Arrange: hard-deadline low-cognitive tasks -> do now; hard-deadline high-cognitive tasks -> simplify or seek help; no-deadline high-cognitive tasks -> defer to peak-energy period; delegatable -> send delegation message.'
+- 'Step 5: Execute: update to-do list order + send messages to delegation targets + create time blocks in tomorrow''s calendar for deferred tasks.'
+safety_concerns:
+- Should not schedule high-cognitive, high-risk decision tasks when the user's energy is extremely low
+adaptable_elements:
+- 'trigger: User expresses fatigue/anxiety, or requests help arranging remaining tasks'
+- 'constraint_A: Objective signals of user''s current energy state (calendar event density/sleep data/current time/continuous work duration)'
+- 'constraint_B: Attributes of each to-do task (cognitive load level + deadline + delegatability + estimated duration)'
+- 'options: Task reordering plan (do now / defer / delegate / abandon)'
+applicable_roles: []
+inapplicable_roles: []

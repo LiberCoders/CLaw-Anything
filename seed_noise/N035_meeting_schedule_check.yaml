@@ -1,0 +1,15 @@
+noise_id: N035
+name: "Check upcoming meetings"
+description: "Open the meeting platform to check what meetings are scheduled for today or the near future, without making any changes"
+involved_services: [meeting]
+leaves_trace: false
+action_sequence:
+  - "Open meeting list"
+  - "Filter by upcoming/scheduled status"
+  - "View meeting details for one upcoming meeting"
+  - "Close"
+time_preference: morning
+adaptable_elements:
+  - "Date range to check"
+  - "Whether to also check recent recordings"
+  - "Specific meeting to inspect"

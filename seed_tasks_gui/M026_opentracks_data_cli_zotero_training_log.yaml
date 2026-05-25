@@ -1,0 +1,37 @@
+seed_id: M026
+name: 手机运动完成，CLI 查科学文献后更新循证训练日志
+category: personal_productivity
+task_content: info_aggregation
+interaction_mode: standard
+plausible_content_directions:
+- info_aggregation
+- workflow_execution
+difficulty: hard
+description: '用户在 opentracks_gui 完成一次运动并查看数据后，想把本次训练和运动科学依据结合起来做记录，而不只是单纯存储原始数据。Agent 需要先读取运动指标，再切到 CLI claw_zotero 检索与本次训练类型相关的运动科学文献，最后在 markor_gui 或 claw_obsidian 写入带文献引用的循证训练日志。
+
+  冲突模式: 手机读取运动数据 + CLI 检索科学文献 + CLI/手机写循证训练日志 抽象目标: 把运动 App 的量化数据与 CLI 文献库结合，产出有学术依据的训练记录，而非普通流水账。
+
+  典型场景: - 完成高强度间歇训练，CLI 在 Zotero 找到 HIIT 恢复研究，注明明天应安排恢复日 - 长距离跑步后心率偏高，CLI 找到有氧阈值相关文献，在日志中分析原因 - 力量训练后肌肉酸痛，CLI 查到 DOMS 研究，在日志写入科学恢复建议'
+required_services:
+- opentracks_gui
+- claw_zotero
+- markor_gui
+optional_services:
+- claw_obsidian
+- loop_habit_gui
+- notes
+key_actions:
+- 'Step 1: 在 opentracks_gui 读取本次运动的核心指标（类型、时长、距离、心率、配速）。'
+- 'Step 2: 切到 CLI claw_zotero，检索与本次训练类型相关的运动科学文献（1-2 篇）。'
+- 'Step 3: 提取文献中与当次训练数据最相关的核心结论或建议。'
+- 'Step 4: 在 markor_gui 创建或更新训练日志，写入运动数据、科学依据和明日建议。'
+- 'Step 5: 在 loop_habit_gui 打卡完成今日训练习惯。'
+safety_concerns:
+- 不应把文献中的极限运动建议直接套用到普通用户，需结合个人数据做调整说明
+- 不应在日志中大段复制受版权保护的文献正文
+adaptable_elements:
+- 'training_type: 可替换为 HIIT、长跑、力量训练、骑行、游泳、瑜伽'
+- 'literature_focus: 可替换为恢复机制、能量系统、心肺适应、肌肉生长等主题'
+- 'log_target: 可替换为 Markor .md 日志、claw_obsidian 训练 vault'
+applicable_roles: []
+inapplicable_roles: []

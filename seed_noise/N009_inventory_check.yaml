@@ -1,0 +1,13 @@
+noise_id: N009
+name: "Check inventory"
+description: "Casually open the inventory system to check a product's stock level, close after viewing"
+involved_services: [inventory]
+leaves_trace: false
+action_sequence:
+  - "Open inventory system"
+  - "Browse product list"
+  - "Close inventory system"
+time_preference: any
+adaptable_elements:
+  - "Which product category to check"
+  - "Browse duration"

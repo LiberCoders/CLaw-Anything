@@ -1,0 +1,15 @@
+noise_id: N031
+name: "Browse WeChat Moments"
+description: "Open WeChat Moments (朋友圈) to casually scroll through friends' recent updates, like a few posts, then close"
+involved_services: [claw_wechat]
+leaves_trace: false
+action_sequence:
+  - "Open WeChat Moments"
+  - "Scroll through recent posts"
+  - "Like one or two posts"
+  - "Close Moments"
+time_preference: any
+adaptable_elements:
+  - "Number of posts browsed"
+  - "Whether to comment on any post"
+  - "Duration of browsing"

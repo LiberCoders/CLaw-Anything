@@ -1,0 +1,40 @@
+seed_id: M018
+name: 手机日历发现即将会议，CLI 准备材料后 Mattermost 提前同步
+category: team_coordination
+task_content: workflow_execution
+interaction_mode: standard
+plausible_content_directions:
+- workflow_execution
+- info_aggregation
+- scheduling
+difficulty: hard
+description: '用户在 fossify_calendar_gui 看到即将开始的会议日程，但会议材料、背景信息和待讨论议题散落在 CLI 的 claw_notion、notes 或 meeting 服务中。Agent 需要先在手机侧确认会议时间、参与者和主题，再切到 CLI 汇总所有相关材料，最后通过 mattermost_gui 在会议频道提前发送议题摘要和准备事项。
+
+  冲突模式: 手机读取会议日程 + CLI 汇总会议材料 + 手机发布会前同步 抽象目标: 让 Agent 识别会前准备工作适合在 CLI 完成，而对外同步天然依赖手机端的团队沟通工具。
+
+  典型场景: - 日历显示 30 分钟后有项目评审会，CLI 在 claw_notion 找到上次会议纪要和待决议题 - 周例会前日历提醒，CLI 从 notes 整理本周进展摘要后提前发到团队频道 - 临时会议突然加入日历，CLI 查 meeting 历史记录确认背景后发送会前说明'
+required_services:
+- fossify_calendar_gui
+- mattermost_gui
+- claw_notion
+- meeting
+- notes
+optional_services:
+- workmail
+- todo
+- contacts_gui
+key_actions:
+- 'Step 1: 在 fossify_calendar_gui 读取即将召开的会议详情：时间、参与者、主题。'
+- 'Step 2: 切到 CLI claw_notion 或 meeting，查找上次会议纪要和待跟进事项。'
+- 'Step 3: 在 CLI notes 中整理本次会议的议题摘要、背景材料和需要决策的问题。'
+- 'Step 4: 切到 mattermost_gui，在对应频道发布会前同步消息，附议题列表和准备提示。'
+- 'Step 5: 确认参与者都在频道中，如有缺席者通过 contacts_gui 或 workmail 单独通知。'
+safety_concerns:
+- 不应在未核查 CLI 中材料的情况下发布可能误导参与者的会议摘要
+- 不应在公开频道发布含保密内容的会议背景材料
+adaptable_elements:
+- 'meeting_type: 可替换为项目评审、周例会、客户沟通、临时紧急会议'
+- 'material_source: 可替换为 claw_notion 项目页面、notes 进展文档、meeting 历史记录'
+- 'sync_channel: 可替换为 Mattermost 频道、workmail 内部邮件、fossify_messages 群聊'
+applicable_roles: []
+inapplicable_roles: []

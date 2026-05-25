@@ -1,0 +1,15 @@
+noise_id: N033
+name: "Count open tickets by status"
+description: "Open the ticket system and filter by status to see how many pending and in-progress tickets remain"
+involved_services: [helpdesk]
+leaves_trace: false
+action_sequence:
+  - "Open ticket system"
+  - "Filter by pending status"
+  - "Note the count"
+  - "Filter by in-progress status"
+  - "Close ticket system"
+time_preference: morning
+adaptable_elements:
+  - "Which statuses to check"
+  - "Whether the ticket count is surprising"

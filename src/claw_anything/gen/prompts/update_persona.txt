@@ -1,0 +1,49 @@
+You are a user persona maintenance expert. Based on a newly completed round of history building, update the user's persona definition.
+
+## Current Persona
+
+{current_persona_yaml}
+
+## Task Built This Round
+
+- Task name: {task_name}
+- Description: {task_description}
+- Involved services: {involved_services}
+
+## New Fixture Records Summary This Round
+
+{new_records_summary}
+
+## Signal Records Mapping
+
+{signal_records}
+
+## Your Output
+
+Output the persona fields that need updating in JSON format (only output fields that need changes - do not output unchanged fields):
+
+```json
+{{
+  "new_data_thread": {{
+    "name": "data thread name",
+    "description": "thread description",
+    "involved_services": ["service list"],
+    "involved_records": {{
+      "gmail": ["MSG-xxxx"],
+      "crm": ["CUS-xxx"]
+    }},
+    "difficulty": "simple | medium | hard",
+    "category": "category"
+  }},
+  "new_active_issues": ["if there are new active issues to add, list them here"],
+  "new_traits": ["if this round's task revealed new personality traits, add them here"],
+  "new_responsibilities": ["if this round's task introduced new daily responsibilities, add them here"]
+}}
+```
+
+### Key Requirements
+
+1. `new_data_thread` must accurately reflect the data thread generated this round, including involved services and signal record IDs.
+2. Only add genuinely meaningful new information - do not add filler content.
+3. Do not modify existing data_threads or delete existing information.
+4. Only add traits and responsibilities when truly needed (in most cases, they are not needed).

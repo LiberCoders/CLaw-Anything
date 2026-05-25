@@ -1,0 +1,17 @@
+[
+  {
+    "article_id": "KB-401",
+    "title": "SLO Framework for Post-Launch Monitoring - Best Practices",
+    "category": "Platform Operations",
+    "tags": [
+      "SLO",
+      "monitoring",
+      "launch",
+      "observability"
+    ],
+    "created_at": "2025-11-10T14:00:00-08:00",
+    "content": "# SLO Framework for Post-Launch Monitoring\n\n## Overview\nService Level Objectives (SLOs) provide quantitative measures of service reliability during critical launch windows.\n\n## Key Components\n1. **Error Budget Definition**: Calculate acceptable failure rate during first 72 hours\n2. **Alert Thresholds**: Set progressive escalation based on burn rate\n3. **Stakeholder Communication**: Define automated vs manual reporting cadence\n\n## Launch Window Recommendations\n- **0-24 hours**: Real-time monitoring with 15-minute executive summaries\n- **24-72 hours**: Hourly summaries with automated alerting\n- **72+ hours**: Standard operational monitoring\n\n## Balancing Automation vs Manual Oversight\nHybrid approaches work best for high-stakes launches:\n- Automated dashboards for engineering teams\n- Curated summaries for executive stakeholders\n- Clear escalation paths for anomaly detection\n\n## Case Studies\n- Stripe Atlas launch (2019): Combined approach reduced MTTR by 40%\n- Shopify Plus migration (2020): Executive summaries prevented premature rollback\n\n*Last updated: 2025-11-10*",
+    "last_updated": "2025-11-10T14:00:00-08:00",
+    "views": 47
+  }
+]

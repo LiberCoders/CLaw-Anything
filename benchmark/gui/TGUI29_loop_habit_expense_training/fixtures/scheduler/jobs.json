@@ -1,0 +1,91 @@
+[
+  {
+    "job_id": "JOB-701",
+    "name": "overnight_ed_critical_alerts_sync",
+    "description": "Automated aggregation of overnight ED system alerts including critical lab values, imaging flags, and patient deterioration warnings from 00:00-07:00",
+    "cron_expression": "0 7 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-01-23T07:00:00+08:00",
+    "action": "aggregate_ed_overnight_alerts",
+    "created_by": "ED IT Operations",
+    "tags": [
+      "ed",
+      "critical-alerts",
+      "overnight",
+      "monitoring"
+    ],
+    "notes": "Runs daily at 7 AM to prepare handoff data for morning shift. Aggregates data from EMR, lab system, PACS, and vital signs monitoring.",
+    "execution_history": [
+      {
+        "run_time": "2026-01-23T07:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 145,
+        "notes": "18 critical alerts flagged: 3 lab critical values, 2 imaging urgent findings, 13 vital sign warnings"
+      },
+      {
+        "run_time": "2026-01-22T07:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 132,
+        "notes": "12 critical alerts flagged"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-702",
+    "name": "ed_handoff_task_verification",
+    "description": "Validates completion status of automated handoff tasks including discharge summaries, procedure documentation, and consult follow-ups",
+    "cron_expression": "30 6 * * *",
+    "enabled": true,
+    "last_status": "failure",
+    "last_run": "2026-01-23T06:30:00+08:00",
+    "action": "verify_handoff_task_completion",
+    "created_by": "ED Quality Team",
+    "tags": [
+      "ed",
+      "handoff",
+      "quality",
+      "documentation"
+    ],
+    "notes": "Runs at 6:30 AM to identify incomplete documentation before morning shift. Failure indicates incomplete tasks requiring manual follow-up.",
+    "execution_history": [
+      {
+        "run_time": "2026-01-23T06:30:00+08:00",
+        "status": "failure",
+        "duration_seconds": 89,
+        "notes": "ALERT: 4 discharge summaries incomplete, 2 procedure notes missing signatures, 1 ICU consult pending response"
+      },
+      {
+        "run_time": "2026-01-22T06:30:00+08:00",
+        "status": "success",
+        "duration_seconds": 76,
+        "notes": "All handoff tasks completed"
+      }
+    ]
+  },
+  {
+    "job_id": "JOB-703",
+    "name": "daily_teaching_schedule_sync",
+    "description": "Synchronizes resident teaching schedule from education coordinator system to ED calendar",
+    "cron_expression": "0 6 * * *",
+    "enabled": true,
+    "last_status": "success",
+    "last_run": "2026-01-23T06:00:00+08:00",
+    "action": "sync_teaching_schedule",
+    "created_by": "Education Coordinator",
+    "tags": [
+      "education",
+      "schedule",
+      "sync"
+    ],
+    "notes": "Daily sync of teaching sessions, case conferences, and simulation labs",
+    "execution_history": [
+      {
+        "run_time": "2026-01-23T06:00:00+08:00",
+        "status": "success",
+        "duration_seconds": 34,
+        "notes": "3 teaching sessions synced for today"
+      }
+    ]
+  }
+]

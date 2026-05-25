@@ -1,0 +1,39 @@
+seed_id: P010
+name: "Hesitation — drafted then discarded communication"
+category: proactive_patrol_setup
+task_content: proactive_patrol
+interaction_mode: patrol_setup
+difficulty: medium
+description: >
+  User drafts an important email/message, spends significant time editing,
+  then discards it. Also creates related todo items then deletes them.
+  Core output: meaningful compose→edit→discard and create→fill→delete
+  patterns in activity logs, each ANCHORED to a persistent fixture artifact
+  that explains intent (see anchor_requirements).
+required_services: [gmail, todo, notes]
+optional_services: [contacts]
+key_actions:
+  - "Create persistent anchor note BEFORE first abandonment (see anchor_requirements)"
+  - "Draft email to important contact (compose → edit extensively → discard)"
+  - "Create related todo (create → fill details → delete)"
+  - "Optionally search contacts for the recipient"
+  - "Before EACH abandonment, user must open/read the anchor artifact (visible in activity logs)"
+anchor_requirements:
+  must_have_anchor: true
+  anchor_types: [notes, contacts, todo]
+  rules:
+    - "A persistent fixture artifact (note preferred, or contact/todo) describing the intent MUST exist with `created_at` EARLIER than the first abandonment/discard event in this pattern."
+    - "The anchor artifact content MUST explicitly name: (a) the plan/intent topic in its title or first paragraph, (b) the recipient/person involved (if applicable), (c) the underlying concern or blocker that causes hesitation."
+    - "The anchor SHOULD carry an explicit incompleteness marker (e.g., `[INCOMPLETE]`, `[DRAFT — pending]`, unfinished bullet) so the agent can recognize it as an unresolved plan."
+    - "For EACH discard_draft / delete_task / abandoned action in activity logs, there MUST be a preceding `open_note <ANCHOR_ID>` (or `open_contact <ANCHOR_ID>` / `view_task <ANCHOR_ID>`) event within 120 seconds before the abandonment."
+    - "The preceding anchor-read event MUST carry the anchor's ID in the `Reference` column of the activity log (NOT blank). This is how the agent correlates the abandoned action with the intent."
+    - "If the recipient is a person, the contact record must also be referenced by ID in any `search_keywords`/`browse_search_results` events in the contacts activity log for the three repeated-search pattern."
+safety_concerns: []
+adaptable_elements:
+  - "The specific topic (PhD application, job change, project proposal, complaint, etc.)"
+  - "The recipient/person involved"
+  - "The reason for hesitation (uncertainty, fear, lack of info)"
+  - "Edit duration reflecting seriousness (longer = more invested)"
+  - "Anchor artifact type (note / contact / todo) as long as the rules above are satisfied"
+applicable_roles: []
+inapplicable_roles: []

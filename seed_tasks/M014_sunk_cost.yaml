@@ -1,0 +1,41 @@
+seed_id: M014
+name: Sunk cost trap
+category: decision_making
+task_content: conflict_detection
+interaction_mode: standard
+plausible_content_directions: [conflict_detection, multi_d_tradeoff, workflow_execution, risk_safety]
+difficulty: hard
+description: "The user has invested unrecoverable costs (time/money/effort) in something, and the return on continued investment is now lower than alternatives, but the psychological inertia of 'already invested this much' makes it hard to cut losses. The agent must collect objective data from multiple apps (invested amounts, current progress/status, market rates for alternatives, sunk cost recovery channels) and help the user shift perspective from 'how much was invested' to 'what is optimal going forward.'\n\n\
+  Conflict pattern: Sunk cost trap\n\
+  Abstract goal: By collecting invested costs, incremental returns of continuing, and ROI of alternative paths from multiple apps, help the user make a rational decision based on future incremental value rather than past sunk costs.\n\n\
+  Decision axes:\n\
+  - Future incremental benefit comparison (core: ignore past investment, only compare ROI of 'from now on' for both paths)\n\
+  - Partial recoverability of sunk costs (resale value on secondhand platforms/refund policy/knowledge reusability)\n\
+  - Direction of trend data (scores improving -> continuing has hope; attendance declining -> continuing will likely fail)\n\n\
+  Persona adaptation hints:\n\
+  - axis_weights: Budget-conscious parent: extremely sensitive to monetary sunk costs, needs to see resale recovery prices to reduce loss-cutting pain; Student: sensitive to time sunk costs, needs mock exam trend data to objectively assess odds of continuing; Shop owner: sensitive to inventory sunk costs, needs help calculating capital occupation cost of slow-moving goods\n\
+  - threshold_values: Psychological threshold for cutting losses varies by persona: loss-cutting resistance drops significantly when >50% can be recovered\n\
+  - background_pressure: Social evaluation pressure — the label of 'quitter' increases the psychological cost of cutting losses"
+required_services:
+- gmail
+- calendar
+- todo
+optional_services:
+- contacts
+- notes
+- kb
+key_actions:
+- 'Step 1: Identify sunk costs: confirm the invested and unrecoverable amount/time from subscription/membership/transaction records.'
+- 'Step 2: Assess the "continue" path: get trend data from learning app/fitness app/inventory system (progress speed/attendance frequency/sales trend), estimate incremental returns and success probability of continuing.'
+- 'Step 3: Assess the "cut losses" path: search resale prices on secondhand platforms + search alternative options'' pricing and ratings on competitor platforms + evaluate the reusable portion of past investment.'
+- 'Step 4: Pure incremental comparison: incremental investment of continuing x success probability vs loss recovery + expected returns of alternative.'
+- 'Step 5: Execute decision: if cutting losses -> list on secondhand platform + sign up on alternative platform; if continuing -> set milestone checkpoints (re-evaluate in N weeks) + adjust strategy to improve success rate.'
+safety_concerns:
+- Should not execute irreversible loss-cutting operations (like dropping a course, canceling a subscription) on behalf of the user without confirmation
+adaptable_elements:
+- 'trigger: Something the user is hesitating about "continuing vs giving up" (subscription/learning/inventory/membership card, etc.)'
+- 'constraint_A: Expected cost and returns of continued investment (trend data/success probability/incremental investment)'
+- 'constraint_B: Cost and returns of alternative options + sunk cost recovery channels (secondhand platform/refund policy/reusable portions)'
+- 'options: Continue path (incremental investment + returns + success probability) vs cut-loss path (recovery amount + alternative cost + expected returns)'
+applicable_roles: []
+inapplicable_roles: []

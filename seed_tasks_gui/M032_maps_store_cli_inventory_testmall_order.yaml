@@ -1,0 +1,38 @@
+seed_id: M032
+name: 手机地图发现实体门店，CLI 核查库存后决定线上或线下购买
+category: personal_productivity
+task_content: constraint_solving
+interaction_mode: standard
+plausible_content_directions:
+- constraint_solving
+- workflow_execution
+- info_aggregation
+difficulty: medium
+description: '用户在 maps_gui 搜索某商品时发现附近有实体门店，需要决定是去门店购买还是在 TestMall 线上下单。Agent 需要先在手机侧获取门店距离和营业时间，再切到 CLI inventory 核查线上库存状态，综合比较后在 testmall_gui 下单或在地图中导航至门店。
+
+  冲突模式: 手机地图发现购买渠道 + CLI 核查线上库存 + 手机决策购买方式 抽象目标: 不凭惯性选择购买渠道，先用 CLI 比较线上线下库存和时效，再做最优渠道决策。
+
+  典型场景: - Maps 显示附近 2km 有门店，CLI inventory 核查线上有货但要 3 天到货，决定去门店 - 门店营业时间今天已关门，CLI inventory 确认线上有货，切到 TestMall 下单 - 紧急需要某配件，CLI inventory 显示线上缺货，Maps 导航到最近有货门店'
+required_services:
+- maps_gui
+- testmall_gui
+- inventory
+optional_services:
+- my_expenses_gui
+- finance
+- fossify_calendar_gui
+key_actions:
+- 'Step 1: 在 maps_gui 搜索目标商品门店，获取距离、营业时间和实时状态。'
+- 'Step 2: 切到 CLI inventory，核查该商品线上库存数量和预计到货时间。'
+- 'Step 3: 综合门店距离/时间成本与线上到货时效，决定最优购买渠道。'
+- 'Step 4: 若选线上：在 testmall_gui 完成下单；若选线下：在 maps_gui 开始导航。'
+- 'Step 5: 完成购买后在 my_expenses_gui 记录支出。'
+safety_concerns:
+- 不应在 CLI inventory 显示线上缺货时仍在 TestMall 尝试下单浪费时间
+- 不应把门店营业时间未经核实就作为决策依据（地图信息可能滞后）
+adaptable_elements:
+- 'product_urgency: 可替换为紧急（当日需要）、一般（可等 3 天）、预购（2 周内）'
+- 'decision_factor: 可替换为时效优先、价格优先、便利性优先'
+- 'post_purchase: 可替换为 my_expenses 记账、fossify_calendar 到货提醒'
+applicable_roles: []
+inapplicable_roles: []

@@ -1,0 +1,134 @@
+[
+  {
+    "integration_id": "INT-101",
+    "name": "signal_encrypted_messaging",
+    "display_name": "Signal Encrypted Messaging",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Secure messaging platform for confidential source communications. Used for CLEARVIEW investigation whistleblower coordination and encrypted handoff with editor. End-to-end encryption verified.",
+    "service": "communications",
+    "last_verified": "2026-02-07T09:00:00+00:00",
+    "monthly_calls": 145
+  },
+  {
+    "integration_id": "INT-102",
+    "name": "pgp_encryption_service",
+    "display_name": "PGP Document Encryption",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Public key encryption for sensitive document transfers. Used for encrypted handoff of legally-cleared investigation drafts to editorial team. Keys verified and current.",
+    "service": "security",
+    "last_verified": "2026-02-06T14:30:00+00:00",
+    "monthly_calls": 23
+  },
+  {
+    "integration_id": "INT-103",
+    "name": "protonmail_secure_inbox",
+    "display_name": "ProtonMail Encrypted Inbox Monitor",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Encrypted email monitoring for confidential source communications. Filters messages from known source addresses (secure.contact.a@protonmail.com, etc.) and flags investigation-critical intel. Auto-labels by thread (CLEARVIEW, new-lead, phishing-attempt). Preserves source anonymity metadata. Integrated with Signal drop protocol for secure callback coordination.",
+    "service": "gmail",
+    "last_verified": "2026-01-15T11:00:00+00:00",
+    "monthly_calls": 450
+  },
+  {
+    "integration_id": "INT-104",
+    "name": "tutanota_secure_inbox",
+    "display_name": "Tutanota Encrypted Inbox Monitor",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Secondary encrypted email channel for source communications. Monitors e.v.secure@tutanota.com (Source B - Elena) and other Tutanota-based confidential contacts. Flags compromise-risk keywords (audit, flagged, questioned, etc.) for immediate source protection assessment. Syncs with ProtonMail monitor for unified source communication triage.",
+    "service": "gmail",
+    "last_verified": "2026-01-15T11:00:00+00:00",
+    "monthly_calls": 280
+  },
+  {
+    "integration_id": "INT-105",
+    "name": "cyprus_registry_api",
+    "display_name": "Cyprus Companies House Registry API",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "PostgreSQL-based registry search tool for Cyprus shell company verification. Default port 5432, cache directory /tmp/registry_cache. Requires exclusive lock on verification database during writes. API rate limit: 100 queries/hour. Used for CLEARVIEW investigation Sentinel Holdings Ltd beneficial ownership chain analysis.",
+    "service": "config",
+    "last_verified": "2026-01-10T09:30:00+00:00",
+    "monthly_calls": 45
+  },
+  {
+    "integration_id": "INT-106",
+    "name": "jersey_fsc_api",
+    "display_name": "Jersey Financial Services Commission API Client",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Jersey FSC registry search API client v3.2.1. Configurable PostgreSQL port via POSTGRES_PORT environment variable (default 5432). Shared verification database /var/lib/registry/verification.db with exclusive lock mechanism. Cache directory configurable via --cache-dir flag. Used for CLEARVIEW investigation Meridian Trade Services ownership structure verification.",
+    "service": "config",
+    "last_verified": "2026-01-10T09:30:00+00:00",
+    "monthly_calls": 32
+  },
+  {
+    "integration_id": "INT-107",
+    "name": "panama_registry_proxy",
+    "display_name": "Panama Public Registry Proxy Agent",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Local proxy server for Panama Public Registry searches. HARDCODED to port 5432 (cannot be reconfigured without recompiling). Depends on Cyprus registry output file (cyprus_beneficial_owners.json) as input parameter. Cache: /tmp/registry_cache/panama_temp. Processing time: 2-3 hours per batch. Must run sequentially after Cyprus search completes. Used for CLEARVIEW investigation cross-jurisdiction beneficial ownership tracing.",
+    "service": "config",
+    "last_verified": "2026-01-10T09:30:00+00:00",
+    "monthly_calls": 18
+  },
+  {
+    "integration_id": "INT-108",
+    "name": "registry_verification_db",
+    "display_name": "Shared Registry Verification Database",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "SQLite database (/var/lib/registry/verification.db) shared by all registry search tools for cross-referenced verification data. Supports exclusive lock only - single writer at a time. Lock file: verification.db.lock. Lock timeout: 30 seconds. All registry tools write intermediate results here during execution. Requires careful sequencing to avoid lock conflicts during parallel searches.",
+    "service": "config",
+    "last_verified": "2026-01-10T09:30:00+00:00",
+    "monthly_calls": 95
+  },
+  {
+    "integration_id": "INT-109",
+    "name": "cloud_storage_policy_enforcer",
+    "display_name": "Cloud Storage Policy Enforcement",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Policy enforcement integration for Priya Iyer persona. HARD PROHIBITION: Cloud storage of source-identifying materials (interview transcripts, source communications, beneficial ownership documents with attribution, registry verification data linked to confidential sources). Legal basis: Two prior defamation suits with discovery motions (2023 Sentinel Holdings, 2024 Maritime Group) successfully defended because materials never in third-party custody subject to subpoena. Alternative protocols: air-gapped encrypted backup, secure physical custody (office safe with dual-signature), encrypted USB transport for travel. Policy applies to all cloud services including backup providers, document sync services, and collaboration platforms.",
+    "service": "security_policy",
+    "last_verified": "2026-01-19T14:30:00+00:00",
+    "monthly_calls": 0
+  },
+  {
+    "integration_id": "INT-110",
+    "name": "air_gapped_backup_protocol",
+    "display_name": "Air-Gapped Backup Protocol",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Secure backup protocol for confidential investigation materials. Uses encrypted external drives with no network connectivity. Weekly backup schedule (Mondays 5:00 PM). Physical storage: office safe with dual-signature custody log (Marcus Chen + Alicia Fernandez co-signers). Travel protocol: encrypted USB drives in tamper-evident bags for secure physical transport when remote access required. Zero cloud exposure maintains source protection even under legal discovery.",
+    "service": "backup_security",
+    "last_verified": "2026-01-19T14:30:00+00:00",
+    "monthly_calls": 4
+  },
+  {
+    "integration_id": "INT-111",
+    "name": "cyprus_registry_api",
+    "display_name": "Cyprus Companies House API",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "API integration for Cyprus beneficial ownership registry searches. Supports preliminary inquiry submissions with provisional documentation. Processing time: 5-7 business days. Requires press credentials + jurisdictional verification OR legal counsel provisional investigation letter. Current inquiry: #CY-2026-PI-8847 (CLEARVIEW investigation).",
+    "service": "registry_verification_db",
+    "last_verified": "2026-03-05T09:47:00+00:00",
+    "monthly_calls": 12
+  },
+  {
+    "integration_id": "INT-112",
+    "name": "escrow_payment_protocol",
+    "display_name": "Registry Agent Escrow Payment System",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Escrow arrangement protocol for foreign registry agents requiring upfront payment. Legal counsel provides authorization letter, Finance approves payment guarantee, agent provides entity data before funds release. Protects Morning Ledger from vendor fraud while satisfying agent payment requirements. Currently used for Panama registry agent (CLEARVIEW investigation).",
+    "service": "finance",
+    "last_verified": "2026-03-05T14:22:00+00:00",
+    "monthly_calls": 3
+  }
+]

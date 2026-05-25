@@ -1,0 +1,39 @@
+# =============================================================================
+# Claw-Anything example config.
+#   1. Copy this file to config.yaml.
+#   2. Replace the placeholder API keys with your own credentials.
+#   3. Adjust base_url / model_id if you are using a different provider
+#      (OpenAI, OpenRouter, Anthropic, self-hosted, etc.).
+# config.yaml is git-ignored by default.
+# =============================================================================
+
+model:
+  # Any OpenAI-compatible endpoint works (OpenAI, OpenRouter, your own gateway).
+  api_key: your-api-key-here
+  base_url: https://api.openai.com/v1
+  model_id: gpt-4o-mini
+
+# LLM-as-judge — used for communication-quality scoring on tasks that opt in.
+judge:
+  api_key: your-api-key-here
+  base_url: https://api.openai.com/v1
+  model_id: gpt-4o-mini
+  enabled: true
+
+agent:
+  # 'loop'             — in-process agent loop (no Docker required).
+  # 'openharness'      — vanilla OpenHarness (`oh` CLI); requires --trial-in-container
+  #                      with image claw-anything-oh, plus --oh-settings.
+  # 'openharness-ext'  — OpenHarnessExtended fork; adds Android/GUI support.
+  #                      Requires image claw-anything-oh-ext + --oh-settings.
+  agent_type: loop
+
+defaults:
+  trace_dir: traces
+
+# container:
+#   memory_limit: 4g
+#   cpu_limit: 2.0
+
+# prompt:
+#   skill_mode: true

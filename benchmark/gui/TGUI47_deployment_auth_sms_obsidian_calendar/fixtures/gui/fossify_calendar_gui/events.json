@@ -1,0 +1,733 @@
+[
+  {
+    "event_id": 1,
+    "title": "创新软件转化沟通",
+    "description": "Trial 期 3/31 到期，需讨论转为付费客户。准备：pricing options, case studies, 解答技术问题",
+    "start_time": "2026-03-17T10:00:00+08:00",
+    "end_time": "2026-03-17T11:00:00+08:00",
+    "location": "",
+    "attendees": [
+      "zhao.xue@chuangxin-soft.com"
+    ],
+    "reminder_minutes": 30,
+    "recurrence": null,
+    "color": "#FF5722",
+    "status": "confirmed"
+  },
+  {
+    "event_id": 2,
+    "title": "数据云科技 Premium tier 方案讨论",
+    "description": "准备功能对比、定制开发评估、pricing。可能需要产品团队参与",
+    "start_time": "2026-03-18T14:00:00+08:00",
+    "end_time": "2026-03-18T15:00:00+08:00",
+    "location": "腾讯会议",
+    "attendees": [
+      "li.na@datacloud.cn"
+    ],
+    "reminder_minutes": 60,
+    "recurrence": null,
+    "color": "#2196F3",
+    "status": "tentative"
+  },
+  {
+    "event_id": 3,
+    "title": "每日文档时间 (强制)",
+    "description": "每天 18:00 停下手头工作，整理当天的系统变更和问题记录到 Obsidian",
+    "start_time": "2026-03-17T18:00:00+08:00",
+    "end_time": "2026-03-17T18:30:00+08:00",
+    "location": "",
+    "attendees": [],
+    "reminder_minutes": 15,
+    "recurrence": "daily",
+    "color": "#FF9800",
+    "status": "confirmed"
+  },
+  {
+    "event_id": 4,
+    "title": "晨练",
+    "description": "30 分钟运动 - 跑步或健身操",
+    "start_time": "2026-03-17T07:30:00+08:00",
+    "end_time": "2026-03-17T08:00:00+08:00",
+    "location": "小区",
+    "attendees": [],
+    "reminder_minutes": 10,
+    "recurrence": "daily",
+    "color": "#E91E63",
+    "status": "confirmed"
+  },
+  {
+    "id": 5,
+    "title": "Hardware Replacement - Server Disk",
+    "description": "Pick up NVMe SSD from TechSource office (3km), install on primary server, validate failback. Vendor office closes 16:00.",
+    "location": "TechSource Hardware, Zhangjiang Road",
+    "start_time": "2026-03-15T14:45:00+08:00",
+    "end_time": "2026-03-15T17:00:00+08:00",
+    "all_day": false,
+    "recurrence_rule": null,
+    "reminder_minutes": 0,
+    "attendees": [],
+    "color": "#FF5252",
+    "status": "confirmed"
+  },
+  {
+    "id": 6,
+    "title": "Post-Incident Review - Disk Failure",
+    "description": "Review incident timeline, document lessons learned, update runbook for hardware failures. Include procurement decision analysis (office pickup vs online).",
+    "location": "Office",
+    "start_time": "2026-03-18T14:00:00+08:00",
+    "end_time": "2026-03-18T15:00:00+08:00",
+    "all_day": false,
+    "recurrence_rule": null,
+    "reminder_minutes": 60,
+    "attendees": [
+      "wang.ming@lingxi-ai.com"
+    ],
+    "color": "#2196F3",
+    "status": "tentative"
+  },
+  {
+    "event_id": "5",
+    "title": "CloudInfra Timeout Config Deployment - Staging",
+    "start_time": "2026-01-28T10:00:00+08:00",
+    "end_time": "2026-01-28T12:00:00+08:00",
+    "location": "Remote",
+    "description": "Deploy timeout config changes (10s → 15s) and retry logic to staging environment. Test for 2 hours before production deployment.",
+    "color": "#FF9800",
+    "all_day": false,
+    "reminders": [
+      {
+        "minutes_before": 60
+      }
+    ],
+    "recurrence": null,
+    "attendees": []
+  },
+  {
+    "event_id": "6",
+    "title": "CloudInfra Timeout Config Deployment - Production",
+    "start_time": "2026-01-29T10:00:00+08:00",
+    "end_time": "2026-01-29T14:00:00+08:00",
+    "location": "Remote",
+    "description": "Deploy timeout config changes to production. Monitor for 2 hours post-deployment. Rollback script ready if needed.",
+    "color": "#F44336",
+    "all_day": false,
+    "reminders": [
+      {
+        "minutes_before": 120
+      },
+      {
+        "minutes_before": 30
+      }
+    ],
+    "recurrence": null,
+    "attendees": []
+  },
+  {
+    "event_id": "7",
+    "title": "CloudInfra Maintenance - Monitoring Window START",
+    "start_time": "2026-02-01T10:00:00+08:00",
+    "end_time": "2026-02-01T12:00:00+08:00",
+    "location": "Remote",
+    "description": "CloudInfra maintenance begins. Check error rate dashboard every 15 min for first 2 hours. Alert if error rate > 5%. Runbook: OBSN-6",
+    "color": "#F44336",
+    "all_day": false,
+    "reminders": [
+      {
+        "minutes_before": 30
+      }
+    ],
+    "recurrence": null,
+    "attendees": []
+  },
+  {
+    "event_id": "8",
+    "title": "CloudInfra Maintenance - Post-Verification",
+    "start_time": "2026-02-03T10:00:00+08:00",
+    "end_time": "2026-02-03T12:00:00+08:00",
+    "location": "Remote",
+    "description": "Post-maintenance verification checklist: verify API latency back to baseline, run manual export job for Feb 2, re-enable automated jobs, send customer follow-up. See runbook OBSN-6.",
+    "color": "#4CAF50",
+    "all_day": false,
+    "reminders": [
+      {
+        "minutes_before": 60
+      }
+    ],
+    "recurrence": null,
+    "attendees": []
+  },
+  {
+    "id": 9,
+    "title": "CloudInfra Timeout Config - Staging Deployment",
+    "description": "Deploy increased timeout configurations to staging environment before CDN maintenance. Test with simulated latency.\n\nConfig changes:\n- Nginx upstream timeout: 30s → 60s\n- App connection timeout: 10s → 20s\n\nVerify: Load test with 100ms added latency",
+    "start_time": "2026-02-13T10:00:00+08:00",
+    "end_time": "2026-02-13T12:00:00+08:00",
+    "location": "Remote",
+    "attendees": [
+      "lin.zhenkai@lingxi-ai.com"
+    ],
+    "reminders": [
+      {
+        "minutes_before": 60,
+        "method": "notification"
+      }
+    ],
+    "recurrence": null,
+    "color": "#FF9800",
+    "is_all_day": false,
+    "notes": "Pre-maintenance prep for CloudInfra CDN upgrade. See OBSN-9 runbook.",
+    "created_at": "2026-02-09T14:35:00+08:00",
+    "updated_at": "2026-02-09T14:35:00+08:00"
+  },
+  {
+    "id": 10,
+    "title": "CloudInfra Timeout Config - Production Deployment",
+    "description": "Deploy increased timeout configurations to production (T-24h before CDN maintenance).\n\nMust complete before Feb 15 maintenance window starts.\n\nPost-deployment: Verify monitoring alerts active.",
+    "start_time": "2026-02-14T10:00:00+08:00",
+    "end_time": "2026-02-14T11:30:00+08:00",
+    "location": "Remote",
+    "attendees": [
+      "lin.zhenkai@lingxi-ai.com"
+    ],
+    "reminders": [
+      {
+        "minutes_before": 120,
+        "method": "notification"
+      },
+      {
+        "minutes_before": 30,
+        "method": "notification"
+      }
+    ],
+    "recurrence": null,
+    "color": "#FF5722",
+    "is_all_day": false,
+    "notes": "CRITICAL: Production change before CDN maintenance. See OBSN-9.",
+    "created_at": "2026-02-09T14:37:00+08:00",
+    "updated_at": "2026-02-09T14:37:00+08:00"
+  },
+  {
+    "id": 11,
+    "title": "CloudInfra CDN Maintenance - Monitoring START",
+    "description": "CloudInfra CDN maintenance window begins. Monitor every 2 hours:\n\n- Error rate dashboard\n- Origin server load\n- Customer support tickets\n- Cloudflare failover status\n\nEscalation thresholds in OBSN-9 runbook.\n\nOn-call: Lin Zhenkai (primary), Wang Ming (backup)",
+    "start_time": "2026-02-15T10:00:00+08:00",
+    "end_time": "2026-02-16T14:00:00+08:00",
+    "location": "Remote",
+    "attendees": [
+      "lin.zhenkai@lingxi-ai.com",
+      "cto@lingxi-ai.com"
+    ],
+    "reminders": [
+      {
+        "minutes_before": 120,
+        "method": "notification"
+      },
+      {
+        "minutes_before": 30,
+        "method": "notification"
+      }
+    ],
+    "recurrence": null,
+    "color": "#F44336",
+    "is_all_day": false,
+    "notes": "28-hour maintenance window. See OBSN-9 for full runbook and monitoring checklist.",
+    "created_at": "2026-02-09T14:40:00+08:00",
+    "updated_at": "2026-02-09T14:40:00+08:00"
+  },
+  {
+    "id": 12,
+    "title": "CDN Maintenance - Post-Verification",
+    "description": "Post-maintenance verification (T+2h):\n\n- Verify cache hit ratio >85%\n- Check error rate <0.1%\n- Run smoke tests on all CDN services\n- Consider reverting timeout configs\n\nGenerate incident report by Feb 17.",
+    "start_time": "2026-02-16T16:00:00+08:00",
+    "end_time": "2026-02-16T18:00:00+08:00",
+    "location": "Remote",
+    "attendees": [
+      "lin.zhenkai@lingxi-ai.com"
+    ],
+    "reminders": [
+      {
+        "minutes_before": 60,
+        "method": "notification"
+      }
+    ],
+    "recurrence": null,
+    "color": "#4CAF50",
+    "is_all_day": false,
+    "notes": "Post-maintenance verification. See OBSN-9 runbook.",
+    "created_at": "2026-02-09T14:42:00+08:00",
+    "updated_at": "2026-02-09T14:42:00+08:00"
+  },
+  {
+    "event_id": "9",
+    "title": "CloudInfra DB Maintenance - Runbook Review with CTO",
+    "start_time": "2026-04-03T10:00:00+08:00",
+    "end_time": "2026-04-03T10:30:00+08:00",
+    "location": "Office",
+    "description": "Review database maintenance runbook with Wang Ming. Confirm rollback criteria and customer notification plan.",
+    "recurring": "none",
+    "reminder_minutes": 15,
+    "color": "#D32F2F"
+  },
+  {
+    "event_id": "10",
+    "title": "Send Premium Customer Maintenance Notifications",
+    "start_time": "2026-04-06T10:00:00+08:00",
+    "end_time": "2026-04-06T11:00:00+08:00",
+    "location": "Office",
+    "description": "T-48 hours notification to CUS-102, CUS-104, CUS-105 about CloudInfra database maintenance window",
+    "recurring": "none",
+    "reminder_minutes": 30,
+    "color": "#1976D2"
+  },
+  {
+    "event_id": "11",
+    "title": "DB Maintenance Pre-Flight Checks",
+    "start_time": "2026-04-07T10:00:00+08:00",
+    "end_time": "2026-04-07T12:00:00+08:00",
+    "location": "Office",
+    "description": "T-24 hours checklist: Run health check regression suite, verify backups, confirm on-call rotation, pre-stage rollback scripts",
+    "recurring": "none",
+    "reminder_minutes": 60,
+    "color": "#F57C00"
+  },
+  {
+    "event_id": "12",
+    "title": "CloudInfra DB Maintenance Window - MONITORING",
+    "start_time": "2026-04-08T10:00:00+08:00",
+    "end_time": "2026-04-09T14:00:00+08:00",
+    "location": "Remote (On-call)",
+    "description": "CloudInfra database cluster maintenance. Monitor Grafana dashboards every 5 minutes. Watch for connection failures >5%, API errors >3%. Rollback authority: Lin Zhenkai (primary), Wang Ming (secondary). Vendor support: db-support@cloudinfra-vendor.com",
+    "recurring": "none",
+    "reminder_minutes": 120,
+    "color": "#C62828"
+  },
+  {
+    "event_id": "13",
+    "title": "DB Maintenance Post-Verification",
+    "start_time": "2026-04-09T14:30:00+08:00",
+    "end_time": "2026-04-09T16:00:00+08:00",
+    "location": "Office",
+    "description": "Post-maintenance verification: Check service health, connection pool metrics, query performance, replica lag. Generate summary report and update customers.",
+    "recurring": "none",
+    "reminder_minutes": 30,
+    "color": "#388E3C"
+  },
+  {
+    "event_id": "FCAL-114",
+    "title": "Redis Memory Module Installation Window",
+    "start_time": "2026-04-03T14:00:00+08:00",
+    "end_time": "2026-04-03T16:00:00+08:00",
+    "location": "Office - Server Room",
+    "description": "Install replacement ECC RAM module on redis-prod-01. Coordinate with CTO for production traffic failover to redis-slave-01 during installation. Estimated downtime: 30 minutes.",
+    "recurring": "none",
+    "reminder_minutes": 60,
+    "color": "#FF6B6B"
+  },
+  {
+    "event_id": "FCAL-115",
+    "title": "Hardware Delivery Arrival - TestMall",
+    "start_time": "2026-04-03T12:00:00+08:00",
+    "end_time": "2026-04-03T12:30:00+08:00",
+    "location": "Office Reception",
+    "description": "Expected delivery window for Server RAM (PROD-5001) from TestMall. Track package and verify part number before signing.",
+    "recurring": "none",
+    "reminder_minutes": 30,
+    "color": "#4ECDC4"
+  },
+  {
+    "event_id": "FCAL-116",
+    "title": "Lunch with Team",
+    "start_time": "2026-04-02T12:30:00+08:00",
+    "end_time": "2026-04-02T13:30:00+08:00",
+    "location": "Noodle House nearby",
+    "description": "Weekly team lunch",
+    "recurring": "weekly",
+    "reminder_minutes": 15,
+    "color": "#95E1D3"
+  },
+  {
+    "event_id": "FCAL-101",
+    "title": "Rate-Limiting Deployment Window (PROPOSED)",
+    "start_time": "2026-04-02T21:00:00+08:00",
+    "end_time": "2026-04-02T23:00:00+08:00",
+    "location": "Remote (On-call)",
+    "description": "Proposed deployment window for rate-limiting feature - PENDING system health verification. Prerequisites: DB migration complete, health checks pass, P95 latency normalized.",
+    "recurring": "",
+    "reminder_minutes": 30,
+    "color": "#F57C00"
+  },
+  {
+    "event_id": "FCAL-102",
+    "title": "DB Migration Completion - Monitor",
+    "start_time": "2026-04-02T20:00:00+08:00",
+    "end_time": "2026-04-02T20:30:00+08:00",
+    "location": "Remote",
+    "description": "Monitor db_migration_user_preferences completion and verify system stabilization before deployment decision",
+    "recurring": "",
+    "reminder_minutes": 10,
+    "color": "#D32F2F"
+  },
+  {
+    "event_id": "FCAL-103",
+    "title": "Alternative Deployment Window - Friday Morning",
+    "start_time": "2026-04-05T10:00:00+08:00",
+    "end_time": "2026-04-05T12:00:00+08:00",
+    "location": "Office",
+    "description": "Backup deployment window if tonight is not feasible. Lower traffic period, full team available for monitoring.",
+    "recurring": "",
+    "reminder_minutes": 60,
+    "color": "#1976D2"
+  },
+  {
+    "event_id": "FCAL-104",
+    "title": "Daily Standup",
+    "start_time": "2026-04-03T10:30:00+08:00",
+    "end_time": "2026-04-03T11:00:00+08:00",
+    "location": "Office",
+    "description": "Daily team sync",
+    "recurring": "daily",
+    "reminder_minutes": 10,
+    "color": "#1565C0"
+  },
+  {
+    "event_id": "FCAL-105",
+    "title": "🚨 Hardware Pickup - TechSource (Redis RAM)",
+    "start_time": "2026-04-02T15:00:00+08:00",
+    "end_time": "2026-04-02T17:00:00+08:00",
+    "location": "889 Yishan Road, Xuhui District → Office",
+    "description": "Emergency hardware procurement for redis-cache-01 memory failure.\n\nPickup: Samsung M393A4K40CB2 32GB ECC RAM (2 units)\nVendor: TechSource Hardware Solutions\nContact: Chen Wei +86 21-6485-7700\nCost: ¥5,700 (2 units @ ¥2,850)\n\nTimeline:\n- 15:00 Depart office\n- 15:45 Arrive TechSource\n- 16:00 Pickup complete\n- 16:45 Return to office\n- 17:00 Buffer",
+    "recurring": "none",
+    "reminder_minutes": 10,
+    "color": "#D32F2F"
+  },
+  {
+    "event_id": "FCAL-106",
+    "title": "Redis Cache Node RAM Installation",
+    "start_time": "2026-04-02T17:30:00+08:00",
+    "end_time": "2026-04-02T19:00:00+08:00",
+    "location": "Server Room / Remote",
+    "description": "Install replacement RAM on redis-cache-01 and run health checks.\n\nTasks:\n- Drain redis-cache-01 traffic (promote replica)\n- Physical RAM replacement (DIMM slot 2)\n- POST verification\n- Redis service restart\n- Health check validation (JOB-708)\n- Rejoin cluster\n\nMust complete by 19:00 to allow 1hr buffer before deployment window.",
+    "recurring": "none",
+    "reminder_minutes": 15,
+    "color": "#D32F2F"
+  },
+  {
+    "event_id": "FCAL-107",
+    "title": "Production Deployment - Rate Limiting Feature",
+    "start_time": "2026-04-02T20:00:00+08:00",
+    "end_time": "2026-04-02T22:00:00+08:00",
+    "location": "Remote (On-call)",
+    "description": "Deploy rate-limiting feature to production.\n\nPrerequisites:\n- ✅ Redis cluster healthy (all nodes operational)\n- Health check regression suite passed\n- CTO approval\n\nRollback plan: Revert feature flag if error rate >1%",
+    "recurring": "none",
+    "reminder_minutes": 30,
+    "color": "#1565C0"
+  },
+  {
+    "event_id": "FCAL-108",
+    "title": "Weekly Team Sync",
+    "start_time": "2026-04-03T10:00:00+08:00",
+    "end_time": "2026-04-03T11:00:00+08:00",
+    "location": "腾讯会议",
+    "description": "Weekly standup - discuss last night's deployment and redis incident resolution.",
+    "recurring": "weekly",
+    "reminder_minutes": 10,
+    "color": "#7CB342"
+  },
+  {
+    "event_id": "FCAL-109",
+    "title": "Post-Mortem: DB Connection Pool Incident",
+    "start_time": "2026-04-03T14:00:00+08:00",
+    "end_time": "2026-04-03T15:00:00+08:00",
+    "location": "Conference Room A",
+    "description": "Review incident INC-2026-04-02-001 (DB connection pool exhaustion). Discuss timeline, root cause, prevention measures. Attendees: CTO Wang Ming, Lin Zhenkai, Backend Team. Prep: Review OBSN-19 runbook.",
+    "recurring": "none",
+    "reminder_minutes": 30,
+    "color": "#E53935"
+  },
+  {
+    "event_id": "FCAL-110",
+    "title": "Scheduler Jobs Audit - Deep Dive",
+    "start_time": "2026-04-04T15:00:00+08:00",
+    "end_time": "2026-04-04T17:00:00+08:00",
+    "location": "Remote",
+    "description": "Review all 12 active scheduler jobs for connection handling issues. Focus on: JOB-701 through JOB-712. Document findings in Obsidian. Related to TODO-519.",
+    "recurring": "none",
+    "reminder_minutes": 15,
+    "color": "#FB8C00"
+  },
+  {
+    "event_id": "FCAL-111",
+    "title": "Coffee with Zhang Qiang - Disk Monitoring Discussion",
+    "start_time": "2026-04-01T16:00:00+08:00",
+    "end_time": "2026-04-01T16:30:00+08:00",
+    "location": "Office Cafe",
+    "description": "Casual discussion about automated disk health monitoring prototype. Follow-up from weekly sync.",
+    "recurring": "none",
+    "reminder_minutes": 10,
+    "color": "#7CB342"
+  },
+  {
+    "event_id": "FCAL-112",
+    "title": "Production Deployment Window - Rate-Limiting Feature",
+    "start_time": "2026-04-02T22:00:00+08:00",
+    "end_time": "2026-04-03T00:00:00+08:00",
+    "location": "Remote (On-call)",
+    "description": "Scheduled deployment window for rate-limiting feature. Pre-deployment verification required: check health_check_regression_suite completion, deployment_readiness_check status, and review runbook before proceeding.",
+    "recurring": "none",
+    "reminder_minutes": 30,
+    "color": "#D32F2F"
+  },
+  {
+    "event_id": "FCAL-113",
+    "title": "Weekly Team Sync",
+    "start_time": "2026-04-03T10:00:00+08:00",
+    "end_time": "2026-04-03T11:00:00+08:00",
+    "location": "Conference Room A",
+    "description": "Weekly engineering team standup - review sprint progress and blockers",
+    "recurring": "weekly",
+    "reminder_minutes": 15,
+    "color": "#1565C0"
+  },
+  {
+    "event_id": "FCAL-114",
+    "title": "Post-Deployment Review - Rate-Limiting",
+    "start_time": "2026-04-03T10:00:00+08:00",
+    "end_time": "2026-04-03T10:30:00+08:00",
+    "location": "Remote",
+    "description": "Review deployment results and verify production metrics after rate-limiting feature rollout",
+    "recurring": "none",
+    "reminder_minutes": 10,
+    "color": "#F9A825"
+  },
+  {
+    "event_id": "FCAL-115",
+    "title": "TestMall NVMe SSD Delivery Window",
+    "start_time": "2026-04-04T09:00:00+08:00",
+    "end_time": "2026-04-04T18:00:00+08:00",
+    "location": "Office",
+    "description": "Expected delivery: Samsung 980 PRO NVMe SSD 2TB (Order PROD-5003). Track delivery status and coordinate with building reception. Installation scheduled for next maintenance window after arrival confirmation.",
+    "recurring": "none",
+    "reminder_minutes": 60,
+    "color": "#FF9800"
+  },
+  {
+    "event_id": "FCAL-116",
+    "title": "Production DB Server NVMe Installation",
+    "start_time": "2026-04-05T22:00:00+08:00",
+    "end_time": "2026-04-06T01:00:00+08:00",
+    "location": "Server Room / Remote",
+    "description": "Install Samsung 980 PRO NVMe SSD to replace degraded disk from INC-2026-03-15. Steps: 1) Verify backup completion, 2) Shutdown DB replica, 3) Physical installation, 4) RAID rebuild, 5) Health check suite. Rollback plan: revert to current degraded RAID if rebuild fails.",
+    "recurring": "none",
+    "reminder_minutes": 120,
+    "color": "#F44336"
+  },
+  {
+    "event_id": "FCAL-117",
+    "title": "Production DB Maintenance - NVMe SSD Replacement",
+    "start_time": "2026-04-05T02:00:00+08:00",
+    "end_time": "2026-04-05T04:00:00+08:00",
+    "location": "Server Room / Remote",
+    "description": "Replace aging Samsung 970 EVO with new WD Black SN850X 2TB on db-prod-01.\n\nEstimated downtime: 90 minutes\nRunbook: [[Production DB Maintenance Runbook - NVMe Replacement]]\nApproval: CTO Wang Ming (WMSG-5019)\n\nPre-flight checklist:\n- Verify backup completion\n- Customer notification sent (T-48h)\n- Team notified via Mattermost",
+    "recurring": "none",
+    "reminder_minutes": 720,
+    "color": "#D32F2F"
+  },
+  {
+    "event_id": "FCAL-118",
+    "title": "Send Customer Notification - DB Maintenance Window",
+    "start_time": "2026-04-03T17:00:00+08:00",
+    "end_time": "2026-04-03T17:30:00+08:00",
+    "location": "Office",
+    "description": "Draft and send T-48h maintenance notification to Premium customers.\n\nMaintenance window: 2026-04-05 02:00-04:00 CST\nExpected impact: 90-minute service interruption\nAffected services: API, dashboard\n\nTemplate: Use CloudInfra maintenance notification format",
+    "recurring": "none",
+    "reminder_minutes": 30,
+    "color": "#F57C00"
+  },
+  {
+    "event_id": "FCAL-119",
+    "title": "Production Deployment Window - API Rate Limiter v2.1",
+    "start_time": "2026-04-02T22:00:00+08:00",
+    "end_time": "2026-04-03T01:00:00+08:00",
+    "location": "Remote (On-call)",
+    "description": "Deploy new rate limiting feature to production. Requires pre-deployment health check verification and CTO approval.",
+    "recurring": "none",
+    "reminder_minutes": 60,
+    "color": "#D32F2F"
+  },
+  {
+    "event_id": "FCAL-120",
+    "title": "Pre-deployment Verification Block",
+    "start_time": "2026-04-02T20:00:00+08:00",
+    "end_time": "2026-04-02T21:30:00+08:00",
+    "location": "Remote",
+    "description": "Review overnight job status, verify health check results, confirm deployment readiness criteria met",
+    "recurring": "none",
+    "reminder_minutes": 15,
+    "color": "#F57C00"
+  },
+  {
+    "event_id": "FCAL-121",
+    "title": "Weekly Team Standup",
+    "start_time": "2026-04-02T10:00:00+08:00",
+    "end_time": "2026-04-02T10:30:00+08:00",
+    "location": "Office Conference Room",
+    "description": "Regular team sync - blockers and priorities",
+    "recurring": "weekly",
+    "reminder_minutes": 10,
+    "color": "#1565C0"
+  },
+  {
+    "event_id": "FCAL-122",
+    "title": "⚠️ CONFLICT: Rate-Limiting Deployment vs CloudInfra DB Maintenance",
+    "start_time": "2026-04-08T22:00:00+08:00",
+    "end_time": "2026-04-09T02:00:00+08:00",
+    "location": "Production Environment",
+    "description": "CRITICAL CONFLICT DETECTED:\n\n1. CTO urgent request: Deploy rate-limiting feature tonight (April 8-9)\n2. Pre-scheduled: CloudInfra database maintenance window (April 8-9, 22:00-02:00)\n\nBoth marked critical. Need to:\n- Check Obsidian runbook for rate-limiter DB dependencies\n- Verify scheduler health check completion status\n- Review finance records for SLA penalty clauses\n- Decide: split deployment or postpone maintenance\n- Notify CTO and Premium customers",
+    "recurring": "none",
+    "reminder_minutes": 1440,
+    "color": "#D32F2F"
+  },
+  {
+    "event_id": "FCAL-123",
+    "title": "CloudInfra Database Maintenance Window - SCHEDULED",
+    "start_time": "2026-04-08T22:00:00+08:00",
+    "end_time": "2026-04-09T02:00:00+08:00",
+    "location": "CloudInfra Zone AP-East-1",
+    "description": "Pre-scheduled CloudInfra database maintenance:\n- Database schema optimization\n- Index rebuilding\n- Connection pool reconfiguration\n\nVendor: CloudInfra Technologies\nContract: Premium SLA tier\nNotification sent: March 25, 2026\n\nAffected services: All production database connections\nExpected downtime: 15-20 minutes during 4-hour window",
+    "recurring": "none",
+    "reminder_minutes": 2880,
+    "color": "#FF6F00"
+  },
+  {
+    "event_id": "FCAL-124",
+    "title": "Weekly Team Standup",
+    "start_time": "2026-04-03T10:00:00+08:00",
+    "end_time": "2026-04-03T10:30:00+08:00",
+    "location": "Office - Conference Room",
+    "description": "Weekly engineering team sync - review sprint progress, blockers, and upcoming deployments",
+    "recurring": "weekly",
+    "reminder_minutes": 15,
+    "color": "#1976D2"
+  },
+  {
+    "event_id": "FCAL-125",
+    "title": "Team Celebration Dinner - 30-Day Deployment Milestone",
+    "start_time": "2026-04-04T18:30:00+08:00",
+    "end_time": "2026-04-04T21:00:00+08:00",
+    "location": "Lost Heaven Restaurant, 17 Yan'an East Road, Huangpu District",
+    "description": "Celebrating 30 consecutive days of pre-deployment stress testing without skipping regression suite. Team achievement reward dinner for all 5 team members. Budget approved from Q1 team activities fund.",
+    "recurring": "none",
+    "reminder_minutes": 120,
+    "color": "#FF9800"
+  },
+  {
+    "event_id": "FCAL-126",
+    "title": "Budget Review - Q2 Planning",
+    "start_time": "2026-04-05T14:00:00+08:00",
+    "end_time": "2026-04-05T15:00:00+08:00",
+    "location": "Conference Room A",
+    "description": "Review Q1 team activities budget utilization and plan Q2 allocation with CTO",
+    "recurring": "none",
+    "reminder_minutes": 30,
+    "color": "#2196F3"
+  },
+  {
+    "event_id": "FCAL-127",
+    "title": "Deployment Readiness Check",
+    "start_time": "2026-04-02T16:00:00+08:00",
+    "end_time": "2026-04-02T16:30:00+08:00",
+    "location": "Remote",
+    "description": "Verify 30-day milestone in Loop Habit tracker and prepare celebration proposal",
+    "recurring": "none",
+    "reminder_minutes": 15,
+    "color": "#4CAF50"
+  },
+  {
+    "event_id": "FCAL-128",
+    "title": "Rate-Limiting Feature Deployment - POSTPONED",
+    "start_time": "2026-04-02T21:00:00+08:00",
+    "end_time": "2026-04-02T23:00:00+08:00",
+    "location": "Remote",
+    "description": "POSTPONED to 2026-04-03 due to runbook config discrepancy.\n\nOriginal plan: Deploy rate-limiting feature to production.\n\nIssue found: Runbook OBSN-37 has outdated Redis config (timeout 5000ms vs actual 3000ms, pool 50 vs 100).\n\nVerified against JOB-715, JOB-718. CTO approved postponement to update runbook first.",
+    "recurring": "none",
+    "reminder_minutes": 30,
+    "color": "#F44336"
+  },
+  {
+    "event_id": "FCAL-129",
+    "title": "Rate-Limiting Feature Deployment - RESCHEDULED",
+    "start_time": "2026-04-03T21:00:00+08:00",
+    "end_time": "2026-04-03T23:00:00+08:00",
+    "location": "Remote",
+    "description": "Rescheduled deployment after runbook update.\n\nPre-deployment checklist:\n- ✅ Update runbook with correct Redis config\n- ✅ Verify staging deployment\n- ✅ Run health check suite (JOB-714)\n- ✅ CTO notification sent\n\nDeployment procedure per updated OBSN-37.",
+    "recurring": "none",
+    "reminder_minutes": 60,
+    "color": "#FF9800"
+  },
+  {
+    "event_id": "FCAL-130",
+    "title": "Lunch with Zhang Qiang - Monitoring Dashboard Discussion",
+    "start_time": "2026-04-02T12:30:00+08:00",
+    "end_time": "2026-04-02T13:30:00+08:00",
+    "location": "Office Cafe",
+    "description": "Discuss new monitoring dashboard design. Zhang Qiang bringing design doc.",
+    "recurring": "none",
+    "reminder_minutes": 10,
+    "color": "#2196F3"
+  },
+  {
+    "event_id": "FCAL-131",
+    "title": "Weekly Scheduler Job Review with CTO",
+    "start_time": "2026-04-04T14:00:00+08:00",
+    "end_time": "2026-04-04T14:30:00+08:00",
+    "location": "Office",
+    "description": "Review all enabled scheduler jobs, discuss connection pool scaling, and prioritize monitoring improvements. Follow-up from cache warmup job incident (INC-2026-04-02-002).",
+    "recurring": "none",
+    "reminder_minutes": 15,
+    "color": "#FF5722"
+  },
+  {
+    "event_id": "FCAL-132",
+    "title": "Deploy connection pool monitoring alerts",
+    "start_time": "2026-04-08T10:00:00+08:00",
+    "end_time": "2026-04-08T12:00:00+08:00",
+    "location": "Remote",
+    "description": "Implement and test connection pool utilization alerts (WARNING: 70%, CRITICAL: 80%). Related to TODO-538.",
+    "recurring": "none",
+    "reminder_minutes": 30,
+    "color": "#2196F3"
+  },
+  {
+    "event_id": "FCAL-133",
+    "title": "Production Deployment Window - API Timeout Hotfix",
+    "start_time": "2026-04-02T21:30:00+08:00",
+    "end_time": "2026-04-02T22:00:00+08:00",
+    "location": "Remote (On-call)",
+    "description": "Scheduled deployment window for API timeout hotfix. Estimated 15 minutes deployment + 15 minutes monitoring. Off-peak window to minimize customer impact. Runbook: OBSN-43",
+    "recurring": "none",
+    "reminder_minutes": 15,
+    "color": "#FF5722"
+  },
+  {
+    "event_id": "FCAL-134",
+    "title": "Post-Deployment Monitoring - API Hotfix",
+    "start_time": "2026-04-02T22:00:00+08:00",
+    "end_time": "2026-04-03T00:00:00+08:00",
+    "location": "Remote (On-call)",
+    "description": "Extended monitoring window after API timeout hotfix deployment. Watch for: error rate spikes, API response time degradation, customer escalations. Alert threshold: error rate > 1% or p95 latency > 500ms.",
+    "recurring": "none",
+    "reminder_minutes": 0,
+    "color": "#FF9800"
+  },
+  {
+    "event_id": "FCAL-135",
+    "title": "Team Lunch - Dumpling Restaurant",
+    "start_time": "2026-04-03T12:00:00+08:00",
+    "end_time": "2026-04-03T13:30:00+08:00",
+    "location": "Dumpling House, Zhangjiang Road",
+    "description": "Team lunch with Wang Ming, Li Na, and Zhang Qiang. Casual catch-up after busy deployment week.",
+    "recurring": "none",
+    "reminder_minutes": 30,
+    "color": "#4CAF50"
+  }
+]

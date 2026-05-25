@@ -1,0 +1,88 @@
+You are a test data generation expert. Your job is to generate incremental fixture data for an adapted task, appending to the existing data environment.
+
+## User Persona
+
+{persona_summary}
+
+## Business Context
+
+- Time window: {time_window}
+- Work schedule: {work_schedule}
+- Active issues:
+{active_issues}
+
+## Adapted Task
+
+- Task name: {task_name}
+- Description: {task_description}
+- Involved services: {involved_services}
+- Key actions: {key_actions}
+
+## Scenario Anchor Date
+
+This scenario unfolded around: **{scenario_anchor_date}**
+
+The adapted task description may use relative temporal references such as "recent", "upcoming", "this week", "last Tuesday", or "tomorrow". Interpret ALL such references relative to this anchor date, NOT relative to today or the end of the time window. The records you generate represent a historical slice of the persona's life tied to this anchor.
+
+## Fixture Data Schema
+
+{schemas}
+
+## ID Numbering Rules
+
+{id_rules}
+
+## Currently Available Starting IDs
+
+{next_ids}
+
+## Existing Records Summary
+
+The following IDs and entities already exist. New records must not conflict with them:
+
+{used_ids_summary}
+
+## Known Entities (maintain consistency)
+
+{known_entities}
+
+## Existing Data Threads (for context — new records should be consistent with existing scenarios)
+
+{data_threads_summary}
+
+## Important Constraint
+
+Service names must be one of these: {allowed_services_list}. Do not use any other names.
+
+## Your Output
+
+Output the new fixture records in JSON format:
+
+```json
+{{
+  "records": {{
+    "gmail": [...],
+    "calendar": [...],
+    "crm": [...],
+    ...
+  }},
+  "signal_records": {{
+    "gmail": ["MSG-xxxx"],
+    "crm": ["CUS-xxx"],
+    ...
+  }}
+}}
+```
+
+### Key Requirements
+
+1. **Only generate new records related to this task** - do not duplicate existing data.
+2. Generate 2-4 records per involved service (including 1-2 task-critical signal records + 1-2 noise records).
+3. IDs must start from the "Currently Available Starting IDs" and increment sequentially. No conflicts with existing IDs.
+4. Cross-service references must be consistent (customer names in emails must match CRM, products in tickets must match inventory).
+5. All dates must be strictly within the time window {time_window}. No date (timestamps, due_date, date fields, or dates mentioned in text content) may fall outside this range. Additionally, the bulk of this task's dated records (calendar events, emails, meeting notes, todo due_dates, transaction dates, ticket creation/update times, etc.) must cluster within roughly ±7 days of the scenario anchor date {scenario_anchor_date}. A small number of references may extend further only when the scenario explicitly demands it (e.g. a quarterly review naturally spans ~90 days). Do NOT default to placing everything near the end of the time window.
+6. `signal_records` marks the task-critical signal record IDs (used by grader for scoring) - must be a subset of records.
+7. All record fields must strictly follow the Schema definitions.
+8. If existing entities (company names, person names, etc.) can be referenced, prefer referencing them for data coherence.
+9. All text content must be in English.
+10. Timestamps must respect the work schedule: emails, meetings, tickets etc. should occur during working hours unless the scenario explicitly requires otherwise (e.g. on-call alerts, system monitoring).

@@ -1,0 +1,15 @@
+noise_id: N021
+name: "Search meeting notes"
+description: "Want to find notes from a previous meeting, open the notepad and search by keyword, browse results"
+involved_services: [notes]
+leaves_trace: false
+action_sequence:
+  - "Open notepad"
+  - "Search by keyword"
+  - "Browse search results"
+  - "Open a note to read"
+  - "Close notepad"
+time_preference: any
+adaptable_elements:
+  - "Search keyword"
+  - "Whether the desired content was found"

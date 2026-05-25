@@ -1,0 +1,236 @@
+[
+  {
+    "note_id": "OBSN-1",
+    "title": "SaaS报表模块 - 客户订阅清单",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "customers",
+      "billing"
+    ],
+    "content": "# SaaS报表模块客户清单\n\n## 订阅月度营收报表的客户\n\n### 1. 联华科技 (Lianhua Tech)\n- 联系人: 刘经理\n- 手机: +86 138-0012-3456\n- 订阅时间: 2025-11-15\n- 套餐: 专业版 (¥1,200/月)\n- 报表需求: 每月1号生成上月营收汇总，包含分类统计和趋势图\n\n### 2. 东方贸易 (Dongfang Trading)\n- 联系人: 王总\n- 手机: +86 139-8765-4321\n- 订阅时间: 2025-12-20\n- 套餐: 企业版 (¥2,800/月)\n- 报表需求: 月度营收 + 库存周转分析\n\n## 技术配置\n\n数据源: mysql://saas-db.chenghao-studio.com:3306/saas_billing\n调度任务: JOB-701 (monthly_revenue_report)\n生成时间: 每月1号凌晨2点\n\n## 历史问题记录\n\n- 2026-01-15: 数据库连接池配置优化，解决超时问题\n- 2026-02-17: 数据源开始出现连接超时，连续3天失败\n\n## 待办\n\n- [ ] 核查数据库服务器状态\n- [ ] 检查防火墙规则变更\n- [ ] 确认Aliyun RDS实例是否到期续费",
+    "outlinks": [
+      "OBSN-2"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-10T15:30:00+08:00",
+    "last_updated": "2026-02-19T14:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-2",
+    "title": "SaaS报表模块 - 故障排查手册",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "troubleshooting",
+      "playbook"
+    ],
+    "content": "# SaaS报表模块故障排查\n\n## 常见故障类型\n\n### 1. 数据源连接失败\n\n**症状**: \n- scheduler日志显示 \"Connection timeout\" 或 \"Connection refused\"\n- 报表生成任务在几秒内快速失败\n\n**排查步骤**:\n1. 检查Aliyun RDS控制台，确认实例运行状态\n2. 测试本地到数据库的网络连通性: `telnet saas-db.chenghao-studio.com 3306`\n3. 检查白名单配置，确认服务器IP未被移除\n4. 查看RDS慢日志，排除数据库性能问题\n\n**修复时间估算**:\n- 网络/白名单问题: 30分钟内\n- 数据库性能问题: 1-2小时\n- RDS实例故障: 需联系阿里云，2-4小时\n\n### 2. 报表生成逻辑错误\n\n**症状**:\n- 任务运行成功但客户反馈数据不对\n- 执行时间明显偏长(>5分钟)\n\n**排查步骤**:\n1. 检查最近代码变更记录\n2. 对比上月成功生成的报表数据\n3. 手动执行SQL查询验证数据准确性\n\n**修复时间估算**: 2-4小时\n\n## 客户通知模板\n\n### 数据源故障(非代码问题)\n\n\"您好[客户名]，我们的报表系统遇到数据库连接问题，正在紧急排查。预计[X小时]内修复，修复后会立即补发报表。给您带来不便深表歉意。\"\n\n### 代码逻辑问题\n\n\"您好[客户名]，报表模块发现一个计算逻辑问题，我们正在修复中。预计今晚[具体时间]前修复并重新生成正确报表发送给您。\"",
+    "outlinks": [
+      "OBSN-1"
+    ],
+    "inlinks": [
+      "OBSN-1"
+    ],
+    "created_at": "2026-01-12T16:00:00+08:00",
+    "last_updated": "2026-02-15T22:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-3",
+    "title": "2026-02 工作日志",
+    "folder": "Daily",
+    "tags": [
+      "journal",
+      "2026-02"
+    ],
+    "content": "# 2026年2月工作日志\n\n## 2026-02-19 周三\n\n14:25 - 收到SaaS报表任务失败告警邮件\n14:30 - 查看scheduler执行历史，发现从2月17日开始连续3天失败\n14:35 - 错误信息: Connection timeout to mysql://saas-db.chenghao-studio.com:3306\n\n初步判断: 数据源连接问题，非代码逻辑bug\n\n待办:\n- 登录Aliyun RDS控制台检查实例状态\n- 测试网络连通性\n- 给刘经理和王总发短信说明情况\n\n## 2026-02-18 周二\n\n16:00-23:30 - 电商小程序购物车模块开发\n23:30-01:00 - 企业官网改版CSS调整\n\n## 2026-02-17 周一\n\n15:00-19:00 - SaaS报表模块代码review\n20:00-02:00 - 电商小程序支付接口联调",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-02-01T14:00:00+08:00",
+    "last_updated": "2026-02-19T14:35:00+08:00"
+  },
+  {
+    "note_id": "OBSN-4",
+    "title": "东方贸易 - 官网改版项目合同",
+    "folder": "Projects/Dongfang-Website",
+    "tags": [
+      "contract",
+      "client",
+      "dongfang",
+      "website"
+    ],
+    "content": "# Dongfang Trading - Official Website Redesign Contract\n\n**Client**: 东方贸易 Dongfang Trading  \n**Contact**: 王总 (Wang Zong) +86 13800138001  \n**Contract Date**: 2026-01-15  \n**Project Start**: 2026-01-20  \n\n## Scope of Work\n- Complete redesign of corporate website (10 pages)\n- Responsive design for mobile and desktop\n- CMS integration (WordPress)\n- SEO optimization\n- 3 rounds of revision\n\n## Payment Terms\n**Total Contract Value**: ¥45,000\n\n### Milestone 1 (30%): ¥13,500\n- **Deliverable**: Design mockups and wireframes approved\n- **Due Date**: 2026-02-10\n- **Status**: ✅ Completed 2026-02-08, Payment received 2026-02-12\n\n### Milestone 2 (40%): ¥18,000\n- **Deliverable**: Frontend development complete, staging site live\n- **Due Date**: 2026-03-15\n- **Status**: ✅ Completed 2026-03-12, **Payment PENDING**\n- **Delivered Items**:\n  - All 10 pages coded and responsive\n  - WordPress CMS integrated\n  - Admin training document provided\n  - Staging URL: https://staging.dongfang-trade.com\n  - Client sign-off received 2026-03-14 via email\n\n### Milestone 3 (30%): ¥13,500\n- **Deliverable**: Production deployment and 1-month support\n- **Due Date**: 2026-04-10\n- **Status**: ⏳ Pending Milestone 2 payment confirmation\n\n## Notes\n- Client requested payment reminder to be professional and reference contract terms\n- All deliverables for Milestone 2 have been signed off\n- Need to send invoice before proceeding to final deployment",
+    "outlinks": [
+      "OBSN-5"
+    ],
+    "inlinks": [],
+    "created_at": "2026-01-15T14:30:00+08:00",
+    "last_updated": "2026-03-14T17:20:00+08:00"
+  },
+  {
+    "note_id": "OBSN-5",
+    "title": "东方贸易 - 项目交付清单",
+    "folder": "Projects/Dongfang-Website",
+    "tags": [
+      "deliverables",
+      "checklist",
+      "dongfang"
+    ],
+    "content": "# Dongfang Trading - Deliverables Checklist\n\n## Milestone 2 Completed Items (2026-03-12)\n\n### Frontend Development\n- ✅ Homepage with hero section and company intro\n- ✅ About Us page with team profiles\n- ✅ Products/Services catalog (6 pages)\n- ✅ Contact page with map integration\n- ✅ News/Blog section\n- ✅ Mobile responsive design tested on 5+ devices\n\n### CMS Integration\n- ✅ WordPress 6.4 installed and configured\n- ✅ Custom theme developed\n- ✅ Admin panel configured for client use\n- ✅ Content migration from old site\n- ✅ User roles and permissions set up\n\n### Documentation\n- ✅ Admin user guide (15 pages, PDF)\n- ✅ Content update procedures\n- ✅ Backup and maintenance guide\n\n### Testing & QA\n- ✅ Cross-browser testing (Chrome, Firefox, Safari, Edge)\n- ✅ Performance optimization (PageSpeed score: 92/100)\n- ✅ Security hardening completed\n\n### Client Sign-off\n- ✅ Staging review meeting 2026-03-13\n- ✅ Email confirmation received 2026-03-14\n\n## Work Hours Summary\n- Design revisions: 12 hours\n- Frontend development: 48 hours\n- CMS setup and customization: 20 hours\n- Testing and QA: 8 hours\n- Documentation: 6 hours\n- Client communication and training: 4 hours\n**Total**: 98 hours @ ¥183.67/hour = ¥18,000",
+    "outlinks": [
+      "OBSN-4"
+    ],
+    "inlinks": [
+      "OBSN-4"
+    ],
+    "created_at": "2026-03-12T16:00:00+08:00",
+    "last_updated": "2026-03-14T18:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-6",
+    "title": "2026-04 工作日志",
+    "folder": "Daily",
+    "tags": [
+      "daily",
+      "log",
+      "april"
+    ],
+    "content": "# April 2026 Work Log\n\n## 2026-04-02\n- 15:30 - Received payment inquiry SMS from 王总 (Dongfang Trading)\n- 15:35 - Need to review contract terms in OBSN-4 and prepare invoice\n- 16:00 - Draft invoice for Milestone 2 payment\n\n## 2026-04-01\n- Continued work on ecommerce miniapp bug fixes\n- Responded to 李姐's UI review request\n\n## 2026-03-31\n- Q1 wrap-up, three projects in parallel delivery phase\n- SaaS report module still showing intermittent errors",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-04-01T14:00:00+08:00",
+    "last_updated": "2026-04-02T15:35:00+08:00"
+  },
+  {
+    "note_id": "OBSN-7",
+    "title": "张总电商小程序 - 需求变更日志",
+    "folder": "Projects/Ecommerce-Miniapp",
+    "tags": [
+      "ecommerce",
+      "requirements",
+      "client-zhang"
+    ],
+    "content": "# 张总电商小程序 - 需求变更日志\n\n## 2026-03-28 现场需求会议记录\n\n### 参会人员\n- 张总（客户方）\n- 成昊（开发方）\n\n### 会议地点\n张总公司会议室，白板讨论\n\n### 讨论内容\n\n#### UI Wireframe Changes (白板草图)\n1. **首页商品展示布局调整**\n   - 从双列改为单列大图展示\n   - 优先级：P0（必须实现）\n   - 影响：首页组件重构，预计 +8 工时\n\n2. **购物车结算流程简化**\n   - 合并地址选择和支付方式选择页面\n   - 优先级：P1（强烈建议）\n   - 影响：结算流程逻辑调整，预计 +6 工时\n\n3. **商品详情页增加视频播放功能**\n   - 支持商品短视频展示\n   - 优先级：P0（必须实现）\n   - 影响：需要视频存储方案和播放器集成，预计 +12 工时\n\n4. **用户个人中心增加积分系统**\n   - 完整积分获取、消费、兑换流程\n   - 优先级：P2（可延后）\n   - 影响：新增积分模块，预计 +20 工时\n\n5. **订单列表增加物流追踪地图**\n   - 实时显示配送员位置\n   - 优先级：P1（强烈建议）\n   - 影响：需要对接第三方物流API，预计 +10 工时\n\n6. **商品搜索增加语音输入**\n   - 支持语音转文字搜索\n   - 优先级：P2（可延后）\n   - 影响：需要语音识别服务，预计 +8 工时\n\n7. **增加客服聊天功能**\n   - 在线客服即时通讯\n   - 优先级：P0（必须实现）\n   - 影响：需要IM服务集成，预计 +15 工时\n\n### 原定交付时间\n2026-04-15\n\n### 变更后预估交付时间\n考虑P0和P1优先级变更，预计需要额外 51 工时\n按当前工作负荷，建议延期至 2026-04-28\n\n### 待确认事项\n- [ ] 客户确认优先级排序\n- [ ] 客户确认是否接受延期\n- [ ] 视频存储方案预算确认\n- [ ] 第三方服务费用确认\n\n### 白板照片\n- IMG_20260401_153022.jpg - 首页布局和购物车流程草图\n- IMG_20260401_153145.jpg - 详情页视频功能和积分系统草图\n\n---\n\n## 历史变更记录\n\n### 2026-03-15 - 支付方式调整\n已完成，增加微信支付和支付宝\n\n### 2026-03-08 - 商品分类筛选优化\n已完成，增加多级分类筛选",
+    "outlinks": [
+      "OBSN-4"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-28T16:00:00+08:00",
+    "last_updated": "2026-04-01T16:15:00+08:00"
+  },
+  {
+    "note_id": "OBSN-8",
+    "title": "2026-03 项目工时统计",
+    "folder": "Daily",
+    "tags": [
+      "timesheet",
+      "billing"
+    ],
+    "content": "# 2026-03 项目工时统计\n\n## 电商小程序项目（张总）\n- 已完成工时：142h\n- 原计划总工时：180h\n- 当前进度：79%\n- 备注：3月28日会议新增需求，需重新评估\n\n## 官网改版项目（东方贸易）\n- 已完成工时：88h\n- 计划总工时：120h\n- 当前进度：73%\n- 备注：等待第二期款项到账\n\n## SaaS报表模块维护\n- 3月工时：24h\n- 主要工作：bug修复、性能优化\n- 备注：4月2日出现数据源配置问题\n\n## 总计\n3月总工时：254h\n平均每日工时：8.2h",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-03-31T23:30:00+08:00",
+    "last_updated": "2026-04-02T15:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-9",
+    "title": "SaaS报表模块 - 数据源配置变更记录",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "troubleshooting",
+      "config"
+    ],
+    "content": "# SaaS报表模块 - 数据源配置变更记录\n\n## 2026-02-15 数据源迁移\n- 从旧的MySQL实例迁移到新的RDS实例\n- 连接字符串已更新：`mysql://saas_user@rds-new.aliyun.com:3306/reports_db`\n- 迁移后测试通过\n\n## 已知问题\n### Issue #1: 间歇性连接超时 (2026-03-28 首次出现)\n- **症状**: 调度器任务显示 \"connection timeout\" 错误\n- **频率**: 每周1-2次，通常在数据量大的报表生成时\n- **临时解决方案**: 手动重启任务，成功率100%\n- **根本原因**: 怀疑是连接池配置过小，max_connections=10 不够用\n- **计划修复**: 需要修改配置文件 `config/database.yml`，将 max_connections 提升至 50，并增加 connection_timeout 至 30s\n- **预计修复时间**: 2小时（包括测试和部署）\n\n## 2026-04-01 最新观察\n- 李强客户反馈报表生成失败\n- 检查调度器日志 JOB-702，确认是 connection pool exhausted\n- 已在本地环境验证配置调整有效\n\n## 修复计划\n1. 更新 `config/database.yml` 配置\n2. 在测试环境验证（30分钟）\n3. 部署到生产环境（30分钟）\n4. 监控1小时确认稳定\n\n**下次发生时 ETA: 2小时内修复完成**",
+    "outlinks": [
+      "OBSN-2"
+    ],
+    "inlinks": [
+      "OBSN-2"
+    ],
+    "created_at": "2026-03-28T16:30:00+08:00",
+    "last_updated": "2026-04-01T23:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-10",
+    "title": "客户沟通模板 - Bug报告响应",
+    "folder": "Templates",
+    "tags": [
+      "template",
+      "communication",
+      "client"
+    ],
+    "content": "# 客户沟通模板 - Bug报告响应\n\n## 模板结构\n1. 致谢与问题确认\n2. 问题分类说明（新问题/已知问题/变更相关）\n3. 技术背景简述（客户能理解的语言）\n4. 具体修复计划与 ETA\n5. 后续跟进承诺\n\n## 示例\n\"感谢反馈。经核实，这是我们在 2/15 数据源升级后出现的已知问题（连接池配置不足），本周已是第二次发生。修复需要调整数据库连接配置并重新部署，预计2小时内完成。我会在修复后第一时间通知您，并在未来一周内持续监控确保稳定。\"\n\n## 注意事项\n- 避免过度技术细节\n- 给出可实现的 ETA\n- 说明是否为重复问题",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-03-15T10:00:00+08:00",
+    "last_updated": "2026-03-15T10:00:00+08:00"
+  },
+  {
+    "note_id": "OBSN-11",
+    "title": "2026-04-02 工作日志",
+    "folder": "Daily",
+    "tags": [
+      "daily",
+      "log"
+    ],
+    "content": "# 2026-04-02 工作日志\n\n## 15:23 李强客户报告 SaaS 报表模块故障\n- 症状：数据源连接失败\n- 分类：已知问题（OBSN-9 记录的连接池问题）\n- 本周第二次发生\n- 需要起草专业回复，说明这是 2/15 配置变更后的已知问题\n- 修复 ETA: 2小时\n\n## 待办\n- [ ] 查阅 OBSN-9 确认问题细节和修复方案\n- [ ] 在 Fossify Notes 起草回复\n- [ ] 发送短信给李强\n- [ ] 更新 OBSN-9 记录本次故障\n\n## 其他\n- 张总电商小程序进度正常\n- 东方贸易官网改版等待款项确认",
+    "outlinks": [
+      "OBSN-9"
+    ],
+    "inlinks": [],
+    "created_at": "2026-04-02T15:30:00+08:00",
+    "last_updated": "2026-04-02T15:30:00+08:00"
+  },
+  {
+    "note_id": "OBSN-12",
+    "title": "SaaS报表模块 - 第三方服务成本追踪",
+    "folder": "Projects/SaaS-Platform",
+    "tags": [
+      "saas",
+      "cost-tracking",
+      "budget"
+    ],
+    "content": "# SaaS Third-Party Service Cost Tracking\n\n## DataLytics Cloud\n- **Service**: Professional Analytics API\n- **Monthly Cost**: ¥1,280 CNY\n- **Usage**: Data aggregation and visualization for client reporting dashboards\n- **Last Renewal**: 2026-03-10\n- **Next Renewal Due**: 2026-04-10\n- **Client Dependencies**: \n  - Li Qiang (TechSolutions) - uses daily revenue reports\n  - Chen Ming - uses weekly analytics dashboard\n  - 3 other active subscribers rely on this service\n\n## Usage Statistics (Q1 2026)\n- January: 2,840 API calls\n- February: 3,120 API calls\n- March: 3,650 API calls (trending up)\n- Average response time: 180ms\n- Uptime: 99.8%\n\n## Budget Impact\n- Q1 Total Spent: ¥3,840 CNY (3 months)\n- Projected Q2: ¥3,840 CNY\n- Annual projection: ¥15,360 CNY\n\n## Alternatives Evaluated (Feb 2026)\n- Self-hosted solution: Would require 40+ hours development time\n- Cheaper tier: Lacks real-time features clients need\n- **Decision**: Continue with current plan, essential for service quality\n\n## Notes\n- Service is critical - 5 active clients depend on it\n- Renewal must happen before April 10 to avoid service interruption\n- No suitable cheaper alternative found",
+    "outlinks": [
+      "OBSN-1",
+      "OBSN-6"
+    ],
+    "inlinks": [
+      "OBSN-6"
+    ],
+    "created_at": "2026-02-15T16:30:00+08:00",
+    "last_updated": "2026-03-29T18:45:00+08:00"
+  },
+  {
+    "note_id": "OBSN-13",
+    "title": "2026 Q1 预算执行情况",
+    "folder": "Finance",
+    "tags": [
+      "budget",
+      "quarterly-review",
+      "finance"
+    ],
+    "content": "# Q1 2026 Budget Execution Review\n\n## Revenue\n- Total Income: ¥68,500 CNY\n  - Ecommerce miniapp project: ¥28,000 (partial)\n  - Dongfang website redesign: ¥22,000 (milestone 1 & 2)\n  - SaaS subscriptions: ¥18,500\n\n## Business Expenses\n- SaaS subscriptions: ¥3,840 (DataLytics)\n- Cloud hosting: ¥1,350 (Aliyun)\n- Software licenses: ¥890\n- Marketing: ¥600\n- **Total Expenses**: ¥6,680\n\n## Cash Flow Analysis\n- Net Income: ¥61,820\n- Available for Q2 operations: ~¥55,000 (after personal draw)\n- Emergency fund: ¥20,000 (maintained)\n\n## Q2 Budget Allocation\n- Essential SaaS renewals: ¥5,000 (budgeted)\n- Development tools: ¥2,000\n- Buffer for client delays: ¥8,000\n\n## Notes\n- DataLytics renewal (¥1,280) is within Q2 budget\n- Dongfang payment delay affects cash flow but not critical\n- Overall financial health: Good",
+    "outlinks": [
+      "OBSN-12"
+    ],
+    "inlinks": [],
+    "created_at": "2026-03-28T15:20:00+08:00",
+    "last_updated": "2026-03-31T17:10:00+08:00"
+  },
+  {
+    "note_id": "OBSN-14",
+    "title": "个人开发工具清单 2026",
+    "folder": "Resources",
+    "tags": [
+      "tools",
+      "reference"
+    ],
+    "content": "# Personal Development Tools Inventory 2026\n\n## IDE & Editors\n- VS Code (free)\n- JetBrains WebStorm (annual license: ¥1,200)\n\n## Version Control\n- GitHub Pro (monthly: $4 USD)\n\n## Design Tools\n- Figma (free tier)\n- Canva Pro (annual: ¥600)\n\n## Communication\n- WeChat (free)\n- Email (free)\n\n## Project Management\n- Obsidian (free)\n- Notion (free tier)\n\n## Monitoring & Analytics\n- DataLytics Cloud (monthly: ¥1,280) - CRITICAL for SaaS module\n\n## Notes\n- Most tools are free or low-cost\n- DataLytics is the most expensive but essential\n- Total monthly recurring: ~¥1,350",
+    "outlinks": [],
+    "inlinks": [],
+    "created_at": "2026-01-15T14:00:00+08:00",
+    "last_updated": "2026-03-20T16:30:00+08:00"
+  }
+]

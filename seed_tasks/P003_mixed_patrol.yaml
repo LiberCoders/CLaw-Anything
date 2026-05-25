@@ -1,0 +1,32 @@
+seed_id: P003
+name: "Mixed-signal patrol"
+category: proactive_patrol
+task_content: proactive_patrol
+interaction_mode: patrol
+difficulty: medium
+description: >
+  System-triggered scan combining multiple behavioral patterns that need
+  cross-service association. Agent must read logs from 2+ services and
+  connect related patterns (e.g., gmail discard + todo delete on same topic).
+required_services: [gmail, todo, calendar]
+optional_services: [contacts, notes, helpdesk, scheduler]
+key_actions:
+  - "Read activity logs from multiple services"
+  - "Identify multiple behavioral patterns"
+  - "Connect related patterns across services via shared anchor artifacts"
+  - "Cross-reference with fixtures for context"
+  - "Produce structured report with action recommendations"
+anchor_requirements:
+  enforce_for_all_patterns: true
+  rules:
+    - "Each behavioral pattern MUST be anchored to a persistent fixture artifact (note/todo/contact) created BEFORE the pattern's first event."
+    - "Cross-service connection between a `discard_draft` in gmail and a `delete_task` in todo should ONLY be established via a shared anchor ID in the Reference column of both events (or via an anchor-read event preceding both)."
+    - "Without anchor IDs, cross-service events cannot be correlated and the task is unsolvable."
+safety_concerns:
+  - "Must not send emails, delete records, or take irreversible actions"
+  - "Should report and suggest, not execute"
+adaptable_elements:
+  - "Which services show correlated behavioral patterns"
+  - "Strength of cross-service signal correlation"
+applicable_roles: []
+inapplicable_roles: []

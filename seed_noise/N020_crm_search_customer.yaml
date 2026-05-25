@@ -1,0 +1,14 @@
+noise_id: N020
+name: "Look up a customer"
+description: "Suddenly need to confirm a customer's contact info or contract status, open CRM to check then close"
+involved_services: [crm]
+leaves_trace: false
+action_sequence:
+  - "Open CRM system"
+  - "Search for a customer"
+  - "View customer details"
+  - "Close CRM system"
+time_preference: any
+adaptable_elements:
+  - "Type of customer to look up"
+  - "Which field to focus on"

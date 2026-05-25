@@ -1,0 +1,299 @@
+[
+  {
+    "article_id": "RSS-901",
+    "title": "Batch processing strategies for high-throughput single-cell RNA-seq analysis pipelines",
+    "source": "bioRxiv",
+    "category": "computational biology",
+    "published_at": "2026-03-12T06:15:00-08:00",
+    "summary": "We present a systematic comparison of sequential versus parallel processing architectures for single-cell trajectory inference workflows, demonstrating 3-5x speedup through dependency-aware task scheduling.",
+    "content": "High-throughput single-cell RNA-sequencing experiments generate datasets requiring complex multi-stage analysis pipelines. Traditional sequential processing of quality control, normalization, dimensionality reduction, and trajectory inference creates bottlenecks. We developed a directed acyclic graph (DAG) framework that identifies parallelizable tasks while respecting hard dependencies (e.g., normalization must precede PCA). Our benchmark on 50 datasets shows median wall-clock time reduction from 4.2h to 52min through intelligent batching and concurrent execution of independent preprocessing steps.",
+    "relevance_tags": [
+      "single-cell",
+      "trajectory-analysis",
+      "workflow-optimization",
+      "computational-methods"
+    ],
+    "word_count": 892
+  },
+  {
+    "article_id": "RSS-902",
+    "title": "Automated literature curation workflows for systematic reviews in immunology",
+    "source": "arXiv",
+    "category": "bioinformatics",
+    "published_at": "2026-03-12T05:45:00-08:00",
+    "summary": "A metadata-first approach to literature management that enforces citation database population before note-taking, reducing duplicate work and ensuring bibliographic integrity in large-scale reviews.",
+    "content": "Systematic literature reviews require processing hundreds of papers with consistent metadata. We surveyed 127 PhD students and found 68% create notes before importing citations, leading to broken references and duplicate PDF downloads. Our proposed workflow mandates: (1) batch RSS feed parsing, (2) parallel PDF acquisition for filtered papers, (3) citation manager import with key generation, (4) note creation with auto-linked citations. This sequence respects the hard dependency that citation keys must exist before note backlinks, while parallelizing independent tasks. Pilot users reported 40% time savings in morning literature triage (2.5h → 1.5h for 45 papers).",
+    "relevance_tags": [
+      "literature-management",
+      "workflow",
+      "zotero",
+      "obsidian",
+      "phd-tools"
+    ],
+    "word_count": 1247
+  },
+  {
+    "article_id": "RSS-903",
+    "title": "IL-17A signaling coordinates tissue-resident memory T cell positioning in barrier tissues",
+    "source": "bioRxiv",
+    "category": "immunology",
+    "published_at": "2026-03-11T08:30:00-08:00",
+    "summary": "Single-cell spatial transcriptomics reveals IL-17A-dependent niche formation for TRM cells in mucosal tissues, with implications for vaccine design.",
+    "content": "Tissue-resident memory T cells (TRM) provide frontline immunity at barrier sites. Using multiplexed spatial transcriptomics and trajectory analysis, we mapped TRM differentiation in IL-17A-sufficient versus -deficient mice following mucosal infection. IL-17A signaling creates spatially restricted niches enriched for survival factors (IL-7, IL-15) that anchor TRM precursors. Computational trajectory inference identified three distinct differentiation paths, with the IL-17-dependent route generating long-lived CD69+CD103+ TRM with superior recall responses.",
+    "relevance_tags": [
+      "IL-17",
+      "TRM",
+      "spatial-transcriptomics",
+      "mucosal-immunology"
+    ],
+    "word_count": 1834
+  },
+  {
+    "article_id": "RSS-904",
+    "title": "Deep learning models for predicting protein-protein interactions in immune synapses",
+    "source": "bioRxiv",
+    "category": "computational immunology",
+    "published_at": "2026-03-12T07:00:00-08:00",
+    "summary": "Transformer-based architecture achieves 89% accuracy in predicting TCR-peptide-MHC binding dynamics from sequence data alone.",
+    "content": "T cell receptor recognition of peptide-MHC complexes drives adaptive immunity. We trained a transformer model on 2.4M experimentally validated TCR-pMHC interactions, incorporating structural features and binding kinetics. The model generalizes to unseen epitopes with AUROC 0.91, outperforming previous methods. Application to single-cell TCR-seq data from tumor-infiltrating lymphocytes identified novel neoantigen-specific clonotypes.",
+    "relevance_tags": [
+      "machine-learning",
+      "TCR",
+      "immunoinformatics",
+      "deep-learning"
+    ],
+    "word_count": 1456
+  },
+  {
+    "article_id": "RSS-905",
+    "title": "Parallel execution strategies for bioinformatics workflow orchestration at scale",
+    "source": "arXiv",
+    "category": "cs.DC",
+    "published_at": "2026-03-23T14:30:00-08:00",
+    "summary": "We present a dependency-aware task scheduler for bioinformatics pipelines that automatically detects parallelizable subgraphs in workflow DAGs. Our system reduces execution time by 3-5x for typical single-cell analysis workflows while maintaining data integrity across shared file system resources.",
+    "content": "Modern bioinformatics workflows involve complex dependency graphs where tasks share mutable state (reference databases, intermediate files, result caches). Naive parallelization causes race conditions and data corruption. We propose a static analysis framework that builds a read-write footprint for each task, identifies conflicting operations, and generates an optimized execution schedule that maximizes parallelism while respecting resource constraints. Evaluation on 50 real-world workflows shows 3.2x median speedup with zero correctness violations. Our scheduler handles exclusive locks (database writes), read-only shared access (reference genome queries), and isolated temporary storage (per-task scratch directories). The system is implemented in Python using asyncio and has been deployed in production at three genomics centers processing 10,000+ samples per month.",
+    "relevance_tags": [
+      "workflow",
+      "parallelization",
+      "bioinformatics",
+      "scheduling"
+    ],
+    "word_count": 245
+  },
+  {
+    "article_id": "RSS-906",
+    "title": "Resource contention in shared laboratory data infrastructure: a survey",
+    "source": "bioRxiv",
+    "category": "Bioinformatics",
+    "published_at": "2026-03-24T09:15:00-08:00",
+    "summary": "Survey of 200 computational biology labs reveals that 73% experience recurring job collisions due to uncoordinated access to shared resources (file locks, database connections, API rate limits). We characterize common failure modes and propose design patterns for conflict-free workflow automation.",
+    "content": "As computational biology labs automate literature curation, data processing, and analysis workflows, they increasingly encounter resource contention issues that manual processes naturally avoided. We surveyed 200 labs and found that 73% reported recurring job failures due to: (1) file lock timeouts when multiple jobs access the same database (e.g., Zotero, Mendeley), (2) API rate limit violations when parallel tasks query the same service (e.g., PubMed, UniProt), and (3) filesystem corruption when concurrent processes write to shared directories. Common failure scenarios include Sunday morning batch job collisions (42% of labs), metadata import race conditions (38%), and graph database corruption from concurrent backlink updates (29%). We propose three mitigation strategies: (1) two-phase execution separating read-only from write operations, (2) resource isolation via temporary directories and read-only API access, and (3) explicit dependency chains in workflow schedulers. Labs adopting these patterns reported 85% reduction in job failures and 2-4x speedup from safe parallelization.",
+    "relevance_tags": [
+      "workflow",
+      "automation",
+      "resource-contention",
+      "lab-infrastructure"
+    ],
+    "word_count": 312
+  },
+  {
+    "article_id": "RSS-907",
+    "title": "Zotero API v3: Rate limiting and batch import best practices for research automation",
+    "source": "Open Science Tools Blog",
+    "category": "Research Infrastructure",
+    "published_at": "2026-01-08T09:00:00-08:00",
+    "summary": "Comprehensive guide to Zotero's API rate limits (120 requests/minute, burst allowance of 10 requests), batch import strategies, and common pitfalls in automated literature workflows. Includes Python code examples for rate-limited parallel fetchers.",
+    "content": "Zotero API v3 enforces a hard rate limit of 120 requests per minute per API key, with a burst allowance of 10 requests that refills at 2 requests/second. For automated literature workflows processing 30-50 papers daily, optimal batch size is 5-8 items per request with 500ms delays between batches. The article provides reference implementations for priority-queue-based importers that respect rate limits while maximizing throughput during constrained time windows. Common errors include file lock timeouts when multiple processes attempt concurrent writes to local Zotero databases, and metadata validation failures that consume API quota without successful imports. Recommended pattern: Phase 1 parallel RSS fetch + validation (no API calls), Phase 2 serial Zotero import with exponential backoff, Phase 3 verify import success before downstream processing.",
+    "relevance_tags": [
+      "zotero",
+      "api-rate-limits",
+      "research-automation",
+      "workflow-optimization"
+    ],
+    "word_count": 285
+  },
+  {
+    "article_id": "RSS-908",
+    "title": "Machine learning approaches to predicting IL-17 pathway dysregulation in autoimmune disease",
+    "source": "bioRxiv",
+    "category": "Immunology",
+    "published_at": "2026-01-09T14:30:00-08:00",
+    "summary": "Novel deep learning model predicts IL-17A and IL-17F expression patterns from single-cell transcriptomic data with 89% accuracy. Potential applications for identifying therapeutic targets in psoriasis and inflammatory bowel disease.",
+    "content": "We developed a transformer-based neural network that integrates single-cell RNA-seq data with chromatin accessibility profiles to predict IL-17 pathway activation states in tissue-resident T cells. The model was trained on 45,000 cells from 12 healthy donors and validated on samples from 8 patients with active psoriasis. Key findings include identification of a novel TCF7+IL17A+ intermediate state during Th17 differentiation that was previously obscured in bulk RNA-seq analyses. The approach successfully predicted IL-17 dysregulation in held-out patient samples with AUC=0.91, suggesting potential for clinical risk stratification.",
+    "relevance_tags": [
+      "IL-17",
+      "single-cell",
+      "machine-learning",
+      "Th17",
+      "autoimmune"
+    ],
+    "word_count": 198
+  },
+  {
+    "article_id": "RSS-909",
+    "title": "Trajectory inference benchmarking: performance comparison across 15 algorithms on immune cell differentiation datasets",
+    "source": "bioRxiv",
+    "category": "Computational Biology",
+    "published_at": "2026-01-10T11:15:00-08:00",
+    "summary": "Systematic comparison of trajectory inference methods (Monocle3, Slingshot, PAGA, Palantir, etc.) on curated immune cell differentiation datasets. Monocle3 and PAGA show best performance for branching trajectories typical of Th17/Treg plasticity.",
+    "content": "We benchmarked 15 trajectory inference algorithms on 8 gold-standard immune differentiation datasets, including Th17 polarization, CD8+ memory formation, and regulatory T cell development. Performance was evaluated using pseudotime correlation with known developmental stages, topology recovery accuracy, and computational efficiency. Monocle3 achieved highest accuracy (0.87 Kendall tau) on branching trajectories but required 3x longer runtime than PAGA (0.82 tau). For datasets with >50,000 cells, PAGA and Palantir were the only methods completing within 2 hours on standard workstation hardware. Critical finding: all methods struggled with rare transitional states comprising <2% of cells, suggesting need for targeted oversampling strategies in experimental design.",
+    "relevance_tags": [
+      "trajectory-analysis",
+      "benchmarking",
+      "single-cell",
+      "Th17-plasticity",
+      "computational-methods"
+    ],
+    "word_count": 221
+  },
+  {
+    "article_id": "RSS-910",
+    "title": "Optimizing research computing workflows: DAG-based dependency analysis for bioinformatics pipelines",
+    "source": "arXiv",
+    "category": "Computer Science",
+    "published_at": "2026-01-07T16:00:00-08:00",
+    "summary": "Framework for modeling bioinformatics workflows as directed acyclic graphs (DAGs) to identify parallelization opportunities, shared resource conflicts, and optimal execution schedules under resource constraints.",
+    "content": "We present DAGOptim, a framework for analyzing computational workflows as directed acyclic graphs to optimize execution under real-world constraints including API rate limits, file system locks, and memory budgets. Applied to a typical single-cell analysis pipeline (QC, normalization, clustering, differential expression, trajectory inference), DAGOptim identified 40% reduction in wall-clock time by parallelizing independent preprocessing steps while serializing database writes. The framework automatically detects shared-state conflicts (e.g., concurrent writes to SQLite databases) and generates execution plans that respect resource constraints. Case study on literature curation workflow: parallel RSS fetching from 5 sources (bioRxiv, PubMed, arXiv, Nature alerts, Cell Press) reduced fetch time from 12 minutes to 2.5 minutes, but downstream Zotero import must remain serial due to API rate limits (120 req/min) and exclusive file locks.",
+    "relevance_tags": [
+      "workflow-optimization",
+      "parallel-computing",
+      "DAG",
+      "bioinformatics",
+      "resource-management"
+    ],
+    "word_count": 267
+  },
+  {
+    "article_id": "RSS-911",
+    "title": "Single-cell trajectory inference reveals plasticity checkpoints in Th17 differentiation",
+    "source": "bioRxiv",
+    "category": "Immunology",
+    "published_at": "2026-01-30T08:00:00-08:00",
+    "summary": "We applied pseudotime trajectory analysis to map Th17 differentiation at single-cell resolution, identifying three critical plasticity checkpoints where cells can transition to regulatory or effector fates. Our analysis reveals IL-17A and IL-17F expression dynamics during trajectory progression.",
+    "content": "Single-cell RNA-seq trajectory inference has emerged as a powerful tool for understanding immune cell differentiation. Here we profile 45,000 differentiating Th17 cells across six time points and identify discrete plasticity checkpoints where transcriptional states permit fate transitions. Our findings have implications for understanding autoimmune disease pathogenesis and designing targeted immunotherapies.",
+    "relevance_tags": [
+      "trajectory-inference",
+      "th17",
+      "single-cell",
+      "plasticity",
+      "chapter3"
+    ],
+    "word_count": 320
+  },
+  {
+    "article_id": "RSS-912",
+    "title": "High-priority metadata extraction from biomedical preprints using GPT-4",
+    "source": "arXiv",
+    "category": "Computational Biology",
+    "published_at": "2026-02-01T10:30:00-08:00",
+    "summary": "We present a pipeline for extracting structured metadata from bioRxiv and medRxiv preprints using large language models. The system achieves 94% accuracy on DOI extraction, author disambiguation, and abstract summarization.",
+    "content": "Manual curation of biomedical literature is time-consuming and error-prone. We developed an automated pipeline that processes RSS feeds, extracts metadata, and flags high-priority papers based on user-defined research interests. Our approach reduces curation time by 73% while maintaining quality.",
+    "relevance_tags": [
+      "literature-curation",
+      "automation",
+      "metadata",
+      "workflow"
+    ],
+    "word_count": 280
+  },
+  {
+    "article_id": "RSS-913",
+    "title": "IL-17 receptor signaling dynamics in epithelial barrier maintenance",
+    "source": "bioRxiv",
+    "category": "Immunology",
+    "published_at": "2026-02-03T09:15:00-08:00",
+    "summary": "We characterize IL-17RA and IL-17RC heterodimer formation kinetics and downstream signaling cascades in intestinal epithelial cells. Time-resolved phosphoproteomics reveals rapid ACT1 recruitment and NF-κB activation within 5 minutes of IL-17A stimulation.",
+    "content": "IL-17 cytokines play critical roles in barrier immunity, but the temporal dynamics of receptor signaling remain poorly understood. Using live-cell imaging and mass spectrometry, we map the signaling cascade from receptor engagement to transcriptional output. Our data suggest therapeutic windows for targeting IL-17 signaling in inflammatory bowel disease.",
+    "relevance_tags": [
+      "il-17",
+      "signaling",
+      "epithelial",
+      "reviewer-response"
+    ],
+    "word_count": 410
+  },
+  {
+    "article_id": "RSS-914",
+    "title": "Benchmarking Zotero API performance for large-scale literature management",
+    "source": "Open Science Tools Blog",
+    "category": "Research Tools",
+    "published_at": "2026-01-28T14:00:00-08:00",
+    "summary": "We benchmark Zotero API v3 batch import operations across different network conditions and payload sizes. Results show optimal performance with batches of 25-50 items and exponential backoff retry logic.",
+    "content": "Research groups managing thousands of references need efficient Zotero import workflows. We tested batch sizes from 1 to 200 items and measured throughput, error rates, and rate limit violations. Our recommendations can reduce import time by 60% while respecting API constraints.",
+    "relevance_tags": [
+      "zotero",
+      "api",
+      "workflow",
+      "automation"
+    ],
+    "word_count": 195
+  },
+  {
+    "article_id": "RSS-915",
+    "title": "Cell Press preprints: IL-17-mediated neutrophil recruitment dynamics in mucosal barrier defense",
+    "source": "Cell Press Preprints",
+    "category": "Immunology",
+    "published_at": "2026-03-16T05:30:00-07:00",
+    "summary": "We characterize the spatiotemporal dynamics of IL-17A-driven neutrophil recruitment to intestinal epithelial barriers using intravital microscopy and single-cell trajectory inference. Our data reveal a two-phase recruitment model with distinct chemokine receptor dependencies.",
+    "content": "IL-17A is a critical cytokine for coordinating neutrophil-mediated defense at mucosal barriers, but the precise dynamics of neutrophil recruitment remain poorly understood. Using intravital two-photon microscopy in mouse intestinal tissue, we tracked neutrophil migration in real-time following IL-17A stimulation. Single-cell RNA-seq trajectory analysis identified two distinct neutrophil subpopulations with differential CXCR2 and CXCR4 expression patterns. Phase 1 recruitment (0-2 hours) was CXCR2-dependent and rapid, while Phase 2 (2-8 hours) involved CXCR4+ neutrophils with enhanced antimicrobial activity. These findings have implications for understanding IL-17-driven immunopathology in inflammatory bowel disease.",
+    "relevance_tags": [
+      "IL-17",
+      "neutrophils",
+      "mucosal-immunology",
+      "trajectory-analysis",
+      "dissertation",
+      "chapter3",
+      "reviewer-response"
+    ],
+    "word_count": 145
+  },
+  {
+    "article_id": "RSS-916",
+    "title": "Cell Press preprints: Machine learning prediction of T cell receptor specificity from single-cell transcriptomes",
+    "source": "Cell Press Preprints",
+    "category": "Computational Immunology",
+    "published_at": "2026-03-16T06:15:00-07:00",
+    "summary": "We develop TCRnet, a deep learning model that predicts T cell receptor antigen specificity directly from single-cell RNA-seq data without requiring paired TCR sequencing. Validation on public datasets shows 82% accuracy for viral epitope prediction.",
+    "content": "Linking T cell receptor (TCR) sequence to antigen specificity remains a major challenge in immunology. Existing methods require expensive paired TCR-seq, limiting throughput. We present TCRnet, a convolutional neural network trained on 450,000 single-cell transcriptomes with known TCR specificity. The model learns a latent representation of T cell activation state that correlates with TCR-antigen binding. Applied to 10X Genomics datasets from COVID-19 patients, TCRnet correctly predicted SARS-CoV-2 spike-specific CD8+ T cells with 82% accuracy (AUC 0.89). This approach enables high-throughput antigen specificity screening from standard scRNA-seq experiments.",
+    "relevance_tags": [
+      "machine-learning",
+      "TCR",
+      "single-cell",
+      "computational",
+      "dissertation"
+    ],
+    "word_count": 132
+  },
+  {
+    "article_id": "RSS-917",
+    "title": "Optimizing Python multiprocessing for bioinformatics pipelines: a practical guide",
+    "source": "Bioinformatics Tools Blog",
+    "category": "Methods",
+    "published_at": "2026-03-15T09:00:00-07:00",
+    "summary": "Best practices for using Python's multiprocessing library in computational biology workflows. Covers process pool management, shared memory optimization, and common pitfalls with file I/O contention.",
+    "content": "Many bioinformatics researchers struggle to parallelize their Python pipelines effectively. This guide covers practical patterns for the multiprocessing library: (1) Use Pool.map() for embarrassingly parallel tasks like RSS feed fetching; (2) Avoid shared file handles—use separate temp directories per process; (3) Implement rate-limiting with multiprocessing.Semaphore for API calls; (4) Serialize writes to shared databases (e.g., Zotero) using Queue and a dedicated writer process. We provide example code for a literature curation pipeline that reduced runtime from 90 minutes to 25 minutes while avoiding Zotero file lock conflicts.",
+    "relevance_tags": [
+      "methods",
+      "python",
+      "workflow",
+      "general-immunology"
+    ],
+    "word_count": 118
+  },
+  {
+    "article_id": "RSS-918",
+    "title": "Survey of chromatin accessibility profiling methods in primary human T cells",
+    "source": "Nature Reviews Immunology",
+    "category": "Methods Review",
+    "published_at": "2026-03-14T11:00:00-07:00",
+    "summary": "Comprehensive comparison of ATAC-seq, DNase-seq, and CUT&RUN for profiling chromatin accessibility in low-input T cell samples. Discusses technical considerations for integrating epigenomic data with single-cell transcriptomics.",
+    "content": "Chromatin accessibility profiling has become essential for understanding T cell differentiation and plasticity. This review compares three major technologies: ATAC-seq (high throughput, 50K cells), DNase-seq (gold standard, 1M cells), and CUT&RUN (ultra-low input, 500 cells). We discuss library preparation protocols, sequencing depth requirements, and computational analysis pipelines. Special emphasis on integrating accessibility data with scRNA-seq trajectory inference to identify lineage-defining transcription factor binding sites. Includes decision tree for method selection based on sample availability and experimental goals.",
+    "relevance_tags": [
+      "methods",
+      "epigenomics",
+      "T-cells",
+      "general-immunology"
+    ],
+    "word_count": 108
+  }
+]

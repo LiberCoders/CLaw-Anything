@@ -1,0 +1,16 @@
+noise_id: N033
+name: "Browse LinkedIn job listings"
+description: "Open LinkedIn to casually browse job postings matching a general skill area, save one that looks interesting, then close"
+involved_services: [claw_linkedin]
+leaves_trace: false
+action_sequence:
+  - "Open LinkedIn job board"
+  - "Browse job listings by skill or company"
+  - "Open a few job details"
+  - "Save one interesting job"
+  - "Close LinkedIn"
+time_preference: any
+adaptable_elements:
+  - "Job search keywords or skill area"
+  - "Number of jobs viewed"
+  - "Whether to follow a company"

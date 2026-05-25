@@ -1,0 +1,134 @@
+[
+  {
+    "integration_id": "INT-101",
+    "name": "hsbc_poc_demo_stack",
+    "display_name": "HSBC POC Demo Stack - Multi-Workload Configuration",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Production configuration for HSBC Q1 2026 POC demo environment. Resource isolation implemented to prevent contention during March 4 CDO session: (1) Warehouse assignments: COMPUTE_WH_ML (X-Large GPU) for ML training, COMPUTE_WH_INFERENCE (Medium) for inference API, COMPUTE_WH_INTERACTIVE (Small) shared by Streamlit/Jupyter, (2) Port bindings: Streamlit 8502, Jupyter 8889 (avoiding HSBC internal conflicts on 8501, 8888), (3) Storage partitioning: s3://hsbc-poc-demo/checkpoints/ml-training/ and s3://hsbc-poc-demo/checkpoints/inference/. Configuration validated March 3, 2026. Pre-launch validation scheduled March 4 11:00 GMT.",
+    "service": "demo_infrastructure",
+    "last_verified": "2026-03-03T17:00:00+00:00",
+    "monthly_calls": 0
+  },
+  {
+    "integration_id": "INT-102",
+    "name": "emea_demo_account_quota",
+    "display_name": "EMEA Demo Account - Warehouse Cluster Quota Management",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "EMEA demo account warehouse cluster quota limits: 8 concurrent clusters per AWS region (eu-west-1, eu-west-2, eu-west-3) without VP-level approval. Total cross-region capacity = 24 clusters theoretical max, but per-region cap enforced. Current allocations as of Feb 16, 2026: eu-west-3 (France) = 2 clusters allocated to Allianz POC (6 available), eu-west-2 (UK) = 1 cluster allocated to HSBC evaluation (7 available), eu-west-1 (Ireland) = 3 clusters allocated to various demos (5 available). VP approval escalation for quota increase = 5-7 business days. BNP Paribas POC requires 7 France + 5 UK clusters (ideal), but France cap constraint limits to 6 max available.",
+    "service": "demo_environment",
+    "last_verified": "2026-02-16T10:00:00+00:00",
+    "monthly_calls": 0
+  },
+  {
+    "integration_id": "INT-103",
+    "name": "emea_demo_regional_quotas",
+    "display_name": "EMEA Demo Account Regional Quota Limits",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "EMEA demo account regional quota configuration. France region (eu-west-3): €25K monthly cap. UK region (eu-west-2): €20K monthly cap. Credits are non-transferable between regions due to billing entity separation (Snowflake France SARL vs Snowflake UK Ltd). Total EMEA quota: €45K but must respect regional boundaries. Current consumption (as of March 28): France €13K available (€12K Allianz through Feb), UK €20K available. BNP Paribas POC requires cross-region allocation strategy to stay within hard caps.",
+    "service": "snowflake_credits",
+    "last_verified": "2026-03-28T09:00:00+00:00",
+    "monthly_calls": 0
+  },
+  {
+    "integration_id": "INT-104",
+    "name": "sc_q2_demo_environment",
+    "display_name": "Standard Chartered Q2 POC Demo Environment",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Shared demo environment for Standard Chartered Q2 expansion POC. Resource quotas: GPU warehouse (3x A100 nodes, €45K monthly cap), CPU warehouse (8x XL nodes, €12K monthly cap). S3 staging bucket: s3://snowflake-demos-apac/sc-q2-poc/. Warehouse auto-suspend: 5 minutes idle timeout. Current workload schedule: Feature engineering (8:00 AM SGT), Credit risk training (8:25 AM SGT), Fraud detection training (9:15 AM SGT). Last staging collision resolved 2026-04-01.",
+    "service": "demo_infrastructure",
+    "last_verified": "2026-04-01T17:45:00+00:00",
+    "monthly_calls": 0
+  },
+  {
+    "integration_id": "INT-105",
+    "name": "emea_demo_gpu_quota_tracker",
+    "display_name": "EMEA Demo GPU Quota Tracker",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Tracks GPU warehouse utilization across all EMEA demo environments. Current allocations: HSBC (€65K, 8 nodes), Standard Chartered (€45K, 3 nodes), Barclays (€35K, 2 nodes). Regional quota cap: €180K monthly. Remaining headroom: €35K (19%). Alert threshold: 85% utilization.",
+    "service": "resource_monitoring",
+    "last_verified": "2026-04-01T08:00:00+00:00",
+    "monthly_calls": 720
+  },
+  {
+    "integration_id": "INT-106",
+    "name": "emea_demo_bnp_paribas_q2",
+    "display_name": "BNP Paribas Q2 POC Demo Environment",
+    "status": "pending_approval",
+    "error_rate": 0.0,
+    "notes": "Multi-region demo environment for BNP Paribas Q2 POC executive briefing (April 8-9). Constrained architecture due to regional quota caps: 4 clusters France (eu-west-3) = €13K, 5 clusters UK (eu-west-2) = €19K, total €32K. Cross-border data residency compliance demonstration. Pending final architecture approval from AE Tom Harris.",
+    "service": "demo_environment",
+    "last_verified": "2026-03-31T17:00:00+00:00",
+    "monthly_calls": 0
+  },
+  {
+    "integration_id": "INT-107",
+    "name": "emea_demo_france_quota_tracker",
+    "display_name": "EMEA Demo Account - France Region Quota Tracker",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "France region (eu-west-3) quota tracking: Cap €25K, Allianz Q1 POC €12K (through March 31), Barclays demo €3K (completed mid-March), Available €10K. Allianz quota releases April 1. Updated March 30, 2026.",
+    "service": "quota_management",
+    "last_verified": "2026-03-30T15:00:00+00:00",
+    "monthly_calls": 0
+  },
+  {
+    "integration_id": "INT-108",
+    "name": "emea_demo_bnp_paribas_q2_multiregion",
+    "display_name": "EMEA Demo - BNP Paribas Q2 Multi-Region Architecture",
+    "status": "provisioning",
+    "error_rate": 0.0,
+    "notes": "BNP Paribas Q2 POC multi-region demo environment. 11-cluster hybrid architecture under quota constraints: 6 France clusters (€25K) + 5 UK clusters (€15K) = €40K total. France clusters: customer PII processing, transaction analytics, fraud detection, regulatory reporting, data masking, compliance audit. UK clusters: subsidiary ops, FCA reporting, cross-region federation, DR validation, performance benchmark. Provisioning target: April 3. Rehearsal checkpoint: April 5. CDO briefing: April 8.",
+    "service": "demo_environment",
+    "last_verified": "2026-03-27T17:00:00+00:00",
+    "monthly_calls": 0
+  },
+  {
+    "integration_id": "INT-109",
+    "name": "emea_demo_bnp_q2_quota_constraint",
+    "display_name": "EMEA Demo Account - BNP Paribas Q2 Regional Quota Constraint",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "EMEA demo account regional quota caps for BNP Paribas Q2 POC planning. France (eu-west-3): €25K cap, €12K consumed by Allianz Q1 POC through March 31, €13K remaining available. UK (eu-west-2): €20K cap, €0K consumed, €20K available. CRITICAL CONSTRAINT: Regional quotas are non-transferable between France and UK regions. BNP Paribas ideal architecture (12 clusters: 7 France €28K, 5 UK €17K) exceeds France available quota by €15K. Requires architecture optimization across three dimensions: cost (€50K hard cap), technical fidelity (cross-border demo requirements), regional quota compliance (non-transferable caps).",
+    "service": "quota_management",
+    "last_verified": "2026-04-01T10:00:00+00:00",
+    "monthly_calls": 0
+  },
+  {
+    "integration_id": "INT-110",
+    "name": "emea_demo_allianz_q1_france_consumption",
+    "display_name": "EMEA Demo Account - Allianz Q1 France Region Consumption Tracker",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Allianz Q1 POC streaming architecture workloads consuming €12K/month in France region (eu-west-3) through March 31, 2026. Impacts downstream POC planning for BNP Paribas Q2 which requires France region quota. Consumption pattern: near-real-time fraud detection, incremental materialized views, Snowpark containers. Release date: April 1, 2026 (Allianz POC completion). Post-release: €12K/month France quota returns to available pool for Q2 POCs.",
+    "service": "quota_management",
+    "last_verified": "2026-03-28T14:00:00+00:00",
+    "monthly_calls": 0
+  },
+  {
+    "integration_id": "INT-111",
+    "name": "emea_demo_bnp_q2_provisioning_decision",
+    "display_name": "EMEA Demo - BNP Paribas Q2 Provisioning Decision Tracker",
+    "status": "pending_decision",
+    "error_rate": 0.0,
+    "notes": "BNP Paribas Q2 POC demo environment provisioning decision point. France quota: €25K available now, drops to €13K on April 7. Budget approval expected April 8-9 but not confirmed. Provisioning immediately locks ideal 12-cluster architecture but creates €45K sunk cost risk if approval fails (20% probability estimate). Waiting avoids waste but forces 11-cluster architecture downgrade and weakens CDO-requested cross-border demo fidelity. Decision deadline: April 4 to guarantee France quota reservation. Reversibility: demo credits non-refundable, no alternative use within POC window.",
+    "service": "demo_provisioning",
+    "last_verified": "2026-04-02T09:00:00+01:00",
+    "monthly_calls": 0
+  },
+  {
+    "integration_id": "INT-112",
+    "name": "emea_demo_france_quota_allianz_impact",
+    "display_name": "EMEA Demo - France Quota Allianz Extension Impact",
+    "status": "active",
+    "error_rate": 0.0,
+    "notes": "Allianz Q1 POC extension into early April (compliance review cycle) consuming €12K France region quota April 3-10. Reduces available France allocation from €25K to €13K for new demo environments after April 7. Impacts BNP Paribas Q2 POC provisioning window: must reserve before April 7 to lock €25K for 12-cluster architecture, otherwise constrained to 11-cluster (6 France + 5 UK) due to reduced quota.",
+    "service": "quota_management",
+    "last_verified": "2026-03-31T16:00:00+01:00",
+    "monthly_calls": 0
+  }
+]

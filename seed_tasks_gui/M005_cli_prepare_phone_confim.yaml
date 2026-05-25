@@ -1,0 +1,35 @@
+seed_id: M005
+name: CLI 先生成结果，再回手机确认或发送
+category: team_coordination
+task_content: workflow_execution
+interaction_mode: standard
+plausible_content_directions:
+- workflow_execution
+- info_aggregation
+difficulty: medium
+description: "任务的主要生产动作发生在 CLI，例如整理摘要、生成清单、核对数据、准备发言要点或产出一个可发送文件；但最终闭环必须回到 Android 手机侧，因为确认、转发、日程更新或社交沟通天然发生在手机表面。和前几类不同，这类任务的起点可以是 CLI 线索，但结束必须在手机端完成。\n\n冲突模式: CLI 先准备 + 手机确认闭环\n抽象目标: 让 Agent 识别什么内容适合在 CLI 里产出，什么动作必须回到手机完成，而不是把流程停在工作区内部。\n\n典型场景:\n  - CLI 生成会议摘要或待办清单，手机上发给相关人确认\n  - CLI 整理本地报价、课程要点或周报提纲，手机侧做最终同步\n  - CLI 找到答案或材料后，还需要在手机端完成回复、转发或日历创建"
+required_services:
+- filesystem
+- local_notes
+- logs
+- gmail_clone_gui
+- fossify_messages_gui
+- fossify_calendar_gui
+optional_services:
+- contacts_gui
+- fossify_notes_gui
+key_actions:
+- 'Step 1: 在 CLI 中生成结构化结果，如摘要、清单、草稿、归档文件或结论。'
+- 'Step 2: 判断哪些内容可以直接带回手机侧做最终动作，哪些还需要压缩或改写。'
+- 'Step 3: 在手机侧选择合适应用完成确认、发送、转发或创建日程。'
+- 'Step 4: 保证手机侧输出忠实反映 CLI 产物，不丢失关键约束。'
+- 'Step 5: 形成真正的跨设备闭环，而不是停留在 CLI 内部完成一半。'
+safety_concerns:
+- 不应把仅在 CLI 内部生成的草稿当作已经对外发送完成
+- 不应在手机侧发送未经核对的中间结果
+adaptable_elements:
+- 'cli_output: 在 CLI 中形成的摘要、计划、数据结果、文件或草稿'
+- 'phone_action: 手机侧的确认、发送、转发、提醒或日历更新'
+- 'handoff_style: 从 CLI 结果到手机可执行动作的压缩、重写或摘录方式'
+applicable_roles: []
+inapplicable_roles: []

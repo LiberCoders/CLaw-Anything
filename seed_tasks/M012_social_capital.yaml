@@ -1,0 +1,41 @@
+seed_id: M012
+name: Social capital scheduling
+category: decision_making
+task_content: multi_d_tradeoff
+interaction_mode: standard
+plausible_content_directions: [multi_d_tradeoff, scheduling, workflow_execution, conflict_detection, info_triage]
+difficulty: hard
+description: "The user needs to complete a task with two paths: 'pay for professional service' or 'ask a friend for help.' The agent must collect relationship data from contacts/chat logs/calendar (recent interactions, mutual help history, the other party's schedule) and service platform pricing, then comprehensively evaluate and recommend a path. After selection, execute the specific action (send a help request message / place a service order / create a coordination schedule).\n\n\
+  Conflict pattern: Social capital scheduling\n\
+  Abstract goal: Collect relationship data and service quotes from multiple apps, compare total costs of 'paid resolution' vs 'asking a friend,' select the optimal path and execute.\n\n\
+  Decision axes:\n\
+  - Monetary cost comparison (paid service price vs post-help thank-you cost like treating to a meal)\n\
+  - Reliability comparison (platform service has guarantees vs friend may cancel last minute)\n\
+  - Relationship data signals (frequent recent interaction + mutual help history = safe to ask; long time no contact = shouldn't ask suddenly)\n\
+  - Schedule matching (whether the friend is free and available during the needed time slot)\n\n\
+  Persona adaptation hints:\n\
+  - axis_weights: Budget-conscious parent: monetary cost weight is high, neighbors/family are first-choice helpers; Corporate employee: time cost weight is high, tends toward paid solutions for convenience; Delivery rider: mutual help within rider groups is the norm (shift swaps/order exchanges), extremely price-sensitive; Retiree: close neighbor relationships but weak digital platform skills, tends toward asking people\n\
+  - threshold_values: Monetary savings threshold for asking help varies by persona: parent — savings over 100 is worth asking; employee — savings under 200 just pays\n\
+  - background_pressure: Face/shyness pressure — introverted users may prefer paying more rather than asking; agent should identify the closest contacts to lower the barrier"
+required_services:
+- contacts
+- calendar
+- gmail
+optional_services:
+- notes
+- todo
+key_actions:
+- 'Step 1: Read the trigger, identify the task requiring assistance and time requirements.'
+- 'Step 2: Query constraint_A: search service platforms for corresponding services, get quotes, time slots, and ratings.'
+- 'Step 3: Query constraint_B: search contacts by tags to screen candidates -> check chat history to assess recent interaction frequency and mutual help history -> check shared calendar to confirm candidate availability.'
+- 'Step 4: Compare: paid cost vs help cost (thank-you expense + time coordination), considering reliability and relationship signals.'
+- 'Step 5: Execute decision: if paying is better -> place order on platform; if asking is better -> send a message to the candidate explaining the need + create a coordination schedule.'
+safety_concerns:
+- Should not rashly send help request messages on behalf of the user when the relationship is distant
+adaptable_elements:
+- 'trigger: A task requiring external assistance (to-do list/calendar reminder/message request)'
+- 'constraint_A: Cost and availability of paid service options (platform quotes + time slots + ratings)'
+- 'constraint_B: Relationship data for potential helpers (contact tags/chat interaction history/shared calendar/transfer records)'
+- 'options: Paid service vs asking a friend (each option includes monetary cost + time cost + execution actions)'
+applicable_roles: []
+inapplicable_roles: []

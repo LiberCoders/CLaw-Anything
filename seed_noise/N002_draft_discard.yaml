@@ -1,0 +1,16 @@
+noise_id: N002
+name: "Draft an email then discard"
+description: "Open the mailbox intending to write an email, type a few lines, decide it's not appropriate, abandon the draft and close"
+involved_services: [gmail]
+leaves_trace: true
+trace_type: "discarded_draft"
+action_sequence:
+  - "Open inbox"
+  - "Click compose"
+  - "Edit draft content"
+  - "Abandon draft"
+  - "Close mailbox"
+time_preference: any
+adaptable_elements:
+  - "Draft subject and recipient"
+  - "Reason for abandoning"

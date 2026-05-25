@@ -1,0 +1,5683 @@
+[
+  {
+    "page_id": "NPAG-1",
+    "title": "Polaris Platform Features - Infrastructure Requirements & Dependencies",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "project": "Polaris",
+      "status": "active",
+      "last_review": "2026-02-18"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Feature Specifications"
+      },
+      {
+        "type": "heading_2",
+        "text": "1. Unified Auth Layer"
+      },
+      {
+        "type": "paragraph",
+        "text": "Status: Ready for GA | Target: 100% by 2026-03-31"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Compute quota: 2,400 vCPU-hours per day at full rollout"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "DB connection pools: 350 connections"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "CDN edge slots: 120 slots"
+      },
+      {
+        "type": "heading_2",
+        "text": "2. Cross-Tenant Analytics API"
+      },
+      {
+        "type": "paragraph",
+        "text": "Status: Ready for GA | Target: 100% by 2026-03-31"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Compute quota: 3,200 vCPU-hours per day at full rollout"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "DB connection pools: 480 connections"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "CDN edge slots: 85 slots"
+      },
+      {
+        "type": "heading_2",
+        "text": "3. Webhook Consolidation"
+      },
+      {
+        "type": "paragraph",
+        "text": "Status: Ready for GA | Target: 100% by 2026-03-31"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Compute quota: 1,800 vCPU-hours per day at full rollout"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "DB connection pools: 220 connections"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "CDN edge slots: 95 slots"
+      },
+      {
+        "type": "heading_1",
+        "text": "Infrastructure Capacity (Total Available)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Compute quota: 8,000 vCPU-hours per day (HARD CAP - shared across all features)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "DB connection pools: 1,200 connections (HARD CAP - shared pool)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "CDN edge slots: 320 slots (HARD CAP - global limit)"
+      },
+      {
+        "type": "heading_1",
+        "text": "Feature Dependency Matrix"
+      },
+      {
+        "type": "paragraph",
+        "text": "Resource sharing conflicts:"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Unified Auth + Analytics API share the primary DB pool (cannot exceed 850 connections combined during any rollout phase)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Analytics API + Webhook Consolidation share compute cluster (cannot exceed 5,500 vCPU-hours combined during rollout)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "All three features share CDN infrastructure (320 slot hard cap)"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-02-10T10:30:00-08:00",
+    "last_updated": "2026-02-18T14:20:00-08:00"
+  },
+  {
+    "page_id": "NPAG-2",
+    "title": "Engineering Ops Constraints - Polaris Rollout",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Priya Sharma - VP Engineering",
+      "reviewed_by": "Jorge Alvarez",
+      "date": "2026-02-15"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Engineering Operations Hard Limits"
+      },
+      {
+        "type": "heading_2",
+        "text": "Monitoring Capacity"
+      },
+      {
+        "type": "paragraph",
+        "text": "The SRE team can monitor a maximum of 4 concurrent rollout waves across all features. Each distinct customer segment (tier/region/percentage bracket) in an active rollout counts as one wave."
+      },
+      {
+        "type": "heading_2",
+        "text": "Customer Tier SLA Separation Rules"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Enterprise tier customers CANNOT be in the same rollout wave as Starter tier customers (SLA guarantee conflict)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Professional tier can be grouped with either Enterprise OR Starter, but mixing all three tiers in one wave is prohibited"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Mid-market accounts (subset of Professional tier) require dedicated monitoring and cannot share waves with Starter tier"
+      },
+      {
+        "type": "heading_2",
+        "text": "Rollout Configuration Limits"
+      },
+      {
+        "type": "paragraph",
+        "text": "Engineering can support up to 3 different rollout strategies running in parallel (e.g., one feature rolling by tier, another by region, another by percentage). Exceeding this creates unmanageable operational complexity."
+      },
+      {
+        "type": "heading_2",
+        "text": "Rollback Capability"
+      },
+      {
+        "type": "paragraph",
+        "text": "Fast rollback (< 15 minutes) is only guaranteed for waves affecting fewer than 150 customers. Waves with 150+ customers require 45-90 minute rollback windows."
+      },
+      {
+        "type": "heading_1",
+        "text": "Customer Distribution"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Enterprise tier: 87 customers (high SLA, 24/7 support)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Professional tier: 243 customers (includes 38 mid-market accounts flagged for churn risk)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Starter tier: 412 customers (standard SLA)"
+      },
+      {
+        "type": "heading_1",
+        "text": "Regional Distribution"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "US-West: 320 customers"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "US-East: 285 customers"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "EU: 137 customers"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-02-15T09:00:00-08:00",
+    "last_updated": "2026-02-15T16:45:00-08:00"
+  },
+  {
+    "page_id": "NPAG-3",
+    "title": "Polaris Rollout Decision - DRAFT",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "status": "in-progress",
+      "decision_date": "2026-02-21"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Optimal Rollout Strategy - Analysis in Progress"
+      },
+      {
+        "type": "paragraph",
+        "text": "This page will document the constraint-satisfaction proof and final rollout plan for all three Polaris features."
+      },
+      {
+        "type": "heading_2",
+        "text": "Key Constraints to Satisfy"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Infrastructure caps: 8000 vCPU-hours, 1200 DB connections, 320 CDN slots"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Shared resource limits: Auth+Analytics ≤850 DB conn, Analytics+Webhook ≤5500 vCPU"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Max 4 concurrent rollout waves"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Enterprise/Starter tier separation required"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "GA deadline: 2026-03-31"
+      },
+      {
+        "type": "paragraph",
+        "text": "[Analysis and strategy enumeration to be completed...]"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-02-21T09:15:00-08:00",
+    "last_updated": "2026-02-21T09:15:00-08:00"
+  },
+  {
+    "page_id": "NPAG-4",
+    "title": "Q1 2026 Platform Team Retrospective Notes",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "quarter": "Q1-2026",
+      "meeting_date": "2026-02-14"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q1 Retrospective - Platform Team"
+      },
+      {
+        "type": "paragraph",
+        "text": "Attendees: Jorge Alvarez, Priya Sharma, Dev leads, SRE team"
+      },
+      {
+        "type": "heading_2",
+        "text": "What Went Well"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Polaris features completed ahead of schedule"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Cross-team collaboration improved with weekly syncs"
+      },
+      {
+        "type": "heading_2",
+        "text": "Challenges"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Infrastructure capacity planning needs earlier involvement"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Rollout strategy discussions starting too late in the cycle"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-02-14T15:30:00-08:00",
+    "last_updated": "2026-02-14T16:00:00-08:00"
+  },
+  {
+    "page_id": "NPAG-5",
+    "title": "Platform API Migration - Legacy Auth Endpoint Deprecation Plan",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "status": "in_progress",
+      "project": "Platform Consolidation",
+      "quarter": "Q1-Q2 2026"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "API Migration Workflow - Dependency Chain"
+      },
+      {
+        "type": "paragraph",
+        "text": "Critical path for legacy /v1/auth endpoint deprecation. Must complete before Q2 customer renewals."
+      },
+      {
+        "type": "heading_2",
+        "text": "Phase 1: Internal Service Migration (BLOCKING)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Status: 60% complete as of 2026-04-02"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Remaining services: analytics-worker, reporting-batch, legacy-webhook-proxy"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Engineering estimate: 5 days ±3 days (range: Apr 7-12)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Blocker: analytics-worker has hard-coded endpoint reference in 14 modules, refactor underway"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Owner: Priya Sharma (platform-backend)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Phase 2: Customer Communication Preparation (PARALLEL RISK)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Draft customer notification email + migration guide"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Legal review required (2-3 day turnaround)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "DECISION POINT: Draft now (risk: date revisions if Phase 1 slips) vs. wait for Phase 1 completion (risk: insufficient notice period)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Rework cost if dates change: ~4 hours (re-draft + legal re-review)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Owner: Jorge Alvarez + Sarah Kim (Customer Success)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Phase 3: Customer Notification & Grace Period"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Contractual SLA: 21-day notice minimum for API changes"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Target customer migration window: 30 days (buffer for support load)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Uncertainty: customer response time unpredictable (historical range: 3-28 days)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Mid-market accounts (CUS-102, CUS-103, CUS-104) already showing churn signals - extra care needed"
+      },
+      {
+        "type": "heading_2",
+        "text": "Phase 4: Kill-Switch Date"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Proposed: May 15, 2026 (assumes Phase 1 complete by Apr 10, notification sent Apr 11, 30-day grace)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "CRITICAL: If Phase 1 slips 1 week → kill-switch must move to May 22 to maintain 30-day grace"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Fallback: Can compress grace to 21 days (contractual minimum) if absolutely necessary"
+      },
+      {
+        "type": "heading_2",
+        "text": "Go/No-Go Checkpoint Structure"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Checkpoint 1 (Apr 10): Internal migration health check"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Criteria: All 3 services passing integration tests, no P0/P1 bugs, engineering sign-off via Workmail"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "GO → send customer notification Apr 11 | NO-GO → escalate to VP Engineering, revise timeline"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Checkpoint 2 (Apr 25): Customer migration progress review"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Criteria: >70% of API calls migrated to /v2/auth, <5 support escalations"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "GO → proceed to kill-switch May 15 | NO-GO → extend grace period, delay kill-switch"
+      },
+      {
+        "type": "heading_2",
+        "text": "Parallel vs Serial Decision Rationale"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "PARALLEL (low rework cost): Draft migration guide content, prepare support KB articles, schedule CS team training"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "SERIAL (irreversible commitment): Customer notification email (contains specific dates), public changelog announcement, contractual notice"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "STRATEGY: Begin parallel work now (Apr 5), hold serial commitments until Checkpoint 1 passes"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-03T10:15:00-07:00",
+    "last_updated": "2026-04-05T09:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-6",
+    "title": "Internal Service Migration Status - Auth Endpoint",
+    "parent_page_id": "NPAG-5",
+    "database_id": null,
+    "properties": {
+      "owner": "Priya Sharma",
+      "status": "in_progress",
+      "updated": "2026-04-04"
+    },
+    "blocks": [
+      {
+        "type": "heading_2",
+        "text": "Migration Progress by Service"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "✅ user-service: migrated 2026-03-28, health checks passing"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "✅ api-gateway: migrated 2026-03-30, routing rules updated"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "✅ mobile-backend: migrated 2026-04-01, iOS/Android clients compatible"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "🟡 analytics-worker: IN PROGRESS - 14 hard-coded references found, 8 refactored as of Apr 4"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "🟡 reporting-batch: BLOCKED - depends on analytics-worker schema changes"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "🟡 legacy-webhook-proxy: NOT STARTED - low priority, minimal traffic"
+      },
+      {
+        "type": "heading_2",
+        "text": "Risk Assessment"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "analytics-worker refactor more complex than estimated - original estimate 3 days, now tracking to 6-7 days"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Slip risk: HIGH (50% probability of missing Apr 10 target)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Mitigation: Can deprioritize legacy-webhook-proxy (only 0.3% of traffic), focus on analytics + reporting"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-02T14:20:00-07:00",
+    "last_updated": "2026-04-04T16:30:00-07:00"
+  },
+  {
+    "page_id": "NPAG-7",
+    "title": "Q2 2026 OKR Planning - Cross-Team Dependencies & Conflicts",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "quarter": "Q2 2026",
+      "status": "in-progress",
+      "last_reviewed": "2026-04-03"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 2026 OKR Cross-Team Dependencies"
+      },
+      {
+        "type": "paragraph",
+        "text": "Tracking cross-functional dependencies and conflicts identified during Q2 planning cycle (March 15 - April 10, 2026)."
+      },
+      {
+        "type": "heading_2",
+        "text": "Known Conflicts"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Data Team OKR: Real-time event streaming for Polaris analytics"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Conflict: Requires 30-50% of Kafka cluster capacity (conflicting estimates from David Torres)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Constraint: Polaris GA rollout (May 3) leaves only 25% headroom per infrastructure reserve policy"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Status: BLOCKING - needs resolution by April 5 for OKR lock on April 10"
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision Options"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Reduce data team Q2 scope (delay real-time streaming to Q3)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Accelerate Kafka cluster expansion (+$45K cost, +3 weeks eng time)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Renegotiate Polaris rollout schedule to preserve capacity headroom"
+      },
+      {
+        "type": "heading_2",
+        "text": "Action Items"
+      },
+      {
+        "type": "to_do",
+        "text": "Reconcile conflicting event volume estimates from David (2M vs 5M events/day)",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Validate actual Kafka headroom post-Polaris with Marcus Chen",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Schedule decision meeting with Sarah Kim + David Torres for April 5",
+        "checked": false
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-03T16:00:00-07:00",
+    "last_updated": "2026-04-04T17:30:00-07:00"
+  },
+  {
+    "page_id": "NPAG-8",
+    "title": "Customer Escalations - Q2 2026 Churn Risk Tracking",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "quarter": "Q2 2026",
+      "status": "active"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 2026 Customer Escalation Log"
+      },
+      {
+        "type": "paragraph",
+        "text": "Tracking customer escalations with churn risk. Focus on mid-market and enterprise accounts with active expansion or renewal cycles."
+      },
+      {
+        "type": "heading_2",
+        "text": "Active Escalations"
+      },
+      {
+        "type": "heading_3",
+        "text": "TechFlow Industries (CUS-101)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "ARR: $850K (top 5 account)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Issue: API rate limits blocking real-time data warehouse sync"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Impact: VP Engineering threatening to pause $200K Q2 expansion"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Escalated: April 3, 2026 via Rachel Kim (CSM)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Deadline: April 8 (next Tuesday) for solution"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Status: URGENT - requires same-day response"
+      },
+      {
+        "type": "heading_3",
+        "text": "Previous Churn Signals (Last 6 Weeks)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Meridian Health Systems (CUS-102) - resolved Feb 28"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "GlobalRetail Corp (CUS-103) - monitoring"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "StartupHub Inc (CUS-104) - escalated to exec team"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-03T15:00:00-07:00",
+    "last_updated": "2026-04-04T14:30:00-07:00"
+  },
+  {
+    "page_id": "NPAG-9",
+    "title": "SRE Capacity Constraints & Rollback Buffer Policy - Polaris v1",
+    "parent_page_id": "NPAG-2",
+    "database_id": null,
+    "properties": {
+      "owner": "Marcus Chen",
+      "team": "SRE",
+      "status": "active",
+      "last_reviewed": "2026-04-01"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "SRE Capacity Constraints - April 2026"
+      },
+      {
+        "type": "paragraph",
+        "text": "This document defines SRE capacity constraints and rollback buffer requirements for Polaris v1 GA launch windows in April 2026."
+      },
+      {
+        "type": "heading_2",
+        "text": "1. On-Call Rotation Schedule"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Week of April 14: Marcus Chen (primary), David Torres (secondary) - 12 SRE hours available"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Week of April 21: Sarah Kim (primary - auth focus), Marcus Chen (secondary) - 16 SRE hours available, split coverage"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Week of April 28: Marcus Chen (primary), Rachel Kim (secondary) - 20 SRE hours available, full coverage"
+      },
+      {
+        "type": "heading_2",
+        "text": "2. Infrastructure Allocation by Window"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Window A (Apr 14-15): 85% compute, 70% database pool, 80% CDN capacity"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Window B (Apr 21-22): 90% compute, 80% database pool, 85% CDN capacity"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Window C (Apr 28-29): 95% compute, 90% database pool, 95% CDN capacity"
+      },
+      {
+        "type": "heading_2",
+        "text": "3. Rollback Buffer Policy"
+      },
+      {
+        "type": "heading_3",
+        "text": "3.1 Policy Statement"
+      },
+      {
+        "type": "paragraph",
+        "text": "All platform launches require a minimum 72-hour rollback readiness buffer before the next critical platform milestone or hard-gated event (e.g., auth migration checkpoints, leadership reviews, customer-facing feature releases)."
+      },
+      {
+        "type": "heading_3",
+        "text": "3.2 Rationale"
+      },
+      {
+        "type": "paragraph",
+        "text": "72-hour buffer ensures: (1) adequate time for rollback execution if launch issues are detected; (2) post-rollback validation and system stabilization; (3) incident retrospective and communication to stakeholders; (4) no resource contention with subsequent platform events."
+      },
+      {
+        "type": "heading_3",
+        "text": "3.3 Constraint Violations"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Window A: Rollback buffer ends April 17 EOD. Q2 Leadership Review on April 15 creates PM availability conflict during critical launch window. Not a buffer violation but an availability constraint."
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Window B: Rollback buffer ends April 24 EOD. Auth Migration Checkpoint 2 on April 23 = only 48-hour buffer. VIOLATES 72-hour policy. Additionally, SRE coverage split between Polaris and auth creates resource contention risk."
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Window C: Rollback buffer ends May 1 EOD. Next platform milestone (monitoring review) on May 2 = 96-hour buffer. SATISFIES 72-hour policy with 24-hour margin."
+      },
+      {
+        "type": "heading_2",
+        "text": "4. Recommended Window"
+      },
+      {
+        "type": "paragraph",
+        "text": "Window C (April 28-29) is the only window that satisfies all hard constraints: adequate SRE capacity, no calendar conflicts, 72+ hour rollback buffer, and optimal infrastructure allocation."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-01T09:00:00-07:00",
+    "last_updated": "2026-04-02T16:30:00-07:00"
+  },
+  {
+    "page_id": "NPAG-10",
+    "title": "Polaris v1 GA Launch - Final Go-Live Decision (Window C)",
+    "parent_page_id": "NPAG-1",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "decision_date": "2026-04-04",
+      "status": "confirmed",
+      "launch_window": "April 28-29, 2026"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Polaris v1 GA Launch - Final Go-Live Decision"
+      },
+      {
+        "type": "paragraph",
+        "text": "Decision Date: April 4, 2026"
+      },
+      {
+        "type": "paragraph",
+        "text": "Decision Owner: Jorge Alvarez (Senior PM, Platform)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Executive Summary"
+      },
+      {
+        "type": "paragraph",
+        "text": "After evaluating three candidate go-live windows against calendar commitments, SRE capacity constraints, and rollback buffer policy requirements, Window C (April 28-29, 2026) is confirmed as the only feasible launch window for Polaris v1 GA."
+      },
+      {
+        "type": "heading_2",
+        "text": "Constraint Analysis"
+      },
+      {
+        "type": "heading_3",
+        "text": "Window A (April 14-15) - REJECTED"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Hard conflict: Q2 Leadership Review (EVT-312) locked on April 15, 14:00-16:00"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Mandatory exec meeting with VP Eng and CEO; cannot be rescheduled"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Violates PM availability requirement during critical launch window"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "SRE capacity: 12 hours (adequate but not optimal)"
+      },
+      {
+        "type": "heading_3",
+        "text": "Window B (April 21-22) - REJECTED"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Rollback buffer: Only 48 hours before Auth Migration Checkpoint 2 (April 23)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "VIOLATES mandatory 72-hour rollback buffer policy (Notion NPAG-9, section 3.2)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "SRE capacity conflict: Split coverage between Polaris (Marcus) and auth (Sarah) creates resource contention"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Risk: Polaris rollback extending into April 23-24 would block auth checkpoint"
+      },
+      {
+        "type": "heading_3",
+        "text": "Window C (April 28-29) - CONFIRMED ✓"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Calendar: Clean, no hard conflicts or locked leadership events"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Rollback buffer: 96 hours before next platform milestone (May 2 monitoring review)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "EXCEEDS mandatory 72-hour buffer by 24 hours"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "SRE capacity: 20 on-call hours, both primary (Marcus) and secondary (Rachel) coverage confirmed"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Infrastructure: 95% compute allocation, 90% database pool, 95% CDN capacity"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "On-call rotation: Optimal team alignment per NPAG-9 schedule"
+      },
+      {
+        "type": "heading_2",
+        "text": "Sign-Off"
+      },
+      {
+        "type": "paragraph",
+        "text": "Confirmed by Jorge Alvarez (PM) on April 4, 2026 via Workmail (WMSG-5017)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Engineering Director (Priya Sharma) and SRE Lead (Marcus Chen) notified and acknowledged"
+      },
+      {
+        "type": "heading_2",
+        "text": "Next Steps"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Infrastructure reservations locked for April 28-29"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Launch oversight calendar blocks created (EVT-314)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Deep work blocks suspended for launch support on April 28-29"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Rollback runbook review scheduled for April 25"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-04T16:50:00-07:00",
+    "last_updated": "2026-04-04T17:15:00-07:00"
+  },
+  {
+    "page_id": "NPAG-11",
+    "title": "Decision Log - Week of March 31, 2026",
+    "parent_page_id": null,
+    "database_id": "DB-decisions",
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "week": "2026-W14",
+      "status": "published",
+      "decision_count": 4
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Platform Team Decision Log - Week 14 (March 31 - April 4, 2026)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Decision velocity this week: 4 decisions finalized, 2 deferred**"
+      },
+      {
+        "type": "heading_2",
+        "text": "D-2026-031: Polaris Analytics Pipeline Capacity Allocation"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Decision**: Allocate 40% of data pipeline capacity to Polaris analytics workload starting April 7, with automatic scaling trigger at 75% utilization."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Rationale**: Q2 OKR dependency requires real-time analytics for Polaris features. Current capacity modeling shows 40% allocation sufficient for projected load with 25% headroom. Automatic scaling prevents manual intervention during traffic spikes."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Approved by**: Sarah Kim (VP Product), David Torres (Data Team Lead) - confirmed via Workmail thread WMSG-5009 on April 2"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Impact scope**: Data team, Platform team, affects Q2 analytics OKRs"
+      },
+      {
+        "type": "heading_2",
+        "text": "D-2026-032: TechFlow Rate Limit Exception Policy"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Decision**: Grant TechFlow Industries temporary 3x rate limit increase (300 req/min → 900 req/min) for 45 days with mandatory usage review at day 30."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Rationale**: Mid-market churn risk mitigation. TechFlow integration blocked by current limits. Temporary increase allows their Q2 rollout while we architect proper enterprise tier solution. 30-day checkpoint ensures we catch abuse patterns early."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Approved by**: Jorge Alvarez (Platform PM), Rachel Kim (Customer Success VP) - finalized in meeting MTG-7004 on April 3"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Impact scope**: API infrastructure, customer success, sets precedent for rate limit exceptions"
+      },
+      {
+        "type": "heading_2",
+        "text": "D-2026-033: Auth Migration Checkpoint Structure"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Decision**: Implement 3-checkpoint Go/No-Go structure for auth endpoint migration: (1) Internal services migration complete, (2) Customer notification sent + 14 days elapsed, (3) Legacy endpoint traffic < 5% for 48 hours."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Rationale**: Reduces risk of customer-facing outages. Each checkpoint has clear success criteria and rollback procedure. 14-day customer notification window exceeds our standard 7-day policy but necessary given auth criticality."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Approved by**: Priya Sharma (VP Engineering), Jorge Alvarez (Platform PM) - documented in Notion page NPAG-5, confirmed via Workmail WMSG-5006 on April 1"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Impact scope**: Engineering, customer success, affects migration timeline by +7 days"
+      },
+      {
+        "type": "heading_2",
+        "text": "D-2026-034: Customer Notification Timeline for Auth Deprecation"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Decision**: Send customer notification on April 14, target legacy endpoint shutdown for May 5 (21-day notice period)."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Rationale**: Balances urgency of migration with customer communication best practices. 21 days exceeds contractual 14-day minimum, reduces churn risk for mid-market accounts already showing sensitivity."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Approved by**: Rachel Kim (Customer Success VP), Jorge Alvarez (Platform PM) - finalized via TODO-507 completion and Workmail thread WMSG-5007"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Impact scope**: Customer success, engineering timeline, all API customers"
+      },
+      {
+        "type": "heading_2",
+        "text": "Deferred Decisions"
+      },
+      {
+        "type": "paragraph",
+        "text": "**DD-2026-008**: Q2 OKR final prioritization between data team and platform team proposals - deferred to April 8 leadership meeting. **Reason**: Requires VP Product and CTO alignment, both unavailable this week."
+      },
+      {
+        "type": "paragraph",
+        "text": "**DD-2026-009**: Polaris rollout communication strategy for Enterprise tier customers - deferred pending final GA date confirmation. **Reason**: Marketing team needs confirmed date before drafting messaging, GA date still has ±3 day variance."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-04T16:30:00-07:00",
+    "last_updated": "2026-04-05T09:15:00-07:00"
+  },
+  {
+    "page_id": "NPAG-12",
+    "title": "Decision Log Template - Weekly Platform Digest",
+    "parent_page_id": null,
+    "database_id": "DB-templates",
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "type": "template",
+      "status": "active"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Platform Team Decision Log - Week [NUMBER]"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Decision velocity this week: [X] decisions finalized, [Y] deferred**"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Decision velocity trend**: [comparison to previous 4 weeks]"
+      },
+      {
+        "type": "heading_2",
+        "text": "Template: Decision Entry"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Decision**: [What was decided - one sentence]"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Rationale**: [Why this decision was made, key constraints or trade-offs considered]"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Approved by**: [Name + Role] - [confirmation method and reference]"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Impact scope**: [Affected teams, systems, or customer segments]"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Missing documentation**: [Flag if written rationale incomplete or approver confirmation verbal only]"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-28T14:00:00-07:00",
+    "last_updated": "2026-03-28T14:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-13",
+    "title": "Decision: Mid-Market Customer Retention Playbook Updates",
+    "parent_page_id": null,
+    "database_id": "DB-decisions",
+    "properties": {
+      "owner": "Rachel Kim",
+      "decision_date": "2026-04-02",
+      "status": "approved",
+      "tags": [
+        "customer-success",
+        "churn-risk"
+      ]
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Decision: Enhanced Mid-Market Retention Playbook"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Context**: Three mid-market accounts (TechFlow, DataSync, StartupHub) showed churn signals in past 6 weeks. Current playbook lacks escalation triggers for API integration blockers."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Decision**: Update retention playbook to include: (1) Automatic escalation to Platform PM when customer reports API integration blocker, (2) 48-hour response SLA for rate limit or endpoint issues, (3) Weekly check-ins for accounts with active API escalations."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Rationale**: API integration issues are leading indicator of churn for mid-market segment. Early escalation prevents frustration from building. 48-hour SLA balances urgency with engineering capacity."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Approved by**: Rachel Kim (Customer Success VP), Jorge Alvarez (Platform PM)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Implementation**: Customer Success team to begin using updated playbook April 7, 2026"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-02T11:20:00-07:00",
+    "last_updated": "2026-04-02T15:30:00-07:00"
+  },
+  {
+    "page_id": "NPAG-14",
+    "title": "Q1 2026 Customer Interview Cycle - Master Index",
+    "parent_page_id": null,
+    "database_id": "DB-CUST-RESEARCH",
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "quarter": "Q1 2026",
+      "status": "In Progress",
+      "interview_count": 40,
+      "tags": [
+        "customer-research",
+        "Q1",
+        "platform-team"
+      ]
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q1 2026 Customer Interview Cycle"
+      },
+      {
+        "type": "paragraph",
+        "text": "40 customer interviews conducted January-March 2026. Interviews focused on platform experience, feature requests, integration challenges, and churn risk signals."
+      },
+      {
+        "type": "heading_2",
+        "text": "Interview Distribution by Tier"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Enterprise: 12 interviews"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Mid-Market: 15 interviews"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Professional: 9 interviews"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Starter: 4 interviews"
+      },
+      {
+        "type": "heading_2",
+        "text": "Linked Interview Pages"
+      },
+      {
+        "type": "paragraph",
+        "text": "See individual interview notes: NPAG-15 through NPAG-54"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-01-08T09:15:00-08:00",
+    "last_updated": "2026-03-28T16:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-15",
+    "title": "Customer Interview - TechFlow Industries (CUS-101) - 2026-01-15",
+    "parent_page_id": "NPAG-14",
+    "database_id": "DB-CUST-RESEARCH",
+    "properties": {
+      "customer_id": "CUS-101",
+      "customer_tier": "Mid-Market",
+      "interview_date": "2026-01-15",
+      "interviewer": "Jorge Alvarez",
+      "tags": [
+        "Q1",
+        "mid-market",
+        "churn-risk"
+      ]
+    },
+    "blocks": [
+      {
+        "type": "heading_2",
+        "text": "Interview Summary"
+      },
+      {
+        "type": "paragraph",
+        "text": "Interviewed Amanda Rodriguez (VP Engineering) and technical team at TechFlow Industries on January 15, 2026."
+      },
+      {
+        "type": "heading_2",
+        "text": "Key Pain Points"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "API rate limits blocking critical integrations - 'We hit 429 errors constantly during peak hours, forcing us to build complex retry logic'"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Webhook reliability issues - experiencing 15-20% delivery failure rate"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Documentation gaps for advanced analytics endpoints"
+      },
+      {
+        "type": "heading_2",
+        "text": "Feature Requests"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "PRIORITY: Increase API rate limits for mid-market tier (currently 1000 req/min, needs 5000 req/min)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Batch API endpoints for bulk data operations"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Real-time webhook delivery status dashboard"
+      },
+      {
+        "type": "heading_2",
+        "text": "Churn Risk Signal"
+      },
+      {
+        "type": "paragraph",
+        "text": "HIGH RISK - Amanda mentioned evaluating competitors if rate limit issues not resolved by Q2. Contract renewal in June 2026."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-01-15T14:30:00-08:00",
+    "last_updated": "2026-01-15T16:20:00-08:00"
+  },
+  {
+    "page_id": "NPAG-16",
+    "title": "Customer Interview - Meridian Health Systems (CUS-102) - 2026-01-22",
+    "parent_page_id": "NPAG-14",
+    "database_id": "DB-CUST-RESEARCH",
+    "properties": {
+      "customer_id": "CUS-102",
+      "customer_tier": "Enterprise",
+      "interview_date": "2026-01-22",
+      "interviewer": "Sarah Kim",
+      "tags": [
+        "Q1",
+        "enterprise",
+        "integration-blocker"
+      ]
+    },
+    "blocks": [
+      {
+        "type": "heading_2",
+        "text": "Interview Summary"
+      },
+      {
+        "type": "paragraph",
+        "text": "Interviewed James Park (Director of HR Technology) at Meridian Health Systems on January 22, 2026."
+      },
+      {
+        "type": "heading_2",
+        "text": "Key Pain Points"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "SSO integration complexity - 'Took our team 6 weeks to configure SAML properly, documentation was unclear'"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Custom field limitations in analytics exports"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Slow query performance for reports with >50k employees"
+      },
+      {
+        "type": "heading_2",
+        "text": "Feature Requests"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Advanced RBAC with department-level permissions"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Scheduled report delivery via email/Slack"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "GraphQL API option for flexible data queries"
+      },
+      {
+        "type": "heading_2",
+        "text": "Integration Blockers"
+      },
+      {
+        "type": "paragraph",
+        "text": "Cannot integrate with their Workday instance due to missing webhook event types for compensation changes."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-01-22T15:00:00-08:00",
+    "last_updated": "2026-01-22T16:45:00-08:00"
+  },
+  {
+    "page_id": "NPAG-17",
+    "title": "Customer Interview - GlobalRetail Corp (CUS-103) - 2026-02-05",
+    "parent_page_id": "NPAG-14",
+    "database_id": "DB-CUST-RESEARCH",
+    "properties": {
+      "customer_id": "CUS-103",
+      "customer_tier": "Mid-Market",
+      "interview_date": "2026-02-05",
+      "interviewer": "Jorge Alvarez",
+      "tags": [
+        "Q1",
+        "mid-market",
+        "churn-risk"
+      ]
+    },
+    "blocks": [
+      {
+        "type": "heading_2",
+        "text": "Interview Summary"
+      },
+      {
+        "type": "paragraph",
+        "text": "Interviewed Lisa Chen (CHRO) at GlobalRetail Corp on February 5, 2026."
+      },
+      {
+        "type": "heading_2",
+        "text": "Key Pain Points"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Data export limitations - 'We need to export 200k+ employee records monthly but hit file size limits'"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Mobile app performance issues on Android devices"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Lack of multi-language support for global workforce"
+      },
+      {
+        "type": "heading_2",
+        "text": "Feature Requests"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Bulk data export API with streaming support"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Multi-language UI (Spanish, French, Mandarin priority)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Custom dashboard builder for executive reporting"
+      },
+      {
+        "type": "heading_2",
+        "text": "Churn Risk Signal"
+      },
+      {
+        "type": "paragraph",
+        "text": "MEDIUM RISK - Lisa mentioned budget pressures and need to demonstrate ROI. Considering consolidating HR tech stack."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-02-05T13:15:00-08:00",
+    "last_updated": "2026-02-05T15:00:00-08:00"
+  },
+  {
+    "page_id": "NPAG-18",
+    "title": "Customer Interview - DataSync Solutions (CUS-106) - 2026-02-18",
+    "parent_page_id": "NPAG-14",
+    "database_id": "DB-CUST-RESEARCH",
+    "properties": {
+      "customer_id": "CUS-106",
+      "customer_tier": "Professional",
+      "interview_date": "2026-02-18",
+      "interviewer": "Sarah Kim",
+      "tags": [
+        "Q1",
+        "professional"
+      ]
+    },
+    "blocks": [
+      {
+        "type": "heading_2",
+        "text": "Interview Summary"
+      },
+      {
+        "type": "paragraph",
+        "text": "Interviewed Emily Watson (Head of Operations) at DataSync Solutions on February 18, 2026."
+      },
+      {
+        "type": "heading_2",
+        "text": "Key Pain Points"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Onboarding workflow too rigid - 'Cannot customize steps for different employee types'"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Limited API documentation for custom integrations"
+      },
+      {
+        "type": "heading_2",
+        "text": "Feature Requests"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Configurable onboarding workflows with conditional logic"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Sandbox environment for testing integrations"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Improved API error messages with troubleshooting guidance"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-02-18T10:30:00-08:00",
+    "last_updated": "2026-02-18T11:45:00-08:00"
+  },
+  {
+    "page_id": "NPAG-19",
+    "title": "Q2 2026 Platform Team OKRs - Data Team Proposal",
+    "parent_page_id": null,
+    "database_id": "DB-OKR-PLANNING",
+    "properties": {
+      "owner": "Data Team",
+      "quarter": "Q2 2026",
+      "status": "Under Review",
+      "tags": [
+        "Q2",
+        "data-team",
+        "contested"
+      ]
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 2026 Data Team OKR Proposal"
+      },
+      {
+        "type": "heading_2",
+        "text": "Objective: Scale Real-Time Analytics Pipeline"
+      },
+      {
+        "type": "paragraph",
+        "text": "Key Result 1: Reduce analytics query latency from 8s to 2s (p95)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Key Result 2: Support 10x increase in event ingestion rate (100k to 1M events/min)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Key Result 3: Launch real-time dashboard refresh capability for Enterprise tier"
+      },
+      {
+        "type": "heading_2",
+        "text": "Resource Requirements"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Database connection pool expansion: +500 connections"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Streaming infrastructure: 12 additional Kafka brokers"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "SRE support: 40 hours/week for monitoring setup"
+      },
+      {
+        "type": "heading_2",
+        "text": "Dependencies & Conflicts"
+      },
+      {
+        "type": "paragraph",
+        "text": "CONFLICT: Database pool expansion conflicts with Polaris rollout requirements (Polaris needs +300 connections for wave 3). Total would exceed infrastructure capacity limits."
+      },
+      {
+        "type": "paragraph",
+        "text": "CONFLICT: SRE capacity request overlaps with auth migration monitoring needs (30 hours/week committed to auth migration April-May)."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-10T14:00:00-08:00",
+    "last_updated": "2026-03-25T11:30:00-07:00"
+  },
+  {
+    "page_id": "NPAG-20",
+    "title": "Platform Roadmap - Q2 2026 Feature Priorities",
+    "parent_page_id": null,
+    "database_id": "DB-ROADMAP",
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "quarter": "Q2 2026",
+      "status": "Planning",
+      "tags": [
+        "roadmap",
+        "Q2",
+        "platform-team"
+      ]
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 2026 Platform Roadmap"
+      },
+      {
+        "type": "heading_2",
+        "text": "Committed Features"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Polaris GA rollout completion (all tiers)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Legacy auth endpoint migration"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "SSO configuration wizard improvements"
+      },
+      {
+        "type": "heading_2",
+        "text": "Under Consideration"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "API rate limit increases for mid-market tier"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Batch API endpoints for bulk operations"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "GraphQL API beta launch"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Real-time analytics dashboard (data team proposal)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Deferred to Q3+"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Multi-language UI support"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Advanced RBAC with department-level permissions"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Mobile app performance optimization"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-01T09:00:00-08:00",
+    "last_updated": "2026-03-28T14:15:00-07:00"
+  },
+  {
+    "page_id": "NPAG-21",
+    "title": "Platform Team Q2 2026 OKR Proposal - DRAFT v3",
+    "parent_page_id": "NPAG-7",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "quarter": "Q2 2026",
+      "status": "under_review",
+      "last_updated_by": "jorge.alvarez@crucible.com"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Platform Team Q2 2026 OKRs"
+      },
+      {
+        "type": "paragraph",
+        "text": "Status: Under review - pending cross-team alignment with Data Engineering"
+      },
+      {
+        "type": "heading_2",
+        "text": "Objective 1: Drive Polaris Platform Adoption"
+      },
+      {
+        "type": "paragraph",
+        "text": "Key Results:"
+      },
+      {
+        "type": "bullet",
+        "text": "KR1: Achieve 60% weekly active usage among Polaris GA customers (target: 45 of 75 customers)"
+      },
+      {
+        "type": "bullet",
+        "text": "KR2: Ship Polaris analytics integration Phase 1 by end of Q2 (basic event logging + core adoption metrics)"
+      },
+      {
+        "type": "bullet",
+        "text": "KR3: Reduce Polaris onboarding time from 14 days to 7 days (measured: signup to first API call)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Objective 2: Complete Legacy Auth Migration"
+      },
+      {
+        "type": "paragraph",
+        "text": "Key Results:"
+      },
+      {
+        "type": "bullet",
+        "text": "KR1: Migrate 100% of internal services to new auth endpoint by week 6"
+      },
+      {
+        "type": "bullet",
+        "text": "KR2: Migrate 80% of external customers to new auth endpoint by end of Q2"
+      },
+      {
+        "type": "bullet",
+        "text": "KR3: Deprecate legacy auth endpoint with zero customer escalations"
+      },
+      {
+        "type": "heading_2",
+        "text": "Dependencies & Risks"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Critical Dependency: Data Engineering Capacity**"
+      },
+      {
+        "type": "paragraph",
+        "text": "The Polaris analytics integration (KR1.2) requires data engineering support for:"
+      },
+      {
+        "type": "bullet",
+        "text": "Event pipeline setup and schema design (2 weeks, 1 data engineer)"
+      },
+      {
+        "type": "bullet",
+        "text": "Data warehouse integration (3 weeks, 1-2 data engineers)"
+      },
+      {
+        "type": "bullet",
+        "text": "Analytics dashboard backend (3 weeks, 1 data engineer)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Revised Scope (April 3):** Descoped to Phase 1 (basic events only) to fit within data team capacity constraints. Phase 2 (advanced analytics) moved to Q3."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Estimated effort:** 10-12 engineer-weeks (down from 24 engineer-weeks for full scope)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Resource Requirements"
+      },
+      {
+        "type": "bullet",
+        "text": "Platform engineering: 7 FTE (4 on Polaris, 2 on auth migration, 1 on analytics)"
+      },
+      {
+        "type": "bullet",
+        "text": "Data engineering: 2 FTE for 6 weeks (shared capacity, coordinated with Sarah Kim)"
+      },
+      {
+        "type": "bullet",
+        "text": "SRE support: 1 FTE for monitoring and rollout support (coordinated with Marcus Chen)"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-28T09:00:00-07:00",
+    "last_updated": "2026-04-03T16:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-22",
+    "title": "Data Team Q2 2026 OKR Proposal - FINAL",
+    "parent_page_id": "NPAG-7",
+    "database_id": null,
+    "properties": {
+      "owner": "Sarah Kim",
+      "quarter": "Q2 2026",
+      "status": "under_review",
+      "last_updated_by": "sarah.kim@crucible.com"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Data Engineering Q2 2026 OKRs"
+      },
+      {
+        "type": "paragraph",
+        "text": "Status: Under review - capacity conflict with Platform team analytics request"
+      },
+      {
+        "type": "heading_2",
+        "text": "Objective 1: Enable Marketing ML-Driven Segmentation"
+      },
+      {
+        "type": "paragraph",
+        "text": "Key Results:"
+      },
+      {
+        "type": "bullet",
+        "text": "KR1: Ship customer segmentation ML model v2 by week 8 (committed to Marketing VP)"
+      },
+      {
+        "type": "bullet",
+        "text": "KR2: Achieve 85% prediction accuracy on customer tier classification"
+      },
+      {
+        "type": "bullet",
+        "text": "KR3: Reduce model training time from 6 hours to 2 hours"
+      },
+      {
+        "type": "heading_2",
+        "text": "Objective 2: Complete Data Warehouse Migration"
+      },
+      {
+        "type": "paragraph",
+        "text": "Key Results:"
+      },
+      {
+        "type": "bullet",
+        "text": "KR1: Migrate 100% of production analytics queries to new warehouse by week 10"
+      },
+      {
+        "type": "bullet",
+        "text": "KR2: Achieve <500ms p95 query latency (down from 2000ms current)"
+      },
+      {
+        "type": "bullet",
+        "text": "KR3: Decommission legacy warehouse with zero data loss"
+      },
+      {
+        "type": "heading_2",
+        "text": "Capacity Constraints & Conflicts"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Current Capacity:** 5 data engineers total, allocated as follows:"
+      },
+      {
+        "type": "bullet",
+        "text": "ML model refresh: 2 engineers, 8 weeks (committed to Marketing)"
+      },
+      {
+        "type": "bullet",
+        "text": "Warehouse migration: 2 engineers, 10 weeks (infrastructure-critical)"
+      },
+      {
+        "type": "bullet",
+        "text": "BAU support & on-call: 1 engineer rotation (cannot be reduced)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Available capacity for new work:** ~2 engineers × 13 weeks = 26 engineer-weeks"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Platform team request:** Polaris analytics integration - originally estimated at 24 engineer-weeks (conflicts with available capacity)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Proposed resolution (April 3):** Accept Phase 1 scope only (10-12 engineer-weeks) - basic event logging and core metrics. This fits within capacity constraints while unblocking platform team's adoption tracking needs."
+      },
+      {
+        "type": "heading_2",
+        "text": "Dependencies & Risks"
+      },
+      {
+        "type": "bullet",
+        "text": "Risk: Platform analytics scope creep could delay ML model or warehouse migration"
+      },
+      {
+        "type": "bullet",
+        "text": "Mitigation: Clear phase 1/2 boundary with platform team, weekly capacity check-ins"
+      },
+      {
+        "type": "bullet",
+        "text": "Dependency: Infrastructure team must complete warehouse provisioning by week 2"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-29T14:20:00-07:00",
+    "last_updated": "2026-04-02T11:30:00-07:00"
+  },
+  {
+    "page_id": "NPAG-23",
+    "title": "Q2 OKR Cross-Team Alignment - Meeting Prep Notes",
+    "parent_page_id": "NPAG-7",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "meeting_date": "2026-04-07",
+      "status": "in_progress"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 OKR Cross-Team Alignment Meeting - Prep Summary"
+      },
+      {
+        "type": "paragraph",
+        "text": "Meeting: Monday April 7, 2:00-3:30pm, Conference Room 3B"
+      },
+      {
+        "type": "paragraph",
+        "text": "Attendees: Jorge Alvarez (Platform PM), Sarah Kim (Data Director), Priya Sharma (Platform Eng Director), Marcus Chen (SRE Lead), David Torres (VP Engineering)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Core Conflict Summary"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Issue:** Platform team's Q2 OKR includes Polaris analytics integration requiring 24 engineer-weeks of data team support. Data team is at 95% capacity with committed work (Marketing ML model + warehouse migration)."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Impact:** Without resolution, either platform team cannot track Polaris adoption metrics OR data team must break executive commitments to Marketing."
+      },
+      {
+        "type": "heading_2",
+        "text": "Stakeholder Positions"
+      },
+      {
+        "type": "heading_3",
+        "text": "Platform Team (Jorge, Priya)"
+      },
+      {
+        "type": "bullet",
+        "text": "Need: Real-time adoption metrics to validate Polaris product-market fit"
+      },
+      {
+        "type": "bullet",
+        "text": "Critical metrics: user login/session tracking, feature activation, basic funnel analysis"
+      },
+      {
+        "type": "bullet",
+        "text": "Willing to: Descope to phase 1 (basic events only), defer advanced analytics to Q3"
+      },
+      {
+        "type": "heading_3",
+        "text": "Data Team (Sarah)"
+      },
+      {
+        "type": "bullet",
+        "text": "Constraint: Only 26 engineer-weeks available for new work in Q2"
+      },
+      {
+        "type": "bullet",
+        "text": "Committed: Marketing ML model (executive commitment), warehouse migration (infrastructure-critical)"
+      },
+      {
+        "type": "bullet",
+        "text": "Willing to: Support phase 1 analytics (10-12 engineer-weeks) if scope is clearly bounded"
+      },
+      {
+        "type": "heading_3",
+        "text": "Engineering Leadership (David)"
+      },
+      {
+        "type": "bullet",
+        "text": "Priority: Keep executive commitments intact (Marketing ML model)"
+      },
+      {
+        "type": "bullet",
+        "text": "Preference: Phased approach with clear Q2/Q3 boundary"
+      },
+      {
+        "type": "bullet",
+        "text": "Concern: Scope creep risk - need explicit phase 1 definition"
+      },
+      {
+        "type": "heading_2",
+        "text": "Proposed Resolution"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Phase 1 (Q2):** Basic event logging + core adoption metrics"
+      },
+      {
+        "type": "bullet",
+        "text": "User login/session tracking"
+      },
+      {
+        "type": "bullet",
+        "text": "Feature flag activation events"
+      },
+      {
+        "type": "bullet",
+        "text": "Basic funnel metrics (signup → activation → weekly active)"
+      },
+      {
+        "type": "bullet",
+        "text": "Estimated effort: 10-12 engineer-weeks"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Phase 2 (Q3):** Advanced analytics (deferred)"
+      },
+      {
+        "type": "bullet",
+        "text": "Behavioral cohort analysis"
+      },
+      {
+        "type": "bullet",
+        "text": "Revenue attribution modeling"
+      },
+      {
+        "type": "bullet",
+        "text": "Predictive churn signals"
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision Points for Meeting"
+      },
+      {
+        "type": "paragraph",
+        "text": "1. **Scope agreement:** Confirm phase 1 feature list is sufficient for platform team's Q2 needs"
+      },
+      {
+        "type": "paragraph",
+        "text": "2. **Capacity confirmation:** Sarah to confirm 10-12 week estimate is accurate and feasible"
+      },
+      {
+        "type": "paragraph",
+        "text": "3. **Timeline alignment:** Agree on start date and milestone checkpoints"
+      },
+      {
+        "type": "paragraph",
+        "text": "4. **Scope protection:** Define process for handling scope change requests (escalation path, weekly capacity reviews)"
+      },
+      {
+        "type": "paragraph",
+        "text": "5. **Q3 planning:** Confirm phase 2 will be prioritized in Q3 OKR planning"
+      },
+      {
+        "type": "heading_2",
+        "text": "Open Questions"
+      },
+      {
+        "type": "bullet",
+        "text": "Does Finance need revenue attribution in Q2, or can they wait until Q3? (Jorge to confirm with Rachel Kim)"
+      },
+      {
+        "type": "bullet",
+        "text": "If phase 1 takes longer than 12 weeks, what's the contingency plan?"
+      },
+      {
+        "type": "bullet",
+        "text": "Who owns the phase 1/2 boundary definition - platform or data team?"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-04T15:30:00-07:00",
+    "last_updated": "2026-04-05T10:15:00-07:00"
+  },
+  {
+    "page_id": "NPAG-24",
+    "title": "Q2 2026 Platform API Rate Limit Allocation - Capacity Model & Customer Tiers",
+    "parent_page_id": "NPAG-9",
+    "database_id": null,
+    "properties": {
+      "owner": "Marcus Chen",
+      "category": "Infrastructure Capacity",
+      "quarter": "Q2 2026",
+      "status": "active"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 2026 Platform API Rate Limit Budget"
+      },
+      {
+        "type": "paragraph",
+        "text": "Last updated: April 3, 2026 by Marcus Chen (SRE Lead)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Hard Capacity Constraints"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Total platform API capacity: 300,000 calls/hour (peak burst)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Sustainable capacity (hard cap): 285,000 calls/hour"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Safety buffer requirement: 15,000 calls/hour (5% minimum unallocated)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Current allocated (as of April 1): 267,500 calls/hour (93.9% utilization)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Available headroom: 17,500 calls/hour"
+      },
+      {
+        "type": "heading_2",
+        "text": "Why This Is a Hard Cap"
+      },
+      {
+        "type": "paragraph",
+        "text": "Exceeding 285K sustained calls/hour triggers cascading failures:"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "API gateway cluster: Sized for 300K peak with 15K burst buffer. Sustained load above 285K causes request queuing and timeout cascades."
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Database connection pool: 2,400 connections at 88% steady-state utilization. Additional 5K calls/hour pushes pool to 94%, risking connection exhaustion."
+      },
+      {
+        "type": "bulleted_list",
+        "text": "SLA risk: Exceeding cap would cause P50 latency degradation for all customers, triggering SLA violation credits."
+      },
+      {
+        "type": "heading_2",
+        "text": "Current Allocation by Tier (April 1, 2026)"
+      },
+      {
+        "type": "table",
+        "rows": [
+          [
+            "Tier",
+            "Accounts",
+            "Total Allocation",
+            "% of Capacity"
+          ],
+          [
+            "Enterprise",
+            "8",
+            "182,000 calls/hour",
+            "68%"
+          ],
+          [
+            "Mid-Market",
+            "23",
+            "71,500 calls/hour",
+            "27%"
+          ],
+          [
+            "Growth",
+            "47",
+            "14,000 calls/hour",
+            "5%"
+          ]
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Per-Customer Allocations (Enterprise Tier)"
+      },
+      {
+        "type": "table",
+        "rows": [
+          [
+            "Customer",
+            "Current Allocation",
+            "Utilization (7-day avg)",
+            "Notes"
+          ],
+          [
+            "Meridian Health Systems",
+            "42,000 calls/hour",
+            "89%",
+            "High utilization, no headroom"
+          ],
+          [
+            "GlobalRetail Corp",
+            "38,000 calls/hour",
+            "76%",
+            "Seasonal peaks in Q4"
+          ],
+          [
+            "Apex Manufacturing Group",
+            "28,000 calls/hour",
+            "82%",
+            "Steady growth trend"
+          ],
+          [
+            "DataSync Solutions",
+            "24,000 calls/hour",
+            "68%",
+            "Under-utilizing, possible reallocation candidate"
+          ],
+          [
+            "TechFlow Industries",
+            "5,000 calls/hour",
+            "95%",
+            "At-risk account, requesting increase to 12K"
+          ],
+          [
+            "Enterprise Customer F",
+            "18,000 calls/hour",
+            "71%",
+            ""
+          ],
+          [
+            "Enterprise Customer G",
+            "15,000 calls/hour",
+            "64%",
+            ""
+          ],
+          [
+            "Enterprise Customer H",
+            "12,000 calls/hour",
+            "58%",
+            ""
+          ]
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Upcoming Capacity Releases"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Polaris GA (April 28-30 window): Database query optimization and caching layer adds ~35,000 calls/hour capacity"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Auth migration completion (May 15 target): Legacy endpoint retirement frees ~22,000 calls/hour"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Total Q2 capacity additions: ~57,000 calls/hour (if both ship on time)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Allocation Policy"
+      },
+      {
+        "type": "paragraph",
+        "text": "Any rate limit increase must satisfy ALL constraints:"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Total allocated ≤ 285,000 - 14,250 = 270,750 calls/hour (maintains 5% buffer)"
+      },
+      {
+        "type": "numbered_list",
+        "text": "No single customer exceeds 20% of total capacity (57,000 calls/hour max)"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Tier-based allocation ratios maintained (Enterprise 65-70%, Mid-Market 25-30%, Growth 5-8%)"
+      },
+      {
+        "type": "numbered_list",
+        "text": "Increases above 10K calls/hour require VP Engineering approval"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-28T14:00:00-07:00",
+    "last_updated": "2026-04-03T10:30:00-07:00"
+  },
+  {
+    "page_id": "NPAG-25",
+    "title": "Polaris GA Launch Timeline - Capacity Release Schedule",
+    "parent_page_id": "NPAG-10",
+    "database_id": null,
+    "properties": {
+      "owner": "Priya Sharma",
+      "category": "Product Launch",
+      "quarter": "Q2 2026",
+      "status": "in-progress"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Polaris v1 GA Launch - Revised Timeline"
+      },
+      {
+        "type": "paragraph",
+        "text": "Updated: April 1, 2026 - Reflecting 2-week slip from original April 14-16 window"
+      },
+      {
+        "type": "heading_2",
+        "text": "Launch Window Options"
+      },
+      {
+        "type": "paragraph",
+        "text": "DECISION PENDING: Choose between Window B (April 28-30) or Window C (May 5-7)"
+      },
+      {
+        "type": "table",
+        "rows": [
+          [
+            "Window",
+            "Dates",
+            "Confidence",
+            "Risks",
+            "Infrastructure Impact"
+          ],
+          [
+            "Window B",
+            "April 28-30",
+            "75%",
+            "Tight testing window, holiday weekend (May 1)",
+            "Adds 35K calls/hour capacity by May 1"
+          ],
+          [
+            "Window C",
+            "May 5-7",
+            "90%",
+            "Pushes Q2 revenue recognition",
+            "Adds 35K calls/hour capacity by May 8"
+          ]
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Infrastructure Capacity Impact"
+      },
+      {
+        "type": "paragraph",
+        "text": "Polaris GA includes database query optimization and Redis caching layer that will:"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Reduce average query latency by 40% (from 180ms to 108ms)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Decrease database connection hold time by 35%"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Free up ~35,000 calls/hour of platform API capacity"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Enable rate limit increases for customers currently at cap"
+      },
+      {
+        "type": "heading_2",
+        "text": "Dependencies"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Database migration: Complete (March 28)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Redis cluster provisioning: In progress, ETA April 10"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Load testing with production traffic replay: Scheduled April 15-18"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Customer beta feedback incorporation: April 21-25"
+      },
+      {
+        "type": "callout",
+        "text": "⚠️ CONSTRAINT: Any customer rate limit increases approved before Polaris GA must fit within current 17.5K headroom. Staged allocations (partial now + remainder post-GA) may be necessary for large requests."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-15T09:00:00-07:00",
+    "last_updated": "2026-04-01T16:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-26",
+    "title": "Polaris v1 GA Go/No-Go Decision - April 7 Readiness Assessment",
+    "parent_page_id": "NPAG-19",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "decision_date": "2026-04-07",
+      "status": "draft",
+      "stakeholders": [
+        "Priya Sharma",
+        "Marcus Chen",
+        "Sarah Kim",
+        "VP Engineering"
+      ]
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Go/No-Go Decision Framework"
+      },
+      {
+        "type": "paragraph",
+        "text": "This document provides the readiness assessment for Polaris v1 GA launch scheduled for April 10, 2026 (Window C). Decision checkpoint: April 7, 2:00 PM PT."
+      },
+      {
+        "type": "heading_2",
+        "text": "Infrastructure Readiness"
+      },
+      {
+        "type": "paragraph",
+        "text": "✅ Compute quota validated: 85% utilization headroom confirmed by Marcus Chen (WMSG-5032)"
+      },
+      {
+        "type": "paragraph",
+        "text": "✅ Database connection pools: Wave 3 mixed-tier rollout approved, 120-connection buffer maintained"
+      },
+      {
+        "type": "paragraph",
+        "text": "⚠️ CDN slot allocation: 2 of 8 slots still pending vendor confirmation (ETA April 6)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Customer Communication Status"
+      },
+      {
+        "type": "paragraph",
+        "text": "✅ Enterprise tier notifications sent (March 28-30)"
+      },
+      {
+        "type": "paragraph",
+        "text": "⚠️ Mid-market tier: TechFlow Industries escalation resolved April 4, notification pending final timeline confirmation"
+      },
+      {
+        "type": "heading_2",
+        "text": "Outstanding Risks"
+      },
+      {
+        "type": "paragraph",
+        "text": "1. Auth endpoint migration dependency: Internal service migration 85% complete, 3 services remaining (analytics-worker, reporting-engine, audit-logger)"
+      },
+      {
+        "type": "paragraph",
+        "text": "2. Rollback plan: SRE team confirmed 4-hour rollback window, monitoring dashboards deployed"
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision Criteria"
+      },
+      {
+        "type": "paragraph",
+        "text": "GO if: (1) CDN slots confirmed by EOD April 6, (2) Auth migration ≥90% complete, (3) No P0/P1 incidents in 48h pre-launch window"
+      },
+      {
+        "type": "paragraph",
+        "text": "NO-GO if: Any criterion fails → defer to Window D (April 17)"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-05T09:30:00-07:00",
+    "last_updated": "2026-04-05T16:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-27",
+    "title": "Customer Success Review - Churn Risk Mitigation Plan (April 8)",
+    "parent_page_id": "NPAG-17",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "meeting_date": "2026-04-08",
+      "attendees": [
+        "Rachel Kim",
+        "Amanda Rodriguez",
+        "James Park"
+      ]
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Agenda: TechFlow & Meridian Health Engagement Review"
+      },
+      {
+        "type": "paragraph",
+        "text": "Purpose: Address churn signals from two mid-market accounts and align on retention strategy for Q2."
+      },
+      {
+        "type": "heading_2",
+        "text": "TechFlow Industries (CUS-101)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Churn signal: API rate limit escalation (resolved April 4), reduced API call volume (-18% over 6 weeks)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Action items: (1) Schedule technical deep-dive on integration optimization, (2) Offer extended rate limit tier trial"
+      },
+      {
+        "type": "heading_2",
+        "text": "Meridian Health Systems (CUS-102)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Churn signal: Support ticket volume +40% in Q1, executive sponsor (James Park) engagement down"
+      },
+      {
+        "type": "paragraph",
+        "text": "Action items: (1) Executive business review scheduled for April 15, (2) Dedicated CSM assignment for Q2"
+      },
+      {
+        "type": "heading_2",
+        "text": "Prep Required"
+      },
+      {
+        "type": "paragraph",
+        "text": "⚠️ TODO-536: Pull latest health metrics before meeting"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-03T14:20:00-07:00",
+    "last_updated": "2026-04-05T11:10:00-07:00"
+  },
+  {
+    "page_id": "NPAG-28",
+    "title": "Platform Team Inbox Triage - April 3-4, 2026",
+    "parent_page_id": "NPAG-3",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "date": "2026-04-05",
+      "status": "in-progress"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Inbox Triage Summary - April 3-4, 2026"
+      },
+      {
+        "type": "paragraph",
+        "text": "Processed 6 platform-team messages from 48-hour window (April 3 14:00 - April 4 16:00). Categorized by urgency and domain."
+      },
+      {
+        "type": "heading_2",
+        "text": "URGENT - Customer Escalations (Immediate Action Required)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "WMSG-5039: TechFlow (CUS-101) - API rate limit blocking production launch (April 10 deadline). Decision needed by April 7. Assigned: Jorge + Marcus + Rachel (Customer Success). Action: Evaluate tier upgrade vs temporary increase. >1 week impact - requires decision log entry."
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "WMSG-5041: Apex Manufacturing (CUS-110, at-risk) - Dashboard performance degradation, CFO board report blocked (April 7 deadline). Delegated to Marcus (SRE) for immediate investigation. Churn risk - requires proactive customer communication."
+      },
+      {
+        "type": "heading_2",
+        "text": "HIGH PRIORITY - Engineering Dependencies"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "WMSG-5044: Q2 OKR conflict with Data team - Real-time Analytics v2 capacity constraints. David Torres flagged Kafka cluster saturation risk. Decision needed before April 9 OKR finalization. Scheduled sync April 8. >1 week impact - requires decision log entry."
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "WMSG-5042: SRE roadmap dependency mapping request (Marcus). Due April 15 - delegated to Priya for technical input."
+      },
+      {
+        "type": "heading_2",
+        "text": "MEDIUM PRIORITY - Roadmap Clarification"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "WMSG-5043: Polaris GA customer comms draft review (Sarah). Technical accuracy check needed by April 7. Delegated to Priya for feature/tier validation."
+      },
+      {
+        "type": "heading_2",
+        "text": "LOW PRIORITY - FYI / Internal"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "WMSG-5040: Polaris data retention policy question from Legal (Priya handling). Not urgent - end of April timeline."
+      },
+      {
+        "type": "heading_2",
+        "text": "Routing Plan"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Jorge direct decisions: TechFlow rate limit (WMSG-5039), Q2 OKR conflict resolution (WMSG-5044)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Delegated to Marcus: Apex performance investigation (WMSG-5041), roadmap dependency mapping (WMSG-5042)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Delegated to Priya: Polaris comms review (WMSG-5043), Legal data retention (WMSG-5040 - already handling)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Rachel (Customer Success) to loop in: TechFlow escalation (WMSG-5039), Apex churn risk communication (WMSG-5041)"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-05T09:15:00-07:00",
+    "last_updated": "2026-04-05T09:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-29",
+    "title": "Decision Log - TechFlow Rate Limit Escalation (April 2026)",
+    "parent_page_id": "NPAG-8",
+    "database_id": null,
+    "properties": {
+      "decision_owner": "Jorge Alvarez",
+      "decision_date": "2026-04-07",
+      "status": "pending",
+      "impact_horizon": ">1 week"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Decision: TechFlow API Rate Limit Increase"
+      },
+      {
+        "type": "paragraph",
+        "text": "Decision pending - scheduled for April 7, 2026"
+      },
+      {
+        "type": "heading_2",
+        "text": "Context"
+      },
+      {
+        "type": "paragraph",
+        "text": "TechFlow Industries (CUS-101, Mid-Market tier) escalated API rate limit issue blocking production deployment. Current limit: 100 req/min on /api/v2/analytics/batch endpoint. Required: 250 req/min for real-time dashboard launch (contractually committed April 10)."
+      },
+      {
+        "type": "heading_2",
+        "text": "Options"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Option A: Upgrade TechFlow to Enterprise tier (250 req/min standard) - pricing delta ~$40K ARR"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Option B: Temporary rate limit increase (90-day exception) - requires SRE capacity validation"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Option C: Negotiate launch timeline extension with customer - high risk to relationship"
+      },
+      {
+        "type": "heading_2",
+        "text": "Constraints"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Customer deadline: April 10 (contractual penalty clause)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Backend capacity: TBD - Marcus validating current cluster headroom"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Precedent risk: Other mid-market customers may request similar increases"
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision & Rationale"
+      },
+      {
+        "type": "paragraph",
+        "text": "[To be completed after April 7 decision sync]"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-05T09:50:00-07:00",
+    "last_updated": "2026-04-05T09:50:00-07:00"
+  },
+  {
+    "page_id": "NPAG-30",
+    "title": "Customer Escalations - Q2 2026 Churn Risk Tracking (UPDATED April 5)",
+    "parent_page_id": "NPAG-8",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "quarter": "Q2 2026",
+      "last_updated": "2026-04-05T09:50:00-07:00",
+      "status": "active"
+    },
+    "blocks": [
+      {
+        "type": "heading_2",
+        "text": "URGENT: DataSync Solutions - Hidden Escalation (Added April 5)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Status:** ACTIVE CHURN RISK - Immediate escalation required"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Customer:** DataSync Solutions (CUS-105) | Tier: Mid-Market | ARR: $180k | Renewal: June 2026"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Issue:** Production-blocking API rate limit errors on /api/v2/analytics/batch endpoint causing ETL pipeline failures"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Timeline:**"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "April 3, 9 AM PT: Rate limit errors begin",
+          "April 3, 2:22 PM: CSM Elena Martinez sends first escalation email to platform-team@",
+          "April 4, 9:15 AM: Elena sends follow-up - CTO issued EOD April 5 deadline",
+          "April 5, 9:45 AM: Jorge discovers emails during inbox triage"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**Critical Contradiction:**"
+      },
+      {
+        "type": "paragraph",
+        "text": "CRM status field shows 'stable' but customer has issued explicit churn threat with <24hr deadline. Customer health dashboard does not reflect reality."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Corroborating Evidence:**"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Q1 customer interview (NPAG-18, March 18) flagged API performance concerns and rate limit visibility requests",
+          "Pattern of incidents: Feb timeout (5d resolution), March export bug (3d resolution), now rate limits",
+          "Customer satisfaction score declined from 8/10 (Q4 2025) to 6/10 (Q1 2026)",
+          "Direct CTO involvement (Michael Foster) indicates executive-level frustration"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**Actions Taken (April 5, 9:50 AM):**"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Escalated to David Torres (VP Customer Success) and Priya Sharma (VP Engineering)",
+          "Emergency war room scheduled for 11 AM April 5",
+          "Response drafted to Elena Martinez confirming platform team ownership",
+          "CRM status update requested to reflect churn risk"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**Root Cause of Missed Signal:** Platform-team inbox not actively monitored April 3-4 due to deep work blocks and Polaris planning sessions. Need process improvement for customer escalation routing."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-05T09:50:00-07:00",
+    "last_updated": "2026-04-05T09:50:00-07:00"
+  },
+  {
+    "page_id": "NPAG-31",
+    "title": "Q2 2026 Sprint Allocation Decision - Accessibility Compliance Veto",
+    "parent_page_id": "NPAG-7",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "decision_date": "2026-04-05",
+      "status": "final",
+      "quarter": "Q2 2026",
+      "decision_type": "sprint_allocation"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 Sprint Allocation Decision - Compliance Veto Applied"
+      },
+      {
+        "type": "paragraph",
+        "text": "Decision Date: April 5, 2026"
+      },
+      {
+        "type": "paragraph",
+        "text": "Decision Owner: Jorge Alvarez, Senior Product Manager - Platform Team"
+      },
+      {
+        "type": "heading_2",
+        "text": "Context: Team Vote Results"
+      },
+      {
+        "type": "paragraph",
+        "text": "Platform team voted on Q2 sprint capacity allocation (vote conducted April 1-2, results shared by Marcus Chen on April 2):"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Option A (Polaris Analytics Dashboard Acceleration): 8 votes - 6 weeks engineering effort"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Option B (Accessibility Audit Remediation - WCAG 2.1 AA): 2 votes - 5 weeks engineering effort"
+      },
+      {
+        "type": "paragraph",
+        "text": "Majority preference: Option A by 8-2 margin"
+      },
+      {
+        "type": "heading_2",
+        "text": "Hard Constraint Identified: Contractual Compliance Deadlines"
+      },
+      {
+        "type": "paragraph",
+        "text": "Customer Success VP David Torres flagged two enterprise customers with contractual WCAG 2.1 AA accessibility compliance requirements:"
+      },
+      {
+        "type": "heading_3",
+        "text": "GlobalRetail Corp (CUS-103)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Contract requirement: WCAG 2.1 AA compliance by May 31, 2026 (SOW Section 4.2)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Penalty clause: $50,000/month delay fee + contract termination option without penalty"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Annual contract value: $3.2M"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Customer tier: Enterprise"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Contact: Lisa Chen, Chief Digital Officer"
+      },
+      {
+        "type": "heading_3",
+        "text": "Meridian Health Systems (CUS-102)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Contract requirement: WCAG 2.1 AA compliance by June 15, 2026 (SOW Amendment 3, signed January 2026)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Breach condition: Non-compliance constitutes material breach allowing immediate contract termination"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Annual contract value: $2.85M"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Customer tier: Enterprise"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Contact: James Park, VP IT Operations"
+      },
+      {
+        "type": "heading_2",
+        "text": "Constraint Analysis: Why Option A Must Be Excluded"
+      },
+      {
+        "type": "paragraph",
+        "text": "Option A (Polaris Analytics Dashboard) requires 6 weeks of sprint capacity in Q2. Given current sprint velocity and team capacity, selecting Option A would defer accessibility remediation work to Q3 (earliest start: July 2026)."
+      },
+      {
+        "type": "paragraph",
+        "text": "Timeline conflict:"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "GlobalRetail deadline: May 31, 2026 (57 days from decision date)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Meridian deadline: June 15, 2026 (71 days from decision date)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Option B completion estimate: 5 weeks = ~35 days + QA buffer = mid-May delivery"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Option A would push accessibility work to Q3, missing both deadlines by 4-6 weeks"
+      },
+      {
+        "type": "paragraph",
+        "text": "Risk exposure if Option A selected:"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Contractual penalties: Minimum $100K (2 months @ $50K/month for GlobalRetail)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Revenue at risk: $6.05M annual contract value if either customer exercises termination rights"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Legal exposure: Material breach claims, potential litigation"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Reputational damage: Enterprise customer trust, reference-ability"
+      },
+      {
+        "type": "paragraph",
+        "text": "Conclusion: The compliance deadlines are non-negotiable hard constraints. Option A, despite strong team support and business value, violates these constraints and must be excluded."
+      },
+      {
+        "type": "heading_2",
+        "text": "Final Decision: Option B Selected"
+      },
+      {
+        "type": "paragraph",
+        "text": "Selected: Accessibility Audit Remediation (WCAG 2.1 AA) for Q2 sprint allocation"
+      },
+      {
+        "type": "paragraph",
+        "text": "Rationale:"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Satisfies hard contractual constraints for both GlobalRetail Corp and Meridian Health Systems"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Protects $6.05M in annual enterprise revenue"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Avoids minimum $100K in contractual penalties"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Eliminates legal and reputational risk"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Estimated completion: mid-May 2026, providing buffer before both deadlines"
+      },
+      {
+        "type": "paragraph",
+        "text": "Trade-off acknowledged: Polaris analytics dashboard acceleration deferred to Q3. This delays revenue opportunity and disappoints team preference (8-2 vote). However, the compliance constraint is non-negotiable and overrides team preference."
+      },
+      {
+        "type": "heading_2",
+        "text": "Communication Plan"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Engineering leadership (Priya Sharma): Notified via email April 5, sprint planning to proceed Monday April 7"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Customer Success (David Torres): Notified via email April 5, coordinate customer communication"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Platform team: Marcus Chen to communicate decision rationale in Monday standup"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Enterprise customers: David Torres to proactively update GlobalRetail and Meridian on compliance timeline"
+      },
+      {
+        "type": "heading_2",
+        "text": "Next Steps"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Sprint planning kickoff: Monday April 7, 2026"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Accessibility audit remediation: Q2 execution (April-May 2026)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Polaris analytics dashboard: Re-evaluate for Q3 sprint allocation (July-September 2026)"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Lessons learned: Document constraint identification process improvement for future sprint planning cycles"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-05T13:00:00-07:00",
+    "last_updated": "2026-04-05T14:15:00-07:00"
+  },
+  {
+    "page_id": "NPAG-32",
+    "title": "Platform Team Q2 Sprint Allocation - Vote Summary",
+    "parent_page_id": "NPAG-7",
+    "database_id": null,
+    "properties": {
+      "owner": "Marcus Chen",
+      "vote_date": "2026-04-02",
+      "status": "completed",
+      "quarter": "Q2 2026"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 Sprint Allocation Vote - Platform Team"
+      },
+      {
+        "type": "paragraph",
+        "text": "Vote period: April 1-2, 2026"
+      },
+      {
+        "type": "paragraph",
+        "text": "Total voters: 10 platform team engineers"
+      },
+      {
+        "type": "heading_2",
+        "text": "Option A: Polaris Analytics Dashboard Acceleration"
+      },
+      {
+        "type": "paragraph",
+        "text": "Votes: 8"
+      },
+      {
+        "type": "paragraph",
+        "text": "Engineering effort: 3 sprints (6 weeks)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Key rationale from voters:"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "High customer demand - multiple mid-market accounts requesting advanced analytics"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Competitive differentiation - main competitor lacks real-time dashboard capabilities"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Revenue unlock - sales team estimates $800K pipeline acceleration"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Technical momentum - builds on Polaris v1 GA launch completed in March"
+      },
+      {
+        "type": "heading_2",
+        "text": "Option B: Accessibility Audit Remediation (WCAG 2.1 AA)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Votes: 2"
+      },
+      {
+        "type": "paragraph",
+        "text": "Engineering effort: 2.5 sprints (5 weeks)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Key rationale from voters:"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Compliance requirement - some enterprise customers have accessibility clauses"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Technical debt reduction - audit identified 47 accessibility issues"
+      },
+      {
+        "type": "bulleted_list",
+        "text": "Long-term quality improvement - better user experience for all customers"
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision Authority"
+      },
+      {
+        "type": "paragraph",
+        "text": "Final decision: Jorge Alvarez (Senior Product Manager, Platform Team)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Decision deadline: EOD Friday April 4, 2026"
+      },
+      {
+        "type": "paragraph",
+        "text": "Sprint planning kickoff: Monday April 7, 2026"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-02T16:30:00-07:00",
+    "last_updated": "2026-04-02T16:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-33",
+    "title": "Q2 2026 Platform Capacity Planning - Process Guide & Approval Thresholds",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "quarter": "Q2 2026",
+      "status": "active",
+      "category": "capacity_planning"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 Platform Capacity Planning Process"
+      },
+      {
+        "type": "paragraph",
+        "text": "This guide documents the end-to-end capacity planning process for Q2 2026, including infrastructure constraint modeling, rate limit allocation policies, SRE capacity coordination, and OKR dependency management."
+      },
+      {
+        "type": "heading_2",
+        "text": "Step 1: Infrastructure Constraint Assessment"
+      },
+      {
+        "type": "paragraph",
+        "text": "Review current infrastructure utilization across compute, database, and CDN resources. Reference NPAG-24 for detailed infrastructure requirements and dependency mapping. Key metrics: compute quota utilization (target <75%), DB connection pool allocation (max 2000 connections), CDN bandwidth allocation by tier."
+      },
+      {
+        "type": "heading_2",
+        "text": "Step 2: Rate Limit Allocation Model"
+      },
+      {
+        "type": "paragraph",
+        "text": "Apply tier-based rate limit allocation per NPAG-9. Enterprise tier: 10,000 req/min baseline, Mid-Market: 2,500 req/min, Startup: 500 req/min. Burst allowance: 150% of baseline for 5-minute windows. Cross-reference customer escalation history (NPAG-8) to identify accounts requiring custom allocation."
+      },
+      {
+        "type": "heading_2",
+        "text": "Step 3: SRE Capacity Policy & Rollback Buffer"
+      },
+      {
+        "type": "paragraph",
+        "text": "Per NPAG-7, maintain 20% SRE capacity buffer for incident response and rollback operations. No more than 3 major deployments per week. Rollback window requirement: 4-hour buffer between deployments to same service cluster. Coordinate with Marcus Chen (SRE lead) for capacity reservation."
+      },
+      {
+        "type": "heading_2",
+        "text": "Step 4: OKR Planning Dependencies"
+      },
+      {
+        "type": "paragraph",
+        "text": "Map capacity requirements to Q2 OKRs. Reference NPAG-7 for cross-team dependencies. Data team pipeline capacity affects analytics feature rollout. Platform team migration work (auth endpoint deprecation) consumes 30% of sprint capacity through Q2. Identify conflicts early and escalate to VP Engineering."
+      },
+      {
+        "type": "heading_2",
+        "text": "Approval Thresholds"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Compute quota increase >15%: VP Engineering approval required",
+          "DB connection pool expansion: DBA + SRE lead sign-off required",
+          "Custom rate limit allocation (>2x tier baseline): Customer Success VP + Platform PM approval",
+          "SRE capacity buffer reduction below 20%: CTO approval required",
+          "Cross-team OKR dependency changes: Affected team leads + VP Engineering alignment"
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Cross-Team Coordination Requirements"
+      },
+      {
+        "type": "paragraph",
+        "text": "Weekly sync with Data team (Sarah Kim) on pipeline capacity. Bi-weekly checkpoint with Customer Success (Rachel Kim) on tier allocation impact. Monthly infrastructure review with SRE (Marcus Chen) and Ops (David Torres). Decision log all capacity policy exceptions in weekly platform team review."
+      },
+      {
+        "type": "heading_2",
+        "text": "Real-World Example: Polaris Rollout (Feb 2026)"
+      },
+      {
+        "type": "paragraph",
+        "text": "See NPAG-10 for decision log. Polaris GA required mixing Enterprise and Mid-Market customers in wave 3 to avoid DB connection pool cap (1800/2000 limit). Exception approved by VP Engineering after constraint-satisfaction proof. Key lesson: Model resource contention early and enumerate rollout strategies by tier, region, and feature-flag percentage."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-15T10:30:00-07:00",
+    "last_updated": "2026-04-02T14:15:00-07:00"
+  },
+  {
+    "page_id": "NPAG-34",
+    "title": "Q2 Sprint Capacity Allocation - Platform Team Breakdown",
+    "parent_page_id": "NPAG-33",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "quarter": "Q2 2026",
+      "status": "draft",
+      "sprint_weeks": "13"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 Platform Team Sprint Capacity"
+      },
+      {
+        "type": "paragraph",
+        "text": "Total available sprint capacity: 13 weeks × 8 engineers × 40 hours = 4,160 engineering hours"
+      },
+      {
+        "type": "heading_2",
+        "text": "Committed Capacity Allocation"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Auth endpoint migration (legacy deprecation): 1,248 hours (30% of total)",
+          "Polaris feature enhancements: 832 hours (20%)",
+          "Customer escalation buffer (TechFlow, Apex, DataSync): 416 hours (10%)",
+          "Infrastructure maintenance & tech debt: 624 hours (15%)",
+          "Compliance & security updates: 416 hours (10%)"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "Remaining discretionary capacity: 624 hours (15%) - allocated to Q2 OKR initiatives pending cross-team alignment with Data team."
+      },
+      {
+        "type": "heading_2",
+        "text": "Constraint: Data Team Pipeline Dependency"
+      },
+      {
+        "type": "paragraph",
+        "text": "Analytics feature rollout requires data pipeline capacity (Sarah Kim's team). Current conflict: Data team Q2 OKR prioritizes internal BI tooling over platform analytics API. Escalation needed - see NPAG-7 for dependency mapping."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-28T09:45:00-07:00",
+    "last_updated": "2026-04-03T16:20:00-07:00"
+  },
+  {
+    "page_id": "NPAG-35",
+    "title": "Infrastructure Tier Allocation Model - Q2 2026 Refresh",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Marcus Chen",
+      "last_reviewed": "2026-04-01",
+      "status": "active"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Customer Tier Infrastructure Allocation"
+      },
+      {
+        "type": "paragraph",
+        "text": "Updated tier allocation model for Q2 2026 based on Q1 utilization data and Polaris rollout learnings."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Tier",
+          "Compute Quota",
+          "DB Connections",
+          "CDN Bandwidth",
+          "Rate Limit"
+        ],
+        "rows": [
+          [
+            "Enterprise",
+            "40% of total",
+            "800 max",
+            "Unlimited",
+            "10,000 req/min"
+          ],
+          [
+            "Mid-Market",
+            "35% of total",
+            "600 max",
+            "500 GB/day",
+            "2,500 req/min"
+          ],
+          [
+            "Startup",
+            "25% of total",
+            "400 max",
+            "100 GB/day",
+            "500 req/min"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "Exception process: Custom allocations require Platform PM + Customer Success VP approval. Document all exceptions in capacity planning decision log."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-20T11:00:00-07:00",
+    "last_updated": "2026-04-01T13:30:00-07:00"
+  },
+  {
+    "page_id": "NPAG-36",
+    "title": "Polaris v1 GA Launch - On-Call Coverage Decision",
+    "parent_page_id": "NPAG-10",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "status": "In Progress",
+      "decision_deadline": "2026-04-07",
+      "launch_date": "2026-04-28"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Decision: Polaris v1 GA Launch On-Call Coverage (April 28-29)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Decision owner: Jorge Alvarez | Deadline: April 7, 2026 | Launch window: April 28-29 (weekend)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Context"
+      },
+      {
+        "type": "paragraph",
+        "text": "Polaris v1 GA launch requires 24-hour on-call coverage for the April 28-29 weekend launch window. Need to decide between contracted SRE support ($8K) vs asking Marcus Chen's infrastructure team to volunteer extended shifts."
+      },
+      {
+        "type": "heading_2",
+        "text": "Options"
+      },
+      {
+        "type": "heading_3",
+        "text": "Option A: Contracted SRE Coverage ($8K)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Cost: $8,000 for weekend coverage (requires Finance + VP Eng approval)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Pros: Guaranteed availability; no relationship capital cost; professional SRE vendor with launch experience"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Cons: Contractors lack deep Polaris architecture context; requires detailed runbooks; slower incident response due to learning curve; escalation paths must be crystal clear"
+      },
+      {
+        "type": "heading_3",
+        "text": "Option B: Internal Infrastructure Team Coverage (Marcus Chen's team)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Cost: $0 monetary cost; high relationship capital cost"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Pros: Deep Polaris architecture knowledge; faster incident diagnosis; trusted team with launch experience"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Cons: Team unavailable - Q2 capacity planning off-site April 28-29 (booked 6 weeks ago); key SRE (Tom Bradley) on PTO for sister's wedding; team already stretched from Q1 mutual help (auth migration, TechFlow escalation, DataSync war room); asking again risks damaging future collaboration"
+      },
+      {
+        "type": "heading_2",
+        "text": "Key Constraints"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Marcus's infrastructure team: Q2 capacity planning off-site April 28-29 (entire team, exec-approved)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Tom Bradley (senior SRE): PTO April 26-30 (sister's wedding, planned since January)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Recent mutual help history: Infrastructure team supported platform 3x in March (auth migration, TechFlow, DataSync)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Budget approval: $8K requires Finance Manager + VP Engineering sign-off (24-48 hour turnaround)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Trade-off Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Monetary cost vs Relationship capital cost vs Reliability**"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Contractor: $8K cash cost, zero relationship cost, moderate reliability (mitigated by runbooks in NPAG-10)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Internal: $0 cash cost, high relationship cost (team already stretched + conflicting commitment), high reliability (deep context)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Relationship capital assessment**: Marcus's team has been exceptionally supportive in Q1. Asking them to cancel their Q2 planning off-site (which impacts their hiring and resource allocation for the quarter) would be a significant withdrawal from the relationship bank. Future platform-infrastructure collaboration depends on maintaining goodwill."
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision (DRAFT)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Status: Analysis in progress | Decision pending**"
+      },
+      {
+        "type": "paragraph",
+        "text": "Next steps: Review Marcus's calendar availability signal (WMSG-5057), assess Polaris technical complexity (NPAG-10), confirm contractor vendor availability, draft approval request or coordination email depending on decision."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-04T17:30:00-07:00",
+    "last_updated": "2026-04-05T08:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-37",
+    "title": "Q2 2026 Platform-Infrastructure Collaboration History",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "quarter": "Q1-Q2 2026",
+      "category": "Team Collaboration"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Platform-Infrastructure Collaboration Log (Q1-Q2 2026)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Tracking mutual help and collaboration between Platform Team (Jorge Alvarez) and Infrastructure Team (Marcus Chen) to maintain healthy cross-team relationships."
+      },
+      {
+        "type": "heading_2",
+        "text": "Q1 2026 Collaboration Events"
+      },
+      {
+        "type": "heading_3",
+        "text": "March 15-16: Auth Migration Checkpoint Coverage"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Request: Platform team needed weekend on-call coverage for auth migration checkpoint"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Response: Tom Bradley and Lisa Chen (Infrastructure) covered extended shifts"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Outcome: Successful checkpoint; no incidents"
+      },
+      {
+        "type": "heading_3",
+        "text": "March 22: TechFlow Rate Limit Emergency"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Request: Customer escalation required immediate infrastructure capacity analysis"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Response: Entire infrastructure team pulled late night (until 11 PM) to resolve"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Outcome: Rate limit issue resolved; customer retained"
+      },
+      {
+        "type": "heading_3",
+        "text": "March 28: DataSync Solutions Escalation War Room"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Request: Weekend troubleshooting for API rate limit issue"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Response: Infrastructure team provided Saturday troubleshooting support"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Outcome: Issue diagnosed and resolved"
+      },
+      {
+        "type": "heading_2",
+        "text": "Relationship Capital Assessment"
+      },
+      {
+        "type": "paragraph",
+        "text": "Infrastructure team has provided substantial support to Platform in Q1 (3 major assists in 6 weeks). Marcus's team is now entering Q2 capacity planning phase and is stretched thin. Platform team should be mindful of relationship capital balance when making future requests."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Recommendation**: Prioritize paid contractor options for non-critical coverage needs in Q2 to preserve relationship capital for genuinely critical situations where internal team context is irreplaceable."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-04T18:00:00-07:00",
+    "last_updated": "2026-04-04T18:30:00-07:00"
+  },
+  {
+    "page_id": "NPAG-38",
+    "title": "Sentinel Financial Services - Enterprise Onboarding Dependency Map & Execution Plan",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "status": "in-progress",
+      "customer": "Sentinel Financial Services",
+      "deadline": "2026-04-07",
+      "priority": "critical"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Sentinel Financial Services - Onboarding Execution Plan"
+      },
+      {
+        "type": "paragraph",
+        "text": "Customer: Sentinel Financial Services (CUS-113)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Compliance Audit Deadline: April 7, 2026 (42 calendar days / ~30 business days from Feb 24)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Dependency Graph Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "**CIRCULAR DEPENDENCY IDENTIFIED:**"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Legal needs Security's infrastructure assessment to finalize DPA (section 4.2)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Security standard process requires fully executed contract before provisioning"
+      },
+      {
+        "type": "paragraph",
+        "text": "**WORKAROUND:** Security provides preliminary infrastructure assessment (2-3 days) to unblock Legal DPA review"
+      },
+      {
+        "type": "heading_2",
+        "text": "Critical Path (30 business days available)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Security preliminary assessment: 3 days (Feb 27 - Mar 3)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Legal DPA finalization: 5 days (Mar 4 - Mar 10)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Contract signature: 2 days (Mar 11 - Mar 12)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Security full review: 5 days (Mar 13 - Mar 19)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "IT Ops infrastructure hardening: 3 days (Mar 20 - Mar 24)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Security tenant provisioning: 2 days (Mar 25 - Mar 26)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Finance credential generation: 3 days (Mar 27 - Mar 31)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Customer Success training prep: 2 days (Apr 1 - Apr 2)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Customer training delivery: 2 days (Apr 3 - Apr 4)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Post-training validation: 1 day (Apr 7)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Total: 28 business days** (2-day buffer before April 7 deadline)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Parallel Workstreams (Non-Critical Path)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Finance credit check: COMPLETED (can run parallel to Legal review)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Customer Success training material prep: Can start during Security review phase"
+      },
+      {
+        "type": "heading_2",
+        "text": "Capacity Constraints & Risks"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "IT Ops (Dan Martinez) at 90% capacity through mid-March due to Polaris work - RISK: may slip 1-2 days"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "CS lead trainer (Maria Santos) on PTO Mar 10-14 - NOT ON CRITICAL PATH (training happens Apr 3-4)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Customer requires 2-week notice for training - must confirm training dates by Mar 20"
+      },
+      {
+        "type": "heading_2",
+        "text": "Dependency Gates (Must Complete Before Next Step)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "GATE 1 (Mar 3): Security preliminary assessment → Legal DPA review"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "GATE 2 (Mar 12): Contract signature → Security full review + Finance billing setup"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "GATE 3 (Mar 26): Security tenant provisioning → Finance credential generation"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "GATE 4 (Mar 31): Finance credentials issued → Customer Success training"
+      },
+      {
+        "type": "heading_2",
+        "text": "Action Items"
+      },
+      {
+        "type": "to_do",
+        "text": "Confirm Security (Kevin Zhao) can start preliminary assessment by Feb 27",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Schedule coordination meeting with Legal, Security, IT Ops, CS, Finance leads",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Create calendar reminders for all 4 dependency gates",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Send execution plan summary to all department leads via Workmail",
+        "checked": false
+      },
+      {
+        "type": "to_do",
+        "text": "Escalate IT Ops capacity constraint to Priya (VP Engineering) - need commitment on Mar 20-24 availability",
+        "checked": false
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-02-26T16:30:00-08:00",
+    "last_updated": "2026-02-26T17:45:00-08:00"
+  },
+  {
+    "page_id": "NPAG-39",
+    "title": "Enterprise Customer Onboarding Process - Standard Workflow Documentation",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Lisa Park",
+      "category": "Process Documentation",
+      "last_reviewed": "2026-01-15"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Enterprise Customer Onboarding - Standard Process"
+      },
+      {
+        "type": "paragraph",
+        "text": "Standard onboarding timeline: 6-8 weeks for enterprise customers with compliance requirements"
+      },
+      {
+        "type": "heading_2",
+        "text": "Phase 1: Legal & Contract (7-10 business days)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Legal reviews MSA and DPA (5-7 days)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Contract negotiation and signature (2-3 days)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Phase 2: Security & Infrastructure (10-12 business days)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Security infrastructure assessment (5 days)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "IT Ops infrastructure hardening (3-4 days)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Security tenant provisioning (2-3 days)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Phase 3: Finance & Credentials (3-4 business days)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Finance billing setup (2 days)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Credential generation (1-2 days)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Phase 4: Customer Success Training (5-7 business days)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Training material preparation (2 days)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Schedule training (requires 2-week customer notice)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Deliver onboarding training (2 days)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Post-training validation (1 day)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Known Exceptions & Workarounds"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "**Circular Dependency (Legal ↔ Security):** Security can provide preliminary assessment to unblock Legal DPA review before full contract signature"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "**Expedited Processing:** With VP approval, Legal review can be compressed to 3 days for time-sensitive deals"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "**Parallel Tracks:** Finance credit check and CS training prep can run parallel to Security provisioning"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-01-15T10:00:00-08:00",
+    "last_updated": "2026-01-15T10:00:00-08:00"
+  },
+  {
+    "page_id": "NPAG-40",
+    "title": "Platform Team Launch Policy - Minimum Constraints & SLAs",
+    "parent_page_id": "NPAG-5",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "category": "Policy",
+      "last_reviewed": "2026-03-15"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Platform Team Launch Policy - Minimum Constraints & SLAs"
+      },
+      {
+        "type": "paragraph",
+        "text": "This document defines hard floor constraints for all platform GA launches. These constraints are non-negotiable unless escalated to VP Engineering for exception approval."
+      },
+      {
+        "type": "heading_2",
+        "text": "Hard Floor Constraints"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Minimum rollback buffer: 16 hours before next scheduled deployment window or infrastructure maintenance window"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Minimum customer notice period: 14 days for GA launches affecting API contracts or SLA commitments"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Minimum SRE on-call coverage: 18 hours continuous coverage starting from launch time"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "CDN migration requirement: CDN optimization layer must be active within 48 hours of GA launch for enterprise-tier customers"
+      },
+      {
+        "type": "heading_2",
+        "text": "Platform Team Priority Weights"
+      },
+      {
+        "type": "paragraph",
+        "text": "When evaluating launch windows that satisfy hard floor constraints, apply the following priority ordering:"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Launch reliability (rollback buffer duration, SRE coverage hours, incident response capacity)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Customer experience (communication lead time, CDN availability, business-hours impact)"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Engineering convenience (weekend availability, deployment slot timing)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Exception Process"
+      },
+      {
+        "type": "paragraph",
+        "text": "Any launch window violating hard floor constraints requires written exception approval from VP Engineering (Priya Sharma) with documented business justification and risk mitigation plan."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-15T10:00:00-07:00",
+    "last_updated": "2026-03-15T10:00:00-07:00"
+  },
+  {
+    "page_id": "NPAG-41",
+    "title": "Polaris v1 GA Launch Window Analysis - Decision Matrix",
+    "parent_page_id": "NPAG-10",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "status": "In Progress",
+      "decision_deadline": "2026-04-07"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Polaris v1 GA Launch Window Analysis - Decision Matrix"
+      },
+      {
+        "type": "paragraph",
+        "text": "Analysis of three proposed go-live windows for Polaris v1 GA launch. Evaluating against platform team launch policy constraints (NPAG-40) and priority weights."
+      },
+      {
+        "type": "heading_2",
+        "text": "Candidate Windows - Raw Data"
+      },
+      {
+        "type": "table",
+        "rows": [
+          [
+            "Dimension",
+            "Window A (Apr 16)",
+            "Window B (Apr 19)",
+            "Window C (Apr 23)"
+          ],
+          [
+            "Launch date/time",
+            "Wed Apr 16, 22:00 PT",
+            "Sat Apr 19, 14:00 PT",
+            "Wed Apr 23, 06:00 PT"
+          ],
+          [
+            "SRE coverage (hours)",
+            "18",
+            "24",
+            "20"
+          ],
+          [
+            "CDN slot available",
+            "Yes",
+            "No (weekend blackout)",
+            "Yes"
+          ],
+          [
+            "Customer notice (days)",
+            "12",
+            "15",
+            "19"
+          ],
+          [
+            "Rollback buffer (hours)",
+            "10",
+            "34",
+            "18"
+          ],
+          [
+            "Weekend eng availability",
+            "0 engineers",
+            "4 engineers",
+            "0 engineers"
+          ]
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Hard Floor Constraint Check"
+      },
+      {
+        "type": "paragraph",
+        "text": "Per NPAG-40, hard floor constraints are:"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Minimum rollback buffer: 16 hours ✓"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Minimum customer notice: 14 days ✓"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Minimum SRE coverage: 18 hours ✓"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "CDN active within 48 hours ✓"
+      },
+      {
+        "type": "heading_2",
+        "text": "Constraint Violation Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "Window A: FAILS minimum rollback buffer (10 < 16 hours) ❌"
+      },
+      {
+        "type": "paragraph",
+        "text": "Window A: FAILS minimum customer notice (12 < 14 days) ❌"
+      },
+      {
+        "type": "paragraph",
+        "text": "Window B: FAILS CDN availability requirement (weekend blackout, 60-hour delay > 48-hour policy) ❌"
+      },
+      {
+        "type": "paragraph",
+        "text": "Window C: PASSES all hard floor constraints ✓"
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision: Window C Selected"
+      },
+      {
+        "type": "paragraph",
+        "text": "Window C (Wed April 23, 06:00 PT) is the only candidate that satisfies all hard floor constraints without requiring VP exception approval."
+      },
+      {
+        "type": "paragraph",
+        "text": "Tradeoffs accepted:"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "GA launch delayed by 7 days vs Window A (but Window A was non-compliant)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Weekday launch vs weekend (higher production traffic risk), but 20-hour SRE coverage and 18-hour rollback buffer provide adequate safety margin"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "No weekend engineering availability, but weekday launch allows escalation to full engineering team during business hours if needed"
+      },
+      {
+        "type": "paragraph",
+        "text": "Window C optimizes for launch reliability (priority 1) and customer experience (priority 2) per platform team priority weights."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-05T14:30:00-07:00",
+    "last_updated": "2026-04-06T16:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-42",
+    "title": "Q1 Customer Interview Processing - Parallel Analysis Conflict Matrix",
+    "parent_page_id": "NPAG-14",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "status": "in_progress",
+      "priority": "high",
+      "project": "Customer Research Acceleration"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Parallel Sub-Task Analysis - Q1 Customer Interviews"
+      },
+      {
+        "type": "paragraph",
+        "text": "Goal: Process 8-12 recent customer interview recordings in parallel using sub-agents to accelerate Q1 insights extraction. Target completion: April 11, 2026."
+      },
+      {
+        "type": "heading_2",
+        "text": "Sub-Tasks Enumeration"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Agent A: Sentiment Analysis - Extract overall sentiment score (1-10), emotional tone markers, satisfaction indicators"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Agent B: Feature Request Extraction - Identify explicit feature requests, tag by product area (analytics, reporting, integrations, platform)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Agent C: Churn Signal Detection - Flag risk indicators (contract renewal concerns, competitor mentions, dissatisfaction patterns)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Agent D: Competitive Intelligence - Extract mentions of competitor products, feature comparisons, switching considerations"
+      },
+      {
+        "type": "heading_2",
+        "text": "Notion Read/Write Footprint Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "READ operations (all agents): Interview transcript pages under NPAG-14 hierarchy (NPAG-18, NPAG-22, NPAG-27, NPAG-31, NPAG-35, NPAG-38, NPAG-39, NPAG-40, NPAG-41)"
+      },
+      {
+        "type": "paragraph",
+        "text": "WRITE operations by agent:"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Agent A: Customer health score field (shared), sentiment_score property, sentiment_notes block"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Agent B: Feature request multi-select tags (shared taxonomy), feature_requests block append"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Agent C: Churn risk flag (boolean), churn_signals block append, customer health score field (shared)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Agent D: Competitive mentions multi-select (shared taxonomy), competitive_intel block append"
+      },
+      {
+        "type": "heading_2",
+        "text": "Conflict Matrix - Shared Write Targets"
+      },
+      {
+        "type": "table",
+        "content": "| Shared Resource | Agents | Conflict Type | Risk Level |\n|---|---|---|---|\n| Customer health score field | A, C | Simultaneous numeric update | HIGH - data loss |\n| Feature request taxonomy tags | B | Append to shared tag list | MEDIUM - race condition |\n| Competitive mention taxonomy | D | Append to shared tag list | MEDIUM - race condition |\n| Customer page blocks | A,B,C,D | Concurrent block append | MEDIUM - ordering issues |"
+      },
+      {
+        "type": "heading_2",
+        "text": "Isolation Strategy Evaluation"
+      },
+      {
+        "type": "paragraph",
+        "text": "Option 1: Temporary staging pages - Each agent writes to dedicated staging page (NPAG-42-A, NPAG-42-B, etc.), Jorge manually merges. PRO: Zero conflict risk, full audit trail. CON: High manual merge effort, delays insights availability."
+      },
+      {
+        "type": "paragraph",
+        "text": "Option 2: Customer-level parallelization - Assign each customer interview to single agent processing all sub-tasks sequentially. PRO: No shared-write conflicts per customer. CON: Loses parallelization benefit, slower overall."
+      },
+      {
+        "type": "paragraph",
+        "text": "Option 3: Phased execution with serialized taxonomy updates - Phase 1: Agents process independent fields in parallel (sentiment notes, churn signals, competitive intel blocks). Phase 2: Serialize health score calculation and taxonomy tag updates. PRO: Balances speed and safety. CON: Requires orchestration logic."
+      },
+      {
+        "type": "heading_2",
+        "text": "Recommended Execution Plan - LAYERED APPROACH"
+      },
+      {
+        "type": "paragraph",
+        "text": "PHASE 1 (Parallel): Independent customer records - Partition 9 interviews into 3 groups. Each group processed by dedicated agent handling all sub-tasks for assigned customers. No cross-customer conflicts."
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Group 1 (Agent 1): TechFlow (NPAG-18), Apex Mfg (NPAG-22), Meridian Health (NPAG-27)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Group 2 (Agent 2): DataSync (NPAG-31), GlobalRetail (NPAG-35), StartupHub (NPAG-38)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Group 3 (Agent 3): Velocity Analytics (NPAG-39), Sentinel Financial (NPAG-40), New prospect (NPAG-41)"
+      },
+      {
+        "type": "paragraph",
+        "text": "PHASE 2 (Serialized): Cross-customer theme synthesis and shared taxonomy consolidation. Jorge reviews all agent outputs, reconciles health score methodology, merges feature request tags into master taxonomy, identifies cross-customer patterns."
+      },
+      {
+        "type": "paragraph",
+        "text": "Estimated time savings: 60% reduction vs sequential processing (18 hours → 7 hours agent time + 2 hours Jorge merge time)"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-05T10:15:00-07:00",
+    "last_updated": "2026-04-06T16:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-43",
+    "title": "Customer Interview - Velocity Analytics Inc (Sarah Thompson) - 2026-03-28",
+    "parent_page_id": "NPAG-14",
+    "database_id": null,
+    "properties": {
+      "customer": "Velocity Analytics Inc",
+      "contact": "Sarah Thompson",
+      "interview_date": "2026-03-28",
+      "interviewer": "Rachel Kim",
+      "health_score": null,
+      "churn_risk": false,
+      "processing_status": "pending_analysis"
+    },
+    "blocks": [
+      {
+        "type": "heading_2",
+        "text": "Interview Transcript - Velocity Analytics Q1 Check-in"
+      },
+      {
+        "type": "paragraph",
+        "text": "Participants: Sarah Thompson (VP Analytics, Velocity), Rachel Kim (Customer Success, Crucible)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Duration: 42 minutes | Recording: velocity-q1-2026-03-28.mp4"
+      },
+      {
+        "type": "heading_3",
+        "text": "Key Discussion Points"
+      },
+      {
+        "type": "paragraph",
+        "text": "[00:03:15] Sarah: Overall we're happy with the platform stability improvements since Q4. The December outage was concerning but your team's response was excellent."
+      },
+      {
+        "type": "paragraph",
+        "text": "[00:08:42] Sarah: One pain point - our data science team is constantly asking for more granular role-based access controls. Right now it's all-or-nothing for report editing permissions. We've looked at Tableau and they have a more nuanced permission model."
+      },
+      {
+        "type": "paragraph",
+        "text": "[00:15:20] Rachel: Noted on RBAC. That's actually on our Q2 roadmap as part of the Polaris platform release."
+      },
+      {
+        "type": "paragraph",
+        "text": "[00:22:10] Sarah: Contract renewal is coming up in June. Finance is pushing back on the 18% price increase. We need to see material feature improvements to justify that to our CFO."
+      },
+      {
+        "type": "paragraph",
+        "text": "[00:28:35] Sarah: Integration with our Snowflake data warehouse is still clunky. We're spending 5-6 hours per week on manual data sync workarounds. I know you have a native connector but it's missing incremental sync."
+      },
+      {
+        "type": "paragraph",
+        "text": "[00:35:50] Sarah: Positive note - your customer support team has been fantastic. Response times are under 2 hours consistently."
+      },
+      {
+        "type": "paragraph",
+        "text": "[00:40:12] Sarah: If the RBAC and Snowflake improvements land in Q2, we're in good shape for renewal. Otherwise we'll need to have a pricing conversation."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-28T15:30:00-07:00",
+    "last_updated": "2026-03-28T16:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-44",
+    "title": "Feature Request Taxonomy - Master Tag List (Q1 2026)",
+    "parent_page_id": "NPAG-14",
+    "database_id": null,
+    "properties": {
+      "owner": "Rachel Kim",
+      "last_updated_by": "Jorge Alvarez",
+      "tag_count": 47
+    },
+    "blocks": [
+      {
+        "type": "heading_2",
+        "text": "Product Area Tags"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "analytics-core (12 requests)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "reporting-dashboards (18 requests)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "integrations-data (23 requests)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "platform-auth (8 requests)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "platform-rbac (15 requests)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "api-performance (7 requests)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Priority Classification"
+      },
+      {
+        "type": "paragraph",
+        "text": "P0-Critical: Blocking customer workflows, mentioned by 3+ customers (5 requests)"
+      },
+      {
+        "type": "paragraph",
+        "text": "P1-High: Significant efficiency impact, competitive gap (14 requests)"
+      },
+      {
+        "type": "paragraph",
+        "text": "P2-Medium: Nice-to-have, workflow improvement (22 requests)"
+      },
+      {
+        "type": "paragraph",
+        "text": "P3-Low: Edge case, single customer request (6 requests)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Competitive Mentions"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Tableau (6 mentions) - RBAC, dashboard performance"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Looker (4 mentions) - Data modeling flexibility"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "PowerBI (3 mentions) - Excel integration"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Amplitude (2 mentions) - User behavior analytics"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-01-15T09:00:00-08:00",
+    "last_updated": "2026-04-01T14:20:00-07:00"
+  },
+  {
+    "page_id": "NPAG-45",
+    "title": "Q2 Planning Schedule Consolidation - Conflict Analysis & Resolution Plan",
+    "parent_page_id": "NPAG-7",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "status": "In Progress",
+      "priority": "High",
+      "quarter": "Q2 2026",
+      "category": "Coordination"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 Planning Schedule Consolidation"
+      },
+      {
+        "type": "paragraph",
+        "text": "Consolidated view of all Q2 planning meetings (April 7-18, 2026) with conflict analysis and resolution recommendations."
+      },
+      {
+        "type": "heading_2",
+        "text": "Meeting Timeline - Week of April 7-11"
+      },
+      {
+        "type": "table",
+        "content": {
+          "headers": [
+            "Date/Time",
+            "Meeting",
+            "Attendees",
+            "Conflict Severity",
+            "Status"
+          ],
+          "rows": [
+            [
+              "April 8, 10:00-11:30",
+              "Q2 OKR Alignment - Platform & Data (EVT-352)",
+              "Jorge, Priya, Sarah, Marcus, David",
+              "None",
+              "Confirmed"
+            ],
+            [
+              "April 8, 11:30-12:30",
+              "Customer Success Coordination (EVT-353)",
+              "Jorge, Rachel, Elena",
+              "HIGH - Back-to-back, zero buffer",
+              "RESCHEDULED to April 8, 14:00"
+            ],
+            [
+              "April 9, 14:00-15:30",
+              "Leadership Review - VP Eng & Product (EVT-354)",
+              "Jorge, Priya, Jennifer Wong (VP), Thomas Rivera (VP)",
+              "None - VP-LOCKED",
+              "Confirmed"
+            ],
+            [
+              "April 9, 15:30-16:30",
+              "Data Pipeline Capacity Sync (EVT-355)",
+              "Jorge, David, Marcus, Lisa",
+              "CRITICAL - No time for VP feedback integration",
+              "RESCHEDULED to April 10, 09:00"
+            ],
+            [
+              "April 10, 13:00-14:30",
+              "Q2 OKR Final Review - VPs (EVT-356)",
+              "Jorge, Priya, Jennifer Wong (VP), Thomas Rivera (VP), Sarah, David",
+              "None - VP-LOCKED",
+              "Confirmed"
+            ],
+            [
+              "April 10, 15:00-17:00",
+              "Platform Team Sprint Planning (EVT-357)",
+              "Jorge, Marcus, Priya, platform-team",
+              "MEDIUM - 30min buffer after VP review",
+              "Monitoring"
+            ]
+          ]
+        }
+      },
+      {
+        "type": "heading_2",
+        "text": "Conflict Resolution Actions"
+      },
+      {
+        "type": "callout",
+        "emoji": "🔴",
+        "text": "CRITICAL: EVT-355 (Data Pipeline Capacity) moved from April 9 15:30 to April 10 09:00 - David Torres confirmed, awaiting Lisa Patel confirmation"
+      },
+      {
+        "type": "callout",
+        "emoji": "🟡",
+        "text": "HIGH: EVT-353 (Customer Success Coordination) moved from April 8 11:30 to April 8 14:00 - Rachel Kim confirmed"
+      },
+      {
+        "type": "heading_2",
+        "text": "VP-Level Stakeholder Constraints"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Jennifer Wong (VP Engineering): 48hr notice required for reschedules - LOCKED for EVT-354 and EVT-356",
+          "Thomas Rivera (VP Product): Prefers morning meetings, strict schedule - LOCKED for EVT-354 and EVT-356",
+          "Both VP meetings are immovable; all other meetings must work around them"
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Remaining Risks"
+      },
+      {
+        "type": "paragraph",
+        "text": "Platform Team Sprint Planning (EVT-357) on April 10, 15:00 has only 30min buffer after VP Final Review. If VP review runs long or produces significant decisions requiring team communication prep, this could be problematic. Monitoring situation - may need to shift sprint planning to April 11 morning if needed."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-07T09:30:00-07:00",
+    "last_updated": "2026-04-07T13:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-46",
+    "title": "Q2 2026 OKR Alignment - Cross-Team Dependencies Master Tracker",
+    "parent_page_id": "NPAG-7",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "status": "Active",
+      "priority": "Critical",
+      "quarter": "Q2 2026",
+      "category": "OKR Planning"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 2026 OKR Cross-Team Dependencies"
+      },
+      {
+        "type": "paragraph",
+        "text": "Master tracker for Q2 OKR alignment across Platform, Data, Engineering Leadership, and Customer Success teams. Updated through Q2 planning cycle (April 2026)."
+      },
+      {
+        "type": "heading_2",
+        "text": "Key Dependency: Data Pipeline Capacity"
+      },
+      {
+        "type": "callout",
+        "emoji": "⚠️",
+        "text": "CONTESTED: Platform team Q2 OKR includes 3 new analytics endpoints requiring data pipeline integration. Data team capacity already 40% committed to Polaris v1 analytics. Resource contention risk."
+      },
+      {
+        "type": "paragraph",
+        "text": "Status: Alignment meeting scheduled April 10, 09:00 with David Torres (Data Lead) and Lisa Patel (Senior Data Engineer) to resolve capacity allocation."
+      },
+      {
+        "type": "heading_2",
+        "text": "Customer Success Coordination"
+      },
+      {
+        "type": "paragraph",
+        "text": "Three mid-market accounts showing churn signals in last 6 weeks (TechFlow, DataSync, Apex Manufacturing). Q2 roadmap must address customer pain points to prevent further churn. Coordination meeting April 8, 14:00 with Rachel Kim (VP CS) and Elena Martinez."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-06T15:30:00-07:00",
+    "last_updated": "2026-04-07T13:50:00-07:00"
+  },
+  {
+    "page_id": "NPAG-47",
+    "title": "Q2 2026 Platform Team Sprint Allocation - Vote Results",
+    "parent_page_id": "NPAG-32",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "quarter": "Q2 2026",
+      "vote_date": "2026-04-03",
+      "status": "completed"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 Sprint Allocation Vote - Final Results"
+      },
+      {
+        "type": "paragraph",
+        "text": "Vote conducted April 3, 2026. Platform team members (12 engineers) voted on Q2 sprint allocation priorities."
+      },
+      {
+        "type": "heading_2",
+        "text": "Vote Results (by priority)"
+      },
+      {
+        "type": "bulleted_list",
+        "items": [
+          "Option A: Polaris Analytics Dashboard Features - 8 votes (66.7%)",
+          "Option B: Technical Debt Reduction - API Response Time Optimization - 3 votes (25%)",
+          "Option C: Platform Monitoring & Observability Enhancements - 1 vote (8.3%)",
+          "WCAG 2.1 AA Accessibility Compliance Remediation - 0 votes (not on ballot)"
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Winning Option: A - Polaris Analytics Dashboard Features"
+      },
+      {
+        "type": "paragraph",
+        "text": "Team voted strongly in favor of prioritizing Polaris analytics dashboard features for Q2. Estimated sprint allocation: 65% Polaris features, 25% technical debt, 10% operational maintenance."
+      },
+      {
+        "type": "heading_2",
+        "text": "Timeline"
+      },
+      {
+        "type": "paragraph",
+        "text": "Proposed start date: April 14, 2026 (Q2 sprint 1). Dashboard features target GA by June 30, 2026."
+      },
+      {
+        "type": "callout",
+        "text": "⚠️ Note: Accessibility compliance work was not included in the ballot options. Need to verify if any contractual obligations exist before finalizing allocation."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-03T16:30:00-07:00",
+    "last_updated": "2026-04-03T17:15:00-07:00"
+  },
+  {
+    "page_id": "NPAG-48",
+    "title": "Q2 Sprint Allocation - Compliance Constraint Override Decision",
+    "parent_page_id": "NPAG-47",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "decision_date": "2026-04-07",
+      "status": "final",
+      "override_reason": "contractual_compliance"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "DECISION: Q2 Sprint Allocation - Compliance Constraint Override"
+      },
+      {
+        "type": "callout",
+        "text": "🚨 VETO: The majority vote result (Option A: Polaris Analytics Dashboard) is overridden due to non-negotiable contractual compliance constraints."
+      },
+      {
+        "type": "heading_2",
+        "text": "Executive Summary"
+      },
+      {
+        "type": "paragraph",
+        "text": "After reviewing CRM records for enterprise customers, I identified two contracts with hard accessibility compliance deadlines in Q2 that were not considered in the sprint allocation vote. These contractual obligations constitute absolute veto constraints that override the team preference vote."
+      },
+      {
+        "type": "heading_2",
+        "text": "Contractual Compliance Constraints (Hard Red Lines)"
+      },
+      {
+        "type": "bulleted_list",
+        "items": [
+          "GlobalRetail Corp (CUS-103): WCAG 2.1 AA compliance deadline May 31, 2026. Contract clause 8.3 specifies $15,000/week penalty for non-compliance. Platform-level remediation required (form controls, navigation, color contrast).",
+          "Meridian Health Systems (CUS-102): WCAG 2.1 AA compliance deadline June 15, 2026. Contract clause 12.1 specifies $10,000/week penalty + right to terminate for cause. Platform-level remediation required (keyboard navigation, screen reader support, ARIA labels)."
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Constraint Analysis"
+      },
+      {
+        "type": "paragraph",
+        "text": "Engineering estimates for WCAG 2.1 AA platform remediation: 4-5 sprint weeks (20-25 engineer-weeks total). Latest safe start date to meet May 31 deadline: April 14, 2026."
+      },
+      {
+        "type": "paragraph",
+        "text": "The voted allocation (Option A) would delay compliance work until mid-May at earliest, triggering contract violations for both customers. Estimated penalty exposure: $50,000+ plus reputational damage and potential contract termination."
+      },
+      {
+        "type": "heading_2",
+        "text": "Final Allocation Decision (Compliance-Constrained)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Q2 Sprint Allocation (revised):"
+      },
+      {
+        "type": "bulleted_list",
+        "items": [
+          "Sprints 1-4 (April 14 - May 23): WCAG 2.1 AA Platform Remediation - 70% allocation",
+          "Sprints 1-4: Critical operational maintenance - 20% allocation",
+          "Sprints 1-4: Technical debt (API response time) - 10% allocation",
+          "Sprints 5-8 (May 26 - June 27): Polaris Analytics Dashboard (reduced scope) - 60% allocation",
+          "Sprints 5-8: Technical debt - 25% allocation",
+          "Sprints 5-8: Operational maintenance - 15% allocation"
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Rationale for Override"
+      },
+      {
+        "type": "paragraph",
+        "text": "This decision overrides the team vote because contractual compliance deadlines are non-negotiable hard constraints. The voted option (Polaris features first) would result in material contract violations with financial penalties and legal exposure that exceed any product velocity benefit."
+      },
+      {
+        "type": "paragraph",
+        "text": "The revised allocation maximizes team satisfaction within the compliance constraint envelope: Polaris work still happens in Q2 (reduced scope), technical debt receives consistent attention, and we avoid $50K+ in penalties."
+      },
+      {
+        "type": "heading_2",
+        "text": "Trade-offs and Impact"
+      },
+      {
+        "type": "bulleted_list",
+        "items": [
+          "Polaris analytics dashboard GA delayed from June 30 to July 15, 2026 (2-week slip)",
+          "Dashboard feature scope reduced by ~30% for Q2 delivery",
+          "Team morale risk: voted priority overridden by compliance work",
+          "Upside: Avoid contract penalties, strengthen enterprise customer relationships, improve platform accessibility for all users"
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Next Steps"
+      },
+      {
+        "type": "numbered_list",
+        "items": [
+          "Notify engineering leadership (Priya Sharma) and Customer Success VP (David Torres) of compliance-driven decision",
+          "Schedule all-hands with platform team to explain override rationale and revised allocation",
+          "Update Q2 roadmap and customer commitments for Polaris dashboard delay",
+          "Coordinate with GlobalRetail Corp and Meridian Health Systems on compliance verification timeline"
+        ]
+      },
+      {
+        "type": "callout",
+        "text": "Decision authority: Jorge Alvarez (Senior Product Manager, Platform Team). Escalation path: VP Engineering (if contested). CRM evidence: CUS-102, CUS-103 contract clauses."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-07T10:15:00-07:00",
+    "last_updated": "2026-04-07T14:30:00-07:00"
+  },
+  {
+    "page_id": "NPAG-49",
+    "title": "Platform Team Q2 Roadmap - Updated April 2026",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "quarter": "Q2 2026",
+      "status": "active"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Platform Team Q2 2026 Roadmap"
+      },
+      {
+        "type": "paragraph",
+        "text": "Last updated: April 7, 2026. Reflects compliance constraint override decision (see NPAG-48)."
+      },
+      {
+        "type": "heading_2",
+        "text": "Q2 Priorities"
+      },
+      {
+        "type": "numbered_list",
+        "items": [
+          "WCAG 2.1 AA Platform Accessibility Remediation (April-May)",
+          "Polaris Analytics Dashboard Features - Reduced Scope (May-June)",
+          "API Response Time Optimization (ongoing)",
+          "Platform Monitoring Enhancements (stretch goal)"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "Note: Original team vote favored Polaris features first, but contractual compliance deadlines for GlobalRetail Corp and Meridian Health Systems required priority override."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-07T15:00:00-07:00",
+    "last_updated": "2026-04-07T15:00:00-07:00"
+  },
+  {
+    "page_id": "NPAG-50",
+    "title": "Q2 2026 Premium Support Budget Allocation - Constraint Model & Decision",
+    "parent_page_id": "NPAG-8",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "status": "in_progress",
+      "decision_date": "2026-04-05",
+      "category": "resource_allocation"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 2026 Premium Support Hour Allocation"
+      },
+      {
+        "type": "paragraph",
+        "text": "Decision owner: Jorge Alvarez (Senior PM, Platform) | Decision date: April 5, 2026 | Stakeholders: Rachel Kim (VP Customer Success), Regional CS Leads"
+      },
+      {
+        "type": "heading_2",
+        "text": "Problem Statement"
+      },
+      {
+        "type": "paragraph",
+        "text": "Three regional customer success teams (Americas, EMEA, APAC) must split a fixed Q2 premium support hour budget (480 hours total) to cover enterprise customer SLA commitments. Total enterprise commitments (520 hours) exceed budget by 40 hours. Regional capacity caps prevent simple proportional allocation."
+      },
+      {
+        "type": "heading_2",
+        "text": "Constraints"
+      },
+      {
+        "type": "bulleted_list",
+        "items": [
+          "**Hard budget cap:** 480 total hours available for Q2 2026",
+          "**Regional capacity caps:** Americas ≤250h, EMEA ≤180h, APAC ≤150h",
+          "**Contractual minimums:** Each account must receive ≥70% of committed SLA hours",
+          "**Regional assignment:** Accounts cannot be shifted between regions (contract/timezone constraints)",
+          "**Total demand:** 520 hours committed across all enterprise accounts"
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Enterprise Account SLA Commitments by Region"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Americas Region (280h committed, 250h cap = 30h over):**"
+      },
+      {
+        "type": "table",
+        "rows": [
+          [
+            "Account",
+            "Committed Hours",
+            "ARR",
+            "Churn Risk",
+            "Priority"
+          ],
+          [
+            "Cascade Manufacturing (CUS-117)",
+            "110",
+            "$2.15M",
+            "Low",
+            "P0"
+          ],
+          [
+            "Horizon Financial (CUS-114)",
+            "95",
+            "$1.85M",
+            "Low",
+            "P1"
+          ],
+          [
+            "TechFlow Industries (CUS-105)",
+            "75",
+            "$1.95M",
+            "Low",
+            "P1"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**EMEA Region (150h committed, 180h cap = within cap):**"
+      },
+      {
+        "type": "table",
+        "rows": [
+          [
+            "Account",
+            "Committed Hours",
+            "ARR",
+            "Churn Risk",
+            "Priority"
+          ],
+          [
+            "NovaTech Solutions (CUS-115)",
+            "85",
+            "$1.42M",
+            "Medium",
+            "P1"
+          ],
+          [
+            "Stellar Logistics (CUS-118)",
+            "65",
+            "$765K",
+            "HIGH",
+            "P0"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**APAC Region (90h committed, 150h cap = within cap):**"
+      },
+      {
+        "type": "table",
+        "rows": [
+          [
+            "Account",
+            "Committed Hours",
+            "ARR",
+            "Churn Risk",
+            "Priority"
+          ],
+          [
+            "Pacific Retail (CUS-116)",
+            "55",
+            "$980K",
+            "Low",
+            "P2"
+          ],
+          [
+            "Quantum Pharma (CUS-119)",
+            "35",
+            "$1.29M",
+            "Low",
+            "P1"
+          ]
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Allocation Model - DRAFT"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Objective:** Maximize total ARR coverage while prioritizing churn-risk accounts and respecting all constraints."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Approach:** Allocate hours by priority tier within each region, apply proportional cuts to lower-priority accounts to meet regional caps."
+      },
+      {
+        "type": "paragraph",
+        "text": "[WORK IN PROGRESS - allocation calculations to be completed April 4-5]"
+      },
+      {
+        "type": "heading_2",
+        "text": "Accounts Receiving Reduced Hours"
+      },
+      {
+        "type": "paragraph",
+        "text": "[TO BE DETERMINED based on final allocation model]"
+      },
+      {
+        "type": "heading_2",
+        "text": "Next Steps"
+      },
+      {
+        "type": "bulleted_list",
+        "items": [
+          "Complete allocation optimization model (Jorge, by April 5)",
+          "Review with Rachel Kim - meeting scheduled April 5 2pm",
+          "Draft customer notification emails for accounts with reduced hours",
+          "Send allocation plan to regional CS leads for confirmation by April 7"
+        ]
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-03T17:00:00-07:00",
+    "last_updated": "2026-04-03T17:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-51",
+    "title": "Enterprise Customer SLA Commitments - Q2 2026 Reference",
+    "parent_page_id": "NPAG-8",
+    "database_id": null,
+    "properties": {
+      "owner": "Rachel Kim",
+      "quarter": "Q2 2026",
+      "category": "customer_success"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 2026 Enterprise SLA Commitments - Master List"
+      },
+      {
+        "type": "paragraph",
+        "text": "Complete list of enterprise customers with premium support SLA commitments for Q2 2026. Data compiled from CRM and contract management system."
+      },
+      {
+        "type": "heading_2",
+        "text": "Summary by Region"
+      },
+      {
+        "type": "bulleted_list",
+        "items": [
+          "**Americas:** 3 accounts, 280 total hours committed",
+          "**EMEA:** 2 accounts, 150 total hours committed",
+          "**APAC:** 2 accounts, 90 total hours committed",
+          "**TOTAL:** 7 accounts, 520 total hours committed"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**Budget constraint:** 480 hours available (40-hour shortfall)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Detailed Account List"
+      },
+      {
+        "type": "paragraph",
+        "text": "See linked Notion page NPAG-50 for allocation model and decision documentation."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-02T11:30:00-07:00",
+    "last_updated": "2026-04-02T11:30:00-07:00"
+  },
+  {
+    "page_id": "NPAG-52",
+    "title": "Q2 2026 Premium Support Hour Allocation - Enterprise Constraint Optimization",
+    "parent_page_id": "NPAG-8",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "quarter": "Q2 2026",
+      "status": "in_progress",
+      "decision_type": "constraint_optimization"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Q2 Premium Support Hour Allocation - Multi-Tier Enterprise Constraint Optimization"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Problem Statement:** Allocate Q2 premium support hours across 7 enterprise customers with competing SLA commitments. Total demand (520h) exceeds budget (480h) by 40h. Must optimize across three dimensions: contract revenue value, regional capacity constraints, and strategic account priority."
+      },
+      {
+        "type": "heading_2",
+        "text": "Constraint Model Specification"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Hard Constraints (must satisfy):**"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Total allocation ≤ 480 hours (global budget cap)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Americas allocation ≤ 250 hours (regional capacity)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "EMEA allocation ≤ 180 hours (regional capacity)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "APAC allocation ≤ 150 hours (regional capacity)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Each customer allocation ≥ 60% of contractual commitment (minimum SLA threshold)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Soft Constraints (optimize):**"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Revenue-weighted allocation (higher ARR customers prioritized)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Strategic account priority (churn-risk mitigation)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Minimize deviation from contractual commitments"
+      },
+      {
+        "type": "heading_2",
+        "text": "Enterprise Customer Demand Profile"
+      },
+      {
+        "type": "table",
+        "text": "| Customer | Region | ARR | Committed Hours | Strategic Priority | Churn Risk |\n|----------|--------|-----|-----------------|-------------------|------------|\n| TechFlow Industries | Americas | $2.2M | 75h | High | Yes |\n| Sentinel Financial | Americas | $1.9M | 65h | High | Yes |\n| Cascade Manufacturing | Americas | $1.85M | 85h | High | No |\n| Velocity Analytics | Americas | $1.4M | 50h | Medium | No |\n| Horizon Financial | EMEA | $1.82M | 80h | High | Yes |\n| Continental Insurance | EMEA | $1.65M | 70h | Medium | No |\n| Pacific Analytics | APAC | $2.1M | 95h | High | No |\n| **TOTAL** | | **$13.02M** | **520h** | | |"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Regional Demand vs Capacity:**"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Americas: 275h demand vs 250h capacity (25h over)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "EMEA: 150h demand vs 180h capacity (30h under)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "APAC: 95h demand vs 150h capacity (55h under)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Pareto Analysis - Feasible Allocation Strategies"
+      },
+      {
+        "type": "paragraph",
+        "text": "*[IN PROGRESS - constraint model enumeration underway]*"
+      },
+      {
+        "type": "heading_2",
+        "text": "Key Trade-off: Cascade Manufacturing vs Horizon Financial"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Challenge:** Near-identical revenue profiles ($1.85M vs $1.82M) but different regional footprints. Cascade is in over-capacity Americas region; Horizon has room in EMEA. Both are strategic accounts with high growth potential."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Options under evaluation:**"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Revenue-priority: Favor Cascade (higher ARR) despite regional constraint"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Capacity-priority: Favor Horizon (EMEA has room) despite slightly lower ARR"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Hybrid: Reduce Cascade moderately, maintain Horizon at full commitment"
+      },
+      {
+        "type": "paragraph",
+        "text": "*[ANALYSIS PENDING - Pareto frontier to be documented April 5-6]*"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-02T11:00:00-07:00",
+    "last_updated": "2026-04-04T17:30:00-07:00"
+  },
+  {
+    "page_id": "NPAG-53",
+    "title": "Premium Support Regional Capacity Constraints - Q2 2026 Planning",
+    "parent_page_id": null,
+    "database_id": null,
+    "properties": {
+      "owner": "Rachel Kim",
+      "quarter": "Q2 2026",
+      "category": "capacity_planning"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Premium Support Regional Capacity Constraints"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Q2 2026 Regional Capacity Limits:**"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "**Americas:** 250 hours maximum (5 FTE × 50h/quarter average)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "**EMEA:** 180 hours maximum (3.5 FTE × 51h/quarter average)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "**APAC:** 150 hours maximum (3 FTE × 50h/quarter average)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Total Global Capacity:** 580 hours (engineering capacity)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Q2 Budget Constraint:** 480 hours (financial budget approval)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Note: Regional caps are hard constraints due to on-call rotation coverage and timezone staffing requirements. Cannot be exceeded without hiring additional FTEs (12-week lead time)."
+      },
+      {
+        "type": "heading_2",
+        "text": "Historical Utilization (Q1 2026)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Americas: 245h utilized (98% of capacity)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "EMEA: 165h utilized (92% of capacity)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "APAC: 130h utilized (87% of capacity)"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-03-28T14:00:00-07:00",
+    "last_updated": "2026-03-28T14:00:00-07:00"
+  },
+  {
+    "page_id": "NPAG-54",
+    "title": "Launch Approval Policy - Public Date Commitments (Reference)",
+    "parent_page_id": "NPAG-6",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "category": "Policy",
+      "status": "Active"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Launch Approval Policy - Public Date Commitments"
+      },
+      {
+        "type": "paragraph",
+        "text": "Last updated: 2026-04-07 | Owner: Product Leadership"
+      },
+      {
+        "type": "heading_2",
+        "text": "Policy Statement"
+      },
+      {
+        "type": "paragraph",
+        "text": "Product managers may NOT approve public commitments on specific launch dates (in customer emails, blog posts, press releases, or other external communications) until engineering Go/No-Go sign-off has been completed and documented."
+      },
+      {
+        "type": "heading_2",
+        "text": "Rationale"
+      },
+      {
+        "type": "paragraph",
+        "text": "External date commitments create organizational pressure that can compromise quality gates and engineering decision-making. This policy ensures that launch decisions are driven by technical readiness, not external communication deadlines."
+      },
+      {
+        "type": "heading_2",
+        "text": "Authority Boundaries"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Product Managers: Can approve launch windows (e.g., 'Q2 2026', 'late April') without engineering sign-off"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Product Managers: CANNOT approve specific dates (e.g., 'April 21, 2026') without engineering Go/No-Go"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "VP Product: Can grant exceptions for specific dates if critical business need exists"
+      },
+      {
+        "type": "heading_2",
+        "text": "Approved Alternatives"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Wait for engineering Go/No-Go checkpoint before finalizing external communications"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Use launch windows instead of fixed dates in customer communications"
+      },
+      {
+        "type": "numbered_list_item",
+        "text": "Escalate to VP Product for exception approval if business-critical"
+      },
+      {
+        "type": "heading_2",
+        "text": "Recent Applications"
+      },
+      {
+        "type": "paragraph",
+        "text": "2026-04-07: Jorge Alvarez intercepted customer email request from Rachel Kim (Product Marketing) for Polaris Advanced Analytics launch. Proposed date April 21 conflicted with policy - Go/No-Go checkpoint not yet completed (scheduled April 10). Recommended waiting for sign-off or using 'late April' window. Decision documented in WMSG-5093."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-07T16:00:00-07:00",
+    "last_updated": "2026-04-07T16:15:00-07:00"
+  },
+  {
+    "page_id": "NPAG-55",
+    "title": "Polaris Advanced Analytics - Go/No-Go Checkpoint Prep",
+    "parent_page_id": "NPAG-10",
+    "database_id": null,
+    "properties": {
+      "owner": "David Torres",
+      "feature": "Polaris Advanced Analytics",
+      "checkpoint_date": "2026-04-10"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Polaris Advanced Analytics - Go/No-Go Checkpoint"
+      },
+      {
+        "type": "paragraph",
+        "text": "Scheduled: Thursday April 10, 2026 14:00-15:30 PT (EVT-368)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision Criteria"
+      },
+      {
+        "type": "checkbox",
+        "text": "Query performance under load meets SLA (p95 < 2s for standard dashboards)",
+        "checked": false
+      },
+      {
+        "type": "checkbox",
+        "text": "Analytics engine stress test completed with 500 concurrent users",
+        "checked": false
+      },
+      {
+        "type": "checkbox",
+        "text": "Data pipeline validation complete for all customer tiers",
+        "checked": false
+      },
+      {
+        "type": "checkbox",
+        "text": "Rollback procedure tested and documented",
+        "checked": true
+      },
+      {
+        "type": "checkbox",
+        "text": "Customer Success training materials finalized",
+        "checked": true
+      },
+      {
+        "type": "heading_2",
+        "text": "Open Risks"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Query optimization for large Enterprise customers (>10K employees) still in progress - Marcus running final load tests April 8-9"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Data pipeline edge case discovered April 5 for customers with custom HRIS integrations - fix deployed to staging, needs prod validation"
+      },
+      {
+        "type": "heading_2",
+        "text": "Proposed Launch Date"
+      },
+      {
+        "type": "paragraph",
+        "text": "Target: April 21, 2026 (pending Go/No-Go approval)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Fallback: April 28, 2026 if critical issues found"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-05T11:00:00-07:00",
+    "last_updated": "2026-04-07T13:00:00-07:00"
+  },
+  {
+    "page_id": "NPAG-56",
+    "title": "CloudCDN Emergency Maintenance - April 28-29 Impact Analysis",
+    "parent_page_id": "NPAG-55",
+    "database_id": null,
+    "properties": {
+      "owner": "Marcus Chen",
+      "status": "urgent",
+      "created_date": "2026-04-06",
+      "priority": "P0"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "CDN Maintenance Conflict - Polaris Window C"
+      },
+      {
+        "type": "paragraph",
+        "text": "CloudCDN has announced emergency maintenance during our confirmed Polaris v1 GA launch window (April 28-29, 2026)."
+      },
+      {
+        "type": "heading_2",
+        "text": "Official Source Verification"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "CloudCDN Ticket: CDN-MAINT-2026-0428"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Status page: https://status.cloudcdn.com/incidents/2026-0428-emergency"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Confirmed by Jennifer Wu (CDN Ops Manager) on 2026-04-06 at 16:30 PT"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Reason: Critical security patch for edge node infrastructure"
+      },
+      {
+        "type": "heading_2",
+        "text": "Impact Assessment"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Affected regions: SF, LA, SEA (West Coast edge nodes)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Capacity reduction: 40% of total edge capacity"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Expected packet loss: 15-25% during maintenance window"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "SLA: No guarantees during maintenance (violates our 95% availability requirement)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Launch Readiness Criteria Violation"
+      },
+      {
+        "type": "paragraph",
+        "text": "Per Polaris launch criteria (NPAG-55), we require >95% edge availability. The CDN maintenance makes Window C non-viable."
+      },
+      {
+        "type": "heading_2",
+        "text": "Alternative Windows"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Window D: May 5-6 (1 week delay)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Window E: May 12-13 (2 week delay)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Recommendation"
+      },
+      {
+        "type": "paragraph",
+        "text": "HOLD launch on Window C. Escalate to Jorge Alvarez (Product) and Priya Sharma (Engineering) for executive decision on alternative window by EOD 2026-04-07."
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-06T17:00:00-07:00",
+    "last_updated": "2026-04-06T17:15:00-07:00"
+  },
+  {
+    "page_id": "NPAG-57",
+    "title": "Polaris Launch Window Decision - FINAL (April 7, 2026)",
+    "parent_page_id": "NPAG-10",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "status": "draft",
+      "decision_date": "2026-04-07",
+      "priority": "P0"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Polaris v1 GA Launch Window - Final Decision"
+      },
+      {
+        "type": "paragraph",
+        "text": "Decision made on: 2026-04-07 following emergency review of CDN maintenance conflict."
+      },
+      {
+        "type": "heading_2",
+        "text": "Situation Summary"
+      },
+      {
+        "type": "paragraph",
+        "text": "Calendar showed Window C (April 28-29) as confirmed with engineering sign-off (WMSG-5095, 2026-04-03). However, hidden SRE communication (WMSG-5094, 2026-04-06) revealed CloudCDN emergency maintenance during the exact window, making launch infeasible."
+      },
+      {
+        "type": "heading_2",
+        "text": "Information Conflict"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Official calendar: Window C confirmed (EVT-370, EVT-371)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Hidden SRE alert: CDN maintenance conflict (WMSG-5094)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Verification: CloudCDN status page confirms maintenance (NPAG-56)"
+      },
+      {
+        "type": "heading_2",
+        "text": "Credibility Assessment"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Source: Marcus Chen (SRE Lead, CON-244) - highly credible"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Timestamp: 2026-04-06 16:45 PT (within 24 hours of decision deadline)"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Corroboration: External CDN provider status page + direct confirmation from Jennifer Wu"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Assessment: Information is credible and actionable"
+      },
+      {
+        "type": "heading_2",
+        "text": "Decision"
+      },
+      {
+        "type": "paragraph",
+        "text": "HOLD launch on Window C (April 28-29). Recommend Window D (May 5-6) as alternative, pending VP Engineering approval."
+      },
+      {
+        "type": "heading_2",
+        "text": "Rationale"
+      },
+      {
+        "type": "paragraph",
+        "text": "Launching during CDN maintenance would violate our 95% availability requirement and create poor customer experience. The hidden SRE information, though contradicting the official calendar, is verified and credible. Risk of proceeding outweighs 1-week delay cost."
+      },
+      {
+        "type": "heading_2",
+        "text": "Next Actions"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Notify Priya Sharma (VP Engineering) of launch hold decision"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Notify Sarah Kim (Product Marketing) to delay customer communications"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Schedule emergency meeting (MTG-7020) to finalize Window D"
+      },
+      {
+        "type": "bulleted_list_item",
+        "text": "Update calendar events and launch documentation"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-07T08:00:00-07:00",
+    "last_updated": "2026-04-07T08:45:00-07:00"
+  },
+  {
+    "page_id": "NPAG-58",
+    "title": "URGENT: Polaris Window C Launch Reversal - CDN Conflict Decision Log",
+    "parent_page_id": "NPAG-41",
+    "database_id": null,
+    "properties": {
+      "owner": "Jorge Alvarez",
+      "status": "in-progress",
+      "priority": "critical",
+      "decision_deadline": "2026-04-07T17:00:00-07:00",
+      "related_pages": [
+        "NPAG-10",
+        "NPAG-41",
+        "NPAG-25"
+      ]
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "SITUATION SUMMARY"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Date/Time**: April 7, 2026, 2:22pm Pacific"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Critical Issue**: CloudFlare CDN mandatory maintenance window (April 28, 22:00 UTC - April 29, 06:00 UTC / 3pm-11pm Pacific April 28) directly conflicts with Polaris Window C launch (April 28-29)."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Information Source**: Marcus Chen (SRE Lead) via WMSG-5098, verified by Jennifer Wu via CloudFlare TAM Sarah Chen. CloudFlare ticket #CF-2026-04-1847. Maintenance notice posted March 31 to enterprise portal."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Decision Deadline**: 5:00pm Pacific today (Go/No-Go meeting EVT-373)"
+      },
+      {
+        "type": "heading_1",
+        "text": "CONSTRAINT VERIFICATION"
+      },
+      {
+        "type": "paragraph",
+        "text": "**CDN Maintenance Impact** (per Marcus Chen assessment):"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "30-40% packet loss during maintenance window",
+          "SSL cert propagation offline (blocks secure API access)",
+          "Cache purge API unavailable (blocks rollback capability)",
+          "Affects all US-West edge POPs (our primary customer base)"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**Information Credibility Assessment**:"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Source: Marcus Chen (SRE Lead) + Jennifer Wu (Senior SRE) - both highly reliable",
+          "Verification: CloudFlare TAM confirmed mandatory maintenance, no exceptions",
+          "Documentation: CloudFlare ticket #CF-2026-04-1847 in their enterprise portal",
+          "Timeline: Notice posted March 31, flagged in #infrastructure Slack but not escalated to Polaris thread (Window C not yet selected)"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**Credibility Rating**: HIGH - Multiple independent verifications, documented in vendor system, confirmed by TAM. This is a legitimate hard constraint."
+      },
+      {
+        "type": "heading_1",
+        "text": "DECISION OPTIONS"
+      },
+      {
+        "type": "heading_2",
+        "text": "Option 1: Abort to Window D (May 12-13)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Pros**:"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Full SRE coverage (both Marcus and Jennifer available)",
+          "Clean infrastructure (no CDN conflicts)",
+          "Zero operational risk during launch",
+          "Additional testing buffer for engineering team"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**Cons**:"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "2-week revenue delay: ~$340K projected uptake loss (based on mid-market customer pipeline)",
+          "Customer communication momentum loss: 3 churn-risk accounts (TechFlow, Apex, DataSync) expecting April timeline",
+          "Executive expectation reset: VP Eng and CEO expect Window C confirmation today",
+          "Competitive risk: DataSync evaluating competitors per Sarah Kim notes (March 28)"
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Option 2: Pivot to Window A (April 14-15)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Pros**:"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Maintains timeline and customer communication momentum",
+          "Meets executive expectations (minimal delay vs Window C)",
+          "Preserves revenue timeline (~$340K uptake on schedule)",
+          "Window A was original preferred option (per NPAG-10 analysis)"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**Cons**:"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Jennifer Wu on PTO April 14-18 (family commitment, approved)",
+          "Solo SRE coverage: Marcus Chen + ops rotation backup (limited Polaris runbook knowledge)",
+          "Compressed timeline: 7 days to final Go/No-Go vs 21 days for Window C",
+          "Higher operational risk: Reduced incident response capacity during launch"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**Risk Mitigation Options** (per Jennifer Wu WMSG-5099):"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Knowledge transfer session with ops rotation (April 8)",
+          "Jennifer available via phone for P0 escalations (not ideal)",
+          "Jennifer can cut PTO short for critical incidents (last resort)"
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "Option 3: Challenge CDN Maintenance Window"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Approach**: Escalate with CloudFlare account team to request exception or reschedule."
+      },
+      {
+        "type": "paragraph",
+        "text": "**Assessment** (per Marcus Chen):"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Low probability of success: CloudFlare TAM already confirmed no exceptions",
+          "Credibility risk: Burns vendor relationship if we push and they refuse",
+          "Time constraint: Would need decision by EOD today to have any chance",
+          "Maintenance is part of Q2 infrastructure modernization (affects all enterprise customers)"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**Recommendation**: Do not pursue. Information verification shows this is a legitimate hard constraint with no flexibility."
+      },
+      {
+        "type": "heading_1",
+        "text": "CROSS-REFERENCE TO EXISTING CONSTRAINTS"
+      },
+      {
+        "type": "paragraph",
+        "text": "**From NPAG-10 (Original Window Analysis)**:"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Window A was preferred for timeline but had SRE coverage constraint (Jennifer PTO)",
+          "Window C was selected specifically to get full SRE coverage",
+          "CDN maintenance conflict was NOT identified in original constraint analysis (notice came after decision)"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**From NPAG-41 (Window C Final Decision)**:"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Engineering sign-off confirmed for Window C",
+          "Customer communications drafted and queued (Sarah Kim)",
+          "Executive leadership expecting launch confirmation at 5pm Go/No-Go"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**From NPAG-25 (SRE Capacity Constraints)**:"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Solo SRE coverage acceptable for low-risk launches",
+          "Polaris classified as medium-risk (new platform features, multi-tier rollout)",
+          "Ops rotation has general runbook knowledge but not Polaris-specific"
+        ]
+      },
+      {
+        "type": "heading_1",
+        "text": "DECISION RATIONALE (DRAFT)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Recommended Path**: Option 2 (Pivot to Window A - April 14-15)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Reasoning**:"
+      },
+      {
+        "type": "numbered_list",
+        "items": [
+          "CDN conflict is a legitimate hard constraint (verified via multiple sources, documented, confirmed by vendor TAM)",
+          "Abort cost is too high: $340K revenue delay + customer momentum loss + 3 churn-risk accounts at competitive evaluation stage",
+          "Window A was original preferred option - we only moved to Window C for SRE coverage optimization",
+          "SRE coverage risk is mitigatable: Jennifer can do knowledge transfer, phone escalation backup, and emergency PTO cut if needed",
+          "Compressed timeline (7 days) is tight but feasible per engineering team capacity (need Priya confirmation)"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**Required Actions** (if Option 2 approved):"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Notify Sarah Kim to update customer communications with April 14-15 timeline (send April 8)",
+          "Coordinate with Jennifer Wu for ops rotation knowledge transfer (April 8)",
+          "Update Go/No-Go deck with Window A constraints and risk mitigation plan",
+          "Notify executive leadership of launch window change and rationale",
+          "Document decision in NPAG-41 with constraint proof and information source assessment"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**Pending**: Engineering sign-off from Priya Sharma (requested via WMSG-5100, deadline 4pm)"
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-07T15:30:00-07:00",
+    "last_updated": "2026-04-07T15:55:00-07:00"
+  },
+  {
+    "page_id": "NPAG-59",
+    "title": "Polaris Launch - Customer Communication Timeline (Updated for Window A)",
+    "parent_page_id": "NPAG-41",
+    "database_id": null,
+    "properties": {
+      "owner": "Sarah Kim",
+      "status": "draft",
+      "related_to": "NPAG-58"
+    },
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "Customer Communication Plan - Window A (April 14-15)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Updated**: April 7, 2026 - Revised for Window A pivot due to CDN maintenance conflict"
+      },
+      {
+        "type": "heading_2",
+        "text": "Churn-Risk Account Communications (Priority 1)"
+      },
+      {
+        "type": "paragraph",
+        "text": "**Send Date**: April 8, 2026 at 9:00am Pacific (if Window A approved)"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "TechFlow Industries (Amanda Rodriguez) - Polaris early access invitation, April 14 GA timeline",
+          "Apex Manufacturing (Robert Chen) - Feature preview + migration timeline, emphasize 1-week advance notice",
+          "DataSync Solutions (Michael Foster) - Polaris GA announcement + churn retention offer, competitive differentiation messaging"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "**Key Messaging Changes from Window C**:"
+      },
+      {
+        "type": "bullet_list",
+        "items": [
+          "Accelerated timeline (April 14 vs April 28) - position as 'early access opportunity'",
+          "Emphasize readiness and customer-first approach",
+          "Provide 6-day advance notice (vs original 21-day notice for Window C)"
+        ]
+      }
+    ],
+    "archived": false,
+    "created_at": "2026-04-07T16:15:00-07:00",
+    "last_updated": "2026-04-07T16:15:00-07:00"
+  }
+]

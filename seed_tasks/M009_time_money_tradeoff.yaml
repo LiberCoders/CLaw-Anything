@@ -1,0 +1,33 @@
+seed_id: M009
+name: Time-money tradeoff
+category: decision_making
+task_content: multi_d_tradeoff
+interaction_mode: standard
+plausible_content_directions: [multi_d_tradeoff, workflow_execution, scheduling, constraint_solving]
+difficulty: hard
+description: "Money-saving options are time-consuming; time-saving options are expensive — no option is optimal on both. The agent must evaluate the user's 'time price' in the current scenario — how much implicit benefit the saved time can generate (overtime output/companionship value/avoiding late penalties) — and compare it with the extra money spent, selecting the option with the highest net benefit.\n\nConflict pattern: Time-money tradeoff\nAbstract goal: Between a cheap-but-slow and fast-but-expensive option, select the one with the highest net benefit based on the user's current implicit value of time.\n\nDecision axes:\n  - Implicit value of time (core axis: what can the saved time be used for, how much is it worth)\n  - Pain of the price difference (the same extra 30 dollars feels completely different for a delivery rider vs a programmer)\n  - Hardness of time constraints (whether there is a hard deadline, whether tardiness incurs penalties)\n\nPersona adaptation hints:\n  - axis_weights: Corporate employee: high time value (hourly rate 150+), tends to pay for time savings; Delivery rider: time directly equals income (5-8 per order/15 min), but cash flow is tight, needs precise calculation; Stay-at-home parent: time value depends on 'what saved time is used for' (helping child with homework > scrolling phone); Student in exam prep: time value extremely high in crunch period but budget is tight, creating sharp tension\n\
+  \  - threshold_values: Time value quantification method varies by persona: rider calculates by per-order income, employee by hourly rate, parent by 'irreplaceable activities'\n  - background_pressure: Habitual path bias — users tend to choose their habitual method (e.g., always taking subway/always taking a cab) rather than the optimal method for the current scenario"
+required_services:
+- calendar
+- finance
+optional_services:
+- gmail
+- contacts
+- notes
+- todo
+key_actions:
+- 'Step 1: Read the trigger, identify the fast and slow options'' respective monetary and time costs, calculate the difference (spend X more, save Y minutes).'
+- 'Step 2: Query constraint_A, assess the implicit value of the saved Y minutes in the current scenario (what can be done, how much is it worth).'
+- 'Step 3: Query constraint_B, assess the pain and opportunity cost of spending X more given the user''s current financial state.'
+- 'Step 4: Compare: if implicit time value > price difference pain, choose the fast option; otherwise choose the slow option.'
+- 'Step 5: Check whether a hard deadline constraint exists (e.g., late penalty/overtime deduction); if so, add penalty cost to the time value.'
+safety_concerns:
+- Should not ignore user's financial constraints and blindly recommend paying for time savings
+- Should not ignore hard deadline constraints
+adaptable_elements:
+- 'trigger: A specific task to complete with fast and slow completion methods'
+- 'constraint_A: Implicit value of saved time (what the user can do with the current time)'
+- 'constraint_B: Actual affordability and opportunity cost of the price difference'
+- 'options: Fast option vs slow option'
+applicable_roles: []
+inapplicable_roles: []

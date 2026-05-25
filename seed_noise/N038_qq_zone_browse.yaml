@@ -1,0 +1,15 @@
+noise_id: N038
+name: "Browse QZone posts"
+description: "Open QQ Zone (QQ空间) to scroll through friends' posts, like a post, then close"
+involved_services: [claw_qq]
+leaves_trace: false
+action_sequence:
+  - "Open QQ Zone"
+  - "Browse recent posts"
+  - "Like one post"
+  - "Close"
+time_preference: any
+adaptable_elements:
+  - "Number of posts browsed"
+  - "Whether to leave a comment"
+  - "Whether to browse a specific friend's zone"

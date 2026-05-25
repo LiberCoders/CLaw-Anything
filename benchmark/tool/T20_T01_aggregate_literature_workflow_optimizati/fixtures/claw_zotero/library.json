@@ -1,0 +1,662 @@
+[
+  {
+    "item_id": "ZOT-1",
+    "item_type": "article",
+    "title": "Th17 Plasticity in Tissue-Resident Memory Formation",
+    "authors": [
+      "Rodriguez, M.A.",
+      "Chen, L.",
+      "Nakamura, K.",
+      "Stockinger, B."
+    ],
+    "year": 2024,
+    "venue": "Nature Immunology",
+    "doi": "10.1038/s41590-024-01234-5",
+    "url": "https://www.nature.com/articles/s41590-024-01234-5",
+    "abstract": "Th17 cells exhibit remarkable plasticity during tissue inflammation, but the mechanisms governing their conversion to tissue-resident memory phenotypes remain poorly understood. Using single-cell RNA sequencing and lineage tracing in a murine colitis model, we identify a transitional Th17 state marked by co-expression of IL-17A and memory markers CD69 and CD103. Trajectory analysis reveals that tissue-resident Th17 cells downregulate RORγt while maintaining IL-23R expression, enabling long-term persistence in gut lamina propria. Our findings demonstrate that Th17 plasticity is essential for establishing protective tissue-resident immunity and suggest therapeutic targets for inflammatory bowel disease.",
+    "tags": [
+      "Th17",
+      "plasticity",
+      "tissue-resident-memory",
+      "single-cell",
+      "IL-17",
+      "reviewer-response"
+    ],
+    "citation_key": "rodriguez2024th17",
+    "collection_ids": [
+      "COL-1"
+    ],
+    "notes": [
+      {
+        "note_id": "ZNOTE-1",
+        "content": "Key paper for Reviewer 2 response - addresses their concern about Th17 trajectory endpoints. Figure 3B shows similar CD69/CD103 co-expression pattern that I observe in my dataset. Need to cite in revised Discussion section.",
+        "created_at": "2026-01-14T11:30:00-08:00"
+      }
+    ],
+    "date_added": "2026-01-14T11:20:00-08:00",
+    "date_modified": "2026-01-14T11:30:00-08:00"
+  },
+  {
+    "item_id": "ZOT-2",
+    "item_type": "article",
+    "title": "Single-Cell Trajectory Inference Methods: A Comparative Analysis",
+    "authors": [
+      "Saelens, W.",
+      "Cannoodt, R.",
+      "Todorov, H.",
+      "Saeys, Y."
+    ],
+    "year": 2024,
+    "venue": "Nature Biotechnology",
+    "doi": "10.1038/s41587-024-00891-2",
+    "url": "https://www.nature.com/articles/s41587-024-00891-2",
+    "abstract": "Trajectory inference has become a standard approach for analyzing single-cell RNA-seq data, but method selection remains challenging. We benchmark 45 trajectory inference methods across 250 datasets, evaluating accuracy, scalability, and usability. Our results show that no single method excels across all scenarios, with performance depending on trajectory topology and dataset size.",
+    "tags": [
+      "single-cell",
+      "trajectory-inference",
+      "methods",
+      "bioinformatics"
+    ],
+    "citation_key": "saelens2024trajectory",
+    "collection_ids": [
+      "COL-1"
+    ],
+    "notes": [],
+    "date_added": "2026-01-08T14:15:00-08:00",
+    "date_modified": "2026-01-08T14:15:00-08:00"
+  },
+  {
+    "item_id": "ZOT-3",
+    "item_type": "preprint",
+    "title": "Batch processing strategies for high-throughput single-cell RNA-seq analysis pipelines",
+    "authors": [
+      "Kumar, A.",
+      "Zhang, L.",
+      "O'Brien, K."
+    ],
+    "year": 2026,
+    "venue": "bioRxiv",
+    "doi": "10.1101/2026.03.11.484523",
+    "url": "https://doi.org/10.1101/2026.03.11.484523",
+    "abstract": "We present a systematic comparison of sequential versus parallel processing architectures for single-cell trajectory inference workflows, demonstrating 3-5x speedup through dependency-aware task scheduling.",
+    "tags": [
+      "single-cell",
+      "trajectory-analysis",
+      "workflow-optimization",
+      "chapter3-methods"
+    ],
+    "citation_key": "kumar2026batch",
+    "collection_ids": [
+      "computational-methods"
+    ],
+    "notes": [
+      {
+        "note_id": "ZOTNOTE-001",
+        "content": "CRITICAL for Chapter 3 discussion - they use DAG framework for trajectory pipeline optimization. Figure 3 shows exact dependency structure I need to implement for my morning workflow. The normalization→PCA hard dependency parallels my Zotero→Obsidian constraint.",
+        "created_at": "2026-03-12T08:45:00-08:00"
+      }
+    ],
+    "date_added": "2026-03-12T08:22:00-08:00",
+    "date_modified": "2026-03-12T08:45:00-08:00"
+  },
+  {
+    "item_id": "ZOT-4",
+    "item_type": "preprint",
+    "title": "Automated literature curation workflows for systematic reviews in immunology",
+    "authors": [
+      "Park, S.",
+      "Martinez, E.",
+      "Chen, W."
+    ],
+    "year": 2026,
+    "venue": "arXiv",
+    "doi": null,
+    "url": "https://arxiv.org/abs/2603.04521",
+    "abstract": "A metadata-first approach to literature management that enforces citation database population before note-taking, reducing duplicate work and ensuring bibliographic integrity.",
+    "tags": [
+      "literature-management",
+      "workflow",
+      "zotero",
+      "metadata-first"
+    ],
+    "citation_key": "park2026automated",
+    "collection_ids": [
+      "workflow-tools"
+    ],
+    "notes": [
+      {
+        "note_id": "ZOTNOTE-002",
+        "content": "This is EXACTLY my problem! They surveyed PhD students - 68% create notes before citations (guilty). Their proposed workflow matches what I'm trying to build. Need to cite this if I write up my workflow optimization.",
+        "created_at": "2026-03-12T09:15:00-08:00"
+      }
+    ],
+    "date_added": "2026-03-12T09:05:00-08:00",
+    "date_modified": "2026-03-12T09:15:00-08:00"
+  },
+  {
+    "item_id": "ZOT-5",
+    "item_type": "preprint",
+    "title": "IL-17A signaling coordinates tissue-resident memory T cell positioning in barrier tissues",
+    "authors": [
+      "Nakamura, T.",
+      "Singh, R.",
+      "Kowalski, M."
+    ],
+    "year": 2026,
+    "venue": "bioRxiv",
+    "doi": "10.1101/2026.03.10.484201",
+    "url": "https://doi.org/10.1101/2026.03.10.484201",
+    "abstract": "Single-cell spatial transcriptomics reveals IL-17A-dependent niche formation for TRM cells in mucosal tissues.",
+    "tags": [
+      "IL-17",
+      "TRM",
+      "spatial-transcriptomics",
+      "reviewer2-response"
+    ],
+    "citation_key": "nakamura2026il17a",
+    "collection_ids": [
+      "IL17-manuscript"
+    ],
+    "notes": [],
+    "date_added": "2026-03-12T09:30:00-08:00",
+    "date_modified": "2026-03-12T09:30:00-08:00"
+  },
+  {
+    "item_id": "ZOT-6",
+    "item_type": "preprint",
+    "title": "Trajectory inference benchmarking: performance comparison across 15 algorithms on immune cell differentiation datasets",
+    "authors": [
+      "Kumar, A.",
+      "Zhang, L.",
+      "Patel, S.",
+      "Hoffman, M."
+    ],
+    "year": 2026,
+    "venue": "bioRxiv",
+    "doi": "10.1101/2026.01.10.475234",
+    "url": "https://doi.org/10.1101/2026.01.10.475234",
+    "abstract": "We benchmarked 15 trajectory inference algorithms on 8 gold-standard immune differentiation datasets, including Th17 polarization, CD8+ memory formation, and regulatory T cell development. Performance was evaluated using pseudotime correlation with known developmental stages, topology recovery accuracy, and computational efficiency. Monocle3 achieved highest accuracy (0.87 Kendall tau) on branching trajectories but required 3x longer runtime than PAGA (0.82 tau). For datasets with >50,000 cells, PAGA and Palantir were the only methods completing within 2 hours on standard workstation hardware. Critical finding: all methods struggled with rare transitional states comprising <2% of cells, suggesting need for targeted oversampling strategies in experimental design.",
+    "tags": [
+      "trajectory-analysis",
+      "benchmarking",
+      "single-cell",
+      "Th17-plasticity",
+      "computational-methods",
+      "chapter3",
+      "high-priority"
+    ],
+    "citation_key": "kumar2026trajectory",
+    "collection_ids": [
+      "Chapter3-Methods",
+      "Dissertation-Core"
+    ],
+    "notes": [
+      {
+        "note_id": "ZNOTE-6-1",
+        "content": "CRITICAL for Chapter 3 methods justification. This paper directly validates my choice of Monocle3 over PAGA for Th17 trajectory analysis - higher accuracy on branching trajectories (0.87 vs 0.82 Kendall tau) despite 3x longer runtime. The branching topology is exactly what we see in Th17/Treg plasticity. Use this to respond to Reviewer 2's question about why we didn't use faster PAGA method. Also note the finding about rare transitional states (<2% of cells) - this supports my oversampling strategy in the experimental design section.",
+        "created_at": "2026-01-10T08:40:00-08:00"
+      }
+    ],
+    "date_added": "2026-01-10T06:32:00-08:00",
+    "date_modified": "2026-01-10T08:40:00-08:00"
+  },
+  {
+    "item_id": "ZOT-7",
+    "item_type": "preprint",
+    "title": "Machine learning approaches to predicting IL-17 pathway dysregulation in autoimmune disease",
+    "authors": [
+      "Nakamura, K.",
+      "Silva, R.",
+      "O'Brien, T."
+    ],
+    "year": 2026,
+    "venue": "bioRxiv",
+    "doi": "10.1101/2026.01.09.475187",
+    "url": "https://doi.org/10.1101/2026.01.09.475187",
+    "abstract": "We developed a transformer-based neural network that integrates single-cell RNA-seq data with chromatin accessibility profiles to predict IL-17 pathway activation states in tissue-resident T cells. The model was trained on 45,000 cells from 12 healthy donors and validated on samples from 8 patients with active psoriasis. Key findings include identification of a novel TCF7+IL17A+ intermediate state during Th17 differentiation that was previously obscured in bulk RNA-seq analyses. The approach successfully predicted IL-17 dysregulation in held-out patient samples with AUC=0.91, suggesting potential for clinical risk stratification.",
+    "tags": [
+      "IL-17",
+      "machine-learning",
+      "single-cell",
+      "Th17",
+      "autoimmune",
+      "high-priority"
+    ],
+    "citation_key": "nakamura2026il17ml",
+    "collection_ids": [
+      "Reviewer-Response-Materials",
+      "IL-17-Signaling"
+    ],
+    "notes": [],
+    "date_added": "2026-01-10T06:31:00-08:00",
+    "date_modified": "2026-01-10T06:31:00-08:00"
+  },
+  {
+    "item_id": "ZOT-8",
+    "item_type": "article",
+    "title": "ComBat-seq: batch effect adjustment for RNA-seq count data",
+    "authors": [
+      "Zhang, Y.",
+      "Parmigiani, G.",
+      "Johnson, W.E."
+    ],
+    "year": 2020,
+    "venue": "NAR Genomics and Bioinformatics",
+    "doi": "10.1093/nargab/lqaa078",
+    "url": "https://doi.org/10.1093/nargab/lqaa078",
+    "abstract": "Batch effects are a persistent challenge in genomic data analysis. ComBat-seq is an improved model for batch effect adjustment in RNA-seq count data that preserves the integer nature of count data while removing unwanted variation. We demonstrate superior performance compared to existing methods on simulated and real datasets.",
+    "tags": [
+      "batch-correction",
+      "rna-seq",
+      "bioinformatics",
+      "chapter3"
+    ],
+    "citation_key": "zhang2020combat",
+    "collection_ids": [
+      "Chapter3-Methods"
+    ],
+    "notes": [
+      {
+        "note": "Used this method for Chapter 3 batch correction (3 donors × 2 timepoints design). Validated with PCA before/after - batch effects removed without losing biological signal. See OBSN-18 for implementation details."
+      }
+    ],
+    "date_added": "2026-01-28T10:30:00-08:00",
+    "date_modified": "2026-02-22T14:20:00-08:00"
+  },
+  {
+    "item_id": "ZOT-9",
+    "item_type": "article",
+    "title": "Statistical considerations for single-cell trajectory inference",
+    "authors": [
+      "Street, K.",
+      "Risso, D.",
+      "Fletcher, R.B.",
+      "Das, D.",
+      "Ngai, J.",
+      "Yosef, N.",
+      "Purdom, E.",
+      "Dudoit, S."
+    ],
+    "year": 2018,
+    "venue": "Nature Methods",
+    "doi": "10.1038/nmeth.4402",
+    "url": "https://doi.org/10.1038/nmeth.4402",
+    "abstract": "Slingshot is a method for inferring cell lineages and pseudotime from single-cell gene expression data. We introduce a statistical framework for trajectory inference that accounts for uncertainty in lineage assignment and provides principled approaches for validation.",
+    "tags": [
+      "trajectory-inference",
+      "single-cell",
+      "slingshot",
+      "statistics",
+      "chapter3"
+    ],
+    "citation_key": "street2018slingshot",
+    "collection_ids": [
+      "Chapter3-Methods"
+    ],
+    "notes": [
+      {
+        "note": "Primary trajectory inference method for Chapter 3. Used permutation tests and bootstrap CI for validation as recommended in this paper. Identified 3 Th17 differentiation paths (vs. Rodriguez's 2 paths - need to reconcile in Discussion)."
+      }
+    ],
+    "date_added": "2026-02-01T09:45:00-08:00",
+    "date_modified": "2026-02-22T14:25:00-08:00"
+  },
+  {
+    "item_id": "ZOT-10",
+    "item_type": "article",
+    "title": "Single-cell trajectory inference reveals plasticity checkpoints in Th17 differentiation",
+    "authors": [
+      "Park, S.",
+      "Kumar, A.",
+      "Rodriguez, M."
+    ],
+    "year": 2026,
+    "venue": "bioRxiv",
+    "doi": null,
+    "url": "https://www.biorxiv.org/content/10.1101/2026.01.30.123456v1",
+    "abstract": "We applied pseudotime trajectory analysis to map Th17 differentiation at single-cell resolution, identifying three critical plasticity checkpoints where cells can transition to regulatory or effector fates.",
+    "tags": [
+      "high-priority",
+      "chapter3",
+      "trajectory-inference",
+      "th17"
+    ],
+    "citation_key": null,
+    "collection_ids": [
+      "COL-1"
+    ],
+    "notes": [
+      {
+        "note_id": "ZOTNOTE-10-1",
+        "content": "CRITICAL for Chapter 3 discussion - directly addresses reviewer concern about plasticity checkpoints. Need to import full metadata and link to OBSN-4 (Chapter 3 outline).",
+        "created_at": "2026-02-01T07:15:00-08:00"
+      }
+    ],
+    "date_added": "2026-02-01T07:12:00-08:00",
+    "date_modified": "2026-02-01T07:15:00-08:00"
+  },
+  {
+    "item_id": "ZOT-11",
+    "item_type": "article",
+    "title": "IL-17 receptor signaling dynamics in epithelial barrier maintenance",
+    "authors": [
+      "Chen, L.",
+      "Nakamura, Y.",
+      "Williams, K."
+    ],
+    "year": 2026,
+    "venue": "bioRxiv",
+    "doi": null,
+    "url": "https://www.biorxiv.org/content/10.1101/2026.02.03.234567v1",
+    "abstract": null,
+    "tags": [
+      "high-priority",
+      "reviewer-response",
+      "il-17"
+    ],
+    "citation_key": null,
+    "collection_ids": [
+      "COL-2"
+    ],
+    "notes": [],
+    "date_added": "2026-02-03T18:45:00-08:00",
+    "date_modified": "2026-02-03T18:45:00-08:00"
+  },
+  {
+    "item_id": "ZOT-12",
+    "item_type": "article",
+    "title": "High-priority metadata extraction from biomedical preprints using GPT-4",
+    "authors": [
+      "Zhang, Q.",
+      "Miller, T."
+    ],
+    "year": 2026,
+    "venue": "arXiv",
+    "doi": null,
+    "url": "https://arxiv.org/abs/2602.01234",
+    "abstract": "We present a pipeline for extracting structured metadata from bioRxiv and medRxiv preprints using large language models. The system achieves 94% accuracy on DOI extraction, author disambiguation, and abstract summarization.",
+    "tags": [
+      "workflow",
+      "automation"
+    ],
+    "citation_key": "zhang2026metadata",
+    "collection_ids": [
+      "COL-3"
+    ],
+    "notes": [],
+    "date_added": "2026-02-01T11:20:00-08:00",
+    "date_modified": "2026-02-01T11:20:00-08:00"
+  },
+  {
+    "item_id": "ZOT-13",
+    "item_type": "article",
+    "title": "IL-17-mediated neutrophil recruitment dynamics in mucosal barrier defense",
+    "authors": [
+      "Martinez, L.",
+      "Kobayashi, T.",
+      "Singh, R."
+    ],
+    "year": 2026,
+    "venue": "Cell Press Preprints",
+    "doi": "10.1101/cellpress.2026.03.0421",
+    "url": "https://doi.org/10.1101/cellpress.2026.03.0421",
+    "abstract": "IL-17A is a critical cytokine for coordinating neutrophil-mediated defense at mucosal barriers, but the precise dynamics of neutrophil recruitment remain poorly understood. Using intravital two-photon microscopy in mouse intestinal tissue, we tracked neutrophil migration in real-time following IL-17A stimulation. Single-cell RNA-seq trajectory analysis identified two distinct neutrophil subpopulations with differential CXCR2 and CXCR4 expression patterns. Phase 1 recruitment (0-2 hours) was CXCR2-dependent and rapid, while Phase 2 (2-8 hours) involved CXCR4+ neutrophils with enhanced antimicrobial activity. These findings have implications for understanding IL-17-driven immunopathology in inflammatory bowel disease.",
+    "tags": [
+      "IL-17",
+      "neutrophils",
+      "mucosal-immunology",
+      "trajectory-analysis",
+      "dissertation",
+      "chapter3",
+      "reviewer-response"
+    ],
+    "citation_key": "martinez2026il17neutrophil",
+    "collection_ids": [
+      "COL-1",
+      "COL-3"
+    ],
+    "notes": [
+      {
+        "note_id": "ZOTNOTE-13-1",
+        "content": "CRITICAL for Reviewer 2 response - two-phase neutrophil recruitment model directly addresses their question about IL-17A kinetics in barrier tissues. Figure 3B trajectory analysis uses Slingshot (same method as our Chapter 3). Import to [[Chapter 3 - Trajectory Analysis Discussion Outline]] and [[Reviewer 2 Response - IL-17 Kinetics Section]].",
+        "created_at": "2026-03-16T07:15:00-07:00"
+      }
+    ],
+    "date_added": "2026-03-16T07:12:00-07:00",
+    "date_modified": "2026-03-16T07:15:00-07:00"
+  },
+  {
+    "item_id": "ZOT-14",
+    "item_type": "article",
+    "title": "Machine learning prediction of T cell receptor specificity from single-cell transcriptomes",
+    "authors": [
+      "Wang, H.",
+      "Patel, S.",
+      "Liu, Y."
+    ],
+    "year": 2026,
+    "venue": "Cell Press Preprints",
+    "doi": "10.1101/cellpress.2026.03.0438",
+    "url": "https://doi.org/10.1101/cellpress.2026.03.0438",
+    "abstract": "Linking T cell receptor (TCR) sequence to antigen specificity remains a major challenge in immunology. We present TCRnet, a convolutional neural network trained on 450,000 single-cell transcriptomes with known TCR specificity. Applied to 10X Genomics datasets from COVID-19 patients, TCRnet correctly predicted SARS-CoV-2 spike-specific CD8+ T cells with 82% accuracy.",
+    "tags": [
+      "machine-learning",
+      "TCR",
+      "single-cell",
+      "computational",
+      "dissertation"
+    ],
+    "citation_key": "wang2026tcrnet",
+    "collection_ids": [
+      "COL-1"
+    ],
+    "notes": [],
+    "date_added": "2026-03-16T07:18:00-07:00",
+    "date_modified": "2026-03-16T07:18:00-07:00"
+  },
+  {
+    "item_id": "ZOT-15",
+    "item_type": "article",
+    "title": "IL-17 receptor signaling dynamics in tissue-resident memory T cells",
+    "authors": [
+      "Martinez, A.",
+      "Liu, H.",
+      "Thompson, J."
+    ],
+    "year": 2025,
+    "venue": "Cell Press Preprints",
+    "doi": "10.1101/2025.12.15.648392",
+    "url": "https://doi.org/10.1101/2025.12.15.648392",
+    "abstract": "We characterize IL-17 receptor signaling kinetics in tissue-resident memory T cells using single-cell trajectory analysis and phospho-flow cytometry. Our findings reveal three distinct signaling states that correlate with tissue retention capacity.",
+    "tags": [
+      "IL-17",
+      "tissue-resident-memory",
+      "signaling"
+    ],
+    "citation_key": "martinez2025il17receptor",
+    "collection_ids": [
+      "COL-2"
+    ],
+    "notes": [],
+    "date_added": "2025-12-21T14:23:00-08:00",
+    "date_modified": "2025-12-21T14:23:00-08:00"
+  },
+  {
+    "item_id": "ZOT-16",
+    "item_type": "article",
+    "title": "Chromatin accessibility dynamics during Th17 differentiation",
+    "authors": [
+      "Park, S.",
+      "Chen, Y.",
+      "Rodriguez, M."
+    ],
+    "year": 2025,
+    "venue": "Cell Press Preprints",
+    "doi": "10.1101/2025.12.18.649103",
+    "url": "https://doi.org/10.1101/2025.12.18.649103",
+    "abstract": "Using ATAC-seq and single-cell trajectory inference, we map chromatin remodeling events during Th17 differentiation. We identify plasticity checkpoints associated with IL-17A expression stability.",
+    "tags": [
+      "Th17",
+      "chromatin",
+      "trajectory-inference"
+    ],
+    "citation_key": "park2025chromatin",
+    "collection_ids": [
+      "COL-2"
+    ],
+    "notes": [],
+    "date_added": "2025-12-21T14:45:00-08:00",
+    "date_modified": "2025-12-21T14:45:00-08:00"
+  },
+  {
+    "item_id": "ZOT-17",
+    "item_type": "article",
+    "title": "Metabolic reprogramming in tissue-resident memory T cell differentiation",
+    "authors": [
+      "Nakamura, K.",
+      "Singh, R."
+    ],
+    "year": 2025,
+    "venue": "Nature Immunology",
+    "doi": "10.1038/ni.2025.1142",
+    "url": "https://doi.org/10.1038/ni.2025.1142",
+    "abstract": "We demonstrate that metabolic shifts precede transcriptional changes during tissue-resident memory T cell differentiation, with implications for IL-17 pathway regulation.",
+    "tags": [
+      "metabolism",
+      "tissue-resident-memory",
+      "IL-17"
+    ],
+    "citation_key": "nakamura2025metabolic",
+    "collection_ids": [
+      "COL-2"
+    ],
+    "notes": [],
+    "date_added": "2025-12-21T15:12:00-08:00",
+    "date_modified": "2025-12-21T15:12:00-08:00"
+  },
+  {
+    "item_id": "ZOT-18",
+    "item_type": "article",
+    "title": "Single-cell multi-omics integration for trajectory inference validation",
+    "authors": [
+      "Kumar, P.",
+      "Zhang, L."
+    ],
+    "year": 2025,
+    "venue": "Nature Biotechnology",
+    "doi": "10.1038/nbt.2025.0891",
+    "url": "https://doi.org/10.1038/nbt.2025.0891",
+    "abstract": "We present a framework for validating trajectory inference results using integrated transcriptomic and proteomic data from the same single cells.",
+    "tags": [
+      "single-cell",
+      "multi-omics",
+      "trajectory-inference"
+    ],
+    "citation_key": "kumar2025multiomics",
+    "collection_ids": [
+      "COL-1"
+    ],
+    "notes": [],
+    "date_added": "2025-12-21T15:30:00-08:00",
+    "date_modified": "2025-12-21T15:30:00-08:00"
+  },
+  {
+    "item_id": "ZOT-19",
+    "item_type": "article",
+    "title": "Automated reference management for computational biology workflows",
+    "authors": [
+      "Harrison, R.",
+      "Torres, M."
+    ],
+    "year": 2024,
+    "venue": "PLOS Computational Biology",
+    "doi": "10.1371/journal.pcbi.1011892",
+    "url": "https://doi.org/10.1371/journal.pcbi.1011892",
+    "abstract": "We survey best practices for maintaining literature databases in computational biology research, emphasizing metadata-first workflows and automated integrity checking.",
+    "tags": [
+      "workflow",
+      "metadata",
+      "automation"
+    ],
+    "citation_key": "harrison2024automated",
+    "collection_ids": [
+      "COL-3"
+    ],
+    "notes": [],
+    "date_added": "2025-12-28T11:15:00-08:00",
+    "date_modified": "2025-12-28T11:15:00-08:00"
+  },
+  {
+    "item_id": "ZOT-20",
+    "item_type": "article",
+    "title": "Harmony: integration of single-cell data across experimental conditions",
+    "authors": [
+      "Korsunsky, I.",
+      "Millard, N.",
+      "Fan, J.",
+      "Slowikowski, K.",
+      "Zhang, F.",
+      "Wei, K.",
+      "Baglaenko, Y.",
+      "Brenner, M.",
+      "Loh, P.",
+      "Raychaudhuri, S."
+    ],
+    "year": 2019,
+    "venue": "Nature Methods",
+    "doi": "10.1038/s41592-019-0619-0",
+    "url": "https://doi.org/10.1038/s41592-019-0619-0",
+    "abstract": "Single-cell RNA sequencing enables the study of cellular heterogeneity across experimental conditions. However, batch effects and biological variation can confound comparative analyses. We present Harmony, an algorithm that integrates single-cell data by iteratively correcting batch effects while preserving biological structure. Harmony operates in low-dimensional space and scales to large datasets.",
+    "tags": [
+      "batch-correction",
+      "single-cell",
+      "integration",
+      "chapter3",
+      "trajectory-analysis"
+    ],
+    "citation_key": "korsunsky2019harmony",
+    "collection_ids": [
+      "COL-1",
+      "COL-3"
+    ],
+    "notes": [
+      {
+        "note": "Key method for Chapter 3 batch correction. Superior to ComBat-seq for multi-site data integration. Used for Salk/UCSD/Stanford dataset integration."
+      }
+    ],
+    "date_added": "2026-02-18T10:30:00-08:00",
+    "date_modified": "2026-03-10T15:20:00-08:00"
+  },
+  {
+    "item_id": "ZOT-21",
+    "item_type": "article",
+    "title": "Pseudotime uncertainty quantification in single-cell trajectory inference",
+    "authors": [
+      "Campbell, K.",
+      "Yau, C."
+    ],
+    "year": 2024,
+    "venue": "PLOS Computational Biology",
+    "doi": "10.1371/journal.pcbi.1011234",
+    "url": "https://doi.org/10.1371/journal.pcbi.1011234",
+    "abstract": "Trajectory inference methods assign pseudotime values to cells but rarely quantify uncertainty. We develop a Bayesian framework for pseudotime uncertainty quantification that propagates through downstream analyses. Applied to Th17 differentiation data, we show that uncertainty-aware analysis reveals robust plasticity checkpoints.",
+    "tags": [
+      "trajectory-inference",
+      "uncertainty",
+      "bayesian",
+      "single-cell",
+      "chapter3"
+    ],
+    "citation_key": "campbell2024pseudotime",
+    "collection_ids": [
+      "COL-1"
+    ],
+    "notes": [
+      {
+        "note": "Potential addition to Chapter 3 if Dr. Rodriguez recommends uncertainty quantification. Bayesian framework could strengthen trajectory analysis rigor."
+      }
+    ],
+    "date_added": "2026-03-09T14:15:00-08:00",
+    "date_modified": "2026-03-09T14:15:00-08:00"
+  }
+]
