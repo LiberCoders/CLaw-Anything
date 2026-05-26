@@ -199,16 +199,31 @@ So the typical install is `uv pip install -e ".[mock,sandbox]"`. Add `,dev` if y
 
 ### Run the benchmark suite
 
-The benchmark is split into two subsets that need different prompt modes. Run the **whole suite** with one command — `claw-anything batch` without `--tasks-dir` defaults to the full suite (skill subset in skill_mode, tool subset in tool mode), with each subset writing to its own trace subdirectory:
+The benchmark is split into three subsets. `claw-anything batch` without `--tasks-dir` runs the **full 200-task suite**:
+
+- `skill` (100, CLI, `prompt.skill_mode = true`)
+- `tool` (50, CLI, `prompt.skill_mode = false`)
+- `gui` (50, Android GUI, forced to `openharness-ext` — needs an emulator + `--oh-settings`; see [Run mobile GUI / Android tasks](#run-mobile-gui--android-tasks))
+
+Each subset writes to its own trace subdirectory. Pass `--cli-only` to run only the CLI subsets (150 tasks). Note that `batch` always runs trials in containers — there is no `--trial-in-container` flag (only `run` exposes it).
 
 ```bash
-# Run the full benchmark (100 skill + 50 tool tasks)
+# Full benchmark (200 tasks: skill + tool + gui)
 claw-anything batch \
   --config config.yaml \
-  --trial-in-container \
+  --oh-settings /path/to/oh-settings.json \
+  --trials 3 \
+  --parallel 10
+
+# CLI subsets only (150 tasks: skill + tool)
+claw-anything batch \
+  --config config.yaml \
+  --cli-only \
   --trials 3 \
   --parallel 10
 ```
+
+If `--cli-only` is omitted and the gui subset's prerequisites aren't met (empty `android.emulator_pool`, or no `--oh-settings`), the suite **fails fast at second 0** with a clear message — so you don't burn 150 CLI tasks before discovering the gui phase can't start.
 
 Output:
 
@@ -217,7 +232,10 @@ traces/loop_<model>_<ts>/
 ├── skill/  # benchmark/skill, prompt.skill_mode = true
 │   ├── batch_results.json
 │   └── batch_summary.json
-└── tool/   # benchmark/tool,  prompt.skill_mode = false
+├── tool/   # benchmark/tool,  prompt.skill_mode = false
+│   ├── batch_results.json
+│   └── batch_summary.json
+└── gui/    # benchmark/gui,   agent forced to openharness-ext  (skipped with --cli-only)
     ├── batch_results.json
     └── batch_summary.json
 ```
@@ -225,8 +243,9 @@ traces/loop_<model>_<ts>/
 Or run only one subset:
 
 ```bash
-claw-anything batch --tasks-dir benchmark/skill --config config.yaml --trial-in-container --trials 3 --parallel 10
-claw-anything batch --tasks-dir benchmark/tool  --config config.yaml --trial-in-container --trials 3 --parallel 10
+claw-anything batch --tasks-dir benchmark/skill --config config.yaml --trials 3 --parallel 10
+claw-anything batch --tasks-dir benchmark/tool  --config config.yaml --trials 3 --parallel 10
+claw-anything batch --tasks-dir benchmark/gui   --config config.yaml --agent openharness-ext --oh-settings /path/to/oh-settings.json --trials 3 --parallel 10
 ```
 
 To resume or repair a previous batch run, point at its trace dir with one of:
@@ -296,7 +315,7 @@ claw-anything gen-eval \
 claw-anything batch \
   --tasks-dir gen_tasks/sarah_chen_pm_simple/ \
   --config config.yaml \
-  --trial-in-container --trials 3 --parallel 10
+  --trials 3 --parallel 10
 ```
 
 ### Run mobile GUI / Android tasks
@@ -326,7 +345,7 @@ The host calls `init_gui_task()` to inject calendar events, contacts, etc. into 
 | Group    | Command / Script                  | Purpose |
 |----------|-----------------------------------|---------|
 | Run      | `run`                             | Run an agent on a single task (loop: `--trial-in-container`; OH: `--agent openharness[‑ext] --trial-in-container --oh-settings`) |
-| Run      | `batch`                           | Run all tasks under `--tasks-dir` in parallel, N trials each. **Defaults to the full benchmark suite** when `--tasks-dir` is omitted. Supports `--continue` and `--rerun-errors` against an existing `--trace-dir`. |
+| Run      | `batch`                           | Run all tasks under `--tasks-dir` in parallel, N trials each (always in containers — no `--trial-in-container` flag). **Defaults to the full 200-task suite (skill + tool + gui)** when `--tasks-dir` is omitted; pass `--cli-only` to run just the CLI subsets (150 tasks). Supports `--continue` and `--rerun-errors` against an existing `--trace-dir`. |
 | Run      | `grade`                           | Re-grade an existing trace JSONL against a task |
 | Run      | `list`                            | List task ids under `--tasks-dir` |
 | Images   | `build-image`                     | Build the trial-in-container image for the selected agent (`--agent loop\|openharness\|openharness-ext`, default: `openharness-ext`) |
