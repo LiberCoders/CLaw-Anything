@@ -1,12 +1,12 @@
 <div align="center">
 
-<h1>Claw-Anything: See anything, and then do anything.</h1>
+<h1>Claw-Anything: See anything, and do anything. Scaling Agent Context. </h1>
 
-[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://www.python.org/downloads/release/python-3110/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](LICENSE)
-[![Paper](https://img.shields.io/badge/📄%20Paper-coming%20soon-lightgrey.svg)](#-citation)
-[![Tasks](https://img.shields.io/badge/Tasks-200%20human--verified-success.svg)](benchmark/)
-[![Environments](https://img.shields.io/badge/Environments-2%2C000%20generated-blueviolet.svg)](#-quick-start)
+[![arXiv](https://img.shields.io/badge/Arxiv-2605.26086-b31b1b.svg?logo=arXiv)](https://arxiv.org/pdf/2605.26086)
+[![Dataset](https://img.shields.io/badge/🤗%20Dataset-Claw--Anything-yellow.svg)](https://huggingface.co/datasets/LiberCoders/Claw-Anything)
+[![Benchmark](https://img.shields.io/badge/Benchmark-200%20-success.svg)](benchmark/)
+[![Environments](https://img.shields.io/badge/Environments-2%2C000%20-blueviolet.svg)](#-quick-start)
+[![Views](https://komarev.com/ghpvc/?username=LiberCoders-CLaw-Anything&label=Views&color=brightgreen&style=flat)](https://github.com/LiberCoders/CLaw-Anything)
 
 [English](README.md) | [中文](README.zh.md)
 
@@ -14,7 +14,7 @@
 
 </div>
 
-This repo is the official implementation of our paper — [Claw-Anything: Benchmarking Always-On Personal Assistants with Broader Access to the User's Digital World](https://github.com/LiberCoders/CLaw-Anything) — and its follow-ups.
+This repo is the official implementation of our paper — [Claw-Anything: Benchmarking Always-On Personal Assistants with Broader Access to the User's Digital World](https://arxiv.org/pdf/2605.26086) — and its follow-ups.
 
 > [!IMPORTANT]
 > _We believe the next leap for always-on LLM agents lies in scaling agent context — expanding the slice of the user's digital world an assistant can continuously perceive, reason over, and act on._
@@ -42,10 +42,10 @@ Claw-Anything operationalizes this view, evaluating always-on LLM agents across 
 
 
 ## News
-
-- 📄 [ETA 2026-05-30] **Paper coming soon** — the arXiv preprint will be linked here on release.
-- 🚀 [2026-05-24] **Data pipeline released** — the two-stage `build-persona` → `gen-eval` flow scales to 2,000 training environments and powers the benchmark's data generation.
-- 📊 [2026-05-24] **Benchmark released** — `benchmark/skill/` (100 skill-mode tasks) and `benchmark/tool/` (50 tool-mode tasks).
+- 🛠️ [2026-05-27] TODO: One-click evaluation for easier use. It's not good enough yet — stay tuned. :)
+- 📄 [2026-05-26] The [arXiv](https://arxiv.org/pdf/2605.26086) preprint has been released.
+- 🚀 [2026-05-26] **Data pipeline** has been released — the two-stage `build-persona` → `gen-eval` flow scales to 2,000 training environments and powers the benchmark's data generation.
+- 📊 [2026-05-26] **Benchmark** and **Training Environments** has been released.
 
 ## Table of Contents
 
@@ -76,7 +76,7 @@ Claw-Anything operationalizes this view, evaluating always-on LLM agents across 
 
 | Module | Role |
 |--------|------|
-| 🧪 **[`benchmark/`](benchmark/)** | **Evaluate** — 200 human-verified tasks split into `skill/` (100 skill-mode tasks; the agent dynamically loads tools on demand) and `tool/` (50 tool-mode tasks; the agent is pre-loaded with the full tool set) |
+| 🧪 **[`benchmark/`](benchmark/)** | **Evaluate** — 200 human-verified tasks split into `skill/` (the agent dynamically loads tools on demand) and `tool/` (the agent is pre-loaded with the full tool set) |
 | 🏗️ **[`gen/`](src/claw_anything/gen/)** | **Build data** — `build-persona` + `gen-eval` two-phase pipeline; 2,000 training environments at scale |
 | 🤖 **[`runner/`](src/claw_anything/runner/)** | **Execute** — Think → Act → Observe loop, OpenAI-compatible model backend, per-trial Docker sandbox with port isolation |
 | 📋 **[`graders/`](src/claw_anything/graders/)** | **Score** — Multi-dimensional grading (completion · robustness · communication · safety) + LLM-as-judge + Pass^k aggregation |
@@ -357,8 +357,9 @@ docker/oh/              # sitecustomize.py (date override shipped into the OH im
 scripts/                # build_{loop,oh,oh_ext}_image.sh
 Dockerfile.{loop,oh,oh_ext}   # one Dockerfile per agent backend
 benchmark/              # 200 human-verified tasks
-  ├─ skill/             # 100 skill-mode tasks (agent loads tools dynamically on demand)
-  └─ tool/              # 50 tool-mode tasks  (agent is pre-loaded with the full tool set)
+  ├─ skill/             # 100 skill-mode CLI tasks (agent loads tools dynamically on demand)
+  ├─ tool/              # 50 tool-mode CLI tasks  (agent is pre-loaded with the full tool set)
+  └─ gui/               # 50 CLI + GUI tasks
 personas/               # hand-written persona YAMLs (input to build-persona)
 seed_tasks/             # abstract task templates (M000–Mxxx)
 seed_noise/             # noise templates injected during persona build
@@ -386,15 +387,12 @@ We also thank the broader community behind the open-source LLMs, agent harnesses
 
 ## 📝 Citation
 
-The arXiv preprint is coming soon. Once it's online we'll update the BibTeX block below.
-
 ```bibtex
-@misc{clawanything,
-  title   = {<TBD>},
-  author  = {<TBD>},
-  year    = {<TBD>},
-  url     = {<TBD>},
-  note    = {arXiv preprint, coming soon},
+@article{lin2026clawanything,
+  title   = {Claw-Anything: Benchmarking Always-On Personal Assistants with Broader Access to User’s Digital World},
+  author  = {Lin, Yusong and Liang, Xinyuan and Wang, Haiyang and Gu, Qipeng and Cheng, Siqi and Chen, Jiangui and Wu, Shuzhe and Pan, Feiyang and Fan, Lue and Zhao, Sanyuan and Tu, Dandan},
+  year    = {2026},
+  journal = {arXiv preprint arXiv:2605.26086}
 }
 ```
 

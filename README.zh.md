@@ -1,30 +1,51 @@
 <div align="center">
 
-<h1>Claw-Anything：面向"全天候个人助理"的智能体评测基准与数据生成框架</h1>
+<h1>Claw-Anything：看见一切，做到一切·。</h1>
 
-[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://www.python.org/downloads/release/python-3110/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](LICENSE)
-[![论文](https://img.shields.io/badge/📄%20论文-即将发布-lightgrey.svg)](#-引用)
-[![评测任务](https://img.shields.io/badge/任务-200%20人工核验-success.svg)](benchmark/)
-[![训练环境](https://img.shields.io/badge/训练环境-2%2C000%20条-blueviolet.svg)](#-快速上手)
+[![arXiv](https://img.shields.io/badge/Arxiv-2605.26086-b31b1b.svg?logo=arXiv)](https://arxiv.org/pdf/2605.26086)
+[![Dataset](https://img.shields.io/badge/🤗%20Dataset-Claw--Anything-yellow.svg)](https://huggingface.co/datasets/LiberCoders/Claw-Anything)
+[![Benchmark](https://img.shields.io/badge/Benchmark-200%20-success.svg)](benchmark/)
+[![Environments](https://img.shields.io/badge/Environments-2%2C000%20-blueviolet.svg)](#-quick-start)
+[![Views](https://komarev.com/ghpvc/?username=LiberCoders-CLaw-Anything&label=Views&color=brightgreen&style=flat)](https://github.com/LiberCoders/CLaw-Anything)
 
 [English](README.md) | [中文](README.zh.md)
 
+<img src="assets/claw-anything-logo.png" width="260" alt="Claw-Anything logo">
+
 </div>
+
+本仓库是论文 [Claw-Anything: Benchmarking Always-On Personal Assistants with Broader Access to the User's Digital World](https://arxiv.org/pdf/2605.26086) 及其后续工作的官方实现。
+
+> [!IMPORTANT]
+> _我们认为，常驻型（always-on）LLM 智能体的下一次飞跃，在于扩展智能体的上下文 —— 拓宽助手能够持续感知、推理并执行操作的用户数字世界的范围。_
+
+Claw-Anything 将这一理念落地，沿着三个真实世界上下文维度评估常驻型 LLM 智能体：**长周期事件流**、各种**相互关联的服务**，以及**跨设备交互**（例如 GUI 与 CLI）。即便最强模型 GPT-5.5，pass@1 也仅达到 **34.5%**，暴露出显著的能力差距。除评测基准外，我们还发布了一个**自动化数据生成流水线**，可产出 **2,000 个训练环境**，并将基线模型提升 **23.7%**。
+
+> <div align="center">
+>
+> Claw-Anything：评测能够更广泛访问用户数字世界的常驻型个人助手
+>
+> [Yusong Lin](https://github.com/icexiaoche)、[Xinyuan Liang](https://github.com/xuan112358)、[Haiyang Wang](https://haiyang-w.github.io/)<sup>†</sup>、[Qipeng Gu](https://openreview.net/profile?id=~Qipeng_Gu2)、[Siqi Cheng](https://openreview.net/profile?id=~Siqi_Cheng3)<br>
+> [Jiangui Chen](https://chriskuei.github.io/)、[Shuzhe Wu](https://scholar.google.com/citations?user=CkqRXikAAAAJ&hl=en)、[Feiyang Pan](https://feiyang.github.io/)、[Lue Fan](https://lue.fan/)、[Sanyuan Zhao](https://scholar.google.com/citations?user=t7dAaE8AAAAJ&hl=zh-CN)<sup>†</sup>、[Dandan Tu](https://scholar.google.com/citations?user=nf8bdFYAAAAJ&hl=zh-CN)<sup>†</sup>
+>
+><sup>†</sup> 通讯作者。
+>
+> 主要联系人：Yusong Lin (linyusong4@huawei.com)，Haiyang Wang (haiyang.wang@huawei.com)
+> </div>
+>
 
 <div align="center">
 
-<b>一个框架同时完成两件事：评测个人助理智能体，<i>并</i>自动生成它们被评测时所用的数据。</b>
-
-<img src="assets/demo_merge_2.png" width="92%" alt="Claw-Anything 概览">
+<img src="assets/demo_merge_2.png" width="92%" alt="Claw-Anything overview">
 
 </div>
 
-## 最新进展
 
-- 📊 **全新 benchmark 套件发布** —— `benchmark/skill/`（100 个 skill 模式任务）+ `benchmark/tool/`（50 个 tool 模式任务）。`claw-anything batch` 不带 `--tasks-dir` 时默认跑完整套件，端到端一条命令搞定。
-- 📄 **论文即将发布** —— arXiv 预印本上线后会在此挂出链接。
-- 🚀 **两阶段管线（`build-persona` → `gen-eval`）** 规模化产出 2,000 个训练环境，是 benchmark 数据生成的主引擎。
+## 新闻
+
+- 📄 [2026-05-26] [arXiv](https://arxiv.org/pdf/2605.26086) 预印本已发布。
+- 🚀 [2026-05-26] 数据流水线已发布 —— 两阶段 `build-persona` → `gen-eval` 流程可扩展至 2,000 个训练环境，为评测基准提供数据生成能力。
+- 📊 [2026-05-26] 评测基准与训练环境已发布。
 
 ## 目录
 
@@ -53,13 +74,13 @@
 
 执行评测的模拟器同时也是生产数据的引擎，把"基准评测"与"数据集构造"合到同一个工具链。
 
-| 模块 | 角色 |
-|--------|------|
-| 🧪 **[`benchmark/`](benchmark/)** | **评测** —— 200 个人工核验的任务，分为 `skill/`（100 个 skill 模式巡视类任务，需读取活动日志）和 `tool/`（50 个 tool 模式任务，纯 mock-service API 调用） |
-| 🏗️ **[`gen/`](src/claw_anything/gen/)** | **数据生成** —— `build-persona` + `gen-eval` 两阶段管线，可规模化产出 2,000 个训练环境 |
-| 🤖 **[`runner/`](src/claw_anything/runner/)** | **执行** —— Think→Act→Observe 循环，OpenAI 兼容后端，每 trial 一个 Docker 沙箱+端口隔离 |
-| 📋 **[`graders/`](src/claw_anything/graders/)** | **评分** —— 多维度评分（completion · robustness · communication · safety）+ LLM 评判 + 跨 trial Pass^k 聚合 |
-| 🛠️ **[`mock_services/`](mock_services/)** | **模拟服务** —— 35 个 FastAPI 服务（Gmail、Calendar、Slack、Notion、飞书、微信、Zotero ……），共享同一套冻结时间的 fixture 基座 |
+| 模块 | 作用 |
+|------|------|
+| 🧪 **[`benchmark/`](benchmark/)** | **评测** —— 200 个人工验证任务，分为 `skill/`（智能体按需动态加载工具）和 `tool/`（智能体预加载完整工具集） |
+| 🏗️ **[`gen/`](src/claw_anything/gen/)** | **构建数据** —— `build-persona` + `gen-eval` 两阶段流水线；规模化生成 2,000 个训练环境 |
+| 🤖 **[`runner/`](src/claw_anything/runner/)** | **执行** —— Think → Act → Observe 循环，OpenAI 兼容的模型后端，按 trial 隔离端口的 Docker 沙盒 |
+| 📋 **[`graders/`](src/claw_anything/graders/)** | **评分** —— 多维度评分（完成度·鲁棒性·沟通·安全）+ LLM-as-judge + Pass^k 聚合 |
+| 🛠️ **[`mock_services/`](mock_services/)** | **模拟** —— 35 个 FastAPI 模拟服务（Gmail、Calendar、Slack、Notion、Feishu、WeChat、Zotero……），共享统一的时间冻结环境数据 |
 
 
 ## 🔭 上下文的三个维度
@@ -335,17 +356,13 @@ docs/                   # 任务编写文档
 
 ## 📝 引用
 
-arXiv 预印本即将发布，上线后会更新下方的 BibTeX 块。
-
 ```bibtex
-@misc{clawanything,
-  title   = {<TBD>},
-  author  = {<TBD>},
-  year    = {<TBD>},
-  url     = {<TBD>},
-  note    = {arXiv preprint, coming soon},
+@article{lin2026clawanything,
+  title   = {Claw-Anything: Benchmarking Always-On Personal Assistants with Broader Access to User’s Digital World},
+  author  = {Lin, Yusong and Liang, Xinyuan and Wang, Haiyang and Gu, Qipeng and Cheng, Siqi and Chen, Jiangui and Wu, Shuzhe and Pan, Feiyang and Fan, Lue and Zhao, Sanyuan and Tu, Dandan},
+  year    = {2026},
+  journal = {arXiv preprint arXiv:2605.26086}
 }
-```
 
 
 ## 📄 License
