@@ -2,9 +2,10 @@
 
 Reads the task YAML (default: task.yaml), iterates inject steps, and
 dispatches to per-type handlers.  Supported inject types:
-  email        — Gmail clone state.json push
-  calendar     — Fossify Calendar SQLite insert
-  contacts     — Android ContactsProvider direct insert
+  email             — Gmail clone state.json push
+  calendar          — Fossify Calendar SQLite insert
+  fossify_calendar  — alias for calendar
+  contacts          — Android ContactsProvider direct insert
   dialer            — Android call log (content://call_log/calls) insert
   fossify_messages  — Fossify Messages SMS threads (content://sms) insert
   markor            — Markor markdown/text file push
@@ -13,6 +14,8 @@ dispatches to per-type handlers.  Supported inject types:
   opentracks   — OpenTracks SQLite insert
   clock        — Google Clock alarms via SQLite DB push
   fossify_notes — Fossify Notes text/checklist notes via SQLite DB push
+  testmall     — TestMall shadow app state.json push
+  mattermost   — Mattermost shadow app state.json push
 
 Public API:
     init_gui_task(task_dir, device=None, adb_path=None, yaml_name="task.yaml") -> bool
@@ -2082,11 +2085,114 @@ def inject_fossify_notes(step: dict, task_dir: Path, device: str | None) -> bool
     return True
 
 
+# ── Project-shadow GUI apps (TestMall, Mattermost) ────────────────────────────
+# Self-contained shadow apps registered in ``gen/persona.py`` but with no
+# host-side CLI mock service backing them. They read their state from a
+# fixture JSON pushed to /sdcard/Android/data/<package>/files/state.json —
+# the same pattern inject_email uses for the Gmail clone.
+
+TESTMALL_PACKAGE    = "com.testmall.app"
+TESTMALL_STATE_PATH = f"/sdcard/Android/data/{TESTMALL_PACKAGE}/files/state.json"
+
+MATTERMOST_PACKAGE    = "com.mattermost.rnbeta"
+MATTERMOST_STATE_PATH = f"/sdcard/Android/data/{MATTERMOST_PACKAGE}/files/state.json"
+
+
+def _inject_shadow_app_state(
+    step: dict,
+    task_dir: Path,
+    device: str | None,
+    *,
+    package: str,
+    state_path: str,
+    state_key: str,
+    default_fixture: str,
+    app_label: str,
+) -> bool:
+    """Push a fixture JSON list onto a project-shadow GUI app's state file.
+
+    Wraps ``items`` as ``{state_key: items}`` so the on-device shape stays
+    forward-compatible with apps that need top-level metadata later; mirrors
+    inject_email for shadow apps without a CLI mock service.
+    """
+    fixture_path = task_dir / step.get("fixture", default_fixture)
+    if not fixture_path.exists():
+        print(f"  [FAIL] fixture not found: {fixture_path}", file=sys.stderr)
+        return False
+
+    with open(fixture_path, encoding="utf-8") as f:
+        items = json.load(f)
+    if not isinstance(items, list):
+        print(f"  [FAIL] {app_label} fixture must be a JSON list", file=sys.stderr)
+        return False
+
+    installed, package_msg = _package_installed(package, device=device)
+    if not installed:
+        print(
+            f"  [FAIL] package not installed: {package}"
+            + (f" ({package_msg})" if package_msg else ""),
+            file=sys.stderr,
+        )
+        return False
+
+    adb_shell(f"am force-stop {package}", device=device)
+    adb_shell(f"rm -f {state_path}", device=device)
+    adb_shell(f"mkdir -p $(dirname {state_path})", device=device)
+
+    state = {state_key: items}
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False, encoding="utf-8") as tmp:
+        json.dump(state, tmp, ensure_ascii=False, indent=2)
+        tmp_path = tmp.name
+    try:
+        ok = adb_push(tmp_path, state_path, device=device)
+    finally:
+        os.unlink(tmp_path)
+    if not ok:
+        return False
+
+    launch_ok, launch_msg = _start_package_launcher(package, device=device)
+    if not launch_ok:
+        print(f"  [FAIL] failed to relaunch {app_label}: {launch_msg}", file=sys.stderr)
+        return False
+    print(f"  [OK] {app_label} restarted ({len(items)} item(s) injected)")
+    return True
+
+
+def inject_testmall(step: dict, task_dir: Path, device: str | None) -> bool:
+    """Inject the TestMall product catalog into the shadow app's state.json."""
+    return _inject_shadow_app_state(
+        step, task_dir, device,
+        package=TESTMALL_PACKAGE,
+        state_path=TESTMALL_STATE_PATH,
+        state_key="products",
+        default_fixture="fixtures/gui/testmall_gui/products.json",
+        app_label="TestMall",
+    )
+
+
+def inject_mattermost(step: dict, task_dir: Path, device: str | None) -> bool:
+    """Inject Mattermost channel messages into the shadow app's state.json.
+
+    task.yaml currently uses package ``com.mattermost.rnbeta`` — assumed to be
+    a self-contained shadow build, not the upstream React Native beta which
+    reads from a remote server and would ignore the pushed state.
+    """
+    return _inject_shadow_app_state(
+        step, task_dir, device,
+        package=MATTERMOST_PACKAGE,
+        state_path=MATTERMOST_STATE_PATH,
+        state_key="messages",
+        default_fixture="fixtures/gui/mattermost_gui/messages.json",
+        app_label="Mattermost",
+    )
+
+
 # ── Orchestrator ──────────────────────────────────────────────────────────────
 
 _HANDLERS = {
     "email":              inject_email,
     "calendar":           inject_calendar,
+    "fossify_calendar":   inject_calendar,
     "contacts":           inject_contacts,
     "dialer":             inject_dialer,
     "fossify_messages":   inject_fossify_messages,
@@ -2097,6 +2203,8 @@ _HANDLERS = {
     "clock":              inject_clock,
     "clock_alarm":        inject_clock,
     "fossify_notes":      inject_fossify_notes,
+    "testmall":           inject_testmall,
+    "mattermost":         inject_mattermost,
 }
 
 
@@ -2151,8 +2259,13 @@ def init_gui_task(
         _capture_screenshot(task_id, step_screenshots_dir, f"step_{i:04d}_before.png", device=device)
         handler = _HANDLERS.get(step_type)
         if handler is None:
-            print(f"  [WARN] Unknown inject type: {step_type}")
+            print(
+                f"  [FAIL] Unknown inject type: {step_type!r}. "
+                f"Register a handler in init_gui_task.py::_HANDLERS or fix the task.yaml.",
+                file=sys.stderr,
+            )
             _capture_screenshot(task_id, step_screenshots_dir, f"step_{i:04d}_after.png", device=device)
+            all_ok = False
             continue
         step_ok = handler(step, task_path, device)
         all_ok &= step_ok

@@ -162,16 +162,31 @@ claw-anything build-image --agent openharness   # vanilla OH 镜像：claw-anyth
 
 ### 运行 benchmark 套件
 
-Benchmark 拆成两个子集，各自需要不同的 prompt 模式。**一条命令**跑完整套件 —— `claw-anything batch` 不带 `--tasks-dir` 时默认跑全套（skill 子集开 `skill_mode`，tool 子集关 `skill_mode`），各自写到独立的 trace 子目录：
+Benchmark 拆成三个子集。`claw-anything batch` 不带 `--tasks-dir` 时默认跑**完整 200 任务套件**：
+
+- `skill`（100 个，CLI，`prompt.skill_mode = true`）
+- `tool`（50 个，CLI，`prompt.skill_mode = false`）
+- `gui`（50 个，Android GUI，强制 `openharness-ext` —— 需要模拟器 + `--oh-settings`；见[跑 mobile GUI / Android 任务](#跑-mobile-gui--android-任务)）
+
+各子集写到独立的 trace 子目录。加 `--cli-only` 只跑 CLI 两个子集（150 任务）。注意 `batch` 始终在容器里跑 trial —— 这里没有 `--trial-in-container` flag（只有 `run` 有）。
 
 ```bash
-# 跑完整 benchmark（100 个 skill + 50 个 tool 任务）
+# 完整 benchmark（200 任务：skill + tool + gui）
 claw-anything batch \
   --config config.yaml \
-  --trial-in-container \
+  --oh-settings /path/to/oh-settings.json \
+  --trials 3 \
+  --parallel 10
+
+# 只跑 CLI 子集（150 任务：skill + tool）
+claw-anything batch \
+  --config config.yaml \
+  --cli-only \
   --trials 3 \
   --parallel 10
 ```
+
+如果没加 `--cli-only` 又不满足 gui 子集前置条件（`android.emulator_pool` 为空，或没传 `--oh-settings`），套件会在**第 0 秒就 fail-fast** 并给出清晰提示 —— 不会让你跑完 150 个 CLI 任务后才发现 gui phase 启不起来。
 
 输出结构：
 
@@ -180,7 +195,10 @@ traces/loop_<model>_<ts>/
 ├── skill/  # benchmark/skill, prompt.skill_mode = true
 │   ├── batch_results.json
 │   └── batch_summary.json
-└── tool/   # benchmark/tool,  prompt.skill_mode = false
+├── tool/   # benchmark/tool,  prompt.skill_mode = false
+│   ├── batch_results.json
+│   └── batch_summary.json
+└── gui/    # benchmark/gui,   强制 openharness-ext（加 --cli-only 时跳过）
     ├── batch_results.json
     └── batch_summary.json
 ```
@@ -188,8 +206,9 @@ traces/loop_<model>_<ts>/
 也可以单独跑某个子集：
 
 ```bash
-claw-anything batch --tasks-dir benchmark/skill --config config.yaml --trial-in-container --trials 3 --parallel 10
-claw-anything batch --tasks-dir benchmark/tool  --config config.yaml --trial-in-container --trials 3 --parallel 10
+claw-anything batch --tasks-dir benchmark/skill --config config.yaml --trials 3 --parallel 10
+claw-anything batch --tasks-dir benchmark/tool  --config config.yaml --trials 3 --parallel 10
+claw-anything batch --tasks-dir benchmark/gui   --config config.yaml --agent openharness-ext --oh-settings /path/to/oh-settings.json --trials 3 --parallel 10
 ```
 
 如果要在之前的某次 batch 上**续跑或修复**，指向旧 trace 目录：
@@ -259,7 +278,7 @@ claw-anything gen-eval \
 claw-anything batch \
   --tasks-dir gen_tasks/sarah_chen_pm_simple/ \
   --config config.yaml \
-  --trial-in-container --trials 3 --parallel 10
+  --trials 3 --parallel 10
 ```
 
 ### 跑 mobile GUI / Android 任务
@@ -302,7 +321,7 @@ claw-anything run \
 | 分组    | 命令 / 脚本                          | 用途 |
 |---------|--------------------------------------|------|
 | 运行    | `run`                                | 在单个任务上运行一次 agent（loop：`--trial-in-container`；OH：`--agent openharness[‑ext] --trial-in-container --oh-settings`） |
-| 运行    | `batch`                              | 在 `--tasks-dir` 下并行跑 N trials。**省略 `--tasks-dir` 时默认跑整个 benchmark 套件**。支持对已有 `--trace-dir` 的 `--continue` 与 `--rerun-errors`。 |
+| 运行    | `batch`                              | 在 `--tasks-dir` 下并行跑 N trials，始终在容器内（没有 `--trial-in-container` flag）。**省略 `--tasks-dir` 时默认跑完整 200 任务套件（skill + tool + gui）**；加 `--cli-only` 只跑 CLI 两个子集（150 任务）。支持对已有 `--trace-dir` 的 `--continue` 与 `--rerun-errors`。 |
 | 运行    | `grade`                              | 用任务定义重评一份已存在的 trace JSONL |
 | 运行    | `list`                               | 列出 `--tasks-dir` 下所有任务 id |
 | 镜像    | `build-image`                        | 为指定 agent 构建容器镜像（`--agent loop\|openharness\|openharness-ext`，默认：`openharness-ext`） |

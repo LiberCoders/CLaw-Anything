@@ -1640,45 +1640,103 @@ def cmd_batch(args: argparse.Namespace) -> None:
 
 
 def _run_benchmark_suite(args: argparse.Namespace) -> None:
-    """Run the full benchmark suite: benchmark/skill in skill mode, benchmark/tool in tool mode.
+    """Run the full benchmark suite (200 tasks): skill + tool + gui.
 
     Invoked when ``claw-anything batch`` is run without ``--tasks-dir``. Each phase
     writes to its own subdirectory under a shared parent trace dir.
+
+    Phase layout:
+      - ``skill`` (100 tasks, CLI, prompt.skill_mode = True)
+      - ``tool``  ( 50 tasks, CLI, prompt.skill_mode = False)
+      - ``gui``   ( 50 tasks, Android GUI; forced to openharness-ext, needs
+                   emulator pool + --oh-settings)
+
+    Pass ``--cli-only`` to skip the gui phase (150 tasks). If ``--cli-only``
+    is absent and the gui phase's prerequisites aren't met (no emulator pool,
+    or no --oh-settings) we fail-fast before the suite starts rather than
+    erroring out 150 tasks in.
     """
     from .config import load_config
 
     benchmark_root = Path(getattr(args, "benchmark_root", None) or "benchmark")
     skill_dir = benchmark_root / "skill"
     tool_dir = benchmark_root / "tool"
+    gui_dir = benchmark_root / "gui"
+    cli_only = getattr(args, "cli_only", False)
 
-    phases: list[tuple[str, Path, bool]] = []
+    cfg = load_config(args.config)
+
+    # Phase tuple: (name, dir, skill_mode, agent_override).
+    # agent_override=None means the phase inherits the suite-level agent
+    # (CLI --agent or cfg.agent.agent_type); gui forces openharness-ext
+    # because no other agent can drive the Android device.
+    phases: list[tuple[str, Path, bool, str | None]] = []
     if skill_dir.is_dir():
-        phases.append(("skill", skill_dir, True))
+        phases.append(("skill", skill_dir, True, None))
     if tool_dir.is_dir():
-        phases.append(("tool", tool_dir, False))
+        phases.append(("tool", tool_dir, False, None))
+
+    gui_skipped_reason: str | None = None
+    if gui_dir.is_dir():
+        if cli_only:
+            gui_skipped_reason = "--cli-only set"
+        else:
+            # Validate gui prereqs once, before any phase runs, so the user
+            # finds out at second 0 rather than after the 150 CLI tasks.
+            pool = _resolve_device_pool(cfg, getattr(args, "oh_settings", None))
+            if not pool:
+                print(
+                    "[suite] ERROR: benchmark suite includes the gui subset (50 tasks) "
+                    "but no Android device is available. Either:\n"
+                    "  - Configure android.emulator_pool in config.yaml (or mobile_gui.device_serial in --oh-settings), or\n"
+                    "  - Rerun with --cli-only to skip the gui subset (150 tasks).",
+                    file=sys.stderr,
+                )
+                sys.exit(2)
+            if not getattr(args, "oh_settings", None):
+                print(
+                    "[suite] ERROR: gui subset requires --oh-settings (the openharness-ext "
+                    "agent reads model/api_key/base_url from it). Either:\n"
+                    "  - Pass --oh-settings /path/to/oh-settings.json, or\n"
+                    "  - Rerun with --cli-only to skip the gui subset (150 tasks).",
+                    file=sys.stderr,
+                )
+                sys.exit(2)
+            phases.append(("gui", gui_dir, False, "openharness-ext"))
 
     if not phases:
         print(f"No benchmark suite found under {benchmark_root.resolve()}/"
-              f" (expected benchmark/skill and/or benchmark/tool).")
+              f" (expected benchmark/skill, benchmark/tool, and/or benchmark/gui).")
         sys.exit(1)
 
-    cfg = load_config(args.config)
     model_id = args.model or cfg.model.model_id
     base_trace_dir = args.trace_dir or cfg.defaults.trace_dir
     parent_trace_dir = _make_trace_dir(base_trace_dir, model_id, cfg.agent.agent_type)
 
     print(f"[suite] Benchmark suite → {parent_trace_dir}")
-    print(f"[suite] Phases: {[p[0] for p in phases]}\n")
+    print(f"[suite] Phases: {[p[0] for p in phases]}")
+    if gui_skipped_reason:
+        print(f"[suite] gui phase skipped ({gui_skipped_reason})")
+    print()
 
-    for phase_name, phase_dir, skill_mode in phases:
+    for phase_name, phase_dir, skill_mode, agent_override in phases:
         print(f"\n{'#'*60}")
-        print(f"# PHASE: {phase_name}  ({phase_dir}, skill_mode={skill_mode})")
+        print(f"# PHASE: {phase_name}  ({phase_dir}, skill_mode={skill_mode}"
+              + (f", agent={agent_override}" if agent_override else "")
+              + ")")
         print(f"{'#'*60}\n")
         phase_args = copy.copy(args)
         phase_args.tasks_dir = str(phase_dir)
         phase_args.trace_dir = str(parent_trace_dir / phase_name)
         phase_args._skip_make_trace_dir = True
         phase_args._skill_mode_override = skill_mode
+        if agent_override is not None:
+            # Force agent per phase (gui → openharness-ext). The suite-level
+            # --agent / cfg.agent.agent_type still wins for non-gui phases.
+            # --docker-image is left as-is: if the user passed one explicitly
+            # it overrides every phase's default image; otherwise cmd_batch
+            # picks the right default from the (possibly overridden) agent.
+            phase_args.agent = agent_override
         cmd_batch(phase_args)
 
 
@@ -1974,10 +2032,15 @@ def main(argv: list[str] | None = None) -> None:
     # batch
     p_batch = sub.add_parser("batch", help="Run all tasks in parallel")
     p_batch.add_argument("--tasks-dir", default=None,
-                         help="Tasks directory. If omitted, runs the full benchmark/ suite: "
-                              "benchmark/skill in skill mode and benchmark/tool in tool mode.")
+                         help="Tasks directory. If omitted, runs the full benchmark/ suite (200 tasks): "
+                              "benchmark/skill in skill mode, benchmark/tool in tool mode, and "
+                              "benchmark/gui (forced to openharness-ext; needs emulator pool + --oh-settings). "
+                              "Use --cli-only to skip the gui subset.")
     p_batch.add_argument("--benchmark-root", default=None,
                          help="Override the benchmark/ root used when --tasks-dir is omitted (default: ./benchmark).")
+    p_batch.add_argument("--cli-only", action="store_true",
+                         help="When --tasks-dir is omitted, run only the CLI subsets "
+                              "(skill + tool = 150 tasks) and skip the gui subset.")
     p_batch.add_argument("--filter", default=None, help="Only run tasks matching this substring (e.g. 'en_' or 'T01')")
     p_batch.add_argument("--parallel", type=int, default=4, help="Number of parallel workers (default: 4)")
     p_batch.add_argument("--model", default=None)
