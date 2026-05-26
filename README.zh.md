@@ -97,8 +97,8 @@
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # 2. clone 仓库并进入包目录
-git clone https://github.com/Haiyang-W/Daily-Bench.git
-cd Daily-Bench/claw-anything
+git clone https://github.com/LiberCoders/CLaw-Anything.git
+cd CLaw-Anything
 
 # 3. 创建虚拟环境并安装依赖
 uv venv --python 3.11
