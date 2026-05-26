@@ -16,7 +16,7 @@ from typing import Any
 
 log = logging.getLogger(__name__)
 
-_DEFAULT_LOG_DIR = Path(__file__).resolve().parent.parent.parent.parent / "llm_logs"
+_DEFAULT_LOG_DIR = Path(__file__).resolve().parent.parent.parent / "llm_logs"
 
 _LOG_DIR: Path | None = None
 _lock = threading.Lock()
@@ -26,7 +26,7 @@ _file_locks: dict[str, threading.Lock] = {}
 def _get_log_dir() -> Path:
     global _LOG_DIR
     if _LOG_DIR is None:
-        env_dir = os.environ.get("LLM_LOG_DIR")
+        env_dir = os.environ.get("CLAW_ANYTHING_LLM_LOG_DIR")
         _LOG_DIR = Path(env_dir) if env_dir else _DEFAULT_LOG_DIR
     _LOG_DIR.mkdir(parents=True, exist_ok=True)
     return _LOG_DIR

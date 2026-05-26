@@ -781,6 +781,8 @@ def cmd_run(args: argparse.Namespace) -> None:
     else:
         trace_dir = _make_trace_dir(base_trace_dir, model_id, agent_type)
 
+    os.environ["CLAW_ANYTHING_LLM_LOG_DIR"] = str(trace_dir / "llm_logs")
+
     mode = "trial-in-container" if trial_in_container else "local"
     print(f"Agent: {agent_type} | Model: {model_id} | mode: {mode}")
 

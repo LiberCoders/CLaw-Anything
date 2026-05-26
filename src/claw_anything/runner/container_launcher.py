@@ -342,7 +342,7 @@ def run_trial_in_container(
     cmd += ["-e", "HOME=/tmp"]
     # Redirect LLM call logs to the mounted /out volume so the container user
     # (non-root) can write them; the default /opt/llm_logs is root-owned.
-    cmd += ["-e", "LLM_LOG_DIR=/out/llm_logs"]
+    cmd += ["-e", "CLAW_ANYTHING_LLM_LOG_DIR=/out/llm_logs"]
     # Force unbuffered stdout/stderr so the inner claw-anything's logs stream to the
     # host in real time. Without this, Python block-buffers when stdout is a
     # pipe (not a TTY), so progress is invisible until the process exits and
