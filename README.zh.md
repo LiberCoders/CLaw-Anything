@@ -42,7 +42,7 @@ Claw-Anything 将这一理念落地，沿着三个真实世界上下文维度评
 
 
 ## 新闻
-
+- 🛠️ [2026-05-27] TODO：一键评测，让使用更简单。目前还不够好 —— 敬请期待 :)
 - 📄 [2026-05-26] [arXiv](https://arxiv.org/pdf/2605.26086) 预印本已发布。
 - 🚀 [2026-05-26] 数据流水线已发布 —— 两阶段 `build-persona` → `gen-eval` 流程可扩展至 2,000 个训练环境，为评测基准提供数据生成能力。
 - 📊 [2026-05-26] 评测基准与训练环境已发布。
@@ -136,12 +136,13 @@ claw-anything build-image --agent loop          # 最精简镜像：claw-anythin
 claw-anything build-image --agent openharness   # vanilla OH 镜像：claw-anything-oh
 ```
 
-> 构建 OH-Ext 镜像需要 `adb` 二进制和 OpenHarnessExtended 源码。要么让脚本把 OH-Ext clone 到 `vendor/`、仅提供 `ADB_PATH`，要么两者都显式指定：
+> 构建 OH-Ext 镜像需要 `adb` 二进制和 [OpenHarnessExtended](https://github.com/LiberCoders/OpenHarnessExtended) 源码。要么让脚本把 OH-Ext clone 到 `vendor/`、仅提供 `ADB_PATH`，要么两者都显式指定：
 > ```bash
 > OH_EXT_DIR=$HOME/code/OpenHarnessExtended \
 > ADB_PATH=$HOME/android-sdk/platform-tools/adb \
 >   scripts/build_oh_ext_image.sh
 > ```
+> 镜像期望 OH-Ext 工作副本位于 **`main-clawgui`** 分支 —— 不在该分支时构建脚本会打印 WARNING。OH settings 样例文件：[`examples/oh-settings.example.json`](examples/oh-settings.example.json)（复制后填好 `api_key`、`base_url` 等字段后即可使用）。
 
 **可选 extras**（定义在 `pyproject.toml`）：
 
@@ -348,18 +349,22 @@ src/claw_anything/      # 核心包
   ├─ models/            # pydantic 模型（task, message, trace, scoring）
   └─ trace/             # JSONL trace 读写
 mock_services/          # FastAPI mock 服务（CLI + GUI 应用镜像）
-docker/oh/              # sitecustomize.py（OH 镜像内的日期覆盖补丁）
+docker/oh/              # patch_*.py —— 构建期注入 OH 镜像的补丁脚本
+                        #   patch_print_mode_usage.py    —— stream-json 中透出每轮 `usage`
+                        #   patch_openai_client.py       —— 工具调用时保留 `stream_options.include_usage`
+                        #   patch_environment_date.py    —— 让 OH 读取 CLAW_TASK_EXECUTION_DATE 环境变量
 scripts/                # build_{loop,oh,oh_ext}_image.sh
 Dockerfile.{loop,oh,oh_ext}   # 每个 agent backend 一个 Dockerfile
 benchmark/              # 200 个人工核验任务
-  ├─ skill/             # 100 个 skill 模式任务（基于活动日志的巡视）
-  └─ tool/              # 50 个 tool 模式任务（mock-service API 调用）
+  ├─ skill/             # 100 个 skill 模式 CLI 任务（智能体按需动态加载工具）
+  ├─ tool/              # 50 个 tool 模式 CLI 任务（智能体预加载完整工具集）
+  └─ gui/               # 50 个 CLI + GUI 任务
 personas/               # 手写 persona YAML（build-persona 的输入）
 seed_tasks/             # 抽象任务模板（M000–Mxxx）
 seed_noise/             # persona 构建时注入的噪声模板
 gold_envs/              # build-persona 的产物（persona + fixtures）
 gen_tasks/              # gen-eval 的产物
-examples/               # 最小可运行示例
+examples/               # 最小可运行示例 + oh-settings.example.json（OH settings 模板）
 template/               # 任务作者用的 task.yaml / grader.py 模板
 docs/                   # 任务编写文档
 ```

@@ -1,0 +1,55 @@
+{
+  "active_profile": "default",
+  "api_key": "YOUR_API_KEY",
+  "max_tokens": 16384,
+  "context_window_tokens": 200000,
+  "auto_compact_threshold_tokens": 999999999,
+  "mobile_gui": {
+    "device_transport": "adb",
+    "device_serial": "",
+    "adb_path": "/path/to/platform-tools/adb",
+    "gui_backend": {
+      "type": "gui_plus",
+      "base_url": "YOUR_GUI_BACKEND_BASE_URL",
+      "api_key": "YOUR_API_KEY",
+      "model": "GUI-Owl-1.5-4B-Instruct",
+      "tls_verify": false,
+      "max_tokens": 2048,
+      "history_n": 4
+    }
+  },
+  "print_mode": {
+    "stream_json_extra_fields": [
+      "usage"
+    ]
+  },
+  "prompt_fields": {
+    "environment": true,
+    "session_mode": true,
+    "reasoning_settings": true,
+    "available_skills": true,
+    "delegation_and_subagents": true,
+    "project_instructions": true,
+    "local_environment_rules": false,
+    "issue_context": true,
+    "pull_request_comments": true,
+    "active_repo_context": true,
+    "project_memory": true,
+    "relevant_memories": true,
+    "mobile_phone_apps": true
+  },
+  "profiles": {
+    "default": {
+      "label": "Default OpenAI Compatible",
+      "provider": "openai",
+      "api_format": "openai",
+      "auth_source": "openai_api_key",
+      "default_model": "YOUR_MODEL_NAME",
+      "last_model": "YOUR_MODEL_NAME",
+      "base_url": "YOUR_BASE_URL",
+      "allowed_models": [
+        "YOUR_MODEL_NAME"
+      ]
+    }
+  }
+}

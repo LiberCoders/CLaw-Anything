@@ -27,7 +27,7 @@ Claw-Anything operationalizes this view, evaluating always-on LLM agents across 
 >
 > [Yusong Lin](https://github.com/icexiaoche), [Xinyuan Liang](https://github.com/xuan112358), [Haiyang Wang](https://haiyang-w.github.io/)<sup>†</sup>, [Qipeng Gu](https://openreview.net/profile?id=~Qipeng_Gu2), [Siqi Cheng](https://openreview.net/profile?id=~Siqi_Cheng3)<br>
 > [Jiangui Chen](https://chriskuei.github.io/), [Shuzhe Wu](https://scholar.google.com/citations?user=CkqRXikAAAAJ&hl=en), [Feiyang Pan](https://feiyang.github.io/), [Lue Fan](https://lue.fan/), [Sanyuan Zhao](https://scholar.google.com/citations?user=t7dAaE8AAAAJ&hl=zh-CN)<sup>†</sup>, [Dandan Tu](https://scholar.google.com/citations?user=nf8bdFYAAAAJ&hl=zh-CN)<sup>†</sup>
-> 
+>
 ><sup>†</sup> Corresponding authors.
 >
 > Primary contact: Yusong Lin (linyusong4@huawei.com), Haiyang Wang (haiyang.wang@huawei.com)
@@ -173,12 +173,13 @@ claw-anything build-image --agent loop          # smallest image: claw-anything-
 claw-anything build-image --agent openharness   # vanilla OH:    claw-anything-oh
 ```
 
-> The OH-Ext build needs an `adb` binary and the OpenHarnessExtended source. Either let the script clone OH-Ext into `vendor/` and supply `ADB_PATH`, or set both:
+> The OH-Ext build needs an `adb` binary and the [OpenHarnessExtended](https://github.com/LiberCoders/OpenHarnessExtended) source. Either let the script clone OH-Ext into `vendor/` and supply `ADB_PATH`, or set both:
 > ```bash
 > OH_EXT_DIR=$HOME/code/OpenHarnessExtended \
 > ADB_PATH=$HOME/android-sdk/platform-tools/adb \
 >   scripts/build_oh_ext_image.sh
 > ```
+> The image expects the OH-Ext working copy to be on branch **`main-clawgui`** — the build script prints a warning otherwise. Sample OH settings file: [`examples/oh-settings.example.json`](examples/oh-settings.example.json) (copy and fill in `api_key`, `base_url`, etc.).
 
 **Available extras** (declared in `pyproject.toml`):
 
@@ -372,7 +373,10 @@ src/claw_anything/      # core package
   ├─ models/            # pydantic models (task, message, trace, scoring)
   └─ trace/             # JSONL trace reader/writer
 mock_services/          # FastAPI mock services (CLI + GUI app shadows)
-docker/oh/              # sitecustomize.py (date override shipped into the OH image)
+docker/oh/              # patch_*.py — build-time patches baked into the OH image
+                        #   patch_print_mode_usage.py    — surface per-turn `usage` in stream-json
+                        #   patch_openai_client.py       — keep `stream_options.include_usage` with tools
+                        #   patch_environment_date.py    — honour CLAW_TASK_EXECUTION_DATE env var
 scripts/                # build_{loop,oh,oh_ext}_image.sh
 Dockerfile.{loop,oh,oh_ext}   # one Dockerfile per agent backend
 benchmark/              # 200 human-verified tasks
@@ -384,7 +388,7 @@ seed_tasks/             # abstract task templates (M000–Mxxx)
 seed_noise/             # noise templates injected during persona build
 gold_envs/              # outputs of build-persona (persona + fixtures)
 gen_tasks/              # outputs of gen-eval
-examples/               # minimal runnable examples
+examples/               # minimal runnable examples + oh-settings.example.json (OH settings template)
 template/               # task.yaml / grader.py templates for authors
 docs/                   # task authoring guides
 ```
