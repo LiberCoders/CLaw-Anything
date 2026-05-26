@@ -29,11 +29,11 @@ cp    "$REPO_ROOT/requirements.txt" "$TMPCTX/"
 cp -r "$REPO_ROOT/src"              "$TMPCTX/claw-anything/src"
 cp -r "$REPO_ROOT/mock_services"    "$TMPCTX/claw-anything/mock_services"
 
-# sitecustomize.py — auto-imported by Python at startup inside the image;
-# applies env-var-gated monkey patches to vanilla openharness-ai. See the
-# file's docstring and Dockerfile.oh for details.
+# Build-time patch scripts — each rewrites one line of openharness-ai 0.1.9
+# at image-build time. See Dockerfile.oh for the invocation order and each
+# patch script's docstring for the upstream line it edits.
 mkdir -p "$TMPCTX/oh"
-cp "$REPO_ROOT/docker/oh/sitecustomize.py" "$TMPCTX/oh/sitecustomize.py"
+cp "$REPO_ROOT"/docker/oh/patch_*.py "$TMPCTX/oh/"
 
 # Dockerfile
 cp "$REPO_ROOT/Dockerfile.oh" "$TMPCTX/"

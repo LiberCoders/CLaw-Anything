@@ -146,6 +146,7 @@ def _split_turns(events: list[dict]) -> list[dict]:
     while i < n:
         progress_anchor = i
         text = ""
+        usage: dict | None = None
         tool_uses: list[dict] = []   # {id, name, input}
         tool_results: list[dict] = []  # {name, output, is_error}
 
@@ -158,6 +159,16 @@ def _split_turns(events: list[dict]) -> list[dict]:
             elif t == "assistant_complete":
                 # Authoritative text of the turn.
                 text = events[i].get("text", text)
+                # ``usage`` enters the stream via two paths: the build-time
+                # patch baked into claw-anything-oh
+                # (docker/oh/patch_print_mode_usage.py) for vanilla OH, or
+                # OH-Ext emitting it natively when its
+                # ``settings.print_mode.stream_json_extra_fields`` includes
+                # ``"usage"``. The build-time patch fails loudly on OH bumps;
+                # this ``None`` fallback only triggers for an unpatched ``oh``
+                # on PATH (e.g. local dev outside the image), in which case
+                # ``_emit_oh_turns`` records a per-turn failure.
+                usage = events[i].get("usage")
                 i += 1
                 break
             elif t in ("system", "status", "compact_progress"):
@@ -195,6 +206,7 @@ def _split_turns(events: list[dict]) -> list[dict]:
                 "text": text,
                 "tool_uses": tool_uses,
                 "tool_results": tool_results,
+                "usage": usage,
             })
 
         # Defensive: avoid infinite loops if no event in this iteration matched.
@@ -406,6 +418,24 @@ class OpenHarnessAgent(BaseAgent):
         """
         return OH_BUILTIN_TOOLS
 
+    def print_mode_extra_fields(self) -> list[str]:
+        """Opt-in stream-json extra fields this adapter wants OH to emit.
+
+        Vanilla OH (this base class) returns ``[]`` because vanilla OH has
+        no ``print_mode`` setting — the field would be ignored at best and
+        rejected at worst. Vanilla OH gets ``usage`` via the build-time
+        patch shipped in ``docker/oh/patch_print_mode_usage.py`` (which
+        unconditionally injects ``usage`` into ``assistant_complete``)
+        rather than through this declarative settings path.
+
+        OH-Ext (and any future fork with native ``PrintModeSettings``)
+        overrides this to return ``["usage"]`` (plus future identifiers),
+        which ``generate_plugin_files`` merges into the per-trial
+        ``settings.json`` so OH-Ext's ``run_print_mode`` emits the
+        corresponding extra fields.
+        """
+        return []
+
     # ------------------------------------------------------------------ #
     #  Core execution                                                     #
     # ------------------------------------------------------------------ #
@@ -477,6 +507,7 @@ class OpenHarnessAgent(BaseAgent):
             extra_denied_tools=extra_denied,
             settings_path=self.settings_path,
             skill_mode=skill_mode,
+            print_mode_extra_fields=self.print_mode_extra_fields() or None,
         )
         _log(f"{self.LOG_PREFIX} config dir: {cfg_root}")
         return cfg_root
@@ -489,11 +520,13 @@ class OpenHarnessAgent(BaseAgent):
         not set here — OH reads it from its settings file.
 
         ``CLAW_TASK_EXECUTION_DATE`` (when ``task.execution_date`` is set) is
-        consumed by the ``sitecustomize`` shipped in claw-anything-oh:
-        it monkey-patches ``openharness.prompts.environment.get_environment_info``
-        so the system prompt's ``# Environment`` date matches the task's
-        simulated date instead of the container wall clock. OH-Ext uses its
-        own ``settings.prompt_meta.today`` path and ignores this env var.
+        consumed by the build-time patch baked into claw-anything-oh
+        (``docker/oh/patch_environment_date.py``), which rewrites
+        ``openharness.prompts.environment.get_environment_info`` to read this
+        env var at call time. That keeps the system prompt's ``# Environment``
+        date aligned with the task's simulated date instead of the container
+        wall clock. OH-Ext uses its own ``settings.prompt_meta.today`` path
+        and ignores this env var.
         """
         env = dict(os.environ)
         env["OPENHARNESS_CONFIG_DIR"] = str(cfg_root)
@@ -634,8 +667,15 @@ class OpenHarnessAgent(BaseAgent):
         the next turn begins. BaseAgent has already written TraceStart + the
         initial user prompt message, and writes TraceEnd afterwards, so this
         only emits the assistant / tool-result turns in between. Model time is
-        left at zero so BaseAgent derives it as ``wall - tool`` (stream-json
-        carries no token usage).
+        left at zero so BaseAgent derives it as ``wall - tool``.
+
+        Token usage is read from the per-turn ``usage`` field on each
+        ``assistant_complete`` event. Vanilla OH carries it via the
+        build-time patch (``docker/oh/patch_print_mode_usage.py``); OH-Ext
+        emits it natively when ``settings.print_mode.stream_json_extra_fields``
+        includes ``"usage"``. If the field is missing on a given turn we
+        fall back to ``TokenUsage(0, 0)`` and record a per-turn failure so
+        the gap surfaces in the trace.
         """
         dispatches = _read_dispatch_log(dispatch_log)
         turns = _split_turns(oh_events)
@@ -645,13 +685,12 @@ class OpenHarnessAgent(BaseAgent):
         for ev in oh_events:
             if ev.get("type") == "error" and not ev.get("recoverable", True):
                 self.record_failure(f"oh-error: {ev.get('message', '')[:200]}")
-        # stream-json does not surface token usage (v1 limitation).
-        self.record_failure("tokens-missing-from-stream-json")
 
         for turn in turns:
             text = turn["text"]
             tool_uses = turn["tool_uses"]
             tool_results = turn["tool_results"]
+            usage = turn.get("usage")
 
             # Assistant message (text + tool_use blocks).
             blocks: list[ContentBlock] = []
@@ -663,9 +702,18 @@ class OpenHarnessAgent(BaseAgent):
                     name=tu["name"],
                     input=tu["input"],
                 ))
+            if usage is None:
+                # Patch broke or running against an unpatched OH — canary signal.
+                self.record_failure("usage-missing-from-stream-json")
+                token_usage = TokenUsage(input_tokens=0, output_tokens=0)
+            else:
+                token_usage = TokenUsage(
+                    input_tokens=int(usage.get("input_tokens", 0) or 0),
+                    output_tokens=int(usage.get("output_tokens", 0) or 0),
+                )
             self.emit_message(
                 Message(role="assistant", content=blocks),
-                TokenUsage(input_tokens=0, output_tokens=0),
+                token_usage,
             )
 
             # ToolDispatch events + tool-result user message.

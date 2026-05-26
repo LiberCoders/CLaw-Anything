@@ -39,6 +39,17 @@ OH_EXT_ONLY_BUILTIN_TOOLS: list[str] = [
 OH_EXT_BUILTIN_TOOLS: list[str] = [*OH_BUILTIN_TOOLS, *OH_EXT_ONLY_BUILTIN_TOOLS]
 
 
+#: stream-json extra fields claw-anything always wants OH-Ext to emit.
+#: Merged into the per-trial ``settings.json`` via ``generate_plugin_files``
+#: (union with whatever the user's base settings already declared, so the
+#: operator can also opt in to fields beyond what we hardcode here without
+#: this list having to change). Extend when claw-anything's trace pipeline
+#: starts consuming a new optional field that OH-Ext supports.
+OH_EXT_PRINT_MODE_EXTRA_FIELDS: list[str] = [
+    "usage",
+]
+
+
 class OpenHarnessExtAgent(OpenHarnessAgent):
     """OpenHarnessExtended variant — adds the fork's expert-* builtin tools.
 
@@ -50,3 +61,13 @@ class OpenHarnessExtAgent(OpenHarnessAgent):
 
     def builtin_tools_for_deny(self) -> list[str]:
         return OH_EXT_BUILTIN_TOOLS
+
+    def print_mode_extra_fields(self) -> list[str]:
+        """OH-Ext supports ``PrintModeSettings`` natively; opt in to the
+        fields claw-anything's trace pipeline depends on.
+
+        Vanilla OH stays on the base class default (``[]``) and gets
+        ``usage`` via the build-time patch instead — see
+        ``OpenHarnessAgent.print_mode_extra_fields`` for the rationale.
+        """
+        return list(OH_EXT_PRINT_MODE_EXTRA_FIELDS)

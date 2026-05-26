@@ -74,6 +74,7 @@ def _build_settings(
     base_settings: dict | None = None,
     apps: list[dict] | None = None,
     execution_date: str | None = None,
+    print_mode_extra_fields: list[str] | None = None,
 ) -> dict:
     """Merge clawanything-required fields onto a (possibly user-provided) base settings dict.
 
@@ -94,6 +95,12 @@ def _build_settings(
         ``today`` (execution_date, all tasks) and ``apps`` (mobile_gui tasks
         only). OH forwards this to the GUI backend at runtime. apps is omitted
         when empty; today is omitted when None.
+      - ``print_mode.stream_json_extra_fields`` — additive: user's existing
+        list kept, ``print_mode_extra_fields`` unioned in. Lets the agent
+        declare which optional stream-json fields claw-anything's adapter
+        needs (e.g. OH-Ext: ``["usage"]``). Vanilla OH ignores this section
+        entirely; injecting it is harmless there because vanilla OH's
+        Settings model tolerates unknown fields.
       - All other top-level fields from the base settings are preserved
         verbatim — that's the point of providing them.
     """
@@ -133,6 +140,22 @@ def _build_settings(
             existing_meta.update(meta)
         else:
             settings["prompt_meta"] = meta
+
+    # ``print_mode`` is only emitted when the agent actually requests extra
+    # fields. Vanilla OH never sets this (its agent passes None/[]) so its
+    # settings.json stays free of the key regardless of whether vanilla OH's
+    # pydantic model would have tolerated the unknown section.
+    if print_mode_extra_fields:
+        pm = settings.get("print_mode")
+        if not isinstance(pm, dict):
+            pm = {}
+        existing_pm_fields = pm.get("stream_json_extra_fields") or []
+        if not isinstance(existing_pm_fields, list):
+            existing_pm_fields = []
+        pm["stream_json_extra_fields"] = list(
+            dict.fromkeys([*existing_pm_fields, *print_mode_extra_fields])
+        )
+        settings["print_mode"] = pm
 
     return settings
 
@@ -401,6 +424,7 @@ def generate_plugin_files(
     extra_denied_tools: list[str] | None = None,
     settings_path: Path | None = None,
     skill_mode: bool = False,
+    print_mode_extra_fields: list[str] | None = None,
 ) -> None:
     """Materialise plugin.json, tools/clawanything_tools.py and settings.json on disk.
 
@@ -444,6 +468,7 @@ def generate_plugin_files(
         base_settings=base_settings,
         apps=task.apps or None,
         execution_date=task.execution_date or None,
+        print_mode_extra_fields=print_mode_extra_fields,
     )
 
     (plugin_dir / "plugin.json").write_text(

@@ -42,16 +42,21 @@ RUN pip install 'openharness-ai==0.1.9' \
         --no-cache-dir \
     || pip install 'openharness-ai==0.1.9' --no-cache-dir
 
-# ── sitecustomize for runtime patching of OH ─────────────────────────────────
-# Python auto-imports ``sitecustomize`` from site-packages at interpreter
-# startup. The shipped file (see ``docker/oh/sitecustomize.py``) installs
-# env-var-gated monkey patches that backport a handful of OH-Ext mechanisms
-# vanilla openharness-ai lacks (e.g. ``CLAW_TASK_EXECUTION_DATE`` →
-# ``EnvironmentInfo.date`` override). Patches stay no-op when their gating
-# env var is unset, so stock ``oh`` runs are unaffected.
-COPY oh/sitecustomize.py /tmp/sitecustomize.py
-RUN SITE_DIR="$(python -c 'import site; print(site.getsitepackages()[0])')" \
-    && cp /tmp/sitecustomize.py "$SITE_DIR/sitecustomize.py" \
-    && rm /tmp/sitecustomize.py
+# ── Build-time patches for openharness-ai 0.1.9 ──────────────────────────────
+# Each script does a single OLD→NEW string substitution in the installed OH
+# source and raises if the anchor line is gone, so a future openharness-ai
+# bump fails the build loudly instead of silently regressing behaviour.
+# See each ``docker/oh/patch_*.py`` for the specific upstream line it edits
+# and why.
+#   - patch_print_mode_usage.py  → emit ``usage`` in stream-json assistant_complete
+#   - patch_openai_client.py     → keep ``stream_options`` so per-turn usage chunks arrive
+#   - patch_environment_date.py  → honour ``CLAW_TASK_EXECUTION_DATE`` env var
+COPY oh/patch_print_mode_usage.py /tmp/patch_print_mode_usage.py
+COPY oh/patch_openai_client.py    /tmp/patch_openai_client.py
+COPY oh/patch_environment_date.py /tmp/patch_environment_date.py
+RUN python /tmp/patch_print_mode_usage.py \
+ && python /tmp/patch_openai_client.py \
+ && python /tmp/patch_environment_date.py \
+ && rm /tmp/patch_*.py
 
 ENTRYPOINT ["claw-anything"]

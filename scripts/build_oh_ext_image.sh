@@ -32,6 +32,10 @@ REGISTRY="${REGISTRY:-docker.m.daocloud.io}"
 #: repo's history.
 OH_EXT_CLONE_URL="https://github.com/LiberCoders/OpenHarnessExtended.git"
 OH_EXT_VENDOR_DIR="$REPO_ROOT/vendor/OpenHarnessExtended"
+#: Branch this image expects in the OH-Ext working copy. Auto-clone checks out
+#: this branch; existing OH_EXT_DIR working copies are warned (not aborted) if
+#: on a different branch.
+OH_EXT_BRANCH="main-clawgui"
 
 # ── Resolve OH_EXT_DIR (env override → vendor clone → fatal) ─────────────────
 if [[ -z "$OH_EXT_DIR" ]]; then
@@ -39,9 +43,9 @@ if [[ -z "$OH_EXT_DIR" ]]; then
         echo "→ Using existing vendor clone: $OH_EXT_VENDOR_DIR"
         OH_EXT_DIR="$OH_EXT_VENDOR_DIR"
     else
-        echo "→ OH_EXT_DIR unset — cloning $OH_EXT_CLONE_URL into $OH_EXT_VENDOR_DIR"
+        echo "→ OH_EXT_DIR unset — cloning $OH_EXT_CLONE_URL ($OH_EXT_BRANCH) into $OH_EXT_VENDOR_DIR"
         mkdir -p "$(dirname "$OH_EXT_VENDOR_DIR")"
-        if git clone --depth=1 "$OH_EXT_CLONE_URL" "$OH_EXT_VENDOR_DIR"; then
+        if git clone --depth=1 --branch "$OH_EXT_BRANCH" "$OH_EXT_CLONE_URL" "$OH_EXT_VENDOR_DIR"; then
             OH_EXT_DIR="$OH_EXT_VENDOR_DIR"
         else
             cat >&2 <<EOF
@@ -84,6 +88,16 @@ for path in "$OH_EXT_DIR" "$ADB_PATH"; do
         exit 1
     fi
 done
+
+# Warn if OH_EXT_DIR is not on the expected branch. Skipped silently when the
+# directory isn't a git checkout (e.g. an extracted tarball) — that's a valid
+# offline-friendly setup.
+if [[ -d "$OH_EXT_DIR/.git" ]]; then
+    current_branch="$(git -C "$OH_EXT_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null || echo '?')"
+    if [[ "$current_branch" != "$OH_EXT_BRANCH" ]]; then
+        echo "WARNING: $OH_EXT_DIR is on branch '$current_branch', expected '$OH_EXT_BRANCH'. Build continues; the image may behave unexpectedly." >&2
+    fi
+fi
 
 # ── Build context ─────────────────────────────────────────────────────────────
 TMPCTX=$(mktemp -d)
