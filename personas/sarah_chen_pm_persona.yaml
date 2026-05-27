@@ -1,0 +1,175 @@
+persona_id: PM01
+persona_name: Sarah Chen
+language: en
+
+role: senior product manager owning the developer-platform vertical at a Series B B2B SaaS startup
+company: Lattice Cloud (fictional, ~180 employees, post-Series B)
+industry: developer tools / B2B SaaS
+seniority: senior
+
+traits:
+- runs a weekly product review on Thursdays and a customer-feedback sync on Tuesdays
+- writes specs in Notion, ships them via PR review with eng leads
+- coordinates daily across PM / eng / design / sales-engineering through Slack channels
+- prefers async written updates over ad-hoc meetings — defends focus blocks aggressively
+- triages inbound customer feature requests within 48 hours; replies even if the answer is "not now"
+- escalates pricing / contract questions to RevOps; never commits commercial terms herself
+- keeps a personal "decisions log" note that records every non-trivial product call she made
+
+daily_responsibilities:
+- review overnight Slack threads in #platform-eng, #cs-escalations, #design-platform first thing
+- triage feature requests routed in from Customer Success (CS) tickets and sales call notes
+- run 1:1s with 4 direct-report PMs on a rolling cadence
+- update the platform roadmap Notion page and broadcast deltas to stakeholders
+- approve / push back on engineering scope changes for in-flight initiatives
+- summarize weekly platform metrics for the leadership Friday digest
+
+primary_services:
+- gmail
+- calendar
+- claw_notion
+- claw_slack
+- todo
+- meeting
+secondary_services:
+- contacts
+- notes
+- helpdesk
+- crm
+- claw_feishu
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - scheduling
+  - info_triage
+  - decision_making
+  - customer_escalation_triage
+  - cross_team_coordination
+  - spec_review
+  - roadmap_communication
+  implausible_categories:
+  - financial_authorization
+  - hiring_decisions
+  - legal_filings
+  - infrastructure_provisioning
+
+authority:
+  can_approve:
+  - product scope changes within her vertical
+  - engineering trade-offs (cut scope / move milestones) for her own roadmap items
+  - publishing customer-facing roadmap notes after RevOps sign-off
+  - rescheduling her own meetings and her direct reports' 1:1s
+  cannot_approve:
+  - pricing / discount / contract terms (escalate to RevOps)
+  - hiring decisions (escalate to her director)
+  - cross-vertical roadmap commitments (escalate to VP Product)
+  - security / compliance attestations (escalate to Security)
+  communication_style: concise, written-first, decision-oriented; tags owners explicitly; uses bullet structure
+  quality_focus: clarity of decision + clear owner + clear next step; avoids hedging language
+
+business_context:
+  time_window: "2026-04-01 ~ 2026-05-15"
+  work_schedule: Mon–Fri 09:00–18:00 Pacific; protected focus blocks Tue/Thu 14:00–16:00
+  active_issues:
+  - SDK v3 GA slipping by two weeks because of an unresolved auth-rotation bug
+  - one tier-1 customer (Northwind Analytics) escalating about missing audit-log export
+  - design-team capacity contention between platform and growth squads
+  - inbound feature requests outpacing PM triage bandwidth
+  business_goals:
+  - ship SDK v3 GA by 2026-05-08
+  - close the top-3 audit/compliance gaps blocking enterprise renewals
+  - cut platform feature-request triage SLA from 5 days to 48 hours
+  - draft Q3 roadmap proposal by 2026-05-12
+  risk_factors:
+  - SDK v3 GA slip cascading into Q3 roadmap commitments
+  - Northwind escalation reaching their VP if audit-log export isn't promised this quarter
+  - Sarah's PTO 2026-05-18 → 2026-05-22 overlapping with Q3 planning kickoff
+
+data_threads:
+- name: "SDK v3 GA launch coordination"
+  description: "Weekly checkpoints with eng leads, customer comms drafting, and risk-tracking for the SDK v3 GA milestone."
+  involved_services: [gmail, calendar, claw_notion, claw_slack, todo, meeting]
+  involved_records:
+    gmail: []
+    calendar: []
+    claw_notion: []
+    claw_slack: []
+    todo: []
+    meeting: []
+  signal_density: 0.18
+  difficulty: medium
+  category: cross_team_coordination
+  thread_type: standard
+
+- name: "Northwind audit-log export escalation"
+  description: "Tier-1 customer (Northwind Analytics) escalation about missing audit-log export — CS thread, internal Slack debate, and pending roadmap decision."
+  involved_services: [gmail, claw_slack, helpdesk, crm, claw_notion, todo]
+  involved_records:
+    gmail: []
+    claw_slack: []
+    helpdesk: []
+    crm: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.12
+  difficulty: medium
+  category: customer_escalation_triage
+  thread_type: standard
+
+- name: "Inbound feature-request triage backlog"
+  description: "Customer Success-routed feature requests piling up; Sarah triages, links to roadmap themes, and replies within 48h SLA."
+  involved_services: [gmail, helpdesk, claw_notion, todo, claw_slack]
+  involved_records:
+    gmail: []
+    helpdesk: []
+    claw_notion: []
+    todo: []
+    claw_slack: []
+  signal_density: 0.15
+  difficulty: simple
+  category: info_triage
+  thread_type: standard
+
+- name: "Q3 roadmap drafting"
+  description: "Drafting the Q3 roadmap proposal — gathering eng capacity, customer signal, and design constraints; iterating in Notion."
+  involved_services: [claw_notion, gmail, calendar, claw_slack, todo, meeting, contacts]
+  involved_records:
+    claw_notion: []
+    gmail: []
+    calendar: []
+    claw_slack: []
+    todo: []
+    meeting: []
+    contacts: []
+  signal_density: 0.10
+  difficulty: medium
+  category: roadmap_communication
+  thread_type: standard
+
+- name: "Weekly 1:1 cadence with direct reports"
+  description: "Rolling 1:1s with 4 reporting PMs — agenda notes in Notion, todo follow-ups, occasional reschedules."
+  involved_services: [calendar, claw_notion, todo, contacts]
+  involved_records:
+    calendar: []
+    claw_notion: []
+    todo: []
+    contacts: []
+  signal_density: 0.08
+  difficulty: simple
+  category: scheduling
+  thread_type: standard
+
+- name: "Design-team capacity contention"
+  description: "Negotiating design hours between platform and growth squads — Slack debate + Notion proposal + decision log."
+  involved_services: [claw_slack, claw_notion, gmail, todo]
+  involved_records:
+    claw_slack: []
+    claw_notion: []
+    gmail: []
+    todo: []
+  signal_density: 0.07
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
