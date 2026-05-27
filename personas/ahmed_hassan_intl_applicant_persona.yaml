@@ -1,0 +1,172 @@
+persona_id: ACAD07
+persona_name: Ahmed Hassan
+language: en
+
+role: working professional applying to PhD programs in computational economics from a country with strict outbound application logistics; juggling current job + applications + visa research
+company: currently employed at Nile Analytics (fictional, mid-size economics-consulting firm); applying to 8 US/UK/Continental Europe PhD programs
+industry: economics / quantitative research / academic admissions
+seniority: mid
+
+traits:
+- runs application process like a 9-month plan tracked in Notion
+- maintains a Zotero library of ~620 economics papers, organized by sub-field
+- corresponds with potential advisors across 4 time zones — strict 24-hour response window
+- writes statement of purpose drafts in Obsidian, iterates 6+ times per program
+- uses LinkedIn to research advisor labs + identify alumni for warm intros
+- maintains a private "decision matrix" spreadsheet weighing programs across 8 dimensions
+- protective of current employer's confidentiality — never mentions applications on shared channels
+
+daily_responsibilities:
+- review gmail + personal stumail for application + advisor correspondence
+- 60–90 minutes evening on statement / application work
+- maintain spreadsheet of program deadlines + status
+- correspond with potential advisors + alumni
+- complete current-job analytics work during the day
+- track visa / financial-aid research
+
+primary_services:
+- gmail
+- stumail
+- calendar
+- claw_notion
+- claw_obsidian
+- claw_zotero
+secondary_services:
+- todo
+- sheet
+- contacts
+- claw_linkedin
+- notes
+- rss
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - application_admin
+  - networking_followup
+  - decision_making
+  - reading_management
+  - scheduling
+  - info_triage
+  - paper_writing
+  implausible_categories:
+  - customer_pricing_negotiation
+  - hiring_offer_extension
+  - production_incident_management
+  - corporate_financial_authorization
+
+authority:
+  can_approve:
+  - submission of his own application materials
+  - rescheduling his own meetings + advisor calls
+  - committing to specific universities' visit weekends
+  - declining unsolicited recruiter outreach unrelated to PhD search
+  cannot_approve:
+  - making commitments to a program before admit + funding letter in hand
+  - signing letters of recommendation request without recommender consent
+  - sharing employer's data outside the company
+  - committing to TA / RA positions before formal offer
+  communication_style: formal-warm, structured, defers heavily to potential advisors; never assumes familiarity
+  quality_focus: precision in writing + honesty about background; refuses to overstate research experience
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: full-time Sun–Thu day job (local timezone); application work evenings + weekends
+  active_issues:
+  - admission decisions arriving on rolling basis through 2026-05-31
+  - 2 visit weekends overlap by date (have to choose)
+  - 3 recommendation letters need 2 reminder nudges each before final deadlines
+  - visa / financial-aid forms required for any school he commits to
+  business_goals:
+  - decide on PhD destination by 2026-06-15
+  - close out all 8 applications (accept / decline) by 2026-06-20
+  - submit complete visa application within 14 days of program acceptance
+  - notify current employer cleanly once committed
+  risk_factors:
+  - poorly handled visit-weekend conflict damages a high-priority advisor relationship
+  - recommendation reminders sent too aggressively annoys recommenders
+  - committing to a program before vetting funding details
+
+data_threads:
+- name: "PhD application portfolio (8 programs)"
+  description: "Per-program tracker — deadlines, materials, advisor correspondence, status."
+  involved_services: [sheet, claw_notion, gmail, stumail, calendar, todo]
+  involved_records:
+    sheet: []
+    claw_notion: []
+    gmail: []
+    stumail: []
+    calendar: []
+    todo: []
+  signal_density: 0.18
+  difficulty: hard
+  category: application_admin
+  thread_type: standard
+
+- name: "Visit weekend conflict"
+  description: "Two visit weekends overlap; needs careful decline + reschedule asks; politically sensitive."
+  involved_services: [gmail, calendar, contacts, claw_notion, todo]
+  involved_records:
+    gmail: []
+    calendar: []
+    contacts: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.08
+  difficulty: medium
+  category: scheduling
+  thread_type: standard
+
+- name: "Recommendation letter follow-ups"
+  description: "3 recommenders; carefully-timed reminder cadence to avoid annoyance."
+  involved_services: [gmail, contacts, todo, calendar]
+  involved_records:
+    gmail: []
+    contacts: []
+    todo: []
+    calendar: []
+  signal_density: 0.06
+  difficulty: medium
+  category: networking_followup
+  thread_type: standard
+
+- name: "Statement of purpose revisions"
+  description: "Per-program SOP variants; Obsidian draft history; advisor + alumni feedback threads."
+  involved_services: [claw_obsidian, claw_zotero, gmail, todo, claw_notion]
+  involved_records:
+    claw_obsidian: []
+    claw_zotero: []
+    gmail: []
+    todo: []
+    claw_notion: []
+  signal_density: 0.10
+  difficulty: medium
+  category: paper_writing
+  thread_type: standard
+
+- name: "Program decision matrix"
+  description: "Spreadsheet weighing programs across 8 dimensions (advisor fit, funding, location, etc)."
+  involved_services: [sheet, claw_notion, notes, todo]
+  involved_records:
+    sheet: []
+    claw_notion: []
+    notes: []
+    todo: []
+  signal_density: 0.07
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "Alumni warm-intro research"
+  description: "LinkedIn research on alumni from target programs; warm-intro asks via mutual contacts."
+  involved_services: [claw_linkedin, contacts, gmail, todo]
+  involved_records:
+    claw_linkedin: []
+    contacts: []
+    gmail: []
+    todo: []
+  signal_density: 0.06
+  difficulty: simple
+  category: networking_followup
+  thread_type: standard
