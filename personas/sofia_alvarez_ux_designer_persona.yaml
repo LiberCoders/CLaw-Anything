@@ -1,0 +1,169 @@
+persona_id: UX01
+persona_name: Sofia Alvarez
+language: en
+
+role: senior product designer on the consumer-onboarding squad at a consumer fintech company; sole designer for two surfaces
+company: Tessera Money (fictional, ~700 employees, Series D consumer fintech)
+industry: consumer fintech
+seniority: senior
+
+traits:
+- runs a weekly design critique Wednesdays and a quarterly UX-research readout
+- works in Figma all day, but writes design rationale in Notion before shipping
+- treats research findings as load-bearing evidence — refuses to ship without at least one usability signal
+- defends user-research time aggressively when PMs try to skip it for speed
+- maintains a personal "design decisions journal" in Obsidian, indexed by surface and quarter
+- presents at the monthly all-hands when her squad ships something user-facing
+- subscribes to LinkedIn updates from peer designers; saves work she admires
+
+daily_responsibilities:
+- pair with the squad PM on in-flight onboarding-funnel work
+- review prototypes from the squad's junior designer
+- run or attend 1–2 research sessions per week
+- update the design-decisions journal at end of day
+- skim #design-platform Slack and the company-wide #design channel
+- respond to legal/compliance questions about copy and disclosures in onboarding flows
+
+primary_services:
+- gmail
+- calendar
+- claw_notion
+- claw_slack
+- claw_obsidian
+- meeting
+secondary_services:
+- todo
+- contacts
+- notes
+- claw_linkedin
+- slide
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - design_review_coordination
+  - cross_team_coordination
+  - research_planning
+  - decision_making
+  - info_triage
+  - scheduling
+  - launch_communication
+  implausible_categories:
+  - code_deploy_approval
+  - financial_authorization
+  - hiring_decisions
+  - legal_filings
+
+authority:
+  can_approve:
+  - final visual + interaction design for her two owned surfaces
+  - pushing back on PM/eng requests that violate the design system
+  - rescheduling research sessions she owns
+  - publishing internal design rationale notes
+  cannot_approve:
+  - copy that affects regulated disclosures (escalate to Legal + Compliance)
+  - cross-surface design-system changes (escalate to Design Systems team)
+  - launch decisions on revenue-bearing flows without PM sign-off
+  - hiring of other designers (advisory only)
+  communication_style: visual + narrative; frames trade-offs as "what we lose / what we gain"; cites research evidence
+  quality_focus: end-to-end user comprehension over local cleverness; insists on testing every disclosure-heavy step
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 10:00–19:00 Eastern; research sessions Tue 14:00–16:00; deep-work block Thursday mornings
+  active_issues:
+  - onboarding-funnel redesign (Project Lighthouse) shipping in two waves, first wave 2026-05-20
+  - one regulator-facing disclosure copy block flagged by Legal as unclear
+  - usability study scheduled 2026-05-06 needs 8 recruited participants
+  - mid-quarter design-critique cadence under pressure as the squad scales
+  business_goals:
+  - ship Lighthouse wave 1 by 2026-05-20 with all Legal flags closed
+  - complete the 2026-05-06 usability study and publish findings by 2026-05-13
+  - propose updated design-critique format by 2026-05-30
+  - one external talk submitted to a design conference by 2026-06-30
+  risk_factors:
+  - Lighthouse wave 1 slipping past the Q2 marketing window
+  - Legal disclosure rewrite landing late and forcing a last-minute redesign
+  - usability study not getting 8 participants in time, delaying findings
+
+data_threads:
+- name: "Project Lighthouse onboarding redesign"
+  description: "Two-wave onboarding redesign; design + PM + eng coordination across Notion, Slack, calendar holds."
+  involved_services: [claw_notion, claw_slack, gmail, calendar, todo, meeting]
+  involved_records:
+    claw_notion: []
+    claw_slack: []
+    gmail: []
+    calendar: []
+    todo: []
+    meeting: []
+  signal_density: 0.18
+  difficulty: medium
+  category: cross_team_coordination
+  thread_type: standard
+
+- name: "Disclosure copy compliance review"
+  description: "Sensitive copy rewrite — Legal flagged a regulator-facing block as ambiguous; needs Sofia + Legal + PM alignment."
+  involved_services: [gmail, claw_notion, claw_slack, todo]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    claw_slack: []
+    todo: []
+  signal_density: 0.10
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "Usability study 2026-05-06"
+  description: "Recruiting 8 participants, prepping discussion guide, scheduling, post-study analysis."
+  involved_services: [calendar, claw_notion, gmail, contacts, todo]
+  involved_records:
+    calendar: []
+    claw_notion: []
+    gmail: []
+    contacts: []
+    todo: []
+  signal_density: 0.11
+  difficulty: simple
+  category: research_planning
+  thread_type: standard
+
+- name: "Wednesday design critique"
+  description: "Weekly critique session — agenda, attendee rotation, follow-up actions."
+  involved_services: [calendar, claw_notion, claw_slack, todo]
+  involved_records:
+    calendar: []
+    claw_notion: []
+    claw_slack: []
+    todo: []
+  signal_density: 0.06
+  difficulty: simple
+  category: scheduling
+  thread_type: standard
+
+- name: "Design conference submission"
+  description: "Drafting a talk proposal in Obsidian; tracking submission deadlines; LinkedIn networking with prior speakers."
+  involved_services: [claw_obsidian, todo, claw_linkedin, gmail]
+  involved_records:
+    claw_obsidian: []
+    todo: []
+    claw_linkedin: []
+    gmail: []
+  signal_density: 0.05
+  difficulty: medium
+  category: launch_communication
+  thread_type: standard
+
+- name: "Design decisions journal"
+  description: "Daily end-of-day entries in Obsidian; surface-by-surface decision log used for promo packets and research."
+  involved_services: [claw_obsidian, notes, todo]
+  involved_records:
+    claw_obsidian: []
+    notes: []
+    todo: []
+  signal_density: 0.04
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

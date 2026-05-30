@@ -1,0 +1,176 @@
+persona_id: ACAD02
+persona_name: Olivia Park
+language: en
+
+role: first-year MBA student at a top US business school; recruiting for product-management summer internships and running a student-led venture-capital club
+company: Pinewood Business School (fictional, top-tier US MBA program)
+industry: graduate education / business
+seniority: junior
+
+traits:
+- runs 2-week sprint planning for her own job search like a product backlog
+- defaults to writing every coursework deliverable in Notion; cross-links to Obsidian study notes
+- treats every networking touchpoint as a 24-hour follow-up commitment
+- maintains a private spreadsheet of every employer interaction and warm intro
+- uses LinkedIn aggressively — 8–15 deliberate touches per week
+- chairs the VC club's spring speaker series (4 events in May)
+- never sends a thank-you note generic — always references something specific from the conversation
+
+daily_responsibilities:
+- review stumail and personal gmail for recruiting / coursework deadlines
+- prep / attend 2–4 coffee chats and 1 case-interview rep daily
+- maintain the recruiting tracker spreadsheet
+- read assigned coursework + Obsidian summaries
+- coordinate VC club logistics with co-officers
+- post / engage on LinkedIn at least once per weekday
+
+primary_services:
+- stumail
+- gmail
+- calendar
+- claw_notion
+- claw_obsidian
+- claw_linkedin
+secondary_services:
+- todo
+- contacts
+- sheet
+- meeting
+- slide
+- claw_facebook
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - job_search_admin
+  - networking_followup
+  - coursework_management
+  - event_planning
+  - scheduling
+  - info_triage
+  - decision_making
+  implausible_categories:
+  - production_incident_management
+  - hiring_offer_extension
+  - legal_filings
+  - corporate_financial_authorization
+
+authority:
+  can_approve:
+  - rescheduling her own coffee chats, study groups, club meetings
+  - declining recruiting outreach that's off-target for her search criteria
+  - committing to VC club speaker hosting / logistics
+  - drafting application materials under her own name
+  cannot_approve:
+  - financial commitments on behalf of the VC club above $300 (defer to club treasurer)
+  - representing the business school in any public capacity without dean-of-students sign-off
+  - signing letters of intent for venture investments (she has no such authority)
+  - changes to coursework deadlines (defer to professor)
+  communication_style: friendly-formal, structured, concrete in follow-ups; never bcc's mass templates
+  quality_focus: relationship durability + reciprocity; refuses to use generic templates that signal low effort
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 08:30–22:00 Eastern with study breaks; weekend club + coursework time
+  active_issues:
+  - PM internship offers due back to 3 companies; one has a 2026-05-09 deadline
+  - VC club spring speaker series — 4 events in May, last one 2026-05-28
+  - final exams week 2026-05-25 ~ 2026-05-29
+  - one warm intro to a top firm partner who's been hard to schedule for 3 weeks
+  business_goals:
+  - decide on internship offer by 2026-05-09 and notify all 3 companies professionally
+  - run all 4 VC club events on schedule without postponements
+  - finish all final exams by 2026-05-29
+  - convert the warm-intro partner conversation into a coffee chat by 2026-05-20
+  risk_factors:
+  - internship decision rushed under deadline pressure leads to suboptimal choice
+  - VC club event + finals overlap creating burnout
+  - missing the warm-intro window damages a high-value relationship
+
+data_threads:
+- name: "PM internship decision"
+  description: "Three competing offers; pros/cons memo in Notion + recruiter follow-up emails + reference calls."
+  involved_services: [gmail, claw_notion, claw_obsidian, contacts, todo, calendar]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    claw_obsidian: []
+    contacts: []
+    todo: []
+    calendar: []
+  signal_density: 0.17
+  difficulty: hard
+  category: decision_making
+  thread_type: standard
+
+- name: "VC club spring speaker series"
+  description: "Four events in May; speaker logistics, venue + AV, post-event content for Facebook + LinkedIn."
+  involved_services: [calendar, claw_notion, gmail, slide, claw_linkedin, claw_facebook, todo, meeting]
+  involved_records:
+    calendar: []
+    claw_notion: []
+    gmail: []
+    slide: []
+    claw_linkedin: []
+    claw_facebook: []
+    todo: []
+    meeting: []
+  signal_density: 0.14
+  difficulty: medium
+  category: event_planning
+  thread_type: standard
+
+- name: "Final exams prep"
+  description: "Five exams in one week; Obsidian study sheets, study-group scheduling, professor office hours."
+  involved_services: [stumail, calendar, claw_obsidian, claw_notion, todo]
+  involved_records:
+    stumail: []
+    calendar: []
+    claw_obsidian: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.13
+  difficulty: medium
+  category: coursework_management
+  thread_type: standard
+
+- name: "Networking tracker"
+  description: "Spreadsheet + Notion tracker of every coffee chat, intro, thank-you owed, and follow-up due."
+  involved_services: [sheet, claw_notion, contacts, claw_linkedin, todo]
+  involved_records:
+    sheet: []
+    claw_notion: []
+    contacts: []
+    claw_linkedin: []
+    todo: []
+  signal_density: 0.10
+  difficulty: medium
+  category: networking_followup
+  thread_type: standard
+
+- name: "Warm-intro partner outreach"
+  description: "High-value warm intro that's been hard to schedule; carefully crafted, low-friction touches."
+  involved_services: [gmail, claw_linkedin, contacts, calendar, todo]
+  involved_records:
+    gmail: []
+    claw_linkedin: []
+    contacts: []
+    calendar: []
+    todo: []
+  signal_density: 0.05
+  difficulty: medium
+  category: networking_followup
+  thread_type: standard
+
+- name: "Daily inbox triage"
+  description: "stumail + personal gmail — coursework + recruiting + club admin all mixed in."
+  involved_services: [stumail, gmail, todo]
+  involved_records:
+    stumail: []
+    gmail: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

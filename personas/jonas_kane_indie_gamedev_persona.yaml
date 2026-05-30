@@ -1,0 +1,172 @@
+persona_id: FREE02
+persona_name: Jonas Kane
+language: en
+
+role: solo indie game developer building a single PC/console title for the past 22 months; pre-launch, with a small Discord community and a publisher in advanced talks
+company: self-employed under "Pale Moon Games" (single-person LLC)
+industry: indie game development / video games
+seniority: mid
+
+traits:
+- runs a strict morning code block (08:00–12:00) — no meetings, no Slack
+- afternoons are publisher/community/marketing; mornings are sacred
+- writes detailed development logs in Obsidian; the game's wiki lives in Notion
+- maintains a public Facebook page + LinkedIn presence for industry credibility
+- posts development snapshots to a private Discord weekly (Mondays)
+- never makes hard commitments to publishers without 48-hour cool-off
+- gates every external statement through a self-imposed "would I say this in 3 months" filter
+
+daily_responsibilities:
+- 4-hour morning code block
+- publisher correspondence
+- community moderation + weekly community update
+- social-media posting (Facebook + LinkedIn)
+- testing + bug logs
+- weekly review of feature backlog in Notion + Obsidian
+
+primary_services:
+- gmail
+- calendar
+- claw_notion
+- claw_obsidian
+- claw_facebook
+- claw_linkedin
+secondary_services:
+- todo
+- contacts
+- finance
+- helpdesk
+- sheet
+- rss
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - project_planning
+  - community_management
+  - external_partner_negotiation
+  - portfolio_marketing
+  - decision_making
+  - scheduling
+  - info_triage
+  implausible_categories:
+  - hiring_employee_offer
+  - corporate_financial_authorization
+  - production_incident_management
+  - legal_filings_for_third_party
+
+authority:
+  can_approve:
+  - all game design + scope decisions
+  - rescheduling his own publisher / community calls
+  - signing contracts within standard indie terms with a 48-hour cool-off rule
+  - posting development content to all his social surfaces
+  cannot_approve:
+  - third-party IP usage without licensing
+  - sharing publisher's confidential terms outside himself
+  - speaking for any partner in public capacity
+  - permanent commitments above 6 months without legal review
+  communication_style: thoughtful, direct, narrative-led, transparent about uncertainty; community-first tone
+  quality_focus: long-term reputation + technical quality over short-term hype; refuses to over-promise dates
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 08:00–19:00 plus weekend community time; Mondays publisher day
+  active_issues:
+  - publisher (Lumen Interactive) deal at term-sheet stage; legal review pending
+  - vertical slice demo due 2026-05-30 for publisher milestone
+  - Discord community at 1,800 members; one moderator candidate identified
+  - financial runway tight — 7 months at current burn
+  business_goals:
+  - sign publisher deal by 2026-06-15
+  - deliver vertical slice on 2026-05-30
+  - extend runway by closing publisher deal or trimming personal burn
+  - grow Discord community to 2,500 members by EOQ
+  risk_factors:
+  - publisher deal stalling and runway tightening below 4 months
+  - vertical slice slipping past 2026-05-30 weakens publisher leverage
+  - Discord growth stalling signals to publisher that audience is small
+
+data_threads:
+- name: "Publisher term-sheet negotiation"
+  description: "Lumen Interactive term sheet; legal review, counter-proposal drafts, advisor consultations."
+  involved_services: [gmail, claw_notion, contacts, calendar, todo]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    contacts: []
+    calendar: []
+    todo: []
+  signal_density: 0.17
+  difficulty: hard
+  category: external_partner_negotiation
+  thread_type: standard
+
+- name: "Vertical slice milestone"
+  description: "Publisher-facing vertical slice due 2026-05-30; feature backlog, bug list, build hand-off plan."
+  involved_services: [claw_notion, claw_obsidian, todo, calendar, sheet]
+  involved_records:
+    claw_notion: []
+    claw_obsidian: []
+    todo: []
+    calendar: []
+    sheet: []
+  signal_density: 0.14
+  difficulty: medium
+  category: project_planning
+  thread_type: standard
+
+- name: "Discord community + moderator recruitment"
+  description: "1,800-member Discord; weekly Monday community update + identifying a volunteer moderator."
+  involved_services: [claw_facebook, contacts, claw_notion, todo, gmail]
+  involved_records:
+    claw_facebook: []
+    contacts: []
+    claw_notion: []
+    todo: []
+    gmail: []
+  signal_density: 0.08
+  difficulty: medium
+  category: community_management
+  thread_type: standard
+
+- name: "Social-media presence"
+  description: "Twice-weekly Facebook + LinkedIn updates; behind-the-scenes content + industry engagement."
+  involved_services: [claw_facebook, claw_linkedin, claw_obsidian, todo, calendar]
+  involved_records:
+    claw_facebook: []
+    claw_linkedin: []
+    claw_obsidian: []
+    todo: []
+    calendar: []
+  signal_density: 0.07
+  difficulty: simple
+  category: portfolio_marketing
+  thread_type: standard
+
+- name: "Runway + burn tracking"
+  description: "Personal finance log + projected runway; trigger-points for trimming spend."
+  involved_services: [finance, sheet, claw_notion, todo]
+  involved_records:
+    finance: []
+    sheet: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.05
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "Bug + feedback triage"
+  description: "Bug reports from playtesters + community-surfaced feedback; helpdesk-style tracking."
+  involved_services: [helpdesk, claw_notion, claw_obsidian, todo]
+  involved_records:
+    helpdesk: []
+    claw_notion: []
+    claw_obsidian: []
+    todo: []
+  signal_density: 0.07
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

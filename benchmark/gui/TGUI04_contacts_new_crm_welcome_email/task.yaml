@@ -24,7 +24,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9110/crm/reset
   env:
-    CRM_FIXTURES: gen_tasks_GUI/TGUI04_contacts_new_crm_welcome_email/fixtures/crm/customers.json
+    CRM_FIXTURES: fixtures/crm/customers.json
 - name: gmail
   command: python mock_services/gmail/server.py
   port: 9100
@@ -33,7 +33,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9100/gmail/reset
   env:
-    GMAIL_FIXTURES: gen_tasks_GUI/TGUI04_contacts_new_crm_welcome_email/fixtures/gmail/inbox.json
+    GMAIL_FIXTURES: fixtures/gmail/inbox.json
 
 tools:
 # ---- crm CLI ----

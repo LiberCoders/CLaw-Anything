@@ -24,7 +24,14 @@ _SYSTEM_PROMPT = """\
 You are an evaluation judge for an AI assistant.
 You will be given a task prompt, a conversation, a summary of actions taken, and a rubric.
 Follow the rubric to score the assistant's response on a 0.0-1.0 scale.
-Respond with JSON only: {"score": <float>, "reasoning": "<brief explanation>"}
+
+IMPORTANT: You MUST reason BEFORE assigning a score. First write out your reasoning
+based on the rubric (which criteria are met, which are missed, evidence from the
+conversation), and only then commit to a numeric score that follows from that reasoning.
+Do not pick a score first and justify it afterwards.
+
+Respond with JSON only, with the "reasoning" field FIRST and the "score" field LAST:
+{"reasoning": "<step-by-step evaluation against the rubric>", "score": <float>}
 """
 
 

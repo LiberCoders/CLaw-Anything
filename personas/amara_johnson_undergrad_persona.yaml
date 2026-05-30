@@ -1,0 +1,169 @@
+persona_id: ACAD04
+persona_name: Amara Johnson
+language: en
+
+role: senior-year undergraduate computer science student at a large public university; in the final stretch of full-time job search and graduation logistics
+company: Westbridge State University (fictional, large US public R1)
+industry: undergraduate education / CS job search
+seniority: junior
+
+traits:
+- runs job search like a 3-week sprint cycle, tracked in Notion
+- attends a weekly CS career club and a Friday algorithms study group
+- writes daily "what I learned" notes in Obsidian, started 14 months ago
+- maintains a personal coding-practice spreadsheet tracking problem types + retention
+- uses LinkedIn for recruiter outreach; replies to every recruiter within 24 hours during search
+- balances 5 senior-year courses + 1 senior project + part-time TA job
+- posts occasional study-tips content on Facebook to a private alumni group
+
+daily_responsibilities:
+- review stumail + personal gmail for recruiting + course updates
+- 90 minutes coding practice (LeetCode + system design notes)
+- 2–4 hours coursework + senior project
+- 1–2 hour TA shift (homework grading, office hours)
+- correspond with recruiters + schedule interviews
+- update Obsidian end-of-day note
+
+primary_services:
+- stumail
+- gmail
+- calendar
+- claw_obsidian
+- claw_notion
+- claw_linkedin
+secondary_services:
+- todo
+- contacts
+- sheet
+- claw_facebook
+- meeting
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - job_search_admin
+  - coursework_management
+  - networking_followup
+  - scheduling
+  - info_triage
+  - decision_making
+  - graduation_admin
+  implausible_categories:
+  - hiring_offer_extension
+  - corporate_financial_authorization
+  - production_incident_management
+  - legal_filings
+
+authority:
+  can_approve:
+  - rescheduling her own interviews, study groups, TA shifts (subject to course rules)
+  - declining recruiter outreach for off-target roles
+  - committing to dates with recruiters within her own calendar
+  - drafting application materials under her own name
+  cannot_approve:
+  - signing offer letters before family + mentor consult (her own self-imposed rule)
+  - changes to course deadlines or grading (defer to professor)
+  - shifting TA shift coverage without TA-lead approval
+  - public statements representing the CS department or career club without faculty sign-off
+  communication_style: warm-professional, brief, sincere; never sends a generic thank-you
+  quality_focus: integrity in self-representation — refuses to inflate skills on her resume or LinkedIn
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri academic schedule; TA shifts Tue/Thu 14:00–16:00; weekend coding practice
+  active_issues:
+  - 4 active interview pipelines (1 onsite scheduled 2026-04-29)
+  - senior project final demo 2026-05-12
+  - graduation 2026-05-15
+  - one offer expected 2026-05-05 from her top-choice company
+  business_goals:
+  - secure 2 offers and accept 1 by 2026-05-20
+  - submit senior project + ace demo on 2026-05-12
+  - finish all final exams with A/A- in 5 courses
+  - cleanly hand off TA responsibilities by 2026-05-08
+  risk_factors:
+  - top-choice offer slipping past 2026-05-05 forces decision on a fallback
+  - senior project demo failing to meet rubric
+  - over-committing the final two weeks (project + finals + interviews + graduation)
+
+data_threads:
+- name: "Job search pipeline"
+  description: "4 active pipelines; recruiter emails, interview scheduling, prep notes, post-interview thank-yous."
+  involved_services: [gmail, calendar, claw_notion, contacts, claw_linkedin, todo]
+  involved_records:
+    gmail: []
+    calendar: []
+    claw_notion: []
+    contacts: []
+    claw_linkedin: []
+    todo: []
+  signal_density: 0.18
+  difficulty: medium
+  category: job_search_admin
+  thread_type: standard
+
+- name: "Senior project demo 2026-05-12"
+  description: "Final implementation + demo; team coordination, rubric review, slide deck."
+  involved_services: [stumail, claw_notion, calendar, todo, claw_obsidian]
+  involved_records:
+    stumail: []
+    claw_notion: []
+    calendar: []
+    todo: []
+    claw_obsidian: []
+  signal_density: 0.10
+  difficulty: medium
+  category: coursework_management
+  thread_type: standard
+
+- name: "Final exams + graduation logistics"
+  description: "5 finals + graduation 2026-05-15 — family travel, ceremony, transcript / diploma admin."
+  involved_services: [stumail, gmail, calendar, todo, contacts]
+  involved_records:
+    stumail: []
+    gmail: []
+    calendar: []
+    todo: []
+    contacts: []
+  signal_density: 0.09
+  difficulty: medium
+  category: graduation_admin
+  thread_type: standard
+
+- name: "TA responsibilities + handoff"
+  description: "Final 4 weeks of TA shifts; grading load + handoff to summer TA."
+  involved_services: [stumail, calendar, todo, claw_notion]
+  involved_records:
+    stumail: []
+    calendar: []
+    todo: []
+    claw_notion: []
+  signal_density: 0.06
+  difficulty: simple
+  category: coursework_management
+  thread_type: standard
+
+- name: "Coding practice tracker"
+  description: "Sheet-based tracker for daily 90-minute coding practice; retention + topic-coverage signals."
+  involved_services: [sheet, claw_obsidian, todo]
+  involved_records:
+    sheet: []
+    claw_obsidian: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: job_search_admin
+  thread_type: standard
+
+- name: "Alumni-group study tips posts"
+  description: "Occasional posts to a private alumni Facebook group sharing study-strategy and interview-prep tips."
+  involved_services: [claw_facebook, claw_obsidian, todo]
+  involved_records:
+    claw_facebook: []
+    claw_obsidian: []
+    todo: []
+  signal_density: 0.03
+  difficulty: simple
+  category: networking_followup
+  thread_type: standard

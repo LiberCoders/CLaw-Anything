@@ -1,0 +1,178 @@
+persona_id: ACAD06
+persona_name: Catherine Dubois
+language: en
+
+role: tenured associate professor of computer science and PI of a 9-person research lab studying distributed systems; teaches 1 course per semester
+company: Northwind University (fictional, R1 research university)
+industry: academic research / computer science / teaching
+seniority: senior
+
+traits:
+- runs the lab (5 PhDs, 2 postdocs, 2 visiting) with a clear "publish or pivot" cycle each year
+- teaches one graduate seminar per semester (~25 students)
+- sits on 2 external program committees + an internal tenure committee
+- maintains a Zotero library of ~2,400 papers, indexed by sub-area
+- writes weekly Obsidian "lab health" notes — never shared with the lab
+- handles ~80 stumail / gmail messages per day during the semester
+- gates every press request through the university press office
+
+daily_responsibilities:
+- triage stumail + gmail; flag committee + collaborator items
+- pair with PhDs / postdocs on technical questions (4-6 conversations per day)
+- review submitted drafts from her lab
+- run / attend the weekly lab meeting Tuesdays
+- prep + deliver one lecture per week during semester
+- review PC papers in waves (3–4 conferences per year)
+
+primary_services:
+- stumail
+- gmail
+- calendar
+- claw_notion
+- claw_zotero
+- claw_obsidian
+secondary_services:
+- todo
+- claw_slack
+- meeting
+- contacts
+- rss
+- claw_linkedin
+
+fixture_scale: rich
+
+task_constraints:
+  plausible_categories:
+  - paper_writing
+  - reading_management
+  - lab_research_coordination
+  - committee_workload
+  - teaching_admin
+  - decision_making
+  - scheduling
+  - info_triage
+  implausible_categories:
+  - customer_pricing_negotiation
+  - production_incident_management
+  - corporate_financial_authorization
+  - hiring_offer_extension_outside_university
+
+authority:
+  can_approve:
+  - direction of research within her lab
+  - submission of her group's papers (with co-author consent)
+  - hiring / firing within her lab subject to university procedures
+  - rescheduling her own meetings, courses, lab activities
+  - grant proposal submission under her PI status
+  cannot_approve:
+  - tenure / promotion decisions (committee + dean)
+  - inter-institutional MOUs (provost office)
+  - public press claims under university branding (press office)
+  - changes to degree-program requirements (department + faculty senate)
+  communication_style: warm-but-rigorous, citation-heavy, asks pointed methodology questions; protective of student time
+  quality_focus: long-horizon research integrity over short-term metrics; refuses to publish thin papers
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 08:30–19:30 Eastern with evening writing pushes; lab meeting Tuesdays
+  active_issues:
+  - one PhD student going up for committee defense 2026-05-22
+  - PC reviewing for a top-tier systems conference (deadlines layered through May)
+  - lab grant renewal proposal due 2026-06-10
+  - one collaborator institution requesting a joint workshop pitch for 2026-Q4
+  business_goals:
+  - PhD student defense on schedule 2026-05-22
+  - all PC reviews submitted on or before each conference deadline
+  - submit lab grant renewal proposal by 2026-06-10
+  - secure or formally decline the joint workshop pitch by 2026-05-30
+  risk_factors:
+  - lab grant proposal slipping past 2026-06-10 endangers next year's funding
+  - PhD defense going poorly impacts both student and lab reputation
+  - PC review fatigue affecting quality + students' paper drafts in parallel
+
+data_threads:
+- name: "PhD defense prep (student #4)"
+  description: "Final committee defense 2026-05-22 — dissertation review, mock defense, committee logistics."
+  involved_services: [stumail, calendar, claw_notion, claw_zotero, claw_obsidian, todo, meeting]
+  involved_records:
+    stumail: []
+    calendar: []
+    claw_notion: []
+    claw_zotero: []
+    claw_obsidian: []
+    todo: []
+    meeting: []
+  signal_density: 0.14
+  difficulty: hard
+  category: lab_research_coordination
+  thread_type: standard
+
+- name: "Top-tier systems PC reviewing"
+  description: "Layered review deadlines through May; bidding, paper assignment, review drafts, PC discussion."
+  involved_services: [gmail, claw_zotero, claw_notion, todo, calendar]
+  involved_records:
+    gmail: []
+    claw_zotero: []
+    claw_notion: []
+    todo: []
+    calendar: []
+  signal_density: 0.13
+  difficulty: medium
+  category: committee_workload
+  thread_type: standard
+
+- name: "Lab grant renewal proposal"
+  description: "Major proposal due 2026-06-10; aims drafting, biosketches, co-PI coordination, budget."
+  involved_services: [gmail, claw_notion, contacts, todo, calendar]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    contacts: []
+    todo: []
+    calendar: []
+  signal_density: 0.12
+  difficulty: hard
+  category: paper_writing
+  thread_type: standard
+
+- name: "Joint workshop pitch with collaborator institution"
+  description: "Deciding whether to commit to a joint workshop for 2026-Q4; scoping, time commitment, mutual benefit."
+  involved_services: [gmail, claw_notion, calendar, contacts, todo]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    calendar: []
+    contacts: []
+    todo: []
+  signal_density: 0.06
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "Weekly lab meeting + individual student check-ins"
+  description: "Weekly Tuesday lab meeting + rolling 1:1s with 7 lab members; agenda + follow-ups + private notes."
+  involved_services: [calendar, claw_notion, claw_obsidian, todo, contacts, meeting]
+  involved_records:
+    calendar: []
+    claw_notion: []
+    claw_obsidian: []
+    todo: []
+    contacts: []
+    meeting: []
+  signal_density: 0.10
+  difficulty: medium
+  category: scheduling
+  thread_type: standard
+
+- name: "Graduate seminar admin"
+  description: "Weekly lecture prep, paper assignments, student feedback; ~25 students."
+  involved_services: [stumail, claw_notion, calendar, todo]
+  involved_records:
+    stumail: []
+    claw_notion: []
+    calendar: []
+    todo: []
+  signal_density: 0.07
+  difficulty: simple
+  category: teaching_admin
+  thread_type: standard

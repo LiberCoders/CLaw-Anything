@@ -1,0 +1,171 @@
+persona_id: ENG01
+persona_name: Marcus Rivera
+language: en
+
+role: founding engineer (employee #4) at an early-stage AI infrastructure startup, splitting time between backend services and customer-integration debugging
+company: Volta Inference (fictional, ~14 employees, seed-stage, ~$8M raised)
+industry: AI infrastructure / developer tools
+seniority: senior
+
+traits:
+- wears two hats — half the week is shipping the inference router, the other half is on-call for design-partner customer issues
+- writes terse RFCs in Notion before any non-trivial change, even if the only reader is the CTO
+- defaults to async; treats unscheduled meetings as a smell
+- runs every PR through CI locally before pushing; treats a red main branch as a P0
+- keeps a "things I owe people" todo list and refuses to let it grow past 12 items
+- maintains personal docs in Obsidian, separate from the company Notion — uses it as a thinking scratchpad
+- pushes back politely but firmly when the CEO over-promises customer features without engineering signoff
+
+daily_responsibilities:
+- start the day by skimming PagerDuty + the #incidents Slack channel before opening email
+- review overnight PRs from the 3 other engineers
+- pair with the CTO on roadmap calls 2x per week
+- triage GitHub issues filed by 5 design-partner customers
+- write or update one piece of internal documentation per day
+- ship at least one PR daily on the inference router or the SDK
+
+primary_services:
+- gmail
+- claw_slack
+- claw_notion
+- todo
+- calendar
+- claw_obsidian
+secondary_services:
+- helpdesk
+- contacts
+- meeting
+- claw_linkedin
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - incident_triage
+  - code_review_coordination
+  - customer_integration_debugging
+  - technical_writing
+  - scheduling
+  - decision_making
+  - info_triage
+  implausible_categories:
+  - hiring_offer_negotiation
+  - fundraising_outreach
+  - legal_filings
+  - payroll_admin
+
+authority:
+  can_approve:
+  - merging PRs into main on the inference router and SDK
+  - emergency hotfix deploys (with CTO notified within 1 hour)
+  - rejecting customer feature asks that would compromise SLO
+  - choice of internal libraries and infra primitives
+  cannot_approve:
+  - customer contract terms or SLAs (escalate to CEO)
+  - hiring decisions (escalate to CTO)
+  - PR/marketing public statements (escalate to CEO)
+  - changes to pricing or commercial commitments
+  communication_style: blunt-but-respectful, written-first, code-and-bullet-points; explicit about uncertainty
+  quality_focus: correctness over cleverness; willingness to say "I don't know yet" rather than fabricate
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 09:30–19:30 Pacific; on-call rotation every third week; protected deep-work block Wed mornings
+  active_issues:
+  - inference router latency regression on the v2.3 release shipped 2026-04-22
+  - one design-partner (Helix Robotics) blocked on gRPC streaming bug for 9 days
+  - eng team of 4 onboarding employee #15 (a junior backend engineer starting 2026-05-04)
+  - CTO pushing for a public technical blog post that Marcus has not yet drafted
+  business_goals:
+  - close the p99 latency regression by 2026-05-02
+  - ship the streaming-mode SDK by 2026-05-23 so two design partners can move to paid tier
+  - publish the technical blog post by 2026-05-30
+  - reach a clean main branch and zero open P0 issues by EOQ (2026-06-30)
+  risk_factors:
+  - Helix Robotics churning if streaming SDK slips past 2026-05-23
+  - latency regression slipping past 2026-05-02 and bleeding into the streaming-SDK timeline
+  - on-call burnout — Marcus is in week 2 of 3 with no backup
+
+data_threads:
+- name: "v2.3 inference router latency regression"
+  description: "p99 latency regression discovered post-release; cross-team thread tracking root-cause analysis, hotfix candidates, and customer comms."
+  involved_services: [claw_slack, claw_notion, gmail, todo, claw_obsidian]
+  involved_records:
+    claw_slack: []
+    claw_notion: []
+    gmail: []
+    todo: []
+    claw_obsidian: []
+  signal_density: 0.18
+  difficulty: medium
+  category: incident_triage
+  thread_type: standard
+
+- name: "Helix Robotics gRPC streaming integration"
+  description: "Design-partner customer blocked on streaming-mode bug; back-and-forth across customer Slack channel, support tickets, and internal eng triage."
+  involved_services: [gmail, claw_slack, helpdesk, contacts, claw_notion, todo]
+  involved_records:
+    gmail: []
+    claw_slack: []
+    helpdesk: []
+    contacts: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.14
+  difficulty: medium
+  category: customer_integration_debugging
+  thread_type: standard
+
+- name: "Streaming SDK ship-readiness"
+  description: "Coordinating SDK code review, internal dogfooding, and docs; multiple in-flight PRs and pending review threads."
+  involved_services: [claw_slack, claw_notion, todo, calendar, gmail]
+  involved_records:
+    claw_slack: []
+    claw_notion: []
+    todo: []
+    calendar: []
+    gmail: []
+  signal_density: 0.12
+  difficulty: medium
+  category: code_review_coordination
+  thread_type: standard
+
+- name: "Technical blog post draft"
+  description: "CTO-requested blog post; outlining, drafting, internal review; intersects with marketing and partner-comms timing."
+  involved_services: [claw_notion, claw_obsidian, gmail, todo]
+  involved_records:
+    claw_notion: []
+    claw_obsidian: []
+    gmail: []
+    todo: []
+  signal_density: 0.06
+  difficulty: simple
+  category: technical_writing
+  thread_type: standard
+
+- name: "Onboarding employee #15"
+  description: "New junior engineer starting 2026-05-04; onboarding doc, intro 1:1s, first-PR plan."
+  involved_services: [claw_notion, calendar, claw_slack, todo, contacts]
+  involved_records:
+    claw_notion: []
+    calendar: []
+    claw_slack: []
+    todo: []
+    contacts: []
+  signal_density: 0.07
+  difficulty: simple
+  category: scheduling
+  thread_type: standard
+
+- name: "On-call rotation handoff prep"
+  description: "Marcus is mid-rotation; pre-handoff notes, open incidents, runbook updates."
+  involved_services: [claw_obsidian, claw_notion, claw_slack, todo]
+  involved_records:
+    claw_obsidian: []
+    claw_notion: []
+    claw_slack: []
+    todo: []
+  signal_density: 0.05
+  difficulty: medium
+  category: incident_triage
+  thread_type: standard

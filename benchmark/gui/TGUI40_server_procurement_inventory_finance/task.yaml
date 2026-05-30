@@ -15,7 +15,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9115/claw_obsidian/reset
   env:
-    CLAW_OBSIDIAN_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI40_server_procurement_inventory_finance/fixtures/claw_obsidian/vault.json
+    CLAW_OBSIDIAN_FIXTURES: fixtures/claw_obsidian/vault.json
 - name: finance
   command: python mock_services/finance/server.py
   port: 9104
@@ -24,7 +24,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9104/finance/reset
   env:
-    FINANCE_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI40_server_procurement_inventory_finance/fixtures/finance/transactions.json
+    FINANCE_FIXTURES: fixtures/finance/transactions.json
 - name: inventory
   command: python mock_services/inventory/server.py
   port: 9108
@@ -33,7 +33,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9108/inventory/reset
   env:
-    INVENTORY_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI40_server_procurement_inventory_finance/fixtures/inventory/products.json
+    INVENTORY_FIXTURES: fixtures/inventory/products.json
 tools:
 - name: todo_list_tasks
   description: List TODO tasks. Returns full task details. Default returns all tasks.

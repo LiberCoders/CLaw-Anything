@@ -1,0 +1,172 @@
+persona_id: FREE01
+persona_name: Mia Lee
+language: en
+
+role: freelance illustrator and editorial cover artist, 6 years solo; works with 12-15 recurring clients (publishing houses, magazines, indie boards)
+company: self-employed (registered as Mia Lee Illustration LLC)
+industry: illustration / editorial publishing / freelance
+seniority: mid
+
+traits:
+- runs the business on a Monday/Thursday cadence — Mondays for client comms, Thursdays for invoicing + admin
+- maintains a Notion-based client log with brief history, deliverables, payment terms
+- "treats every illustration brief as a 3-stage process: sketch then review then finals"
+- never accepts a contract without a 50% upfront deposit; written rule, no exceptions
+- uses Facebook + LinkedIn as portfolio surfaces; posts work-in-progress + finals 2x weekly
+- maintains a personal "ideas vault" in Obsidian for future personal projects
+- subscribes to ~9 industry newsletters (RSS) — visual trends, publishing news
+
+daily_responsibilities:
+- review client emails first thing
+- 4–6 hours of focused illustration work
+- post / engage on Facebook + LinkedIn at least once daily
+- log time and progress in a sheet for active projects
+- handle inbound from prospective clients within 48 hours
+- update Notion client log after every meaningful client touchpoint
+
+primary_services:
+- gmail
+- calendar
+- claw_notion
+- claw_facebook
+- claw_linkedin
+- claw_obsidian
+secondary_services:
+- todo
+- sheet
+- contacts
+- finance
+- meeting
+- rss
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - client_communication
+  - project_planning
+  - invoicing_admin
+  - portfolio_marketing
+  - scheduling
+  - info_triage
+  - decision_making
+  implausible_categories:
+  - hiring_employee_offer
+  - corporate_financial_authorization
+  - production_incident_management
+  - legal_filings_for_third_party
+
+authority:
+  can_approve:
+  - signing her own contracts within her standard rate sheet
+  - declining client projects that don't meet her brief or budget standards
+  - rescheduling her own client check-ins and deadlines (within contract terms)
+  - posting her own work to social platforms (subject to client NDAs)
+  cannot_approve:
+  - commitments to use someone else's IP without licensing
+  - sharing client previews publicly before agreed reveal date
+  - speaking for clients in any public capacity without their written consent
+  - extending payment terms beyond 30 days net without explicit request
+  communication_style: warm-professional, visual-led, concrete deliverables + dates; never promises without buffer
+  quality_focus: craft fidelity + on-time delivery; refuses to ship work that doesn't meet her own bar even under pressure
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Tue–Sat 10:00–18:00 Pacific; Mondays for admin; Sundays off
+  active_issues:
+  - one publisher (Greenfield Press) requested 3 cover variations on tight 2026-05-12 deadline
+  - 4 invoices outstanding > 30 days (~$8,400 total)
+  - quarterly tax estimate due 2026-06-15
+  - "editorial calendar — 5 Facebook + 5 LinkedIn posts planned for May"
+  business_goals:
+  - deliver Greenfield Press cover variations by 2026-05-12
+  - collect on all 4 overdue invoices by 2026-05-25
+  - file quarterly tax estimate by 2026-06-15
+  - book 2 new recurring client conversations before end of May
+  risk_factors:
+  - one overdue invoice client may be in financial trouble; could become bad debt
+  - Greenfield Press deadline + tax filing collide in mid-May
+  - social posting cadence slipping erodes pipeline
+
+data_threads:
+- name: "Greenfield Press cover variations"
+  description: "Active commission — 3 cover variations on tight deadline; sketch + review cycles + final delivery."
+  involved_services: [gmail, claw_notion, calendar, todo, contacts]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    calendar: []
+    todo: []
+    contacts: []
+  signal_density: 0.16
+  difficulty: medium
+  category: project_planning
+  thread_type: standard
+
+- name: "Overdue invoice collection"
+  description: "4 outstanding invoices > 30 days; polite-but-firm follow-up cadence + finance log."
+  involved_services: [gmail, finance, contacts, todo, claw_notion]
+  involved_records:
+    gmail: []
+    finance: []
+    contacts: []
+    todo: []
+    claw_notion: []
+  signal_density: 0.10
+  difficulty: medium
+  category: invoicing_admin
+  thread_type: standard
+
+- name: "Quarterly tax estimate prep"
+  description: "Q2 estimated tax — pulling income/expense logs from sheets + finance; deadline 2026-06-15."
+  involved_services: [finance, sheet, claw_notion, calendar, todo]
+  involved_records:
+    finance: []
+    sheet: []
+    claw_notion: []
+    calendar: []
+    todo: []
+  signal_density: 0.07
+  difficulty: medium
+  category: invoicing_admin
+  thread_type: standard
+
+- name: "May social posting calendar"
+  description: "5 Facebook + 5 LinkedIn posts planned for May — work-in-progress + finals + behind-the-scenes."
+  involved_services: [claw_facebook, claw_linkedin, claw_obsidian, todo, calendar]
+  involved_records:
+    claw_facebook: []
+    claw_linkedin: []
+    claw_obsidian: []
+    todo: []
+    calendar: []
+  signal_density: 0.09
+  difficulty: simple
+  category: portfolio_marketing
+  thread_type: standard
+
+- name: "New client outreach + inbound"
+  description: "Inbound from prospective clients + her own outreach to two warm leads."
+  involved_services: [gmail, claw_linkedin, contacts, claw_notion, todo]
+  involved_records:
+    gmail: []
+    claw_linkedin: []
+    contacts: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.06
+  difficulty: medium
+  category: client_communication
+  thread_type: standard
+
+- name: "Personal ideas vault"
+  description: "Obsidian vault of personal-project ideas; never client work; updated weekly."
+  involved_services: [claw_obsidian, todo, rss]
+  involved_records:
+    claw_obsidian: []
+    todo: []
+    rss: []
+  signal_density: 0.03
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

@@ -1,0 +1,171 @@
+persona_id: ACAD03
+persona_name: Henrik Lindqvist
+language: en
+
+role: second-year postdoctoral researcher in computational biology at a leading European research institute; runs a small project team of 2 PhDs and 1 RA
+company: Linde Institute (fictional, leading European computational biology research center)
+industry: computational biology / academic research
+seniority: mid
+
+traits:
+- runs a Friday weekly project meeting + bi-weekly 1:1 with PI
+- writes every analytical pipeline as both code and a Notion "what & why" doc
+- maintains a Zotero library structured by sub-topic, ~1,200 items
+- reads ~5 papers per week in target areas, marginalia in Obsidian
+- coordinates with 3 external collaborators across 2 time zones
+- protective of his PhDs' deep-work time — buffers PI requests through himself
+- never publishes preprints without internal team review and 48-hour cooling-off period
+
+daily_responsibilities:
+- check stumail + institute email + GitLab notifications
+- pair with the 2 PhDs on pipeline + analysis questions
+- run / monitor cluster jobs
+- write daily Obsidian research notes
+- correspond with external collaborators
+- prep for weekly project meeting Fridays
+
+primary_services:
+- stumail
+- gmail
+- claw_obsidian
+- claw_zotero
+- todo
+- calendar
+secondary_services:
+- claw_notion
+- meeting
+- claw_slack
+- rss
+- contacts
+- sheet
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - paper_writing
+  - reading_management
+  - team_research_coordination
+  - cross_collaborator_coordination
+  - scheduling
+  - info_triage
+  - decision_making
+  implausible_categories:
+  - customer_pricing_negotiation
+  - production_incident_management
+  - hiring_offer_extension_above_phd_band
+  - corporate_financial_authorization
+
+authority:
+  can_approve:
+  - first-author submission for papers within his scope (PI sign-off on venue)
+  - direction of analyses run by his 2 PhDs
+  - rescheduling weekly project meeting and his own 1:1s
+  - allocation of his project's cluster quota
+  cannot_approve:
+  - hiring PhDs / RAs (PI authority)
+  - inter-institute MOUs or collaboration agreements (PI + admin)
+  - public press claims under institute affiliation (press office)
+  - re-allocating budget across cost centers (admin office)
+  communication_style: measured, precise, citation-heavy; explicit about uncertainty and methodology; warm in 1:1s
+  quality_focus: methodological reproducibility + transparent assumptions; refuses to ship analyses without versioned code
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 09:00–18:00 CET; occasional weekend cluster monitoring
+  active_issues:
+  - lead-author paper revision (resubmission deadline 2026-06-02)
+  - one external collaborator (US lab) raised concerns about a methods detail
+  - PI is at a 3-week conference circuit and expects asynchronous updates
+  - PhD #2 has had a slow month; quiet check-in needed
+  business_goals:
+  - submit paper revision by 2026-06-02
+  - close the collaborator methods concern by 2026-05-15
+  - send weekly written PI updates throughout the conference circuit (3 weeks)
+  - help PhD #2 regain momentum by mid-May
+  risk_factors:
+  - revision slipping past 2026-06-02 means waiting for next review cycle
+  - methods-concern thread escalating to a co-authorship dispute
+  - PhD #2's slump becoming a longer attrition risk if unaddressed
+
+data_threads:
+- name: "Lead-author paper revision"
+  description: "Major-revision response; per-comment reply matrix in Notion; rerunning analyses; updated figures."
+  involved_services: [gmail, claw_obsidian, claw_zotero, sheet, todo, claw_notion]
+  involved_records:
+    gmail: []
+    claw_obsidian: []
+    claw_zotero: []
+    sheet: []
+    todo: []
+    claw_notion: []
+  signal_density: 0.17
+  difficulty: hard
+  category: paper_writing
+  thread_type: standard
+
+- name: "External collaborator methods dispute"
+  description: "US-based collaborator raised methods concerns; needs careful response + supplementary analyses."
+  involved_services: [gmail, claw_obsidian, claw_notion, todo, calendar]
+  involved_records:
+    gmail: []
+    claw_obsidian: []
+    claw_notion: []
+    todo: []
+    calendar: []
+  signal_density: 0.09
+  difficulty: hard
+  category: cross_collaborator_coordination
+  thread_type: standard
+
+- name: "PI weekly written updates"
+  description: "PI on a 3-week conference circuit; weekly written digests of project status, blockers, decisions."
+  involved_services: [gmail, claw_notion, todo, calendar]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    todo: []
+    calendar: []
+  signal_density: 0.06
+  difficulty: medium
+  category: team_research_coordination
+  thread_type: standard
+
+- name: "PhD #2 mentoring check-in"
+  description: "Quiet, supportive 1:1 prep; Obsidian notes on observed signals; nothing in Slack."
+  involved_services: [claw_obsidian, calendar, todo]
+  involved_records:
+    claw_obsidian: []
+    calendar: []
+    todo: []
+  signal_density: 0.04
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "Weekly project meeting + Friday agenda"
+  description: "Recurring Friday project sync; agenda + follow-up actions; Slack channel housekeeping."
+  involved_services: [calendar, claw_notion, claw_slack, todo, meeting]
+  involved_records:
+    calendar: []
+    claw_notion: []
+    claw_slack: []
+    todo: []
+    meeting: []
+  signal_density: 0.07
+  difficulty: simple
+  category: scheduling
+  thread_type: standard
+
+- name: "Reading list + RSS sweep"
+  description: "Curated Zotero library + arxiv-bio + journal RSS; tagging papers for the lab reading list."
+  involved_services: [claw_zotero, rss, claw_obsidian, todo]
+  involved_records:
+    claw_zotero: []
+    rss: []
+    claw_obsidian: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: reading_management
+  thread_type: standard

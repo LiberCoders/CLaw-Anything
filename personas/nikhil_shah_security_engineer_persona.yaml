@@ -1,0 +1,185 @@
+persona_id: SEC01
+persona_name: Nikhil Shah
+language: en
+
+role: senior application security engineer on the platform-security team at a B2B SaaS company; runs vulnerability triage + IAM review for two product surfaces
+company: Holdfast Cloud (fictional, ~1,200 employees, Series E B2B workflow SaaS)
+industry: cloud SaaS / enterprise security
+seniority: senior
+
+traits:
+- triages bug-bounty reports + internal pen-test findings every morning before standup
+- maintains a Notion runbook of every active CVE-class issue with severity + owner + ETA
+- keeps an Obsidian "incident postmortem" vault — one note per incident, indexed by year
+- demands a written exploit chain before accepting a finding as "critical"
+- skeptical of vendor security claims — runs his own threat-model on every new third-party integration
+- monitors the security RSS feeds (KrebsOnSecurity, oss-security, vendor advisories) twice daily
+- carries the secondary on-call pager for security incidents one week in four
+
+daily_responsibilities:
+- triage new bug-bounty + pen-test reports; assign severity + owner
+- review IAM change requests from product teams (~6-8 per day)
+- pair with feature engineers on threat models for new designs
+- respond to compliance auditor questions (SOC 2 + ISO 27001) during audit windows
+- update the security runbook in Notion with any new finding or mitigation
+- skim #sec-platform Slack + the company-wide #sec-fyi channel
+
+primary_services:
+- gmail
+- calendar
+- claw_slack
+- claw_notion
+- helpdesk
+- claw_obsidian
+secondary_services:
+- todo
+- contacts
+- kb
+- rss
+- meeting
+- sheet
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - vulnerability_triage
+  - iam_review_coordination
+  - incident_response_coordination
+  - compliance_audit_support
+  - cross_team_coordination
+  - decision_making
+  - info_triage
+  - scheduling
+  implausible_categories:
+  - feature_product_launch_approval
+  - marketing_campaign_authorization
+  - hiring_outside_security_team
+  - financial_pricing_decisions
+
+authority:
+  can_approve:
+  - severity classification + remediation SLA for any finding he triages
+  - IAM changes within his two owned surfaces (with audit trail)
+  - blocking a release if a Sev1/Sev2 finding is unresolved
+  - publishing internal security advisories within his scope
+  cannot_approve:
+  - customer-facing public disclosures (PR + Legal own)
+  - cross-org policy changes (CISO + Legal own)
+  - third-party vendor contract security clauses (Procurement + Legal own)
+  - hiring outside the platform-security team (advisory only)
+  communication_style: precise, evidence-driven; cites CVE / CWE / RFC; refuses to escalate without a written exploit chain
+  quality_focus: defense-in-depth over single-control fixes; treats every postmortem action item as load-bearing
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 09:30–18:30 Pacific; secondary on-call rotation one week in four
+  active_issues:
+  - critical bug-bounty finding (auth bypass on tenant-scoped API) — patch + customer notification in flight
+  - SOC 2 Type II audit window opens 2026-05-11, fieldwork through 2026-05-29
+  - new third-party AI integration vendor under threat-model review, blocking GA
+  - one Sev2 finding (insecure-by-default config on a legacy webhook) needs owner reassignment
+  business_goals:
+  - close the auth-bypass finding with customer notification by 2026-04-30
+  - clear all SOC 2 evidence requests by 2026-05-22
+  - finalize threat model for the AI integration by 2026-05-15
+  - publish the Q1 vulnerability-trend memo by 2026-05-08
+  risk_factors:
+  - SOC 2 audit findings slipping to next cycle if evidence requests pile up
+  - the AI integration GA date pulled forward by exec team, compressing threat-model review
+  - on-call burnout from two back-to-back rotations during the audit window
+
+data_threads:
+- name: "Auth-bypass finding remediation"
+  description: "Critical bug-bounty finding on tenant-scoped API; coordinating patch + reviewer signoff + customer notification."
+  involved_services: [helpdesk, claw_slack, gmail, claw_notion, todo]
+  involved_records:
+    helpdesk: []
+    claw_slack: []
+    gmail: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.18
+  difficulty: medium
+  category: vulnerability_triage
+  thread_type: standard
+
+- name: "SOC 2 Type II audit evidence"
+  description: "Auditor evidence requests staged across calendar + Notion runbook; deadline pressure across May."
+  involved_services: [gmail, calendar, claw_notion, todo, sheet]
+  involved_records:
+    gmail: []
+    calendar: []
+    claw_notion: []
+    todo: []
+    sheet: []
+  signal_density: 0.14
+  difficulty: medium
+  category: compliance_audit_support
+  thread_type: standard
+
+- name: "Third-party AI vendor threat model"
+  description: "Threat model for new AI integration vendor; meetings with Procurement + Eng + Legal; GA gating decision."
+  involved_services: [meeting, claw_notion, gmail, claw_slack, todo]
+  involved_records:
+    meeting: []
+    claw_notion: []
+    gmail: []
+    claw_slack: []
+    todo: []
+  signal_density: 0.10
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "IAM change review queue"
+  description: "Steady stream of IAM change requests from product teams; needs daily triage + audit-trail entries."
+  involved_services: [helpdesk, claw_slack, claw_notion, todo]
+  involved_records:
+    helpdesk: []
+    claw_slack: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.08
+  difficulty: simple
+  category: iam_review_coordination
+  thread_type: standard
+
+- name: "Sev2 webhook config finding"
+  description: "Lower-severity finding on legacy webhook; reassigning owner after team reorg; tracking remediation ETA."
+  involved_services: [helpdesk, claw_slack, gmail, todo]
+  involved_records:
+    helpdesk: []
+    claw_slack: []
+    gmail: []
+    todo: []
+  signal_density: 0.06
+  difficulty: simple
+  category: cross_team_coordination
+  thread_type: standard
+
+- name: "Q1 vulnerability-trend memo"
+  description: "Quarterly memo summarizing finding trends; drafted in Notion, references Obsidian postmortem vault."
+  involved_services: [claw_notion, claw_obsidian, sheet, todo]
+  involved_records:
+    claw_notion: []
+    claw_obsidian: []
+    sheet: []
+    todo: []
+  signal_density: 0.05
+  difficulty: medium
+  category: info_triage
+  thread_type: standard
+
+- name: "Security RSS feed sweep"
+  description: "Twice-daily sweep of security advisories + vendor disclosures; flag items affecting Holdfast's stack."
+  involved_services: [rss, claw_obsidian, todo, claw_slack]
+  involved_records:
+    rss: []
+    claw_obsidian: []
+    todo: []
+    claw_slack: []
+  signal_density: 0.04
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

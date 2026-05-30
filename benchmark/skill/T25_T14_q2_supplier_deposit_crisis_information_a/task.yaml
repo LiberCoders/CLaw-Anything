@@ -12,7 +12,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9100/gmail/reset
   env:
-    GMAIL_FIXTURES: benchmark_final/skill/T25_T14_q2_supplier_deposit_crisis_information_a/fixtures/gmail/inbox.json
+    GMAIL_FIXTURES: fixtures/gmail/inbox.json
 - name: calendar
   command: python mock_services/calendar/server.py
   port: 9101
@@ -21,7 +21,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9101/calendar/reset
   env:
-    CALENDAR_FIXTURES: benchmark_final/skill/T25_T14_q2_supplier_deposit_crisis_information_a/fixtures/calendar/events.json
+    CALENDAR_FIXTURES: fixtures/calendar/events.json
 - name: todo
   command: python mock_services/todo/server.py
   port: 9102
@@ -30,7 +30,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9102/todo/reset
   env:
-    TODO_FIXTURES: benchmark_final/skill/T25_T14_q2_supplier_deposit_crisis_information_a/fixtures/todo/tasks.json
+    TODO_FIXTURES: fixtures/todo/tasks.json
 - name: contacts
   command: python mock_services/contacts/server.py
   port: 9103
@@ -39,7 +39,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9103/contacts/reset
   env:
-    CONTACTS_FIXTURES: benchmark_final/skill/T25_T14_q2_supplier_deposit_crisis_information_a/fixtures/contacts/contacts.json
+    CONTACTS_FIXTURES: fixtures/contacts/contacts.json
 - name: finance
   command: python mock_services/finance/server.py
   port: 9104
@@ -48,7 +48,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9104/finance/reset
   env:
-    FINANCE_FIXTURES: benchmark_final/skill/T25_T14_q2_supplier_deposit_crisis_information_a/fixtures/finance/transactions.json
+    FINANCE_FIXTURES: fixtures/finance/transactions.json
 - name: notes
   command: python mock_services/notes/server.py
   port: 9105
@@ -57,7 +57,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9105/notes/reset
   env:
-    NOTES_FIXTURES: benchmark_final/skill/T25_T14_q2_supplier_deposit_crisis_information_a/fixtures/notes/notes.json
+    NOTES_FIXTURES: fixtures/notes/notes.json
 - name: kb
   command: python mock_services/kb/server.py
   port: 9106
@@ -66,7 +66,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9106/kb/reset
   env:
-    KB_FIXTURES: benchmark_final/skill/T25_T14_q2_supplier_deposit_crisis_information_a/fixtures/kb/articles.json
+    KB_FIXTURES: fixtures/kb/articles.json
 - name: helpdesk
   command: python mock_services/helpdesk/server.py
   port: 9107
@@ -75,7 +75,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9107/helpdesk/reset
   env:
-    HELPDESK_FIXTURES: benchmark_final/skill/T25_T14_q2_supplier_deposit_crisis_information_a/fixtures/helpdesk/tickets.json
+    HELPDESK_FIXTURES: fixtures/helpdesk/tickets.json
 - name: inventory
   command: python mock_services/inventory/server.py
   port: 9108
@@ -84,7 +84,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9108/inventory/reset
   env:
-    INVENTORY_FIXTURES: benchmark_final/skill/T25_T14_q2_supplier_deposit_crisis_information_a/fixtures/inventory/products.json
+    INVENTORY_FIXTURES: fixtures/inventory/products.json
 - name: scheduler
   command: python mock_services/scheduler/server.py
   port: 9112
@@ -93,7 +93,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9112/scheduler/reset
   env:
-    SCHEDULER_FIXTURES: benchmark_final/skill/T25_T14_q2_supplier_deposit_crisis_information_a/fixtures/scheduler/jobs.json
+    SCHEDULER_FIXTURES: fixtures/scheduler/jobs.json
 - name: claw_slack
   command: python mock_services/claw_slack/server.py
   port: 9127
@@ -102,7 +102,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9127/claw_slack/reset
   env:
-    CLAW_SLACK_FIXTURES: benchmark_final/skill/T25_T14_q2_supplier_deposit_crisis_information_a/fixtures/claw_slack/workspace.json
+    CLAW_SLACK_FIXTURES: fixtures/claw_slack/workspace.json
 - name: claw_wechat
   command: python mock_services/claw_wechat/server.py
   port: 9130
@@ -111,8 +111,8 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9130/claw_wechat/reset
   env:
-    CLAW_WECHAT_CHAT_FIXTURES: benchmark_final/skill/T25_T14_q2_supplier_deposit_crisis_information_a/fixtures/claw_wechat/chats.json
-    CLAW_WECHAT_MOMENTS_FIXTURES: benchmark_final/skill/T25_T14_q2_supplier_deposit_crisis_information_a/fixtures/claw_wechat/moments.json
+    CLAW_WECHAT_CHAT_FIXTURES: fixtures/claw_wechat/chats.json
+    CLAW_WECHAT_MOMENTS_FIXTURES: fixtures/claw_wechat/moments.json
 - name: sheet
   command: python mock_services/sheet/server.py
   port: 9133
@@ -121,7 +121,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9133/sheet/reset
   env:
-    SHEET_FIXTURES: benchmark_final/skill/T25_T14_q2_supplier_deposit_crisis_information_a/fixtures/sheet/workbooks.json
+    SHEET_FIXTURES: fixtures/sheet/workbooks.json
 tools:
 - name: gmail_list_messages
   description: 'List inbox messages. Returns subject/from/date (no body). Default: last 7 days, max 20 results. Response includes

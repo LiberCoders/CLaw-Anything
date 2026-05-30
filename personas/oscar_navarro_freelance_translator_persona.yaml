@@ -1,0 +1,182 @@
+persona_id: FREE09
+persona_name: Oscar Navarro
+language: en
+
+role: solo freelance literary translator (Spanish → English); juggles 3 active book contracts + occasional short-form work for magazines
+company: Self-employed (sole proprietor, registered in New York state, fictional)
+industry: literary translation / publishing / freelance
+seniority: mid
+
+traits:
+- works on one chapter at a time, 90-minute deep-work blocks, never two books in the same day
+- keeps a per-book Obsidian vault — glossary, register notes, decisions log, sample passages
+- runs a Notion contract tracker with deliverable dates, milestone payments, kill-fee clauses
+- treats every editor email as 24-hour-reply by default; sample passages get 48 hours
+- maintains a "quote register" in notes — every difficult sentence + chosen rendering, indexed by author
+- promotes finished books on LinkedIn (publisher-approved blurbs only) + reads literary Twitter via RSS
+- attends one literary conference per year + a quarterly translator-collective dinner
+
+daily_responsibilities:
+- one 90-minute deep-work translation block in the morning (10:00–11:30)
+- editor email triage at 11:30 + 16:30
+- one editing pass on yesterday's draft after lunch
+- update the Obsidian per-book vault at end of day with decisions made
+- check the Notion contract tracker every Monday for upcoming deliverables + invoices
+- post one LinkedIn update per finished book (publisher-approved)
+
+primary_services:
+- gmail
+- calendar
+- claw_obsidian
+- claw_notion
+- todo
+- notes
+secondary_services:
+- contacts
+- claw_linkedin
+- meeting
+- finance
+- rss
+- sheet
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - contract_milestone_tracking
+  - editor_communication
+  - translation_decision_log
+  - invoicing_admin
+  - decision_making
+  - info_triage
+  - scheduling
+  - launch_communication
+  implausible_categories:
+  - corporate_engineering_decisions
+  - hiring_decisions
+  - large_scale_financial_authorization
+  - third_party_legal_filings
+
+authority:
+  can_approve:
+  - final translation choices for sentence-level rendering (subject to editor signoff at chapter boundaries)
+  - his own delivery schedule + working hours
+  - kill-fee invocation per his standard contract template
+  - publication of his own LinkedIn posts about finished books (publisher-approved blurbs only)
+  cannot_approve:
+  - changes to the original author's text or named characters (author + agent must approve)
+  - publisher marketing copy that names the author
+  - cover-page translator credit terms outside his standard contract
+  - re-translation of a competitor's existing English edition without legal review
+  communication_style: courteous, decisive, references the source-text page + paragraph in every editor reply; never apologizes for craft choices he can defend
+  quality_focus: long-horizon faithfulness to author voice over publisher speed; refuses to ship a chapter he hasn't slept on
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 09:30–17:30 home office; Friday afternoons reserved for admin + invoicing
+  active_issues:
+  - 'Book A (Mexican novella, Casa del Río Press) — final chapter due 2026-05-08, kill-fee clause active'
+  - 'Book B (Argentine memoir, Westmark House) — editor demanded sample retranslation after author flagged register'
+  - 'Book C (short-story collection, Northbridge Quarterly) — invoice for milestone 2 unpaid 32 days'
+  - quarterly translator-collective dinner 2026-04-30, hosting at his apartment
+  business_goals:
+  - deliver Book A final chapter 2026-05-08 with all editor flags cleared
+  - resolve Book B sample retranslation by 2026-04-25, regain author trust
+  - collect Book C milestone-2 payment by 2026-05-15 without straining the relationship
+  - book a Book A launch reading at an indie bookstore for September 2026 by 2026-06-10
+  risk_factors:
+  - Book A kill-fee triggered if the 2026-05-08 deadline slips even one day
+  - Book B author pulling the contract over register disagreement
+  - Book C publisher delaying milestone 2 indefinitely, cascading into Book D negotiation
+
+data_threads:
+- name: "Book A final chapter"
+  description: "Final chapter due 2026-05-08 with kill-fee clause active; editor + author feedback layered."
+  involved_services: [gmail, claw_obsidian, claw_notion, todo, calendar]
+  involved_records:
+    gmail: []
+    claw_obsidian: []
+    claw_notion: []
+    todo: []
+    calendar: []
+  signal_density: 0.18
+  difficulty: medium
+  category: contract_milestone_tracking
+  thread_type: standard
+
+- name: "Book B sample retranslation"
+  description: "Editor + author flagged register; need a defensible sample by 2026-04-25 with decision-log entries."
+  involved_services: [gmail, claw_obsidian, notes, todo]
+  involved_records:
+    gmail: []
+    claw_obsidian: []
+    notes: []
+    todo: []
+  signal_density: 0.14
+  difficulty: medium
+  category: editor_communication
+  thread_type: standard
+
+- name: "Book C unpaid invoice"
+  description: "Milestone-2 invoice unpaid 32 days; need a non-confrontational follow-up without damaging the relationship."
+  involved_services: [gmail, finance, claw_notion, todo]
+  involved_records:
+    gmail: []
+    finance: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.08
+  difficulty: simple
+  category: invoicing_admin
+  thread_type: standard
+
+- name: "Translator-collective dinner 2026-04-30"
+  description: "Hosting 8 colleagues at his apartment; menu + invite list + RSVP tracking."
+  involved_services: [calendar, contacts, gmail, todo]
+  involved_records:
+    calendar: []
+    contacts: []
+    gmail: []
+    todo: []
+  signal_density: 0.06
+  difficulty: simple
+  category: scheduling
+  thread_type: standard
+
+- name: "Book A launch reading planning"
+  description: "Indie-bookstore reading for September 2026 launch; venue scouting + publicist coordination."
+  involved_services: [gmail, contacts, claw_notion, todo, calendar]
+  involved_records:
+    gmail: []
+    contacts: []
+    claw_notion: []
+    todo: []
+    calendar: []
+  signal_density: 0.07
+  difficulty: medium
+  category: launch_communication
+  thread_type: standard
+
+- name: "Quote register + decision log"
+  description: "Per-book decision log in Obsidian + the cross-book quote register; updated end-of-day."
+  involved_services: [claw_obsidian, notes, todo]
+  involved_records:
+    claw_obsidian: []
+    notes: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: translation_decision_log
+  thread_type: standard
+
+- name: "LinkedIn launch post for prior book"
+  description: "Publisher-approved blurb for last quarter's release; one LinkedIn post + tagged collaborators."
+  involved_services: [claw_linkedin, gmail, todo]
+  involved_records:
+    claw_linkedin: []
+    gmail: []
+    todo: []
+  signal_density: 0.04
+  difficulty: simple
+  category: launch_communication
+  thread_type: standard

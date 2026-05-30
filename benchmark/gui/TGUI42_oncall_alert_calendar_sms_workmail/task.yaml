@@ -30,7 +30,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9115/claw_obsidian/reset
   env:
-    CLAW_OBSIDIAN_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI42_oncall_alert_calendar_sms_workmail/fixtures/claw_obsidian/vault.json
+    CLAW_OBSIDIAN_FIXTURES: fixtures/claw_obsidian/vault.json
 - name: scheduler
   command: python mock_services/scheduler/server.py
   port: 9112
@@ -39,7 +39,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9112/scheduler/reset
   env:
-    SCHEDULER_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI42_oncall_alert_calendar_sms_workmail/fixtures/scheduler/jobs.json
+    SCHEDULER_FIXTURES: fixtures/scheduler/jobs.json
 - name: workmail
   command: python mock_services/workmail/server.py
   port: 9113
@@ -48,7 +48,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9113/workmail/reset
   env:
-    WORKMAIL_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI42_oncall_alert_calendar_sms_workmail/fixtures/workmail/inbox.json
+    WORKMAIL_FIXTURES: fixtures/workmail/inbox.json
 tools:
 - name: fossify_calendar_list_events
   description: 列出日历事件，支持日期范围过滤

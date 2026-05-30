@@ -1,0 +1,174 @@
+persona_id: ACAD01
+persona_name: Wei Zhang
+language: en
+
+role: fourth-year PhD candidate in machine learning at a US R1 university, with a focus on language-model alignment; currently job-search adjacent and prepping a dissertation defense
+company: Coastal University (fictional, R1 research university, CS department)
+industry: academic research / machine learning
+seniority: junior
+
+traits:
+- runs 2 active research projects in parallel — primary is dissertation, secondary is a collaboration paper
+- attends a weekly lab meeting Wednesdays and a reading group Fridays
+- treats every paper deadline as a 6-week countdown, written backwards from the venue date
+- maintains a Zotero library with ~430 papers and per-paper margin notes
+- writes daily research notes in Obsidian; never goes to bed without an end-of-day note
+- uses LinkedIn for academia-adjacent industry research-scientist networking
+- monitors arxiv-sanity-style RSS feeds; reads ~3 papers per day during conference seasons
+
+daily_responsibilities:
+- review overnight stumail + advisor email
+- run / monitor training jobs on cluster
+- write Obsidian research notes throughout the day
+- prepare for weekly lab meeting + reading group
+- correspond with collaborators on the secondary paper
+- skim arxiv / RSS feeds and tag promising work in Zotero
+
+primary_services:
+- stumail
+- gmail
+- calendar
+- claw_obsidian
+- claw_zotero
+- todo
+secondary_services:
+- claw_notion
+- claw_slack
+- meeting
+- rss
+- claw_linkedin
+- contacts
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - paper_writing
+  - reading_management
+  - cross_collaborator_coordination
+  - scheduling
+  - info_triage
+  - decision_making
+  - job_search_admin
+  implausible_categories:
+  - customer_pricing_negotiation
+  - hiring_decisions
+  - production_incident_management
+  - financial_authorization_above_500
+
+authority:
+  can_approve:
+  - submission of papers under his own first-author credit (advisor approval required for journals)
+  - rescheduling his own meetings and collaborators' working sessions
+  - choice of experimental design within his dissertation scope (advisor sign-off on direction shifts)
+  - signing internal undergrad mentee tasks
+  cannot_approve:
+  - dissertation committee changes (advisor + department)
+  - compute-budget reallocation above lab default (PI required)
+  - signing onto co-authorship for papers outside agreed projects (advisor consent)
+  - publishing public research claims under university affiliation without advisor sign-off
+  communication_style: precise, citation-heavy, hedged where appropriate; uses bullet-and-bracketed-reference structure
+  quality_focus: methodological transparency + reproducibility; reluctant to over-claim results
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 10:00–20:00 Eastern; weekend cluster monitoring; intermittent late-night writing pushes
+  active_issues:
+  - dissertation chapter 4 first draft due to advisor 2026-05-18
+  - secondary paper submission deadline 2026-05-29 (workshop @ a major NeurIPS-adjacent conference)
+  - research-scientist applications open at 5 industry labs; tracking interview pipeline
+  - one collaborator (postdoc at a partner lab) slow to respond; deadlines drifting
+  business_goals:
+  - submit chapter 4 draft to advisor by 2026-05-18
+  - submit secondary paper by 2026-05-29
+  - reach onsite stage at 2 of 5 industry-lab applications by 2026-06-30
+  - defend dissertation in late 2026-Q4
+  risk_factors:
+  - chapter 4 slipping cascades into a delayed defense (and stipend ending)
+  - workshop paper rejection pushes the contribution to a later venue
+  - industry-lab applications stalling forces a postdoc fallback decision
+
+data_threads:
+- name: "Dissertation chapter 4 draft"
+  description: "Chapter 4 outline + writing; advisor pre-reads + revision cycles; supporting analyses in Obsidian."
+  involved_services: [claw_obsidian, claw_zotero, stumail, gmail, todo, claw_notion]
+  involved_records:
+    claw_obsidian: []
+    claw_zotero: []
+    stumail: []
+    gmail: []
+    todo: []
+    claw_notion: []
+  signal_density: 0.16
+  difficulty: hard
+  category: paper_writing
+  thread_type: standard
+
+- name: "Workshop paper submission"
+  description: "Secondary paper with collaborators; experiments running on cluster, draft sections + reviewer-prep planning."
+  involved_services: [gmail, claw_slack, claw_obsidian, claw_zotero, todo, calendar]
+  involved_records:
+    gmail: []
+    claw_slack: []
+    claw_obsidian: []
+    claw_zotero: []
+    todo: []
+    calendar: []
+  signal_density: 0.14
+  difficulty: medium
+  category: paper_writing
+  thread_type: standard
+
+- name: "Industry-lab job search"
+  description: "Tracking 5 active applications; interview scheduling, prep notes, networking via LinkedIn."
+  involved_services: [gmail, calendar, contacts, claw_linkedin, claw_notion, todo]
+  involved_records:
+    gmail: []
+    calendar: []
+    contacts: []
+    claw_linkedin: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.11
+  difficulty: medium
+  category: job_search_admin
+  thread_type: standard
+
+- name: "Slow collaborator follow-up"
+  description: "Polite but persistent nudges to a partner-lab postdoc whose response cycle is risking deadlines."
+  involved_services: [gmail, claw_slack, calendar, todo]
+  involved_records:
+    gmail: []
+    claw_slack: []
+    calendar: []
+    todo: []
+  signal_density: 0.05
+  difficulty: medium
+  category: cross_collaborator_coordination
+  thread_type: standard
+
+- name: "Weekly lab + reading group"
+  description: "Lab meeting Wed + reading group Fri; agenda prep, paper picks via Zotero, RSS feeds for new arxiv submissions."
+  involved_services: [calendar, claw_zotero, claw_obsidian, rss, todo]
+  involved_records:
+    calendar: []
+    claw_zotero: []
+    claw_obsidian: []
+    rss: []
+    todo: []
+  signal_density: 0.07
+  difficulty: simple
+  category: reading_management
+  thread_type: standard
+
+- name: "stumail inbox triage"
+  description: "Daily triage of advisor, committee, departmental, and TA-related university email."
+  involved_services: [stumail, todo, calendar]
+  involved_records:
+    stumail: []
+    todo: []
+    calendar: []
+  signal_density: 0.06
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

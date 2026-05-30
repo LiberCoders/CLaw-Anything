@@ -30,7 +30,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9101/calendar/reset
   env:
-    CALENDAR_FIXTURES: gen_tasks_GUI/TGUI09_dialer_call_meeting_calendar_invite/fixtures/calendar/events.json
+    CALENDAR_FIXTURES: fixtures/calendar/events.json
 - name: meeting
   command: python mock_services/meeting/server.py
   port: 9116
@@ -39,7 +39,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9116/meeting/reset
   env:
-    MEETING_FIXTURES: gen_tasks_GUI/TGUI09_dialer_call_meeting_calendar_invite/fixtures/meeting/meetings.json
+    MEETING_FIXTURES: fixtures/meeting/meetings.json
 - name: workmail
   command: python mock_services/workmail/server.py
   port: 9113
@@ -48,7 +48,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9113/workmail/reset
   env:
-    WORKMAIL_FIXTURES: gen_tasks_GUI/TGUI09_dialer_call_meeting_calendar_invite/fixtures/workmail/inbox.json
+    WORKMAIL_FIXTURES: fixtures/workmail/inbox.json
 
 tools:
 # ---- dialer_gui ----

@@ -1,0 +1,172 @@
+persona_id: ENG02
+persona_name: Priya Natarajan
+language: en
+
+role: engineering manager owning a 9-person backend platform team at a public mid-cap fintech
+seniority: senior
+company: Northgate Pay (fictional, ~3,800 employees, publicly traded)
+industry: fintech / payments
+
+traits:
+- runs weekly team standup Mondays 10:00 ET and a bi-weekly tech-review Thursdays
+- holds 9 rolling 1:1s, never letting any direct report's slip past 2 weeks
+- delegates IC code work entirely; reviews architecture decisions, not diffs
+- protects her team's roadmap from ad-hoc exec asks — funnels everything through her director
+- writes calibration notes year-round, not just at perf-review season
+- maintains a private "team-health journal" in Notes, updated weekly
+- never replies to non-urgent Slack after 18:00 local; expects the same from her team but doesn't enforce it
+
+daily_responsibilities:
+- review overnight #payments-platform Slack channel and on-call handoff notes first thing
+- run or attend 2–4 1:1s per day on a rolling cadence
+- approve / push back on cross-team dependency requests in Notion
+- review architecture decision records (ADRs) drafted by tech leads
+- block 30 minutes daily for the team-health journal and calibration notes
+- prepare or follow up on weekly status report for her director
+
+primary_services:
+- gmail
+- calendar
+- claw_slack
+- claw_notion
+- todo
+- meeting
+secondary_services:
+- contacts
+- notes
+- helpdesk
+- crm
+- claw_linkedin
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - scheduling
+  - cross_team_coordination
+  - performance_review_admin
+  - hiring_pipeline_coordination
+  - decision_making
+  - info_triage
+  - incident_followup
+  implausible_categories:
+  - production_code_change_approval
+  - customer_pricing_negotiation
+  - legal_filings
+  - financial_authorization_above_25k
+
+authority:
+  can_approve:
+  - team headcount allocation across her 9 reports
+  - architecture trade-offs within her platform vertical
+  - calibration ratings for her direct reports (subject to director sign-off)
+  - rescheduling her own meetings and 1:1s
+  - low-risk vendor purchases up to $5,000
+  cannot_approve:
+  - hiring offers above the band rubric (escalate to director + HR)
+  - cross-vertical dependency commitments (escalate to director)
+  - production hotfix deploys outside on-call protocol
+  - public-facing communications (escalate to PR)
+  communication_style: warm-but-direct, structured, tags owners explicitly, gives feedback with concrete examples
+  quality_focus: psychological safety + clear ownership; never lets ambiguity linger across a 1:1 cycle
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 09:00–18:00 Eastern; family pickup block 16:30–17:30 daily
+  active_issues:
+  - mid-year calibration cycle (2026-05-04 ~ 2026-05-22)
+  - open backend-engineer requisition (level L5) on the team for 6 weeks
+  - cross-team tension with the risk-engineering org over service ownership
+  - one direct report (junior engineer) flagged for performance plan consideration
+  business_goals:
+  - close the L5 requisition by 2026-06-01
+  - complete all 9 calibration write-ups by 2026-05-22
+  - reach a written ownership agreement with risk-eng by 2026-05-15
+  - retain 100% of high-performers through Q2
+  risk_factors:
+  - L5 requisition slipping further drags on team load and burnout risk
+  - PIP escalation getting mishandled triggers attrition risk in adjacent reports
+  - calibration cycle and risk-eng negotiation colliding in the same week
+
+data_threads:
+- name: "Mid-year calibration cycle"
+  description: "Writing 9 calibration narratives, gathering peer feedback, prepping director review meeting."
+  involved_services: [gmail, claw_notion, calendar, todo, notes]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    calendar: []
+    todo: []
+    notes: []
+  signal_density: 0.16
+  difficulty: medium
+  category: performance_review_admin
+  thread_type: standard
+
+- name: "L5 backend engineer requisition"
+  description: "Hiring pipeline — recruiter sync, candidate scheduling, debrief notes; 6 weeks open."
+  involved_services: [gmail, calendar, claw_notion, contacts, claw_linkedin, todo]
+  involved_records:
+    gmail: []
+    calendar: []
+    claw_notion: []
+    contacts: []
+    claw_linkedin: []
+    todo: []
+  signal_density: 0.14
+  difficulty: medium
+  category: hiring_pipeline_coordination
+  thread_type: standard
+
+- name: "Risk-eng ownership negotiation"
+  description: "Cross-team dispute about who owns a shared service; Slack debate, Notion proposal, pending exec sync."
+  involved_services: [claw_slack, claw_notion, gmail, todo, meeting]
+  involved_records:
+    claw_slack: []
+    claw_notion: []
+    gmail: []
+    todo: []
+    meeting: []
+  signal_density: 0.12
+  difficulty: hard
+  category: cross_team_coordination
+  thread_type: standard
+
+- name: "Junior engineer performance concern"
+  description: "Sensitive 1:1 prep, HR consultation thread, private team-health journal entries."
+  involved_services: [notes, claw_notion, calendar, gmail]
+  involved_records:
+    notes: []
+    claw_notion: []
+    calendar: []
+    gmail: []
+  signal_density: 0.06
+  difficulty: medium
+  category: performance_review_admin
+  thread_type: standard
+
+- name: "Weekly 1:1 cadence (9 reports)"
+  description: "Rolling 1:1 schedule, agenda notes, follow-up todos across nine reports."
+  involved_services: [calendar, claw_notion, todo, contacts]
+  involved_records:
+    calendar: []
+    claw_notion: []
+    todo: []
+    contacts: []
+  signal_density: 0.09
+  difficulty: simple
+  category: scheduling
+  thread_type: standard
+
+- name: "Director weekly status report"
+  description: "Synthesizing platform metrics, calibration progress, hiring status into a Friday digest."
+  involved_services: [gmail, claw_notion, todo, claw_slack]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    todo: []
+    claw_slack: []
+  signal_density: 0.07
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

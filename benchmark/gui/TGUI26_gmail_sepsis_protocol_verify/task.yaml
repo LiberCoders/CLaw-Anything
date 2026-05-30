@@ -24,7 +24,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9102/todo/reset
   env:
-    TODO_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI26_gmail_sepsis_protocol_verify/fixtures/todo/tasks.json
+    TODO_FIXTURES: fixtures/todo/tasks.json
 - name: scheduler
   command: python mock_services/scheduler/server.py
   port: 9112
@@ -33,7 +33,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9112/scheduler/reset
   env:
-    SCHEDULER_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI26_gmail_sepsis_protocol_verify/fixtures/scheduler/jobs.json
+    SCHEDULER_FIXTURES: fixtures/scheduler/jobs.json
 - name: workmail
   command: python mock_services/workmail/server.py
   port: 9113
@@ -42,7 +42,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9113/workmail/reset
   env:
-    WORKMAIL_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI26_gmail_sepsis_protocol_verify/fixtures/workmail/inbox.json
+    WORKMAIL_FIXTURES: fixtures/workmail/inbox.json
 - name: claw_notion
   command: python mock_services/claw_notion/server.py
   port: 9114
@@ -51,7 +51,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9114/claw_notion/reset
   env:
-    CLAW_NOTION_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI26_gmail_sepsis_protocol_verify/fixtures/claw_notion/pages.json
+    CLAW_NOTION_FIXTURES: fixtures/claw_notion/pages.json
 - name: meeting
   command: python mock_services/meeting/server.py
   port: 9116
@@ -60,7 +60,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9116/meeting/reset
   env:
-    MEETING_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI26_gmail_sepsis_protocol_verify/fixtures/meeting/meetings.json
+    MEETING_FIXTURES: fixtures/meeting/meetings.json
 tools:
 - name: gmail_clone_list_messages
   description: 列出 Gmail Clone 收件箱邮件，支持关键词、标签和未读过滤

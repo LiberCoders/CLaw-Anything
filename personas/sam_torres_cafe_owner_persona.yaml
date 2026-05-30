@@ -1,0 +1,176 @@
+persona_id: FREE07
+persona_name: Sam Torres
+language: en
+
+role: owner-operator of a neighborhood specialty coffee shop with a small breakfast menu; runs a 6-person team (4 baristas, 2 part-time cooks)
+company: Salt & Sparrow Coffee (single location, ~38 seats, fictional)
+industry: small business / specialty coffee / food service
+seniority: mid
+
+traits:
+- works the morning shift behind the bar Tue–Thu, admin in the afternoons + Mondays
+- maintains a Notion-based ops playbook for the team — recipes, opening checklist, vendor cheat-sheet
+- runs weekly inventory + ordering cycle Mondays
+- treats every supplier price change as a 48-hour reaction window
+- uses Facebook to maintain community presence + post weekly specials
+- LinkedIn occasionally for industry connections + supplier outreach
+- maintains a personal "lessons from a slow week" journal in Obsidian
+
+daily_responsibilities:
+- morning bar shift (Tue–Thu) or open-up oversight
+- review POS reports + cash reconciliation from previous day
+- coordinate with staff via Slack-like group chat
+- inventory check + supplier ordering Mondays + Thursdays
+- post 1 Facebook update per day during operating hours
+- triage maintenance + vendor issues
+
+primary_services:
+- gmail
+- calendar
+- claw_notion
+- claw_facebook
+- todo
+- finance
+secondary_services:
+- contacts
+- inventory
+- sheet
+- claw_slack
+- meeting
+- claw_linkedin
+- claw_obsidian
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - operations_management
+  - supplier_coordination
+  - staff_admin
+  - invoicing_admin
+  - decision_making
+  - info_triage
+  - scheduling
+  implausible_categories:
+  - corporate_financial_authorization
+  - production_incident_management
+  - legal_filings_for_third_party
+  - product_engineering_change_approval
+
+authority:
+  can_approve:
+  - all hiring + scheduling for his 6-person team
+  - menu changes + recipe updates
+  - supplier selection within his quality + budget criteria
+  - any expenditure under $1,500 from operating account
+  cannot_approve:
+  - leases or property-related contracts outside renewal cycle (defer to landlord + lawyer)
+  - representing the business in legal disputes without counsel
+  - selling personal information about customers (privacy)
+  - rate-card discounts contradicting his own promotional calendar
+  communication_style: warm, direct, neighborhood-grounded; uses customer names; never apologizes generically
+  quality_focus: every cup + plate must clear his personal bar; refuses to ship subpar product to save margin
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Tue–Sun 06:00–17:00 onsite; Monday admin day from home
+  active_issues:
+  - main coffee supplier raised wholesale prices 9% effective 2026-05-01
+  - summer menu launch planned 2026-05-19
+  - one part-time barista (Jamie) leaving for school in June — replacement search
+  - quarterly sales-tax filing due 2026-06-15
+  business_goals:
+  - decide and execute response to supplier price hike (absorb, raise prices, or partial) by 2026-04-30
+  - launch summer menu cleanly 2026-05-19
+  - hire + train Jamie's replacement before 2026-06-15
+  - file quarterly sales tax by 2026-06-15
+  risk_factors:
+  - poor handling of price-pass-through erodes regular customer goodwill
+  - summer-menu launch hiccups become a Facebook neighborhood-group complaint
+  - replacement hire slipping causes scheduling gaps in June
+
+data_threads:
+- name: "Supplier price hike response"
+  description: "9% wholesale hike effective 2026-05-01; decision on absorb/pass-through; customer comms draft."
+  involved_services: [gmail, claw_notion, finance, sheet, contacts, todo]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    finance: []
+    sheet: []
+    contacts: []
+    todo: []
+  signal_density: 0.16
+  difficulty: hard
+  category: supplier_coordination
+  thread_type: standard
+
+- name: "Summer menu launch 2026-05-19"
+  description: "Menu finalization, staff training, supplier orders, marketing photos."
+  involved_services: [claw_notion, claw_facebook, calendar, inventory, todo, contacts]
+  involved_records:
+    claw_notion: []
+    claw_facebook: []
+    calendar: []
+    inventory: []
+    todo: []
+    contacts: []
+  signal_density: 0.13
+  difficulty: medium
+  category: operations_management
+  thread_type: standard
+
+- name: "Jamie's replacement hire"
+  description: "Posting role, screening, interview, hire-and-train timeline before mid-June."
+  involved_services: [gmail, claw_linkedin, contacts, calendar, claw_notion, todo]
+  involved_records:
+    gmail: []
+    claw_linkedin: []
+    contacts: []
+    calendar: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.09
+  difficulty: medium
+  category: staff_admin
+  thread_type: standard
+
+- name: "Q2 sales tax filing"
+  description: "Quarterly sales tax due 2026-06-15; POS reconciliation, finance log review."
+  involved_services: [finance, sheet, claw_notion, todo, calendar]
+  involved_records:
+    finance: []
+    sheet: []
+    claw_notion: []
+    todo: []
+    calendar: []
+  signal_density: 0.06
+  difficulty: medium
+  category: invoicing_admin
+  thread_type: standard
+
+- name: "Daily Facebook posting + community engagement"
+  description: "Daily Facebook posts during operating hours; replies to comments + neighborhood-group activity."
+  involved_services: [claw_facebook, claw_obsidian, todo]
+  involved_records:
+    claw_facebook: []
+    claw_obsidian: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: info_triage
+  thread_type: standard
+
+- name: "Weekly staff scheduling + check-ins"
+  description: "Weekly shift schedule, swap requests, brief check-ins with 6 staff members."
+  involved_services: [calendar, claw_slack, claw_notion, todo, contacts]
+  involved_records:
+    calendar: []
+    claw_slack: []
+    claw_notion: []
+    todo: []
+    contacts: []
+  signal_density: 0.07
+  difficulty: simple
+  category: scheduling
+  thread_type: standard

@@ -1,0 +1,175 @@
+persona_id: AE01
+persona_name: Tyler Brennan
+language: en
+
+role: enterprise account executive at an analytics-platform vendor; carries 8 named enterprise accounts and a $4.2M quota
+company: Quartz Analytics (fictional, ~2,500 employees, publicly traded analytics platform)
+industry: enterprise analytics SaaS
+seniority: senior
+
+traits:
+- works the deal cycle with a paired solutions architect (Daniel Kim is one of his SAs)
+- runs every deal through MEDDPICC; refuses to advance stage without metrics + champion mapped
+- writes account-plans in Notion; only the deal team has access
+- never sends a contract redline without RevOps and Legal in the loop
+- prospects 90 minutes daily, regardless of pipeline state — habit, not negotiable
+- uses LinkedIn for prospecting and warming the buying committee
+- closes the loop on every customer escalation within 24 hours, even on weekends
+
+daily_responsibilities:
+- review the CRM for stage changes and stale opportunities
+- send 10–20 prospecting touches per day via email + LinkedIn
+- coordinate with SA + CSM on active and post-sale accounts
+- update account plans in Notion after every customer call
+- prep for upcoming customer meetings (3–6 per week)
+- triage inbound from existing accounts (renewal & expansion)
+
+primary_services:
+- gmail
+- calendar
+- crm
+- claw_linkedin
+- claw_notion
+- meeting
+secondary_services:
+- todo
+- contacts
+- claw_slack
+- helpdesk
+- slide
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - account_planning
+  - customer_meeting_prep
+  - cross_team_coordination
+  - decision_making
+  - info_triage
+  - scheduling
+  - pipeline_hygiene
+  implausible_categories:
+  - product_engineering_change_approval
+  - hiring_offer_extension
+  - legal_clause_drafting_from_scratch
+  - production_incident_management
+
+authority:
+  can_approve:
+  - moving an opportunity through MEDDPICC stages
+  - rescheduling his own customer meetings
+  - committing to customer follow-up artifacts (deck, written response, demo)
+  - calling in additional SE / CSM resources for an active deal
+  cannot_approve:
+  - pricing or discount commitments outside the standard rate card (escalate to RevOps + deal desk)
+  - contract redlines or non-standard terms (Legal + RevOps required)
+  - product roadmap commitments (escalate to Product)
+  - public references / case studies without customer + Marketing sign-off
+  communication_style: warm, brief, follow-up-heavy; uses customer language back to them; tags internal stakeholders explicitly
+  quality_focus: deal cycle integrity over short-term close; refuses to skip champion-mapping even under quota pressure
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 08:00–19:00 Central; travel ~5 days per month; deep-prospect block 07:30–09:00 daily
+  active_issues:
+  - one $1.4M deal (Helix Robotics — overlap with Marcus Rivera's design-partner) at procurement, target close 2026-05-30
+  - one tier-1 renewal (Halcyon Bank) at risk because of a technical gap
+  - LinkedIn social-selling cadence missed for the past 9 days
+  - CRM hygiene flagged by RevOps — 14 stale opportunities older than 60 days
+  business_goals:
+  - close the Helix Robotics deal by 2026-05-30
+  - secure verbal renewal commitment from Halcyon Bank by 2026-05-22
+  - re-establish daily LinkedIn cadence by 2026-04-22
+  - clear stale-opportunity backlog to under 5 by 2026-05-10
+  risk_factors:
+  - Helix Robotics deal slipping past quarter-end on procurement red tape
+  - Halcyon Bank churn cascading into vertical pipeline narrative
+  - LinkedIn dormancy hurting top-of-funnel warm-touch metrics
+
+data_threads:
+- name: "Helix Robotics $1.4M procurement push"
+  description: "Late-stage deal at customer procurement; champion mapping, MEDDPICC artifacts, internal RevOps coordination."
+  involved_services: [crm, gmail, claw_notion, contacts, calendar, todo, meeting]
+  involved_records:
+    crm: []
+    gmail: []
+    claw_notion: []
+    contacts: []
+    calendar: []
+    todo: []
+    meeting: []
+  signal_density: 0.20
+  difficulty: hard
+  category: account_planning
+  thread_type: standard
+
+- name: "Halcyon Bank renewal risk"
+  description: "Tier-1 renewal at risk; technical gap escalation to SA + CSM, executive sponsor outreach."
+  involved_services: [crm, gmail, calendar, claw_notion, contacts, claw_slack, todo]
+  involved_records:
+    crm: []
+    gmail: []
+    calendar: []
+    claw_notion: []
+    contacts: []
+    claw_slack: []
+    todo: []
+  signal_density: 0.14
+  difficulty: hard
+  category: customer_meeting_prep
+  thread_type: standard
+
+- name: "LinkedIn social-selling cadence"
+  description: "Daily 90-minute prospecting; cadence missed; backlog of warm-touch interactions."
+  involved_services: [claw_linkedin, contacts, crm, todo]
+  involved_records:
+    claw_linkedin: []
+    contacts: []
+    crm: []
+    todo: []
+  signal_density: 0.10
+  difficulty: simple
+  category: pipeline_hygiene
+  thread_type: standard
+
+- name: "Stale opportunity cleanup"
+  description: "14 opportunities older than 60 days; RevOps cleanup mandate; needs re-qualify-or-close decisions."
+  involved_services: [crm, gmail, todo, contacts]
+  involved_records:
+    crm: []
+    gmail: []
+    todo: []
+    contacts: []
+  signal_density: 0.07
+  difficulty: medium
+  category: pipeline_hygiene
+  thread_type: standard
+
+- name: "Quarterly account-plan refresh"
+  description: "Refreshing 8 account plans in Notion ahead of Q3 territory review."
+  involved_services: [claw_notion, crm, todo, gmail, slide]
+  involved_records:
+    claw_notion: []
+    crm: []
+    todo: []
+    gmail: []
+    slide: []
+  signal_density: 0.09
+  difficulty: medium
+  category: account_planning
+  thread_type: standard
+
+- name: "Inbound from existing accounts"
+  description: "Day-to-day inbound triage from his 8 named accounts — renewal questions, support escalations, expansion signals."
+  involved_services: [gmail, crm, claw_slack, helpdesk, todo]
+  involved_records:
+    gmail: []
+    crm: []
+    claw_slack: []
+    helpdesk: []
+    todo: []
+  signal_density: 0.06
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

@@ -1,0 +1,173 @@
+persona_id: FREE08
+persona_name: Nina Caldwell
+language: en
+
+role: full-time travel-content creator + travel writer, 5 years in; income mix of brand partnerships, freelance writing, and a small affiliate-supported newsletter
+company: self-employed under Nina Caldwell Media (LLC)
+industry: travel content / freelance media / digital publishing
+seniority: mid
+
+traits:
+- plans trips 4–6 months out; never accepts brand work that requires under 4 weeks lead time
+- maintains a Notion master "trip pipeline" with destination, sponsor, deliverables, deadlines
+- writes draft trip diaries in Obsidian on the road; polishes to publishable Notion drafts at home
+- uses Facebook + LinkedIn as portfolio + B2B credibility; declines being on every other platform
+- declines any brand partnership that doesn't allow explicit disclosure
+- maintains a personal sheet of every paid trip's hard numbers (fee, expense margin, deliverables)
+- subscribes to ~14 travel-industry RSS feeds + a few destination-specific newsletters
+
+daily_responsibilities:
+- correspondence with brand managers + PR contacts
+- writing block (varies — at home vs. on the road)
+- editing photos + videos
+- newsletter writing + sending (weekly Thursdays)
+- post / engage on Facebook + LinkedIn 3-4x weekly
+- maintain trip pipeline + financial spreadsheet
+
+primary_services:
+- gmail
+- calendar
+- claw_notion
+- claw_obsidian
+- claw_facebook
+- claw_linkedin
+secondary_services:
+- todo
+- contacts
+- sheet
+- finance
+- rss
+- meeting
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - client_communication
+  - project_planning
+  - portfolio_marketing
+  - invoicing_admin
+  - decision_making
+  - scheduling
+  - info_triage
+  implausible_categories:
+  - hiring_employee_offer_full_time
+  - corporate_financial_authorization
+  - production_incident_management
+  - legal_filings_for_third_party
+
+authority:
+  can_approve:
+  - committing to her own trips + sponsorships within her standard rate sheet
+  - declining brand partnerships that violate her disclosure or editorial standards
+  - publishing her own work to all her surfaces
+  - rescheduling her own brand calls / press trips
+  cannot_approve:
+  - representing brands without explicit disclosure (FTC compliance)
+  - sharing unreleased brand material publicly
+  - signing exclusivity clauses without 48-hour cool-off
+  - representing destinations in any official capacity without contract
+  communication_style: warm-narrative, visual-led, transparent about disclosures; never sends form pitches
+  quality_focus: editorial integrity over short-term reach; refuses to publish a destination she'd not personally recommend
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: variable around trips; home-base Mon–Fri 09:30–18:30; weekend writing
+  active_issues:
+  - sponsored trip to Lisbon 2026-05-12 to 2026-05-19 (Visit Lisbon partnership)
+  - one brand inquiry that violates her disclosure standard — needs polite decline
+  - newsletter weekly cadence (Thursdays) needs to maintain through Lisbon trip
+  - quarterly tax estimate due 2026-06-15
+  business_goals:
+  - execute Lisbon trip + deliver all contracted deliverables by 2026-06-05
+  - publish 4 newsletters in May without skipping a Thursday
+  - decline the non-disclosure brand cleanly + preserve relationship
+  - file quarterly tax by 2026-06-15
+  risk_factors:
+  - Lisbon trip deliverables slipping triggers contractual penalty
+  - newsletter cadence breaking erodes paid-subscriber trust
+  - bad-brand decline misread as price negotiation
+
+data_threads:
+- name: "Lisbon sponsored trip 2026-05-12"
+  description: "7-day Lisbon press trip; itinerary, deliverable schedule, brand-side contact list, on-the-road drafts."
+  involved_services: [gmail, calendar, claw_notion, claw_obsidian, contacts, todo]
+  involved_records:
+    gmail: []
+    calendar: []
+    claw_notion: []
+    claw_obsidian: []
+    contacts: []
+    todo: []
+  signal_density: 0.17
+  difficulty: medium
+  category: project_planning
+  thread_type: standard
+
+- name: "Non-disclosure brand decline"
+  description: "Inquiry that violates her disclosure standard; polite-but-firm decline + relationship preservation."
+  involved_services: [gmail, claw_notion, contacts, todo]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    contacts: []
+    todo: []
+  signal_density: 0.06
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "May newsletter cadence"
+  description: "4 Thursday newsletters in May including 1 on-the-road send; affiliate links, disclosure footer."
+  involved_services: [claw_notion, claw_obsidian, gmail, todo, calendar]
+  involved_records:
+    claw_notion: []
+    claw_obsidian: []
+    gmail: []
+    todo: []
+    calendar: []
+  signal_density: 0.10
+  difficulty: medium
+  category: content_calendar_management
+  thread_type: standard
+
+- name: "Q2 tax estimate"
+  description: "Quarterly tax estimate prep; trip expense reconciliation, sponsor income."
+  involved_services: [finance, sheet, claw_notion, todo, calendar]
+  involved_records:
+    finance: []
+    sheet: []
+    claw_notion: []
+    todo: []
+    calendar: []
+  signal_density: 0.06
+  difficulty: medium
+  category: invoicing_admin
+  thread_type: standard
+
+- name: "Facebook + LinkedIn cadence"
+  description: "3-4x weekly posting; LinkedIn for B2B brand managers, Facebook for community + readers."
+  involved_services: [claw_facebook, claw_linkedin, claw_obsidian, todo, calendar]
+  involved_records:
+    claw_facebook: []
+    claw_linkedin: []
+    claw_obsidian: []
+    todo: []
+    calendar: []
+  signal_density: 0.07
+  difficulty: simple
+  category: portfolio_marketing
+  thread_type: standard
+
+- name: "Industry signal sweep"
+  description: "Travel-industry RSS + destination newsletters; tagged into Obsidian for trip-pipeline planning."
+  involved_services: [rss, claw_obsidian, claw_notion, todo]
+  involved_records:
+    rss: []
+    claw_obsidian: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

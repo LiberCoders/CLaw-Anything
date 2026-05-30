@@ -1,0 +1,171 @@
+persona_id: ACAD08
+persona_name: Mei Lin
+language: en
+
+role: high school computer science teacher and robotics club advisor at a public magnet high school; teaches 4 sections of AP CS A + 1 intro elective
+company: Northbridge STEM Magnet High School (fictional, public, ~1,400 students)
+industry: K-12 education / computer science teaching
+seniority: mid
+
+traits:
+- runs an after-school robotics club (FRC team) Tuesdays + Thursdays 16:00–18:30
+- keeps a Notion gradebook + curriculum plan synced with the district SIS each Friday
+- writes weekly Obsidian "what worked this week" lesson reflections — never shared
+- relies on stumail (student email) and parent gmail in parallel; never crosses streams
+- treats every late-grade-submission request as a 48-hour decision window with documentation
+- moderates the school's coding club Slack with strict no-doxxing rules
+- subscribes to RSS feeds from CS education blogs + the College Board AP CS A updates
+
+daily_responsibilities:
+- teach 4 AP CS A sections + 1 intro elective (5 periods/day)
+- triage stumail (student questions) + gmail (parents + faculty) at lunch + end of day
+- grade nightly programming labs in batches of 25-30
+- update Notion gradebook + sync to district SIS each Friday
+- pair with the FRC team Tue/Thu evenings on robot build + competition logistics
+- review College Board exam-prep pacing weekly against the syllabus
+
+primary_services:
+- stumail
+- gmail
+- calendar
+- claw_notion
+- claw_obsidian
+- contacts
+secondary_services:
+- todo
+- notes
+- meeting
+- sheet
+- rss
+- claw_slack
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - grading_and_feedback
+  - lesson_planning
+  - parent_communication
+  - club_event_coordination
+  - syllabus_pacing_review
+  - decision_making
+  - scheduling
+  - info_triage
+  implausible_categories:
+  - corporate_financial_authorization
+  - product_engineering_decisions
+  - external_vendor_contract_negotiation
+  - hiring_outside_school
+
+authority:
+  can_approve:
+  - grading rubrics + final grades within her own sections (subject to dept review)
+  - extra-credit policy + late-work extensions per her published syllabus
+  - FRC team trip logistics within the club's approved budget envelope
+  - rescheduling office hours + AP review sessions she owns
+  cannot_approve:
+  - district-level curriculum changes (dept chair + curriculum office)
+  - student disciplinary actions beyond classroom warnings (dean of students)
+  - field-trip budgets above the FRC envelope (principal + parents association)
+  - any reply to a media inquiry about students or the school (principal office)
+  communication_style: warm, direct, student-first; addresses parents by Mr./Ms.; never names individual students in group communication
+  quality_focus: long-term student understanding over short-term exam scores; refuses to "teach to the test" on the AP exam
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 07:30–16:00 onsite; FRC Tue + Thu 16:00–18:30; Sunday evening 1-hour planning block
+  active_issues:
+  - AP CS A exam scheduled 2026-05-15 — pacing pressure across the 4 sections
+  - FRC regional competition 2026-04-25, state qualifier on the line
+  - one student plagiarism case under review with the dept chair
+  - parent-teacher conferences 2026-04-22 evening + 2026-04-23 evening
+  business_goals:
+  - 100% of her AP CS A students sit the exam 2026-05-15 with at least one full mock under their belt
+  - FRC team qualifies for state by placing top-8 at regionals 2026-04-25
+  - publish updated intro-elective syllabus for fall by 2026-06-10
+  - resolve the plagiarism case with documented decision by 2026-04-30
+  risk_factors:
+  - AP exam pacing slipping if the plagiarism case eats more time
+  - FRC team's lead programmer applying to summer internships, pulling time away from robot build
+  - district SIS sync drifting from Notion gradebook if Friday cadence breaks
+
+data_threads:
+- name: "AP CS A exam pacing"
+  description: "4 sections + 1 mock exam round before 2026-05-15; pacing reconciliation across sections."
+  involved_services: [calendar, claw_notion, stumail, todo]
+  involved_records:
+    calendar: []
+    claw_notion: []
+    stumail: []
+    todo: []
+  signal_density: 0.18
+  difficulty: medium
+  category: syllabus_pacing_review
+  thread_type: standard
+
+- name: "FRC regional competition 2026-04-25"
+  description: "Robot build sprint + travel logistics + qualifier-day schedule; coordinating with parents + bus."
+  involved_services: [calendar, gmail, contacts, claw_slack, todo]
+  involved_records:
+    calendar: []
+    gmail: []
+    contacts: []
+    claw_slack: []
+    todo: []
+  signal_density: 0.14
+  difficulty: medium
+  category: club_event_coordination
+  thread_type: standard
+
+- name: "Plagiarism case under review"
+  description: "Documenting findings + dept chair coordination + parent communication; needs careful written record."
+  involved_services: [gmail, claw_notion, claw_obsidian, todo]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    claw_obsidian: []
+    todo: []
+  signal_density: 0.09
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "Parent-teacher conferences"
+  description: "Two evenings of back-to-back 10-min slots; scheduling + prep notes per student."
+  involved_services: [calendar, gmail, contacts, claw_notion, todo]
+  involved_records:
+    calendar: []
+    gmail: []
+    contacts: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.10
+  difficulty: simple
+  category: parent_communication
+  thread_type: standard
+
+- name: "Weekly gradebook + SIS sync"
+  description: "Friday cadence: Notion gradebook → district SIS; reconcile any drift, flag missing submissions."
+  involved_services: [claw_notion, sheet, stumail, todo]
+  involved_records:
+    claw_notion: []
+    sheet: []
+    stumail: []
+    todo: []
+  signal_density: 0.06
+  difficulty: simple
+  category: grading_and_feedback
+  thread_type: standard
+
+- name: "Intro-elective syllabus for fall"
+  description: "Drafting fall syllabus in Obsidian; references AP CS A reflection notes + dept curriculum guidance."
+  involved_services: [claw_obsidian, claw_notion, todo, rss]
+  involved_records:
+    claw_obsidian: []
+    claw_notion: []
+    todo: []
+    rss: []
+  signal_density: 0.05
+  difficulty: medium
+  category: lesson_planning
+  thread_type: standard

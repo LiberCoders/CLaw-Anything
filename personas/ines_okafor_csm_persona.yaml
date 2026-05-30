@@ -1,0 +1,178 @@
+persona_id: CSM01
+persona_name: Ines Okafor
+language: en
+
+role: senior customer success manager at a workflow-automation platform; owns 14 mid-market accounts ($25k–$120k ARR each)
+company: Loop Workflow (fictional, ~600 employees, Series C workflow-automation SaaS)
+industry: workflow automation SaaS
+seniority: senior
+
+traits:
+- runs a quarterly business review with each tier-1 account, monthly with tier-2
+- treats every churn warning as an immediate prep-for-recovery exercise, not a post-mortem
+- writes detailed customer-call notes in Notion within 2 hours of every call
+- coordinates daily with Account Exec and Support over Slack
+- maintains a personal "expansion signals" sheet feeding monthly expansion-pipeline calls
+- subscribes to LinkedIn updates from her customer champions; congratulates promotions same-day
+- defends customer privacy — never shares customer details cross-customer
+
+daily_responsibilities:
+- review the CSM health-score dashboard each morning
+- triage inbound from her 14 accounts (Slack, email, helpdesk escalations)
+- run / prep 2–4 customer calls per day
+- log call notes + update CRM after every call
+- coordinate with AE + Support on at-risk accounts
+- close the loop on every promised follow-up within 24 hours
+
+primary_services:
+- gmail
+- calendar
+- crm
+- claw_notion
+- claw_slack
+- meeting
+secondary_services:
+- todo
+- contacts
+- helpdesk
+- claw_linkedin
+- sheet
+- kb
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - account_health_review
+  - customer_meeting_prep
+  - escalation_management
+  - cross_team_coordination
+  - decision_making
+  - info_triage
+  - scheduling
+  implausible_categories:
+  - product_engineering_change_approval
+  - hiring_offer_extension
+  - legal_clause_drafting
+  - pricing_concession_authorization
+
+authority:
+  can_approve:
+  - rescheduling her own customer meetings
+  - committing to customer-facing artifacts (training session, doc, follow-up note)
+  - calling in Support escalation managers on her accounts
+  - drafting renewal narrative + expansion thesis (with AE sign-off before commercial commitments)
+  cannot_approve:
+  - pricing, discount, or contract terms (escalate to AE + RevOps)
+  - product roadmap commitments (escalate to PM)
+  - written guarantees about availability or SLAs (Legal + RevOps required)
+  - public case studies without customer + Marketing sign-off
+  communication_style: warm, customer-language-first, structured follow-ups, names every owner; refuses to ghost
+  quality_focus: durable trust over short-term wins; insists on closing every loop within 24h
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 09:00–18:00 Eastern; protected QBR prep block Tuesday afternoons
+  active_issues:
+  - 2 of her 14 accounts flagged red on the health-score dashboard
+  - QBR season — 5 tier-1 QBRs scheduled in the next 4 weeks
+  - one account (Riverstone Logistics) escalated to her about a permissions bug
+  - expansion-pipeline call due 2026-05-21 — needs 3 expansion narratives with $ figures
+  business_goals:
+  - move both red-flagged accounts back to yellow or green by 2026-05-31
+  - deliver all 5 tier-1 QBRs on schedule with no postponements
+  - close Riverstone permissions-bug escalation by 2026-05-08
+  - prepare expansion narratives for 3 accounts by 2026-05-21
+  risk_factors:
+  - one red-flagged account is the largest in her book; loss would put her below quota retention
+  - Riverstone escalation reaching their COO if not resolved cleanly
+  - QBR season colliding with expansion-pipeline prep in the same 2-week window
+
+data_threads:
+- name: "Red-flagged account recovery (×2)"
+  description: "Two at-risk accounts; recovery plans, executive-sponsor outreach, internal Slack escalations to PM + Eng."
+  involved_services: [crm, gmail, claw_slack, claw_notion, calendar, todo, helpdesk, meeting]
+  involved_records:
+    crm: []
+    gmail: []
+    claw_slack: []
+    claw_notion: []
+    calendar: []
+    todo: []
+    helpdesk: []
+    meeting: []
+  signal_density: 0.20
+  difficulty: hard
+  category: escalation_management
+  thread_type: standard
+
+- name: "Q2 QBR season (5 tier-1)"
+  description: "Five tier-1 QBRs in 4 weeks; agenda, slide deck, success-metric data, scheduling logistics."
+  involved_services: [calendar, claw_notion, crm, gmail, todo, meeting]
+  involved_records:
+    calendar: []
+    claw_notion: []
+    crm: []
+    gmail: []
+    todo: []
+    meeting: []
+  signal_density: 0.15
+  difficulty: medium
+  category: customer_meeting_prep
+  thread_type: standard
+
+- name: "Riverstone permissions-bug escalation"
+  description: "Mid-market account escalation; cross-team thread with Support + Eng; needs customer-facing comms draft."
+  involved_services: [gmail, helpdesk, claw_slack, crm, todo, claw_notion]
+  involved_records:
+    gmail: []
+    helpdesk: []
+    claw_slack: []
+    crm: []
+    todo: []
+    claw_notion: []
+  signal_density: 0.09
+  difficulty: medium
+  category: escalation_management
+  thread_type: standard
+
+- name: "Expansion-pipeline prep"
+  description: "Monthly expansion-pipeline call; building narratives for 3 accounts with $ figures and timing."
+  involved_services: [sheet, crm, claw_notion, gmail, todo]
+  involved_records:
+    sheet: []
+    crm: []
+    claw_notion: []
+    gmail: []
+    todo: []
+  signal_density: 0.10
+  difficulty: medium
+  category: account_health_review
+  thread_type: standard
+
+- name: "Champion celebration / LinkedIn follow"
+  description: "Watching for customer champions' promotions on LinkedIn and sending warm congrats same-day."
+  involved_services: [claw_linkedin, contacts, gmail, todo]
+  involved_records:
+    claw_linkedin: []
+    contacts: []
+    gmail: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: info_triage
+  thread_type: standard
+
+- name: "Inbound triage across 14 accounts"
+  description: "Daily inbound from her 14 accounts via Slack, email, helpdesk; sort + respond / escalate."
+  involved_services: [gmail, claw_slack, helpdesk, crm, todo]
+  involved_records:
+    gmail: []
+    claw_slack: []
+    helpdesk: []
+    crm: []
+    todo: []
+  signal_density: 0.08
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

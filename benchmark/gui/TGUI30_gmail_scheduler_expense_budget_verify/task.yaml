@@ -37,7 +37,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9102/todo/reset
   env:
-    TODO_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI30_gmail_scheduler_expense_budget_verify/fixtures/todo/tasks.json
+    TODO_FIXTURES: fixtures/todo/tasks.json
 - name: scheduler
   command: python mock_services/scheduler/server.py
   port: 9112
@@ -46,7 +46,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9112/scheduler/reset
   env:
-    SCHEDULER_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI30_gmail_scheduler_expense_budget_verify/fixtures/scheduler/jobs.json
+    SCHEDULER_FIXTURES: fixtures/scheduler/jobs.json
 - name: finance
   command: python mock_services/finance/server.py
   port: 9104
@@ -55,7 +55,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9104/finance/reset
   env:
-    FINANCE_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI30_gmail_scheduler_expense_budget_verify/fixtures/finance/transactions.json
+    FINANCE_FIXTURES: fixtures/finance/transactions.json
 - name: kb
   command: python mock_services/kb/server.py
   port: 9106
@@ -64,7 +64,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9106/kb/reset
   env:
-    KB_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI30_gmail_scheduler_expense_budget_verify/fixtures/kb/articles.json
+    KB_FIXTURES: fixtures/kb/articles.json
 - name: claw_obsidian
   command: python mock_services/claw_obsidian/server.py
   port: 9115
@@ -73,7 +73,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9115/claw_obsidian/reset
   env:
-    CLAW_OBSIDIAN_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI30_gmail_scheduler_expense_budget_verify/fixtures/claw_obsidian/vault.json
+    CLAW_OBSIDIAN_FIXTURES: fixtures/claw_obsidian/vault.json
 tools:
 - name: gmail_clone_list_messages
   description: 列出 Gmail Clone 收件箱邮件，支持关键词、标签和未读过滤

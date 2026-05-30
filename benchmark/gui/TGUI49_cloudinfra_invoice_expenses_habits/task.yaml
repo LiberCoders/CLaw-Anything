@@ -30,7 +30,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9115/claw_obsidian/reset
   env:
-    CLAW_OBSIDIAN_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI49_cloudinfra_invoice_expenses_habits/fixtures/claw_obsidian/vault.json
+    CLAW_OBSIDIAN_FIXTURES: fixtures/claw_obsidian/vault.json
 - name: finance
   command: python mock_services/finance/server.py
   port: 9104
@@ -39,7 +39,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9104/finance/reset
   env:
-    FINANCE_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI49_cloudinfra_invoice_expenses_habits/fixtures/finance/transactions.json
+    FINANCE_FIXTURES: fixtures/finance/transactions.json
 - name: workmail
   command: python mock_services/workmail/server.py
   port: 9113
@@ -48,7 +48,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9113/workmail/reset
   env:
-    WORKMAIL_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI49_cloudinfra_invoice_expenses_habits/fixtures/workmail/inbox.json
+    WORKMAIL_FIXTURES: fixtures/workmail/inbox.json
 tools:
 - name: my_expenses_list_transactions
   description: 列出 My Expenses 中的交易记录，支持日期和分类过滤

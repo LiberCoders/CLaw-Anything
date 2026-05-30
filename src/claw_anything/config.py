@@ -134,9 +134,82 @@ class AgentConfig(BaseModel):
 
 
 class AndroidConfig(BaseModel):
-    """Android emulator pool for GUI task evaluation."""
+    """Android emulator pool for GUI task evaluation.
+
+    Two pool sources, checked in order:
+
+      1. ``emulator_pool`` — externally pre-launched devices (USB/TCP serials).
+         Non-empty wins; framework does not touch their lifecycle.
+      2. ``auto_launch_count > 0`` — framework spins up that many emulator
+         containers from ``emulator_image`` at batch start, distributes the
+         allocated ``host:port`` serials to workers via the existing
+         ``device_q`` queue, and kills+removes them at batch end. State
+         cleanup between trials still relies on
+         ``task.mobile_gui.init_gui_task`` (force-stop / pm clear / DB wipe);
+         this layer does not save/load AVD snapshots.
+    """
 
     emulator_pool: list[str] = Field(default_factory=list)
+    emulator_image: str = "claw_anything:latest"
+    """Image used for auto-launched emulator containers.
+
+    Defaults to the MobileWorld-derived ``claw_anything:latest`` (underscore)
+    that ships:
+      - Docker-in-Docker daemon + pre-loaded service backends (mattermost,
+        mastodon, postgres, redis, ...).
+      - A rooted Android 14 AVD (``Pixel_8_API_34_x86_64``) with the
+        claw-anything inject targets pre-installed (Fossify Calendar /
+        Messages / Notes, Loop Habits, My Expenses, Markor, OpenTracks,
+        Gmail clone, ...).
+      - ADB listening on container port ``container_adb_port`` (5556 by
+        default — MobileWorld's convention, not the upstream 5555).
+    """
+
+    auto_launch_count: int = 0
+    """0 disables auto-launch (legacy behaviour). >0 = number of emulator
+    containers to spin up at batch start."""
+
+    container_adb_port: int = 5556
+    """Port inside the emulator container that ADB listens on. ``-p
+    <host_port>:<container_adb_port>`` maps it out. claw_anything:latest uses
+    5556; vanilla AVD images use 5555."""
+
+    privileged: bool = True
+    """Pass ``--privileged`` to ``docker run`` for the emulator container.
+    Required by the default image — it runs Docker-in-Docker for its
+    backend service stack."""
+
+    kvm: bool = True
+    """Mount ``/dev/kvm`` into the emulator container. Without it the inner
+    emulator falls back to software rendering and never finishes booting in
+    any reasonable wall time. Set False only for hosts without KVM (which
+    cannot meaningfully run this image regardless)."""
+
+    preclean_avd_locks: bool = True
+    """The shipped image's AVD directory has stale ``multiinstance.lock`` /
+    ``hardware-qemu.ini.lock`` files baked into the image layer; without
+    removal the emulator FATALs with "Running multiple emulators with the
+    same AVD". When True the launcher wraps the entrypoint with a
+    ``rm -f /root/.android/avd/*.avd/*.lock`` prelude."""
+
+    host_port_start: int = 5556
+    """Lowest host port the launcher will try when mapping each container's
+    ADB port. Actual ports are allocated dynamically via bind-on-0 so this
+    is only a hint / lower bound for human-readable logs."""
+
+    boot_timeout_s: int = 600
+    """Max seconds to wait for each emulator's ``sys.boot_completed`` + package
+    manager readiness before giving up and rolling back the pool.
+    claw_anything:latest takes ~3 min on first boot (DinD image-load + AVD
+    cold boot), so the default sits at 10 minutes."""
+
+    emulator_memory: str = ""
+    """``docker run --memory`` for each emulator container. Empty string =
+    daemon default (no limit). The default image is heavy (DinD + multiple
+    backend services + AVD), so leave unset unless you've measured."""
+
+    emulator_cpus: float = 0.0
+    """``docker run --cpus`` for each emulator container. 0 = no limit."""
 
 
 class Config(BaseModel):

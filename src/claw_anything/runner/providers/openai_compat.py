@@ -247,7 +247,10 @@ class OpenAICompatProvider:
         self._api_base = base_url
         self._session_id: str | None = None
         resolved_key = api_key or os.environ.get("OPENAI_API_KEY") or "unused"
-        timeout = httpx.Timeout(connect=30, read=300, write=30, pool=30)
+        # read=1200: slow local models (e.g. 27B GPTQ) prefilling very large
+        # prompts (100K+ tokens) can take well over the old 300s before the
+        # first token, which surfaced as APITimeoutError on the heaviest tasks.
+        timeout = httpx.Timeout(connect=30, read=1200, write=30, pool=30)
         client_kwargs: dict[str, Any] = {
             "api_key": resolved_key,
             "base_url": base_url,

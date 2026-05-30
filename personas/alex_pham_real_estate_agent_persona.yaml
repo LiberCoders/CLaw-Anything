@@ -1,0 +1,178 @@
+persona_id: FREE05
+persona_name: Alex Pham
+language: en
+
+role: residential real estate agent, 8 years licensed; works a mid-tier suburban market with 18-24 active listings + buyer-side clients
+company: independent agent affiliated with Cardinal Realty Group (fictional regional brokerage)
+industry: residential real estate
+seniority: senior
+
+traits:
+- runs the business in 7-day sprints starting Monday; Saturday is showing day, Sunday is admin
+- maintains a CRM-based pipeline for buyers + sellers + warm leads
+- uses Notion for listing checklists and a shared agent-team playbook
+- writes detailed showing notes in Obsidian after every property visit
+- LinkedIn for sphere-of-influence keep-in-touch; Facebook for community presence
+- never represents both sides of a deal without written dual-agency disclosure
+- maintains a personal sheet of every closing's hard numbers (commissions, days-on-market, list-to-sale ratio)
+
+daily_responsibilities:
+- check gmail + CRM first thing
+- 3-6 client / prospect calls
+- listing prep + open-house coordination
+- write showing notes after every property visit
+- post / engage on Facebook community group + LinkedIn 3x weekly
+- update CRM stages + next-action dates daily
+
+primary_services:
+- gmail
+- calendar
+- crm
+- claw_notion
+- claw_obsidian
+- claw_facebook
+secondary_services:
+- todo
+- contacts
+- sheet
+- claw_linkedin
+- finance
+- meeting
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - client_communication
+  - listing_management
+  - cross_team_coordination
+  - decision_making
+  - invoicing_admin
+  - scheduling
+  - info_triage
+  implausible_categories:
+  - hiring_employee_offer_full_time
+  - production_incident_management
+  - corporate_financial_authorization
+  - legal_filings_for_third_party
+
+authority:
+  can_approve:
+  - committing to showings within his own calendar
+  - rescheduling client meetings / open houses
+  - signing standard listing agreements within brokerage rate guidelines
+  - drafting client-facing comms about properties he represents
+  cannot_approve:
+  - representing dual agency without written disclosure (state-level legal req)
+  - making material claims about property condition without verifying records
+  - committing to closing dates without client written approval
+  - rate concessions outside brokerage policy without manager approval
+  communication_style: warm-direct, transparent about market conditions, never pressures; uses data tables for offers
+  quality_focus: client fiduciary duty + regulatory compliance; refuses to elide material facts
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Sat varied with showings; Sundays admin; on-call evenings for offers
+  active_issues:
+  - 3 buyer clients actively shopping; one offer rejected, two pending
+  - 2 listings going live this week with open houses scheduled Saturday 2026-04-19
+  - one closing 2026-05-15 with a contingency-removal deadline approaching
+  - quarterly tax + brokerage-fee reconciliation due 2026-06-15
+  business_goals:
+  - close 3 transactions in May (2 buyer-side, 1 seller-side)
+  - bring 2 new listings to market by 2026-05-05
+  - hit the contingency removal cleanly on the 2026-05-15 closing
+  - file quarterly tax + brokerage reconciliation by 2026-06-15
+  risk_factors:
+  - 2026-05-15 closing falling through if contingency missed
+  - buyer client losing patience after rejected offer and switching agents
+  - tax + reconciliation slipping triggers brokerage compliance flag
+
+data_threads:
+- name: "Buyer-client pipeline (3 active)"
+  description: "3 buyer-side clients; showings, offer drafting, comp analyses, pre-approval coordination."
+  involved_services: [crm, gmail, calendar, claw_notion, contacts, todo, claw_obsidian]
+  involved_records:
+    crm: []
+    gmail: []
+    calendar: []
+    claw_notion: []
+    contacts: []
+    todo: []
+    claw_obsidian: []
+  signal_density: 0.18
+  difficulty: medium
+  category: client_communication
+  thread_type: standard
+
+- name: "2 new listings going live"
+  description: "Listing photos, prep checklist, MLS upload, open house 2026-04-19, marketing materials."
+  involved_services: [claw_notion, calendar, gmail, contacts, claw_facebook, todo]
+  involved_records:
+    claw_notion: []
+    calendar: []
+    gmail: []
+    contacts: []
+    claw_facebook: []
+    todo: []
+  signal_density: 0.13
+  difficulty: medium
+  category: listing_management
+  thread_type: standard
+
+- name: "Pending closing 2026-05-15"
+  description: "Contingency-removal deadline + final walk-through + closing logistics."
+  involved_services: [gmail, crm, calendar, contacts, claw_notion, todo, meeting]
+  involved_records:
+    gmail: []
+    crm: []
+    calendar: []
+    contacts: []
+    claw_notion: []
+    todo: []
+    meeting: []
+  signal_density: 0.10
+  difficulty: medium
+  category: cross_team_coordination
+  thread_type: standard
+
+- name: "Sphere-of-influence keep-in-touch"
+  description: "LinkedIn + Facebook touches with past clients + warm sphere; birthday + life-event check-ins."
+  involved_services: [claw_linkedin, claw_facebook, contacts, todo]
+  involved_records:
+    claw_linkedin: []
+    claw_facebook: []
+    contacts: []
+    todo: []
+  signal_density: 0.06
+  difficulty: simple
+  category: info_triage
+  thread_type: standard
+
+- name: "Q2 tax + brokerage reconciliation"
+  description: "Quarterly tax + brokerage commission split reconciliation; deadline 2026-06-15."
+  involved_services: [finance, sheet, claw_notion, todo, calendar]
+  involved_records:
+    finance: []
+    sheet: []
+    claw_notion: []
+    todo: []
+    calendar: []
+  signal_density: 0.06
+  difficulty: medium
+  category: invoicing_admin
+  thread_type: standard
+
+- name: "Inbound + warm-lead triage"
+  description: "Inbound calls + emails from referrals + open-house sign-ins; sort into pipeline."
+  involved_services: [gmail, crm, contacts, todo, calendar]
+  involved_records:
+    gmail: []
+    crm: []
+    contacts: []
+    todo: []
+    calendar: []
+  signal_density: 0.07
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

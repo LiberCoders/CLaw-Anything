@@ -1,0 +1,191 @@
+persona_id: FREE10
+persona_name: Kenji Tanaka
+language: en
+
+role: indie singer-songwriter recording his second studio album solo; runs his own micro-label, books his own shows, manages a 4-piece live band on retainer
+company: Self-employed under Quietwater Records (single-artist micro-label, fictional, Oakland CA)
+industry: indie music / independent record label / live performance
+seniority: mid
+
+traits:
+- tracks every song through 5 versioned drafts in a Notion "song book"; refuses to share v1 with the band
+- writes lyrics in Obsidian — one note per song, with a "what is this song actually about" prompt at the top
+- maintains a Notion contract tracker for venue agreements, sync-licensing offers, and session-musician retainers
+- treats the album release date as the last unmovable deadline — everything else flexes around it
+- posts a "studio diary" weekly on Facebook + LinkedIn (more personal on FB, more industry on LI)
+- runs the band's group chat on Slack with strict no-business-after-22:00 rules
+- subscribes to RSS feeds from Pitchfork, NPR Music, and three music-business newsletters
+
+daily_responsibilities:
+- one 3-hour writing or tracking session in the morning (10:00–13:00)
+- email triage for venues + sync licensors + press at 14:00 + 17:30
+- update the Notion song book with end-of-session changes
+- post studio diary weekly Wednesdays (Facebook + LinkedIn)
+- one weekly band rehearsal Thursdays 19:00–22:00
+- review tour-routing options for fall with his booking partner every Monday
+
+primary_services:
+- gmail
+- calendar
+- claw_notion
+- claw_obsidian
+- claw_slack
+- meeting
+secondary_services:
+- todo
+- contacts
+- claw_facebook
+- claw_linkedin
+- finance
+- rss
+- notes
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - studio_session_coordination
+  - venue_booking
+  - sync_licensing_review
+  - press_outreach
+  - tour_routing
+  - decision_making
+  - info_triage
+  - scheduling
+  - launch_communication
+  implausible_categories:
+  - corporate_engineering_decisions
+  - large_scale_financial_authorization
+  - third_party_legal_filings_unrelated_to_music
+  - hiring_outside_band_or_label
+
+authority:
+  can_approve:
+  - final song selection + sequencing for the album
+  - venue contracts under his standard rider + within his fee floor
+  - sync-licensing deals under $5,000 with publisher-approved templates
+  - press interview requests within his standard story bounds
+  - session-musician retainer terms within his label's monthly budget
+  cannot_approve:
+  - large sync deals (>$5,000) without his publisher signing off
+  - re-recording master rights without label co-signature
+  - public statements naming a venue or promoter in a dispute
+  - booking a tour leg outside his existing booking-partner agreement
+  communication_style: thoughtful, direct, references specific song titles + bar numbers in band-facing notes; warmer + more personal on Facebook than LinkedIn
+  quality_focus: refuses to release a song he can't sing live; treats the album as a 12-track artifact, not a streaming-singles container
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Tue–Sat 10:00–19:00 home studio + band rehearsal Thu 19:00–22:00; Sundays + Mondays off
+  active_issues:
+  - album "Slow Glass" release date pinned 2026-09-12 — final mixes due to mastering 2026-06-20
+  - 6 venues confirmed for the fall tour, 4 still in negotiation
+  - one sync-licensing offer from a streaming show — terms favor the show, not him
+  - lead bassist on retainer asked for a 20% rate bump for the fall tour
+  business_goals:
+  - lock all 12 final mixes ready for mastering by 2026-06-20
+  - close the remaining 4 fall tour venues by 2026-05-30
+  - either renegotiate or decline the sync-licensing offer by 2026-04-30
+  - publish the album pre-order page by 2026-06-15 with a 3-day press embargo plan
+  risk_factors:
+  - album mixes slipping past the mastering window, cascading the release date
+  - fall tour gaps if the 4 outstanding venues don't close, killing routing
+  - sync-licensing dispute leaking to industry press before terms are finalized
+  - lead bassist walking if the retainer renegotiation stalls
+
+data_threads:
+- name: "Album Slow Glass — final mixes"
+  description: "12 songs through 5 mix versions; producer + studio + mastering engineer coordination toward 2026-06-20."
+  involved_services: [claw_notion, claw_slack, gmail, calendar, todo]
+  involved_records:
+    claw_notion: []
+    claw_slack: []
+    gmail: []
+    calendar: []
+    todo: []
+  signal_density: 0.18
+  difficulty: medium
+  category: studio_session_coordination
+  thread_type: standard
+
+- name: "Fall tour venue negotiations"
+  description: "4 venues still in negotiation; rider + fee floor + routing constraints; needs decisions by 2026-05-30."
+  involved_services: [gmail, calendar, claw_notion, contacts, todo]
+  involved_records:
+    gmail: []
+    calendar: []
+    claw_notion: []
+    contacts: []
+    todo: []
+  signal_density: 0.14
+  difficulty: medium
+  category: venue_booking
+  thread_type: standard
+
+- name: "Sync-licensing offer review"
+  description: "Streaming show offer; terms favor the show; needs renegotiation or decline by 2026-04-30 with publisher loop-in."
+  involved_services: [gmail, claw_notion, finance, todo, meeting]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    finance: []
+    todo: []
+    meeting: []
+  signal_density: 0.10
+  difficulty: medium
+  category: sync_licensing_review
+  thread_type: standard
+
+- name: "Lead bassist retainer renegotiation"
+  description: "20% rate bump request for fall tour; budget envelope + replacement-cost analysis."
+  involved_services: [claw_slack, gmail, finance, claw_notion, todo]
+  involved_records:
+    claw_slack: []
+    gmail: []
+    finance: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.08
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "Weekly studio diary posts"
+  description: "Wednesday Facebook + LinkedIn updates; warmer on FB, more industry on LI; never duplicates."
+  involved_services: [claw_facebook, claw_linkedin, claw_obsidian, todo]
+  involved_records:
+    claw_facebook: []
+    claw_linkedin: []
+    claw_obsidian: []
+    todo: []
+  signal_density: 0.06
+  difficulty: simple
+  category: launch_communication
+  thread_type: standard
+
+- name: "Album pre-order page + press embargo"
+  description: "Publish pre-order by 2026-06-15 with a 3-day press embargo; pitch list + assets in Notion."
+  involved_services: [claw_notion, gmail, contacts, todo, calendar]
+  involved_records:
+    claw_notion: []
+    gmail: []
+    contacts: []
+    todo: []
+    calendar: []
+  signal_density: 0.07
+  difficulty: medium
+  category: press_outreach
+  thread_type: standard
+
+- name: "Thursday band rehearsals"
+  description: "Weekly 3-hour rehearsal; setlist + new-song readiness tracker; no business communication after 22:00."
+  involved_services: [calendar, claw_slack, claw_obsidian, todo]
+  involved_records:
+    calendar: []
+    claw_slack: []
+    claw_obsidian: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: studio_session_coordination
+  thread_type: standard

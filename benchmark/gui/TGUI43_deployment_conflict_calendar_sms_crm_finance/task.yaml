@@ -30,7 +30,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9115/claw_obsidian/reset
   env:
-    CLAW_OBSIDIAN_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI43_deployment_conflict_calendar_sms_crm_finance/fixtures/claw_obsidian/vault.json
+    CLAW_OBSIDIAN_FIXTURES: fixtures/claw_obsidian/vault.json
 - name: crm
   command: python mock_services/crm/server.py
   port: 9110
@@ -39,7 +39,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9110/crm/reset
   env:
-    CRM_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI43_deployment_conflict_calendar_sms_crm_finance/fixtures/crm/customers.json
+    CRM_FIXTURES: fixtures/crm/customers.json
 - name: finance
   command: python mock_services/finance/server.py
   port: 9104
@@ -48,7 +48,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9104/finance/reset
   env:
-    FINANCE_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI43_deployment_conflict_calendar_sms_crm_finance/fixtures/finance/transactions.json
+    FINANCE_FIXTURES: fixtures/finance/transactions.json
 - name: scheduler
   command: python mock_services/scheduler/server.py
   port: 9112
@@ -57,7 +57,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9112/scheduler/reset
   env:
-    SCHEDULER_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI43_deployment_conflict_calendar_sms_crm_finance/fixtures/scheduler/jobs.json
+    SCHEDULER_FIXTURES: fixtures/scheduler/jobs.json
 tools:
 - name: fossify_calendar_list_events
   description: 列出日历事件，支持日期范围过滤

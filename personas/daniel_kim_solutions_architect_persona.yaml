@@ -1,0 +1,176 @@
+persona_id: SA01
+persona_name: Daniel Kim
+language: en
+
+role: senior solutions architect at a public cloud vendor's enterprise sales org; pre-sales technical owner for 6 Fortune-1000 accounts
+company: Stratus Cloud Services (fictional, ~85,000 employees, public cloud vendor)
+industry: cloud infrastructure / enterprise sales
+seniority: senior
+
+traits:
+- splits time between customer-site workshops, internal architecture review boards, and writing reference architectures
+- attached to a quota-carrying account exec — but rewarded on technical wins and renewals, not pure ACV
+- expected to publish 1 reference architecture to the public KB every quarter
+- writes long-form pre-sales briefings before any executive-tier customer meeting
+- runs a weekly internal "lessons learned" sync with the other SAs in his pod
+- maintains a private CRM-adjacent Notion database of every customer architecture he's touched
+- networks heavily on LinkedIn — about a third of his pipeline comes from inbound contacts
+
+daily_responsibilities:
+- prep customer architecture review meetings (often 2–4 per week)
+- write or revise reference architectures and migration playbooks in Notion
+- shadow / coach the SA pod's two junior members
+- coordinate with the account exec on the 6 active accounts
+- triage customer technical questions arriving via shared CRM and helpdesk channels
+- post 2 LinkedIn updates per month on architecture topics he's working on
+
+primary_services:
+- gmail
+- calendar
+- claw_notion
+- claw_slack
+- crm
+- meeting
+secondary_services:
+- todo
+- helpdesk
+- kb
+- contacts
+- claw_linkedin
+- slide
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - customer_meeting_prep
+  - cross_team_coordination
+  - reference_architecture_publishing
+  - decision_making
+  - info_triage
+  - scheduling
+  - account_handoff_admin
+  implausible_categories:
+  - pricing_authorization
+  - hiring_decisions
+  - legal_filings
+  - production_code_deployment_to_customer
+
+authority:
+  can_approve:
+  - reference architecture content + publication to the public KB (after pod review)
+  - technical objection that blocks a deal advancing to contract (escalation to AE manager)
+  - rescheduling his own customer workshops
+  - low-risk customer-facing data redactions in shared artifacts
+  cannot_approve:
+  - pricing, discount, or contract terms (escalate to AE + deal desk)
+  - production changes inside a customer's environment without explicit customer authorization
+  - hiring within his pod (advisory only)
+  - public marketing claims (escalate to PMM)
+  communication_style: structured pre-sales briefings; uses architecture diagrams + trade-off tables; never improvises commercial terms
+  quality_focus: technical rigor + commercial alignment; refuses to over-promise capacity or features
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 08:30–18:30 Eastern; ~30% travel; protected writing block Friday mornings
+  active_issues:
+  - active POC with Meridian Logistics that needs an exec readout on 2026-05-19
+  - one tier-1 account (Halcyon Bank) renewing in Q3 — architecture review owed
+  - reference architecture for hybrid-multicloud DR is overdue by 3 weeks
+  - LinkedIn inbound surge after his last post — backlog of 17 unread connection-with-message requests
+  business_goals:
+  - deliver the Meridian POC exec readout by 2026-05-19
+  - publish the hybrid-multicloud DR reference architecture by 2026-05-25
+  - finalize Halcyon Bank renewal architecture review by 2026-06-05
+  - bring active accounts to 8 by end of Q2 (currently 6)
+  risk_factors:
+  - Meridian POC readout slipping pushes deal to 2026-Q4
+  - Halcyon Bank renewal slipping past their procurement cycle close
+  - LinkedIn backlog rotting and damaging inbound reputation
+
+data_threads:
+- name: "Meridian Logistics POC + exec readout"
+  description: "Active POC ending mid-May; cross-team artifact gathering, exec briefing draft, customer-side stakeholder mapping."
+  involved_services: [gmail, calendar, claw_notion, crm, contacts, todo, meeting, slide]
+  involved_records:
+    gmail: []
+    calendar: []
+    claw_notion: []
+    crm: []
+    contacts: []
+    todo: []
+    meeting: []
+    slide: []
+  signal_density: 0.18
+  difficulty: hard
+  category: customer_meeting_prep
+  thread_type: standard
+
+- name: "Hybrid-multicloud DR reference architecture"
+  description: "Overdue reference architecture; pod review backlog, KB publishing checklist, customer-anonymization pass."
+  involved_services: [claw_notion, kb, claw_slack, todo, gmail]
+  involved_records:
+    claw_notion: []
+    kb: []
+    claw_slack: []
+    todo: []
+    gmail: []
+  signal_density: 0.12
+  difficulty: medium
+  category: reference_architecture_publishing
+  thread_type: standard
+
+- name: "Halcyon Bank renewal architecture review"
+  description: "Tier-1 renewal; gap analysis vs current state, sign-off chain on Stratus side, customer technical contacts."
+  involved_services: [gmail, crm, claw_notion, contacts, calendar, todo]
+  involved_records:
+    gmail: []
+    crm: []
+    claw_notion: []
+    contacts: []
+    calendar: []
+    todo: []
+  signal_density: 0.14
+  difficulty: medium
+  category: account_handoff_admin
+  thread_type: standard
+
+- name: "LinkedIn inbound triage"
+  description: "Backlog of 17 connection-with-message requests; some are warm pipeline, some are noise; needs sorting."
+  involved_services: [claw_linkedin, contacts, todo, crm]
+  involved_records:
+    claw_linkedin: []
+    contacts: []
+    todo: []
+    crm: []
+  signal_density: 0.07
+  difficulty: simple
+  category: info_triage
+  thread_type: standard
+
+- name: "Weekly SA pod lessons-learned"
+  description: "Recurring internal sync; Notion log of pod-wide lessons, junior coaching notes, slide-deck artifacts to publish."
+  involved_services: [calendar, claw_notion, claw_slack, todo, slide]
+  involved_records:
+    calendar: []
+    claw_notion: []
+    claw_slack: []
+    todo: []
+    slide: []
+  signal_density: 0.06
+  difficulty: simple
+  category: scheduling
+  thread_type: standard
+
+- name: "Helpdesk inbound customer technical questions"
+  description: "Triaging customer technical questions arriving via shared helpdesk queue + tagging into accounts."
+  involved_services: [helpdesk, gmail, crm, todo]
+  involved_records:
+    helpdesk: []
+    gmail: []
+    crm: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

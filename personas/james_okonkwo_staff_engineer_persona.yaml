@@ -1,0 +1,169 @@
+persona_id: ENG03
+persona_name: James Okonkwo
+language: en
+
+role: staff software engineer on the developer-tools team at a large enterprise SaaS company, technical lead on the CLI and SDK surfaces
+company: Argosy Cloud (fictional, ~12,000 employees, publicly traded)
+industry: enterprise SaaS / developer tools
+seniority: senior
+
+traits:
+- spends ~40% of his week on design reviews and ADR feedback for adjacent teams
+- represents engineering in the cross-org "developer experience" guild
+- writes long-form internal essays in Notion when a design touches more than two teams
+- "ruthless about meeting hygiene: insists on agendas and recorded decisions"
+- pairs once a week with a junior IC who is shadowing him for the staff-promo pipeline
+- runs a personal "API hygiene" backlog in todo — quietly cleans up old endpoints between projects
+- subscribes to ~25 RSS feeds covering distributed-systems and developer-tools content
+
+daily_responsibilities:
+- review ADRs and design docs sent for his sign-off (4–8 per week)
+- respond to architectural questions in #devtools-design Slack channel
+- run one weekly cross-team office-hour (Tuesdays)
+- pair-program 90 minutes weekly with the IC he's mentoring
+- review and merge his own team's PRs (he is the secondary code reviewer for the CLI/SDK)
+- skim curated RSS feeds for industry signal before the Friday DX guild meeting
+
+primary_services:
+- gmail
+- claw_slack
+- claw_notion
+- todo
+- calendar
+- meeting
+secondary_services:
+- claw_obsidian
+- rss
+- contacts
+- kb
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - design_review_coordination
+  - cross_team_coordination
+  - technical_writing
+  - mentoring_admin
+  - info_triage
+  - decision_making
+  - scheduling
+  implausible_categories:
+  - direct_people_management_actions
+  - customer_pricing_negotiation
+  - hiring_offer_extension
+  - legal_filings
+
+authority:
+  can_approve:
+  - design sign-off on CLI/SDK surface changes
+  - architectural objection that blocks a cross-team change (with escalation path to principal)
+  - merging changes to internal libraries he owns
+  - choice of internal RFC review style + format for his team
+  cannot_approve:
+  - headcount or hiring decisions (defer to EM)
+  - customer-facing commitments or roadmap promises (defer to PM)
+  - performance ratings (advisory input only)
+  - production deploys outside his own service ownership
+  communication_style: long-form when needed, terse otherwise; uses ADR / RFC framing; cites specific lines/code paths
+  quality_focus: API durability + clean abstractions; willing to spend 2x time to avoid future-self regret
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 09:30–18:30 Pacific; deep-work block Mon/Wed afternoons; office-hours Tue 14:00–15:00
+  active_issues:
+  - upcoming CLI v5 major release (target 2026-06-05) with breaking changes that need a migration RFC
+  - cross-team disagreement with the platform-API team about authentication primitives
+  - junior IC he's mentoring is going up for senior promo in the 2026-Q3 cycle
+  - backlog of 11 open ADRs waiting on his review
+  business_goals:
+  - merge the CLI v5 migration RFC by 2026-05-12
+  - ship CLI v5 GA by 2026-06-05
+  - close the auth-primitives disagreement by 2026-05-20
+  - clear the ADR backlog to under 4 by 2026-05-30
+  risk_factors:
+  - CLI v5 migration RFC drifting past 2026-05-12 cascades into a slipped GA
+  - auth-primitives debate becoming political and pulling principal-eng attention
+  - ADR backlog acting as cross-team blocker
+
+data_threads:
+- name: "CLI v5 migration RFC"
+  description: "Drafting the migration guide + breaking-change rationale; gathering cross-team input on Notion."
+  involved_services: [claw_notion, claw_slack, gmail, todo, calendar]
+  involved_records:
+    claw_notion: []
+    claw_slack: []
+    gmail: []
+    todo: []
+    calendar: []
+  signal_density: 0.16
+  difficulty: medium
+  category: technical_writing
+  thread_type: standard
+
+- name: "Auth primitives cross-team negotiation"
+  description: "Long-running Slack + ADR debate with the platform-API team; James is the dissenting voice."
+  involved_services: [claw_slack, claw_notion, gmail, meeting, todo]
+  involved_records:
+    claw_slack: []
+    claw_notion: []
+    gmail: []
+    meeting: []
+    todo: []
+  signal_density: 0.13
+  difficulty: hard
+  category: cross_team_coordination
+  thread_type: standard
+
+- name: "ADR review backlog"
+  description: "11 open design docs awaiting James's sign-off; he is the most frequently tagged reviewer in the org."
+  involved_services: [claw_notion, claw_slack, todo, gmail]
+  involved_records:
+    claw_notion: []
+    claw_slack: []
+    todo: []
+    gmail: []
+  signal_density: 0.12
+  difficulty: medium
+  category: design_review_coordination
+  thread_type: standard
+
+- name: "Mentoring junior IC for senior promo"
+  description: "Weekly pairing notes, promo-packet review, calibration prep."
+  involved_services: [claw_obsidian, calendar, claw_notion, todo, contacts]
+  involved_records:
+    claw_obsidian: []
+    calendar: []
+    claw_notion: []
+    todo: []
+    contacts: []
+  signal_density: 0.06
+  difficulty: simple
+  category: mentoring_admin
+  thread_type: standard
+
+- name: "Tuesday office hours"
+  description: "Weekly drop-in for anyone in the org with architecture questions; agenda, follow-ups in todo."
+  involved_services: [calendar, claw_notion, todo, claw_slack]
+  involved_records:
+    calendar: []
+    claw_notion: []
+    todo: []
+    claw_slack: []
+  signal_density: 0.05
+  difficulty: simple
+  category: scheduling
+  thread_type: standard
+
+- name: "DX guild industry-signal sweep"
+  description: "Skimming distributed-systems RSS feeds + saving notable items for the Friday DX guild sync."
+  involved_services: [rss, claw_notion, claw_obsidian, todo]
+  involved_records:
+    rss: []
+    claw_notion: []
+    claw_obsidian: []
+    todo: []
+  signal_density: 0.04
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

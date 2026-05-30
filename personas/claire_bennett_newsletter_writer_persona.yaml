@@ -1,0 +1,171 @@
+persona_id: FREE06
+persona_name: Claire Bennett
+language: en
+
+role: independent newsletter writer + culture critic; runs a paid subscription newsletter (~6,800 subscribers, ~12% paying) on contemporary book + film criticism
+company: self-employed under "Margin Notes by Claire Bennett"
+industry: independent media / publishing / cultural criticism
+seniority: mid
+
+traits:
+- publishes 2 essays per week (Mon + Thu) on a strict cadence
+- maintains a Notion editorial calendar 6 weeks ahead, never less than 3 finished drafts in the buffer
+- reads ~5 books + ~3 films per week to maintain her review pipeline
+- maintains a Zotero library of secondary sources + cultural-criticism canon
+- writes daily reading notes in Obsidian; never publishes without 24-hour cool-off draft
+- uses LinkedIn for industry credibility; Facebook for community + group discussion
+- never accepts review copies without disclosure
+
+daily_responsibilities:
+- morning reading block (90 minutes)
+- writing block (~3 hours)
+- subscriber correspondence + comments triage
+- editorial calendar updates
+- afternoon reading/research block
+- weekend deep-research session
+
+primary_services:
+- gmail
+- claw_notion
+- claw_obsidian
+- claw_zotero
+- claw_linkedin
+- claw_facebook
+secondary_services:
+- todo
+- contacts
+- sheet
+- finance
+- calendar
+- rss
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - content_calendar_management
+  - paper_writing
+  - reading_management
+  - portfolio_marketing
+  - decision_making
+  - info_triage
+  - invoicing_admin
+  implausible_categories:
+  - hiring_employee_offer_full_time
+  - production_incident_management
+  - corporate_financial_authorization
+  - legal_filings_for_third_party
+
+authority:
+  can_approve:
+  - editorial direction + publication of her own essays
+  - declining sponsorship offers that compromise editorial independence
+  - committing to public events under her own name
+  - posting her own work to social platforms
+  cannot_approve:
+  - speaking for publishers, authors, or film studios
+  - claiming reviews represent any group's consensus
+  - sharing subscriber data outside her newsletter platform
+  - making libelous claims about subjects of her writing
+  communication_style: precise, citation-rich, narrative-led; warm in subscriber comms; principled about disclosure
+  quality_focus: editorial independence + craft fidelity; refuses to ship a piece she doesn't believe stands up to scrutiny
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 09:00–18:00 + weekend research; protected morning writing block
+  active_issues:
+  - one essay (controversial film review) drawing pushback from a subset of subscribers
+  - editorial calendar buffer dipped to 2 finished drafts (target ≥3)
+  - quarterly subscription pricing review due
+  - one publisher inquiring about a sponsored-essay arrangement (she's leaning decline)
+  business_goals:
+  - publish 8 essays on time in the next 4 weeks
+  - restore editorial buffer to ≥3 finished drafts by 2026-05-10
+  - decide on sponsored-essay offer by 2026-04-30
+  - grow paid subscribers from 12% to 14% by EOQ
+  risk_factors:
+  - editorial buffer dropping below 2 forces a missed publish day
+  - sponsored-essay deal compromising independence reputation
+  - controversial-review backlash escalating beyond comments
+
+data_threads:
+- name: "May essay calendar (8 essays)"
+  description: "Mon + Thu publishing cadence; drafts in flight, research notes, fact-checking lists."
+  involved_services: [claw_notion, claw_obsidian, claw_zotero, todo, calendar, gmail]
+  involved_records:
+    claw_notion: []
+    claw_obsidian: []
+    claw_zotero: []
+    todo: []
+    calendar: []
+    gmail: []
+  signal_density: 0.17
+  difficulty: medium
+  category: content_calendar_management
+  thread_type: standard
+
+- name: "Controversial review subscriber pushback"
+  description: "Comments + emails about a recent film review; needs measured response + private notes."
+  involved_services: [gmail, claw_facebook, claw_obsidian, claw_notion, todo]
+  involved_records:
+    gmail: []
+    claw_facebook: []
+    claw_obsidian: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.08
+  difficulty: medium
+  category: portfolio_marketing
+  thread_type: standard
+
+- name: "Sponsored-essay decision"
+  description: "Publisher inquiry about a sponsored essay; deciding whether to decline + how to communicate it."
+  involved_services: [gmail, claw_notion, contacts, todo]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    contacts: []
+    todo: []
+  signal_density: 0.05
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "Subscription pricing review"
+  description: "Quarterly review of pricing tiers; subscriber survey data; competitive scan."
+  involved_services: [sheet, claw_notion, finance, todo]
+  involved_records:
+    sheet: []
+    claw_notion: []
+    finance: []
+    todo: []
+  signal_density: 0.06
+  difficulty: medium
+  category: invoicing_admin
+  thread_type: standard
+
+- name: "Reading + research pipeline"
+  description: "Ongoing reading queue; Zotero tagging; arxiv-of-the-humanities + culture-review RSS sweep."
+  involved_services: [claw_zotero, claw_obsidian, rss, todo]
+  involved_records:
+    claw_zotero: []
+    claw_obsidian: []
+    rss: []
+    todo: []
+  signal_density: 0.10
+  difficulty: simple
+  category: reading_management
+  thread_type: standard
+
+- name: "Industry-presence cadence"
+  description: "LinkedIn + Facebook engagement with peer critics, authors, publishers; weekly cadence."
+  involved_services: [claw_linkedin, claw_facebook, claw_obsidian, todo]
+  involved_records:
+    claw_linkedin: []
+    claw_facebook: []
+    claw_obsidian: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: portfolio_marketing
+  thread_type: standard

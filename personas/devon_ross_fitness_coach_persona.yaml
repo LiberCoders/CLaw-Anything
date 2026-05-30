@@ -1,0 +1,177 @@
+persona_id: FREE04
+persona_name: Devon Ross
+language: en
+
+role: independent strength + conditioning coach, online + hybrid; coaches 38 clients (~24 online, ~14 in-person) plus a small group-program cohort
+company: self-employed as Devon Ross Performance (LLC)
+industry: fitness coaching / personal training
+seniority: senior
+
+traits:
+- runs in-person sessions Mon–Thu mornings; online + admin afternoons; Friday for program design
+- uses Notion as the master client database — one page per client with history, programming, notes
+- writes daily client check-in summaries in Obsidian as a private journal
+- posts educational content (form videos, mini-articles) to LinkedIn + Facebook 3x weekly
+- maintains a personal sheet tracking each client's adherence + progress
+- treats every client missed-session as a 24-hour outreach trigger
+- never sells a program he wouldn't follow himself
+
+daily_responsibilities:
+- 3-5 in-person training sessions (mornings)
+- 6-10 online client check-ins per day
+- update Notion client pages + sheet tracker after every session
+- write Obsidian end-of-day note
+- post / engage on LinkedIn + Facebook
+- coordinate group-program cohort logistics (Mondays + Thursdays)
+
+primary_services:
+- gmail
+- calendar
+- claw_notion
+- claw_obsidian
+- claw_linkedin
+- claw_facebook
+secondary_services:
+- todo
+- sheet
+- contacts
+- finance
+- meeting
+- helpdesk
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - client_communication
+  - program_design
+  - portfolio_marketing
+  - invoicing_admin
+  - scheduling
+  - decision_making
+  - info_triage
+  implausible_categories:
+  - hiring_employee_offer_full_time
+  - corporate_financial_authorization
+  - production_incident_management
+  - legal_filings_for_third_party
+
+authority:
+  can_approve:
+  - program design + adjustments for his own clients
+  - rescheduling his own client sessions
+  - committing to client programs within his standard rate sheet
+  - posting educational content to social platforms
+  cannot_approve:
+  - giving medical advice or diagnoses (must refer to medical professional)
+  - making claims about supplements without disclosure
+  - sharing client progress publicly without their consent
+  - committing to programs outside his scope of practice (e.g., physical therapy)
+  communication_style: warm, motivating, specific in feedback; uses client language; never shames
+  quality_focus: long-term client adherence + sustainable progress; refuses to use guilt-based marketing
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Thu 06:00–18:00 (early in-person); Fri 09:00–17:00 program design; Sat morning open hours
+  active_issues:
+  - new group-program cohort starts 2026-05-12 (12 participants)
+  - 4 clients flagged for adherence drop (3+ missed sessions)
+  - LinkedIn educational content cadence missed for 8 days
+  - quarterly tax estimate due 2026-06-15
+  business_goals:
+  - launch group-program cohort on 2026-05-12 with all 12 participants onboarded
+  - re-engage all 4 adherence-flagged clients by 2026-04-30
+  - publish 6 LinkedIn educational posts in May
+  - file quarterly tax estimate by 2026-06-15
+  risk_factors:
+  - cohort launch hiccups damage online word-of-mouth
+  - adherence-flagged clients churning erodes recurring revenue
+  - tax filing slipping triggers penalties
+
+data_threads:
+- name: "Group-program cohort launch 2026-05-12"
+  description: "12 participants; onboarding sequence, welcome materials, week-1 programming."
+  involved_services: [gmail, claw_notion, calendar, contacts, todo, meeting]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    calendar: []
+    contacts: []
+    todo: []
+    meeting: []
+  signal_density: 0.16
+  difficulty: medium
+  category: program_design
+  thread_type: standard
+
+- name: "Adherence-flagged client re-engagement"
+  description: "4 clients with 3+ missed sessions; tailored outreach + program reset offer."
+  involved_services: [gmail, claw_notion, claw_obsidian, contacts, todo, calendar]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    claw_obsidian: []
+    contacts: []
+    todo: []
+    calendar: []
+  signal_density: 0.10
+  difficulty: medium
+  category: client_communication
+  thread_type: standard
+
+- name: "LinkedIn + Facebook educational content"
+  description: "6 posts planned for May — form video breakdowns, mini-articles, recovery science."
+  involved_services: [claw_linkedin, claw_facebook, claw_obsidian, todo, calendar]
+  involved_records:
+    claw_linkedin: []
+    claw_facebook: []
+    claw_obsidian: []
+    todo: []
+    calendar: []
+  signal_density: 0.08
+  difficulty: simple
+  category: portfolio_marketing
+  thread_type: standard
+
+- name: "Q2 tax estimate"
+  description: "Quarterly tax filing prep; income from coaching + group cohort; expense reconciliation."
+  involved_services: [finance, sheet, claw_notion, calendar, todo]
+  involved_records:
+    finance: []
+    sheet: []
+    claw_notion: []
+    calendar: []
+    todo: []
+  signal_density: 0.06
+  difficulty: medium
+  category: invoicing_admin
+  thread_type: standard
+
+- name: "Weekly client check-in batch"
+  description: "Friday batch — review week's training data, send each client a tailored note."
+  involved_services: [claw_notion, sheet, gmail, todo, contacts]
+  involved_records:
+    claw_notion: []
+    sheet: []
+    gmail: []
+    todo: []
+    contacts: []
+  signal_density: 0.09
+  difficulty: medium
+  category: client_communication
+  thread_type: standard
+
+- name: "Inbound from prospects"
+  description: "Inbound leads from social platforms + referrals; intake call scheduling."
+  involved_services: [gmail, claw_linkedin, claw_facebook, calendar, contacts, todo]
+  involved_records:
+    gmail: []
+    claw_linkedin: []
+    claw_facebook: []
+    calendar: []
+    contacts: []
+    todo: []
+  signal_density: 0.06
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

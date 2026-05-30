@@ -1,0 +1,169 @@
+persona_id: DS01
+persona_name: Ravi Subramaniam
+language: en
+
+role: senior data scientist on the growth-experimentation team at a consumer marketplace
+company: Kelvin Market (fictional, ~1,200 employees, late-stage consumer marketplace)
+industry: consumer marketplace / e-commerce
+seniority: senior
+
+traits:
+- writes every analysis as a Notion page with an explicit "what would change my mind" section
+- runs / monitors 6–10 active A/B tests per quarter
+- reviews experiments from 3 junior data scientists before they go to PM/leadership
+- maintains a personal Obsidian vault of methodology notes that the team references
+- builds his own sheets-based forecasting model for the team's Q3 OKR proposal
+- publishes occasional methodology essays to LinkedIn; declines speaking gigs that compromise his focus time
+- subscribes to ~12 RSS feeds covering causal inference and online experimentation
+
+daily_responsibilities:
+- monitor running experiments via internal dashboards, flag anomalies in Slack
+- review experiment design docs from junior DSes
+- pair with PMs on experiment hypotheses + readouts
+- write or update one analysis or methodology note per day
+- skim curated RSS feeds + tag interesting items for the Friday team reading group
+- respond to inbound LinkedIn from peer DSes
+
+primary_services:
+- gmail
+- claw_slack
+- claw_notion
+- claw_obsidian
+- todo
+- sheet
+secondary_services:
+- calendar
+- meeting
+- rss
+- claw_linkedin
+- contacts
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - experiment_review
+  - methodology_writing
+  - cross_team_coordination
+  - decision_making
+  - info_triage
+  - scheduling
+  - forecasting_admin
+  implausible_categories:
+  - hiring_offer_extension
+  - customer_pricing_negotiation
+  - legal_filings
+  - production_code_deploy_to_customer
+
+authority:
+  can_approve:
+  - sign-off on experiment readiness for his pod (3 junior DSes)
+  - rejecting experiment designs that would compromise inference validity
+  - publishing methodology essays to LinkedIn after team review
+  - choice of internal tooling for his pod's analyses
+  cannot_approve:
+  - shipping experiments to 100% traffic (defer to PM + EM)
+  - hiring decisions (advisory only)
+  - changes to company-level metrics definitions (defer to data-platform team)
+  - public claims about product impact without PMM + Legal review
+  communication_style: structured, hedged where appropriate; uses explicit confidence intervals; names limitations up front
+  quality_focus: inferential validity over speed; refuses to round numbers in a way that hides uncertainty
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 10:00–19:00 Eastern; deep-work block Mon/Wed mornings
+  active_issues:
+  - one high-stakes pricing-experiment readout due to leadership 2026-05-15
+  - methodology refresh on the company's variance-reduction approach overdue 4 weeks
+  - one junior DS on his pod struggling with experiment hygiene; quiet mentoring underway
+  - Q3 forecasting model for team OKR proposal due 2026-05-29
+  business_goals:
+  - deliver the pricing-experiment readout by 2026-05-15
+  - publish the variance-reduction methodology refresh by 2026-05-22
+  - submit Q3 forecasting model + OKR draft by 2026-05-29
+  - grow the team reading group to 6 regular attendees by EOQ
+  risk_factors:
+  - pricing-experiment readout going political if leadership over-interprets a noisy result
+  - methodology refresh slipping further erodes pod credibility with the platform team
+  - junior DS quitting if mentoring approach is misread as criticism
+
+data_threads:
+- name: "Pricing experiment readout"
+  description: "High-stakes A/B test; readout deck + Notion writeup + Slack pre-brief with PM + EM."
+  involved_services: [claw_notion, sheet, claw_slack, gmail, todo, meeting]
+  involved_records:
+    claw_notion: []
+    sheet: []
+    claw_slack: []
+    gmail: []
+    todo: []
+    meeting: []
+  signal_density: 0.17
+  difficulty: hard
+  category: experiment_review
+  thread_type: standard
+
+- name: "Variance-reduction methodology refresh"
+  description: "Long-form Notion + Obsidian draft; review thread with platform DS team; pending publication."
+  involved_services: [claw_notion, claw_obsidian, claw_slack, todo, gmail]
+  involved_records:
+    claw_notion: []
+    claw_obsidian: []
+    claw_slack: []
+    todo: []
+    gmail: []
+  signal_density: 0.10
+  difficulty: medium
+  category: methodology_writing
+  thread_type: standard
+
+- name: "Junior DS mentoring"
+  description: "Sensitive coaching on experiment hygiene; private Obsidian notes + scheduled 1:1s."
+  involved_services: [claw_obsidian, calendar, claw_notion, todo]
+  involved_records:
+    claw_obsidian: []
+    calendar: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.05
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "Q3 forecasting model + OKR draft"
+  description: "Sheet-based model + Notion narrative; feeds the team OKR proposal."
+  involved_services: [sheet, claw_notion, todo, gmail]
+  involved_records:
+    sheet: []
+    claw_notion: []
+    todo: []
+    gmail: []
+  signal_density: 0.09
+  difficulty: medium
+  category: forecasting_admin
+  thread_type: standard
+
+- name: "Experiment-design review backlog"
+  description: "Backlog of design docs from his 3 junior DSes pending his review."
+  involved_services: [claw_notion, claw_slack, todo]
+  involved_records:
+    claw_notion: []
+    claw_slack: []
+    todo: []
+  signal_density: 0.08
+  difficulty: simple
+  category: experiment_review
+  thread_type: standard
+
+- name: "Friday reading group + industry sweep"
+  description: "RSS skim + LinkedIn save + Notion reading-group agenda."
+  involved_services: [rss, claw_linkedin, claw_notion, todo]
+  involved_records:
+    rss: []
+    claw_linkedin: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.04
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

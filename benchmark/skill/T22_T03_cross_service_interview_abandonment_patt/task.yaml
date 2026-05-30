@@ -12,7 +12,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9100/gmail/reset
   env:
-    GMAIL_FIXTURES: benchmark_final/skill/T22_T03_cross_service_interview_abandonment_patt/fixtures/gmail/inbox.json
+    GMAIL_FIXTURES: fixtures/gmail/inbox.json
 - name: calendar
   command: python mock_services/calendar/server.py
   port: 9101
@@ -21,7 +21,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9101/calendar/reset
   env:
-    CALENDAR_FIXTURES: benchmark_final/skill/T22_T03_cross_service_interview_abandonment_patt/fixtures/calendar/events.json
+    CALENDAR_FIXTURES: fixtures/calendar/events.json
 - name: todo
   command: python mock_services/todo/server.py
   port: 9102
@@ -30,7 +30,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9102/todo/reset
   env:
-    TODO_FIXTURES: benchmark_final/skill/T22_T03_cross_service_interview_abandonment_patt/fixtures/todo/tasks.json
+    TODO_FIXTURES: fixtures/todo/tasks.json
 - name: contacts
   command: python mock_services/contacts/server.py
   port: 9103
@@ -39,7 +39,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9103/contacts/reset
   env:
-    CONTACTS_FIXTURES: benchmark_final/skill/T22_T03_cross_service_interview_abandonment_patt/fixtures/contacts/contacts.json
+    CONTACTS_FIXTURES: fixtures/contacts/contacts.json
 - name: finance
   command: python mock_services/finance/server.py
   port: 9104
@@ -48,7 +48,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9104/finance/reset
   env:
-    FINANCE_FIXTURES: benchmark_final/skill/T22_T03_cross_service_interview_abandonment_patt/fixtures/finance/transactions.json
+    FINANCE_FIXTURES: fixtures/finance/transactions.json
 - name: notes
   command: python mock_services/notes/server.py
   port: 9105
@@ -57,7 +57,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9105/notes/reset
   env:
-    NOTES_FIXTURES: benchmark_final/skill/T22_T03_cross_service_interview_abandonment_patt/fixtures/notes/notes.json
+    NOTES_FIXTURES: fixtures/notes/notes.json
 - name: helpdesk
   command: python mock_services/helpdesk/server.py
   port: 9107
@@ -66,7 +66,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9107/helpdesk/reset
   env:
-    HELPDESK_FIXTURES: benchmark_final/skill/T22_T03_cross_service_interview_abandonment_patt/fixtures/helpdesk/tickets.json
+    HELPDESK_FIXTURES: fixtures/helpdesk/tickets.json
 - name: scheduler
   command: python mock_services/scheduler/server.py
   port: 9112
@@ -75,7 +75,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9112/scheduler/reset
   env:
-    SCHEDULER_FIXTURES: benchmark_final/skill/T22_T03_cross_service_interview_abandonment_patt/fixtures/scheduler/jobs.json
+    SCHEDULER_FIXTURES: fixtures/scheduler/jobs.json
 - name: workmail
   command: python mock_services/workmail/server.py
   port: 9113
@@ -84,7 +84,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9113/workmail/reset
   env:
-    WORKMAIL_FIXTURES: benchmark_final/skill/T22_T03_cross_service_interview_abandonment_patt/fixtures/workmail/inbox.json
+    WORKMAIL_FIXTURES: fixtures/workmail/inbox.json
 - name: claw_obsidian
   command: python mock_services/claw_obsidian/server.py
   port: 9115
@@ -93,7 +93,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9115/claw_obsidian/reset
   env:
-    CLAW_OBSIDIAN_FIXTURES: benchmark_final/skill/T22_T03_cross_service_interview_abandonment_patt/fixtures/claw_obsidian/vault.json
+    CLAW_OBSIDIAN_FIXTURES: fixtures/claw_obsidian/vault.json
 - name: claw_zotero
   command: python mock_services/claw_zotero/server.py
   port: 9117
@@ -102,7 +102,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9117/claw_zotero/reset
   env:
-    CLAW_ZOTERO_FIXTURES: benchmark_final/skill/T22_T03_cross_service_interview_abandonment_patt/fixtures/claw_zotero/library.json
+    CLAW_ZOTERO_FIXTURES: fixtures/claw_zotero/library.json
 tools:
 - name: gmail_list_messages
   description: 'List inbox messages. Returns subject/from/date (no body). Default: last 7 days, max 20 results. Response includes

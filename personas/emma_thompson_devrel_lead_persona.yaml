@@ -1,0 +1,173 @@
+persona_id: DR01
+persona_name: Emma Thompson
+language: en
+
+role: head of developer relations at a mid-size open-source API company; owns content, community, and external events
+company: Orbit API (fictional, ~400 employees, Series C developer-API platform)
+industry: developer tools / API platform
+seniority: senior
+
+traits:
+- runs a team of 4 (2 DevRel engineers, 1 community manager, 1 technical writer)
+- publishes roughly 1 long-form post per month under her own byline
+- attends or speaks at 6–8 external conferences per year
+- gates every external technical claim through a peer-reviewed Notion doc
+- maintains an editorial calendar that any internal team can read but only her team can write to
+- treats LinkedIn + dev-twitter equivalents as primary distribution; Facebook as secondary brand surface
+- highly protective of community goodwill; refuses sponsorship deals that feel transactional
+
+daily_responsibilities:
+- review and edit drafts from her 2 DevRel engineers and the technical writer
+- respond to inbound from the OSS community + monitor the public Slack channel
+- coordinate with PMM on launch content
+- triage speaker submissions and reciprocal-content asks
+- check social engagement metrics (LinkedIn + Facebook) Monday mornings
+- one weekly 1:1 with each of her 4 reports
+
+primary_services:
+- gmail
+- calendar
+- claw_notion
+- claw_slack
+- claw_linkedin
+- claw_facebook
+secondary_services:
+- todo
+- meeting
+- contacts
+- rss
+- kb
+- slide
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - content_calendar_management
+  - cross_team_coordination
+  - external_event_coordination
+  - decision_making
+  - info_triage
+  - scheduling
+  - launch_communication
+  implausible_categories:
+  - pricing_authorization
+  - product_engineering_change_approval
+  - hiring_offer_negotiation_above_band
+  - legal_contract_signoff
+
+authority:
+  can_approve:
+  - publication of her team's content to the company blog and social channels
+  - sponsorship of community events up to $15,000
+  - speaker selection and travel approval for her direct reports
+  - rejecting reciprocal-content asks she deems off-brand
+  cannot_approve:
+  - commitments to product roadmap features (defer to Product)
+  - public marketing campaigns over $50,000 (escalate to CMO)
+  - hiring offers above the senior-IC band (escalate to VP Marketing + HR)
+  - legal-bearing brand statements (Legal + PR sign-off required)
+  communication_style: warm, narrative-led, deliberately concrete; calls out trade-offs publicly; tags owners
+  quality_focus: durable community trust over short-term reach; insists on technical accuracy in every post
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 09:00–18:00 Central; weekly editorial review Mondays; travel ~3 days per month
+  active_issues:
+  - flagship developer-conference talk (Orbit speaks at CloudCon 2026-06-04) needs final slides by 2026-05-28
+  - one external community thread on Facebook surfaced a complaint about a recent SDK change
+  - editorial calendar over-committed for May — 3 posts at risk of slipping
+  - one of her DevRel engineers (Aisha) interviewing externally — possible attrition risk
+  business_goals:
+  - ship CloudCon talk by 2026-06-04 with no last-minute slides scramble
+  - publish 4 long-form blog posts in May
+  - resolve the Facebook community complaint thread by 2026-05-12
+  - retain Aisha through Q3 (counter-offer planning if needed)
+  risk_factors:
+  - Aisha's attrition + CloudCon prep colliding in the same week
+  - May editorial slipping erodes "consistent voice" promise to the community
+  - Facebook complaint escalating to a brand crisis if not addressed
+
+data_threads:
+- name: "CloudCon 2026 keynote prep"
+  description: "Talk outline, slide drafts, internal dry runs, travel logistics, post-event content plan."
+  involved_services: [claw_notion, calendar, slide, gmail, todo, meeting]
+  involved_records:
+    claw_notion: []
+    calendar: []
+    slide: []
+    gmail: []
+    todo: []
+    meeting: []
+  signal_density: 0.16
+  difficulty: medium
+  category: external_event_coordination
+  thread_type: standard
+
+- name: "Facebook community complaint thread"
+  description: "Community-surfaced complaint about an SDK change; cross-team response draft + sentiment tracking."
+  involved_services: [claw_facebook, claw_slack, claw_notion, gmail, todo]
+  involved_records:
+    claw_facebook: []
+    claw_slack: []
+    claw_notion: []
+    gmail: []
+    todo: []
+  signal_density: 0.09
+  difficulty: medium
+  category: launch_communication
+  thread_type: standard
+
+- name: "May editorial calendar"
+  description: "4 posts in flight; tracking drafts, peer review, publish slots, cross-promo on LinkedIn + Facebook."
+  involved_services: [claw_notion, todo, calendar, gmail, claw_linkedin, claw_facebook]
+  involved_records:
+    claw_notion: []
+    todo: []
+    calendar: []
+    gmail: []
+    claw_linkedin: []
+    claw_facebook: []
+  signal_density: 0.13
+  difficulty: medium
+  category: content_calendar_management
+  thread_type: standard
+
+- name: "Aisha retention discussion"
+  description: "Confidential 1:1 prep + comp-review notes + private journal entries; HR loop pending."
+  involved_services: [gmail, claw_notion, calendar, todo]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    calendar: []
+    todo: []
+  signal_density: 0.05
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "Inbound speaker / sponsorship triage"
+  description: "Backlog of external asks via email and LinkedIn; needs sorting into yes / maybe / decline."
+  involved_services: [gmail, claw_linkedin, todo, contacts]
+  involved_records:
+    gmail: []
+    claw_linkedin: []
+    todo: []
+    contacts: []
+  signal_density: 0.08
+  difficulty: simple
+  category: info_triage
+  thread_type: standard
+
+- name: "Weekly 1:1 cadence (4 reports)"
+  description: "Rolling 1:1s with 4 reports; agendas, follow-ups, calibration notes."
+  involved_services: [calendar, claw_notion, todo, contacts]
+  involved_records:
+    calendar: []
+    claw_notion: []
+    todo: []
+    contacts: []
+  signal_density: 0.06
+  difficulty: simple
+  category: scheduling
+  thread_type: standard

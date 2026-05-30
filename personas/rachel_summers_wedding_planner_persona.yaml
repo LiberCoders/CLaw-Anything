@@ -1,0 +1,174 @@
+persona_id: FREE03
+persona_name: Rachel Summers
+language: en
+
+role: independent wedding + event planner, 9 years in business; runs ~22 weddings per year plus 6-8 corporate events; sole proprietor with one part-time assistant
+company: Rachel Summers Events (sole-prop)
+industry: wedding + event planning
+seniority: senior
+
+traits:
+- runs the business in 6-month event-cycles; Q2 is high-season for summer weddings
+- maintains a Notion vendor database (~140 vendors) with rate, reliability, and reference notes
+- treats every wedding as a 12-month relationship — pre-event, day-of, post-event thank-you
+- uses Facebook + LinkedIn for inbound; never relies on ads — referrals + portfolio
+- carries 8 active weddings at a time; refuses to over-commit
+- maintains a personal scheduling sheet for vendor + venue calendars
+- posts polished event recaps to Facebook weekly during high-season
+
+daily_responsibilities:
+- review gmail for client + vendor correspondence
+- 2-3 client calls per day
+- vendor outreach + booking confirmations
+- update Notion vendor + event notes after every call
+- coordinate with assistant on logistics
+- post / engage on Facebook + LinkedIn 2-3x weekly
+
+primary_services:
+- gmail
+- calendar
+- claw_notion
+- claw_facebook
+- claw_linkedin
+- meeting
+secondary_services:
+- todo
+- contacts
+- sheet
+- finance
+- helpdesk
+- claw_obsidian
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - client_communication
+  - vendor_coordination
+  - event_planning
+  - invoicing_admin
+  - decision_making
+  - scheduling
+  - info_triage
+  implausible_categories:
+  - hiring_employee_offer_full_time
+  - corporate_financial_authorization
+  - production_incident_management
+  - legal_filings_for_third_party
+
+authority:
+  can_approve:
+  - vendor selection within client budget
+  - rescheduling her own client / vendor meetings
+  - signing service contracts within her standard rate sheet
+  - committing to specific event dates with clients (subject to deposit)
+  cannot_approve:
+  - changes to client events without client written sign-off
+  - vendor disputes on behalf of client without client awareness
+  - representing client publicly without their consent
+  - committing client funds above contract terms
+  communication_style: warm-professional, calm-under-pressure, structured; uses checklists for every event day
+  quality_focus: zero day-of surprises; refuses to skip vendor verification calls
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Tue–Sat 09:00–19:00 with weekend events; Mon as buffer/admin day
+  active_issues:
+  - 8 active weddings; first of season 2026-05-09, last 2026-08-23
+  - vendor (florist) raised prices last week; affects 3 client budgets
+  - one client demanding day-of changes 4 weeks pre-event
+  - corporate-event RFP due 2026-05-20 from a returning client
+  business_goals:
+  - execute first wedding 2026-05-09 flawlessly
+  - handle florist price change with all 3 affected clients by 2026-04-30
+  - close demanding client's change requests without scope creep
+  - win corporate-event RFP for 2026-09 event
+  risk_factors:
+  - day-of staff shortage at first wedding if assistant gets sick
+  - demanding client escalating to public-facing complaint
+  - corporate-event RFP loss reducing Q3-Q4 revenue diversification
+
+data_threads:
+- name: "First-of-season wedding 2026-05-09"
+  description: "Final week — vendor confirmations, timeline sync, day-of staff brief, client comms."
+  involved_services: [gmail, calendar, claw_notion, contacts, todo, meeting]
+  involved_records:
+    gmail: []
+    calendar: []
+    claw_notion: []
+    contacts: []
+    todo: []
+    meeting: []
+  signal_density: 0.18
+  difficulty: medium
+  category: event_planning
+  thread_type: standard
+
+- name: "Florist price change cascade"
+  description: "Florist raised prices; affects 3 clients; needs client comms + alternative-vendor research."
+  involved_services: [gmail, claw_notion, contacts, sheet, todo]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    contacts: []
+    sheet: []
+    todo: []
+  signal_density: 0.10
+  difficulty: medium
+  category: vendor_coordination
+  thread_type: standard
+
+- name: "Difficult client change requests"
+  description: "Client demanding late-stage changes; needs calm, contract-anchored response."
+  involved_services: [gmail, claw_notion, contacts, todo, calendar]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    contacts: []
+    todo: []
+    calendar: []
+  signal_density: 0.09
+  difficulty: hard
+  category: client_communication
+  thread_type: standard
+
+- name: "Corporate-event RFP"
+  description: "Returning corporate client RFP for 2026-09; proposal draft, vendor pricing, margin model."
+  involved_services: [gmail, claw_notion, sheet, finance, todo, calendar]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    sheet: []
+    finance: []
+    todo: []
+    calendar: []
+  signal_density: 0.08
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "Post-event Facebook recaps"
+  description: "Polished event recaps posted to Facebook during high-season; portfolio-feeding."
+  involved_services: [claw_facebook, claw_obsidian, claw_notion, todo]
+  involved_records:
+    claw_facebook: []
+    claw_obsidian: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: info_triage
+  thread_type: standard
+
+- name: "Vendor database hygiene"
+  description: "~140 vendor records; quarterly verify-rates-and-references pass."
+  involved_services: [claw_notion, contacts, sheet, todo]
+  involved_records:
+    claw_notion: []
+    contacts: []
+    sheet: []
+    todo: []
+  signal_density: 0.06
+  difficulty: simple
+  category: vendor_coordination
+  thread_type: standard

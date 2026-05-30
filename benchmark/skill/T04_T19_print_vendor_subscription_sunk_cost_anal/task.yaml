@@ -12,7 +12,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9100/gmail/reset
   env:
-    GMAIL_FIXTURES: benchmark_final/skill/T04_T19_print_vendor_subscription_sunk_cost_anal/fixtures/gmail/inbox.json
+    GMAIL_FIXTURES: fixtures/gmail/inbox.json
 - name: calendar
   command: python mock_services/calendar/server.py
   port: 9101
@@ -21,7 +21,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9101/calendar/reset
   env:
-    CALENDAR_FIXTURES: benchmark_final/skill/T04_T19_print_vendor_subscription_sunk_cost_anal/fixtures/calendar/events.json
+    CALENDAR_FIXTURES: fixtures/calendar/events.json
 - name: todo
   command: python mock_services/todo/server.py
   port: 9102
@@ -30,7 +30,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9102/todo/reset
   env:
-    TODO_FIXTURES: benchmark_final/skill/T04_T19_print_vendor_subscription_sunk_cost_anal/fixtures/todo/tasks.json
+    TODO_FIXTURES: fixtures/todo/tasks.json
 - name: contacts
   command: python mock_services/contacts/server.py
   port: 9103
@@ -39,7 +39,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9103/contacts/reset
   env:
-    CONTACTS_FIXTURES: benchmark_final/skill/T04_T19_print_vendor_subscription_sunk_cost_anal/fixtures/contacts/contacts.json
+    CONTACTS_FIXTURES: fixtures/contacts/contacts.json
 - name: finance
   command: python mock_services/finance/server.py
   port: 9104
@@ -48,7 +48,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9104/finance/reset
   env:
-    FINANCE_FIXTURES: benchmark_final/skill/T04_T19_print_vendor_subscription_sunk_cost_anal/fixtures/finance/transactions.json
+    FINANCE_FIXTURES: fixtures/finance/transactions.json
 - name: notes
   command: python mock_services/notes/server.py
   port: 9105
@@ -57,7 +57,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9105/notes/reset
   env:
-    NOTES_FIXTURES: benchmark_final/skill/T04_T19_print_vendor_subscription_sunk_cost_anal/fixtures/notes/notes.json
+    NOTES_FIXTURES: fixtures/notes/notes.json
 - name: kb
   command: python mock_services/kb/server.py
   port: 9106
@@ -66,7 +66,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9106/kb/reset
   env:
-    KB_FIXTURES: benchmark_final/skill/T04_T19_print_vendor_subscription_sunk_cost_anal/fixtures/kb/articles.json
+    KB_FIXTURES: fixtures/kb/articles.json
 - name: helpdesk
   command: python mock_services/helpdesk/server.py
   port: 9107
@@ -75,7 +75,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9107/helpdesk/reset
   env:
-    HELPDESK_FIXTURES: benchmark_final/skill/T04_T19_print_vendor_subscription_sunk_cost_anal/fixtures/helpdesk/tickets.json
+    HELPDESK_FIXTURES: fixtures/helpdesk/tickets.json
 - name: inventory
   command: python mock_services/inventory/server.py
   port: 9108
@@ -84,7 +84,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9108/inventory/reset
   env:
-    INVENTORY_FIXTURES: benchmark_final/skill/T04_T19_print_vendor_subscription_sunk_cost_anal/fixtures/inventory/products.json
+    INVENTORY_FIXTURES: fixtures/inventory/products.json
 - name: rss
   command: python mock_services/rss/server.py
   port: 9109
@@ -93,7 +93,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9109/rss/reset
   env:
-    RSS_FIXTURES: benchmark_final/skill/T04_T19_print_vendor_subscription_sunk_cost_anal/fixtures/rss/articles.json
+    RSS_FIXTURES: fixtures/rss/articles.json
 - name: crm
   command: python mock_services/crm/server.py
   port: 9110
@@ -102,7 +102,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9110/crm/reset
   env:
-    CRM_FIXTURES: benchmark_final/skill/T04_T19_print_vendor_subscription_sunk_cost_anal/fixtures/crm/customers.json
+    CRM_FIXTURES: fixtures/crm/customers.json
 - name: config
   command: python mock_services/config/server.py
   port: 9111
@@ -111,7 +111,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9111/config/reset
   env:
-    CONFIG_FIXTURES: benchmark_final/skill/T04_T19_print_vendor_subscription_sunk_cost_anal/fixtures/config/integrations.json
+    CONFIG_FIXTURES: fixtures/config/integrations.json
 - name: scheduler
   command: python mock_services/scheduler/server.py
   port: 9112
@@ -120,7 +120,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9112/scheduler/reset
   env:
-    SCHEDULER_FIXTURES: benchmark_final/skill/T04_T19_print_vendor_subscription_sunk_cost_anal/fixtures/scheduler/jobs.json
+    SCHEDULER_FIXTURES: fixtures/scheduler/jobs.json
 tools:
 - name: gmail_list_messages
   description: 'List inbox messages. Returns subject/from/date (no body). Default: last 7 days, max 20 results. Response includes

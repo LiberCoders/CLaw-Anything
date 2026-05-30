@@ -23,7 +23,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9111/config/reset
   env:
-    CONFIG_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI11_sms_payment_obsidian_invoice/fixtures/config/integrations.json
+    CONFIG_FIXTURES: fixtures/config/integrations.json
 - name: scheduler
   command: python mock_services/scheduler/server.py
   port: 9112
@@ -32,7 +32,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9112/scheduler/reset
   env:
-    SCHEDULER_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI11_sms_payment_obsidian_invoice/fixtures/scheduler/jobs.json
+    SCHEDULER_FIXTURES: fixtures/scheduler/jobs.json
 - name: claw_obsidian
   command: python mock_services/claw_obsidian/server.py
   port: 9115
@@ -41,7 +41,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9115/claw_obsidian/reset
   env:
-    CLAW_OBSIDIAN_FIXTURES: gen_tasks_GUI/CLI_GUI_Tasks/complex_tasks/TGUI11_sms_payment_obsidian_invoice/fixtures/claw_obsidian/vault.json
+    CLAW_OBSIDIAN_FIXTURES: fixtures/claw_obsidian/vault.json
 tools:
 - name: fossify_messages_list_threads
   description: 列出短信会话列表，支持关键词和未读过滤

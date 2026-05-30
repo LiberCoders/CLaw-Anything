@@ -27,13 +27,24 @@ os.environ.setdefault("NO_PROXY", "localhost,127.0.0.1")
 # ContainerSession so existing tuning advice still applies.
 _DOCKER_CREATE_PARALLELISM = int(os.environ.get("CLAW_DOCKER_CREATE_PARALLELISM", "4"))
 _DOCKER_CREATE_SEM: asyncio.Semaphore | None = None
+_DOCKER_CREATE_SEM_LOOP: asyncio.AbstractEventLoop | None = None
 
 
 def _get_docker_create_sem() -> asyncio.Semaphore:
-    """Lazily create the semaphore inside the running event loop."""
-    global _DOCKER_CREATE_SEM
-    if _DOCKER_CREATE_SEM is None:
+    """Lazily create the semaphore inside the running event loop.
+
+    The benchmark suite runs each phase (skill / tool / gui) under its own
+    ``asyncio.run()``, i.e. a fresh event loop. An ``asyncio.Semaphore`` is
+    bound to the loop that was running when it was created, so a module-level
+    cache from phase 1 would raise "bound to a different event loop" on every
+    ``docker run`` in phase 2+. Recreate the semaphore whenever the running
+    loop changes so each phase gets a loop-local instance.
+    """
+    global _DOCKER_CREATE_SEM, _DOCKER_CREATE_SEM_LOOP
+    loop = asyncio.get_running_loop()
+    if _DOCKER_CREATE_SEM is None or _DOCKER_CREATE_SEM_LOOP is not loop:
         _DOCKER_CREATE_SEM = asyncio.Semaphore(_DOCKER_CREATE_PARALLELISM)
+        _DOCKER_CREATE_SEM_LOOP = loop
     return _DOCKER_CREATE_SEM
 
 
@@ -591,7 +602,11 @@ async def _run_one_trial(
         else:
             assert host_workspace is not None  # the not-inside_tc block above set it
             workspace_root = host_workspace
-        with ServiceManager(task_copy.services, execution_date=task_copy.execution_date):
+        with ServiceManager(
+            task_copy.services,
+            execution_date=task_copy.execution_date,
+            task_dir=Path(task_dir),
+        ):
             # Inner trial-container stage only: now that every mock service
             # is healthy (and has loaded its fixtures into memory) and
             # ``task_copy`` already holds the parsed TaskDefinition, wipe both
@@ -812,17 +827,40 @@ def cmd_run(args: argparse.Namespace) -> None:
     judge = _make_judge(cfg, args)
 
     # Resolve a GUI device for mobile_gui tasks (pool-first; a single run takes
-    # pool[0] — no parallelism here, so no occupancy tracking is needed).
+    # pool[0] — no parallelism here, so no occupancy tracking is needed). If
+    # ``emulator_pool`` is empty and ``auto_launch_count > 0``, spin up a single
+    # auto-launched emulator container for the duration of this run; the
+    # try/finally below tears it down. ``--no-auto-launch`` forces "use only
+    # statically-listed devices".
     device_serial: str | None = None
+    emulator_pool: "EmulatorPool | None" = None
+    no_auto_launch = getattr(args, "no_auto_launch", False)
     if _task_needs_gui(task=task) and not inside_tc:
-        pool = _resolve_device_pool(cfg, spec.oh_settings)
-        if not pool:
+        static_pool = _resolve_device_pool(cfg, spec.oh_settings)
+        if static_pool:
+            device_serial = static_pool[0]
+        elif not no_auto_launch and cfg.android.auto_launch_count > 0:
+            from .runner.emulator_pool import EmulatorPool
+            emulator_pool = EmulatorPool(
+                image=cfg.android.emulator_image,
+                size=1,
+                container_adb_port=cfg.android.container_adb_port,
+                privileged=cfg.android.privileged,
+                kvm=cfg.android.kvm,
+                preclean_avd_locks=cfg.android.preclean_avd_locks,
+                host_port_start=cfg.android.host_port_start,
+                boot_timeout_s=cfg.android.boot_timeout_s,
+                memory=cfg.android.emulator_memory,
+                cpus=cfg.android.emulator_cpus,
+            )
+            device_serial = emulator_pool.start_all()[0]
+        else:
             raise RuntimeError(
                 f"Task {task.task_id} requires mobile_gui but no device is "
-                "available: android.emulator_pool is empty in config.yaml and "
-                "no mobile_gui.device_serial found in --oh-settings."
+                "available: android.emulator_pool is empty in config.yaml, "
+                "android.auto_launch_count is 0 (or --no-auto-launch was passed), "
+                "and no mobile_gui.device_serial found in --oh-settings."
             )
-        device_serial = pool[0]
         print(f"[gui] using device: {device_serial}")
 
     trials = args.trials or 1
@@ -842,7 +880,11 @@ def cmd_run(args: argparse.Namespace) -> None:
             trace_paths.append(Path(tr["trace"]))
             trial_scores.append(tr["task_score"])
 
-    asyncio.run(_run_all())
+    try:
+        asyncio.run(_run_all())
+    finally:
+        if emulator_pool is not None:
+            emulator_pool.stop_all()
 
     if trials > 1:
         print(f"\n--- Multi-trial summary ({trials} trials) ---")
@@ -1387,14 +1429,45 @@ def cmd_batch(args: argparse.Namespace) -> None:
     # GUI device pool (mobile_gui tasks). A task acquires a device before its
     # trials and releases it after; a 1-device pool naturally serializes GUI
     # tasks. Non-GUI tasks never touch the queue.
-    gui_devices = _resolve_device_pool(_cfg_early, batch_spec.oh_settings)
+    #
+    # Two pool sources, checked in order:
+    #   1. config.android.emulator_pool (or oh-settings.mobile_gui.device_serial)
+    #      — externally pre-launched devices; framework leaves them running.
+    #   2. config.android.auto_launch_count > 0 — framework spins up N emulator
+    #      containers from `emulator_image`, hands out their host:port serials,
+    #      and tears them all down in the finally block below.
+    # `--no-auto-launch` forces source 1 only (useful for dev iteration when
+    # an emulator is already running locally).
+    static_devices = _resolve_device_pool(_cfg_early, batch_spec.oh_settings)
+    gui_needed = any(_task_needs_gui(task_dir=td) for td in task_dirs)
+    no_auto_launch = getattr(args, "no_auto_launch", False)
+    emulator_pool: "EmulatorPool | None" = None
+    if gui_needed and not static_devices and not no_auto_launch and _cfg_early.android.auto_launch_count > 0:
+        from .runner.emulator_pool import EmulatorPool
+        emulator_pool = EmulatorPool(
+            image=_cfg_early.android.emulator_image,
+            size=_cfg_early.android.auto_launch_count,
+            container_adb_port=_cfg_early.android.container_adb_port,
+            privileged=_cfg_early.android.privileged,
+            kvm=_cfg_early.android.kvm,
+            preclean_avd_locks=_cfg_early.android.preclean_avd_locks,
+            host_port_start=_cfg_early.android.host_port_start,
+            boot_timeout_s=_cfg_early.android.boot_timeout_s,
+            memory=_cfg_early.android.emulator_memory,
+            cpus=_cfg_early.android.emulator_cpus,
+        )
+        gui_devices = emulator_pool.start_all()
+    else:
+        gui_devices = static_devices
+
     device_q: asyncio.Queue = asyncio.Queue()
     for _d in gui_devices:
         device_q.put_nowait(_d)
-    if not gui_devices and any(_task_needs_gui(task_dir=td) for td in task_dirs):
+    if not gui_devices and gui_needed:
         print("[ERROR] one or more tasks require mobile_gui but no device is "
-              "available: android.emulator_pool is empty in config.yaml and no "
-              "mobile_gui.device_serial found in --oh-settings.")
+              "available: android.emulator_pool is empty in config.yaml, "
+              "android.auto_launch_count is 0 (or --no-auto-launch was passed), "
+              "and no mobile_gui.device_serial found in --oh-settings.")
         sys.exit(2)
 
     async def _run_one(td: str) -> dict:
@@ -1491,7 +1564,11 @@ def cmd_batch(args: argparse.Namespace) -> None:
                 f"| elapsed {_fmt_duration(elapsed)}{eta_str}"
             )
 
-    asyncio.run(_run_batch())
+    try:
+        asyncio.run(_run_batch())
+    finally:
+        if emulator_pool is not None:
+            emulator_pool.stop_all()
 
     # --- Merge with previous results if rerunning errors ---
     if prev_results is not None:
@@ -1754,6 +1831,7 @@ def cmd_cleanup(args: argparse.Namespace) -> None:
     """
     import subprocess
     from .runner.container_launcher import CONTAINER_LABEL
+    from .runner.emulator_pool import EMU_CONTAINER_LABEL
 
     image = getattr(args, "docker_image", None) or "claw-anything-oh-ext:latest"
 
@@ -1768,12 +1846,22 @@ def cmd_cleanup(args: argparse.Namespace) -> None:
             return []
         return out
 
-    ids = list({*_query(f"ancestor={image}"), *_query(f"label={CONTAINER_LABEL}")})
+    ids = list({
+        *_query(f"ancestor={image}"),
+        *_query(f"label={CONTAINER_LABEL}"),
+        *_query(f"label={EMU_CONTAINER_LABEL}"),
+    })
     if not ids:
-        print(f"No leftover claw-anything containers found (image={image}, label={CONTAINER_LABEL}).")
+        print(
+            f"No leftover claw-anything containers found "
+            f"(image={image}, labels={CONTAINER_LABEL!r} / {EMU_CONTAINER_LABEL!r})."
+        )
         return
     subprocess.run(["docker", "rm", "-f", *ids], check=False)
-    print(f"Removed {len(ids)} leftover container(s) (image={image} ∪ label={CONTAINER_LABEL}).")
+    print(
+        f"Removed {len(ids)} leftover container(s) "
+        f"(image={image} ∪ label={CONTAINER_LABEL} ∪ label={EMU_CONTAINER_LABEL})."
+    )
 
 
 def cmd_list(args: argparse.Namespace) -> None:
@@ -2010,6 +2098,10 @@ def main(argv: list[str] | None = None) -> None:
     p_run.add_argument("--oh-disable-builtin-tools", action="store_true",
                        help="Disable OpenHarness builtin tools so only clawanything tools are exposed")
     p_run.add_argument("--proxy", default=None, help="HTTP proxy URL for model/judge API traffic (e.g. http://proxy:port)")
+    p_run.add_argument("--no-auto-launch", action="store_true",
+                       help="Skip auto-launch of emulator containers even when "
+                            "android.auto_launch_count > 0 — use only the statically "
+                            "configured android.emulator_pool / oh-settings device.")
 
     # build-image
     p_build = sub.add_parser("build-image", help="Build the trial-in-container runner image for the selected agent backend")
@@ -2075,6 +2167,10 @@ def main(argv: list[str] | None = None) -> None:
                               "Scans existing trace files for grading_result events, "
                               "skips tasks with enough completed trials, and only runs the rest. "
                               "Results are merged into the same directory.")
+    p_batch.add_argument("--no-auto-launch", action="store_true",
+                         help="Skip auto-launch of emulator containers even when "
+                              "android.auto_launch_count > 0 — use only the statically "
+                              "configured android.emulator_pool / oh-settings device.")
 
     # cleanup
     p_cleanup = sub.add_parser("cleanup", help="Remove leftover trial-in-container Docker containers")

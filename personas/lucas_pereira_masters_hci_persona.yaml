@@ -1,0 +1,177 @@
+persona_id: ACAD05
+persona_name: Lucas Pereira
+language: en
+
+role: second-year master's student in Human-Computer Interaction; part-time UX research intern at a midsize tech company; finishing thesis + transitioning to full-time
+company: Northgate Tech Institute (fictional, top-25 US HCI program); internship at Spire Software (fictional, ~900 employees)
+industry: HCI graduate education / UX research
+seniority: junior
+
+traits:
+- splits week 60/40 between thesis writing and the internship
+- uses Notion for the internship and Obsidian for personal study + research notes
+- maintains a Zotero library of ~270 HCI papers, tag-structured by methodology
+- runs / participates in 2–4 usability sessions per week for the internship
+- writes thesis sections in a strict daily 90-minute morning block
+- uses LinkedIn to stay in touch with HCI peers + UX design hiring managers
+- never lets internship work bleed past 18:00 — uses that boundary to protect thesis pace
+
+daily_responsibilities:
+- 90-minute thesis writing block first thing
+- internship work — usability sessions, research synthesis, presenting findings
+- check stumail + personal gmail
+- coordinate with thesis advisor + internship manager
+- maintain Zotero + Obsidian notes
+- weekly thesis advisor meeting Thursdays
+
+primary_services:
+- stumail
+- gmail
+- calendar
+- claw_notion
+- claw_obsidian
+- claw_zotero
+secondary_services:
+- todo
+- claw_slack
+- meeting
+- claw_linkedin
+- contacts
+- slide
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - paper_writing
+  - research_planning
+  - cross_team_coordination
+  - scheduling
+  - info_triage
+  - decision_making
+  - job_search_admin
+  implausible_categories:
+  - hiring_offer_extension
+  - production_incident_management
+  - corporate_financial_authorization
+  - legal_filings
+
+authority:
+  can_approve:
+  - design of his own thesis study protocol (advisor sign-off on methodology shifts)
+  - rescheduling his own internship + thesis sessions
+  - drafting internship research deliverables under his name (manager sign-off on publication)
+  - choice of HCI methods within his thesis scope
+  cannot_approve:
+  - product or design decisions at the internship company
+  - releasing internship-internal findings publicly
+  - signing onto co-authorship for papers without advisor consent
+  - representing the program in public capacity without faculty sign-off
+  communication_style: thoughtful, evidence-led, asks clarifying questions; uses HCI methods language carefully
+  quality_focus: methodological honesty — refuses to over-claim qualitative findings
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Thesis-morning Mon–Fri 08:30–10:00; internship Mon–Fri 10:30–18:00; weekend buffer
+  active_issues:
+  - thesis chapter 3 draft due to advisor 2026-05-08
+  - internship final readout 2026-06-05
+  - 2 full-time UX research interviews scheduled for May
+  - thesis defense scheduled 2026-06-25
+  business_goals:
+  - submit chapter 3 by 2026-05-08
+  - deliver internship final readout cleanly 2026-06-05
+  - secure 1 full-time UX research offer by 2026-06-15
+  - defend thesis 2026-06-25 with no revision-only outcome
+  risk_factors:
+  - chapter 3 slipping cascades into defense readiness
+  - internship readout slipping affects manager reference for full-time search
+  - full-time search distracting from defense prep in June
+
+data_threads:
+- name: "Thesis chapter 3 draft"
+  description: "Methods + first-pass findings chapter; advisor pre-read cycles; supporting analyses in Obsidian."
+  involved_services: [claw_obsidian, claw_zotero, stumail, claw_notion, todo, calendar]
+  involved_records:
+    claw_obsidian: []
+    claw_zotero: []
+    stumail: []
+    claw_notion: []
+    todo: []
+    calendar: []
+  signal_density: 0.16
+  difficulty: hard
+  category: paper_writing
+  thread_type: standard
+
+- name: "Internship usability program"
+  description: "Recruiting + scheduling + synthesizing 2-4 usability sessions per week; readout drafts."
+  involved_services: [gmail, claw_notion, calendar, contacts, todo, claw_slack, slide]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    calendar: []
+    contacts: []
+    todo: []
+    claw_slack: []
+    slide: []
+  signal_density: 0.13
+  difficulty: medium
+  category: research_planning
+  thread_type: standard
+
+- name: "Full-time UX research search"
+  description: "2 active interview loops; portfolio prep + scheduling + recruiter touchpoints."
+  involved_services: [gmail, calendar, claw_linkedin, contacts, claw_notion, todo]
+  involved_records:
+    gmail: []
+    calendar: []
+    claw_linkedin: []
+    contacts: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.10
+  difficulty: medium
+  category: job_search_admin
+  thread_type: standard
+
+- name: "Thesis defense logistics"
+  description: "Defense scheduled 2026-06-25; committee schedule, room booking, slide deck early outline."
+  involved_services: [stumail, calendar, claw_notion, contacts, todo, slide, meeting]
+  involved_records:
+    stumail: []
+    calendar: []
+    claw_notion: []
+    contacts: []
+    todo: []
+    slide: []
+    meeting: []
+  signal_density: 0.07
+  difficulty: medium
+  category: scheduling
+  thread_type: standard
+
+- name: "Weekly advisor + internship manager 1:1s"
+  description: "Recurring weekly 1:1s; agenda + follow-ups + post-meeting notes."
+  involved_services: [calendar, claw_notion, claw_obsidian, todo]
+  involved_records:
+    calendar: []
+    claw_notion: []
+    claw_obsidian: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: scheduling
+  thread_type: standard
+
+- name: "stumail + inbox triage"
+  description: "Daily mixed inbox of thesis admin + course notifications + internship messages."
+  involved_services: [stumail, gmail, todo]
+  involved_records:
+    stumail: []
+    gmail: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: info_triage
+  thread_type: standard

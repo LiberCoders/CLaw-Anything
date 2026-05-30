@@ -34,10 +34,18 @@ class ServiceManager:
         services: list[ServiceDef],
         cwd: Path | None = None,
         execution_date: str | None = None,
+        task_dir: Path | None = None,
     ) -> None:
         self._services = services
         self._cwd = cwd or Path.cwd()
         self._execution_date = execution_date
+        # Base dir for resolving task-relative fixture env values (``fixtures/…``).
+        # Host mode: the real task directory. Trial-in-container: the mounted
+        # snapshot at /opt/claw-anything/tasks/<id>. Either way, ``fixtures/…``
+        # in task.yaml resolves to <task_dir>/fixtures/… — so task.yaml stays
+        # free of absolute / machine-specific paths and is portable across
+        # clones and across both run (host) and batch (container) modes.
+        self._task_dir = Path(task_dir).resolve() if task_dir is not None else None
         # Only processes we spawned ourselves — external ones are left alone.
         self._spawned: list[tuple[ServiceDef, subprocess.Popen]] = []  # type: ignore[type-arg]
 
@@ -116,6 +124,19 @@ class ServiceManager:
         ):
             base_env.pop(proxy_key, None)
         env = {**base_env, **(svc.env or {})}
+        # Resolve task-relative fixture paths against the task dir. Only values
+        # that are relative AND point into ``fixtures/`` are rewritten — this
+        # leaves absolute paths and legacy repo-root-relative prefixes (e.g.
+        # ``gen_tasks/…``) untouched, so older tasks keep their behavior.
+        if self._task_dir is not None:
+            for key, val in list(env.items()):
+                if (
+                    val
+                    and key.endswith("_FIXTURES")
+                    and not os.path.isabs(val)
+                    and (val == "fixtures" or val.startswith("fixtures/"))
+                ):
+                    env[key] = str((self._task_dir / val).resolve())
         if self._execution_date is None:
             raise ServiceStartError(
                 f"task.execution_date is required but missing; "

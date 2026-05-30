@@ -1,0 +1,170 @@
+persona_id: HR01
+persona_name: Natalie Morales
+language: en
+
+role: head of people operations at a fast-growing climate-tech scaleup; manages a team of 3 (recruiter, people-ops generalist, HR coordinator)
+company: Helio Grid (fictional, ~260 employees, Series C climate-tech)
+industry: climate tech / energy software
+seniority: senior
+
+traits:
+- runs weekly people-ops standup Tuesdays and bi-weekly hiring review Thursdays
+- maintains a Notion-based people-ops playbook that any manager can reference
+- treats every termination and PIP as the highest-care event of the quarter
+- protects employee privacy aggressively — keeps a strict "need-to-know" rule on sensitive Slack threads
+- builds the company's annual benefits review around employee NPS, not vendor pitches
+- uses LinkedIn heavily for sourcing and employer-brand monitoring
+- writes detailed handover memos every time a manager changes scope
+
+daily_responsibilities:
+- review the hiring pipeline (8–12 active reqs)
+- triage inbound HR questions via Slack and email
+- run / attend 1:1s with managers on people issues
+- update the people-ops playbook and policy pages in Notion
+- monitor the employer-brand Facebook page + LinkedIn careers page
+- coordinate with legal/compliance on policy changes
+
+primary_services:
+- gmail
+- calendar
+- claw_notion
+- claw_slack
+- claw_linkedin
+- meeting
+secondary_services:
+- todo
+- contacts
+- notes
+- helpdesk
+- claw_facebook
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - hiring_pipeline_coordination
+  - policy_drafting
+  - cross_team_coordination
+  - decision_making
+  - info_triage
+  - scheduling
+  - employee_relations_admin
+  implausible_categories:
+  - product_engineering_change_approval
+  - pricing_authorization
+  - customer_contract_negotiation
+  - production_incident_management
+
+authority:
+  can_approve:
+  - extending offers up to L5 within approved compensation bands
+  - drafting and shipping internal policy updates (with CEO/Legal sign-off for material changes)
+  - approving PTO escalations and leave-of-absence accommodations within policy
+  - rescheduling her own + her team's recruiting meetings
+  cannot_approve:
+  - offers above L5 or out-of-band comp (escalate to CEO + Comp Committee)
+  - termination of any employee at L5+ without CEO + Legal sign-off
+  - public statements about company headcount (escalate to CEO + PR)
+  - changes to benefit-vendor contracts above $100k (escalate to CFO)
+  communication_style: warm, careful with names and pronouns, explicit about confidentiality scope; uses checklists for sensitive flows
+  quality_focus: employee trust + procedural fairness; refuses to take shortcuts on sensitive HR processes
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 09:00–18:00 Pacific; protected "people-issues" block Wed afternoons
+  active_issues:
+  - mid-quarter hiring push — 11 active reqs, 4 at offer stage
+  - employee handbook annual refresh due by 2026-06-15
+  - one sensitive employee-relations case under quiet investigation
+  - DEI annual report owed to the board by 2026-06-25
+  business_goals:
+  - close 6 of the 11 active reqs by 2026-05-31
+  - publish refreshed employee handbook by 2026-06-15
+  - resolve the active employee-relations case by 2026-05-30
+  - deliver the board DEI report by 2026-06-25
+  risk_factors:
+  - employee-relations case mishandling exposes legal risk
+  - handbook refresh slipping past 2026-06-15 misses compliance deadline
+  - hiring push and handbook refresh colliding in the same two weeks
+
+data_threads:
+- name: "Q2 hiring pipeline"
+  description: "11 active reqs across eng, climate-science, and ops; recruiter handoffs, candidate scheduling, debrief notes."
+  involved_services: [gmail, calendar, claw_notion, contacts, claw_linkedin, todo]
+  involved_records:
+    gmail: []
+    calendar: []
+    claw_notion: []
+    contacts: []
+    claw_linkedin: []
+    todo: []
+  signal_density: 0.18
+  difficulty: medium
+  category: hiring_pipeline_coordination
+  thread_type: standard
+
+- name: "Employee handbook 2026 refresh"
+  description: "Annual policy refresh — Legal sign-off, CEO review, manager preview, internal launch comms."
+  involved_services: [claw_notion, gmail, claw_slack, todo, meeting]
+  involved_records:
+    claw_notion: []
+    gmail: []
+    claw_slack: []
+    todo: []
+    meeting: []
+  signal_density: 0.10
+  difficulty: medium
+  category: policy_drafting
+  thread_type: standard
+
+- name: "Sensitive employee-relations case"
+  description: "Quiet investigation; very tight need-to-know circle; private notes + Legal-confidential email thread."
+  involved_services: [notes, gmail, calendar, claw_notion]
+  involved_records:
+    notes: []
+    gmail: []
+    calendar: []
+    claw_notion: []
+  signal_density: 0.06
+  difficulty: hard
+  category: employee_relations_admin
+  thread_type: standard
+
+- name: "Board DEI annual report"
+  description: "Synthesizing recruiting, retention, and pay-equity data; board-deck draft + supporting narrative."
+  involved_services: [claw_notion, gmail, todo, meeting]
+  involved_records:
+    claw_notion: []
+    gmail: []
+    todo: []
+    meeting: []
+  signal_density: 0.08
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "Employer-brand monitoring"
+  description: "Weekly skim of careers-page activity on LinkedIn + Facebook; competitor watch; candidate-experience signals."
+  involved_services: [claw_linkedin, claw_facebook, claw_notion, todo]
+  involved_records:
+    claw_linkedin: []
+    claw_facebook: []
+    claw_notion: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: info_triage
+  thread_type: standard
+
+- name: "Manager 1:1 cadence"
+  description: "Rolling 1:1s with engineering and ops managers on people issues; agenda + follow-up todos."
+  involved_services: [calendar, claw_notion, todo, contacts]
+  involved_records:
+    calendar: []
+    claw_notion: []
+    todo: []
+    contacts: []
+  signal_density: 0.06
+  difficulty: simple
+  category: scheduling
+  thread_type: standard

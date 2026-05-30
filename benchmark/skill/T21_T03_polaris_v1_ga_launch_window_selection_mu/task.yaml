@@ -12,7 +12,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9101/calendar/reset
   env:
-    CALENDAR_FIXTURES: benchmark_final/skill/T21_T03_polaris_v1_ga_launch_window_selection_mu/fixtures/calendar/events.json
+    CALENDAR_FIXTURES: fixtures/calendar/events.json
 - name: todo
   command: python mock_services/todo/server.py
   port: 9102
@@ -21,7 +21,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9102/todo/reset
   env:
-    TODO_FIXTURES: benchmark_final/skill/T21_T03_polaris_v1_ga_launch_window_selection_mu/fixtures/todo/tasks.json
+    TODO_FIXTURES: fixtures/todo/tasks.json
 - name: contacts
   command: python mock_services/contacts/server.py
   port: 9103
@@ -30,7 +30,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9103/contacts/reset
   env:
-    CONTACTS_FIXTURES: benchmark_final/skill/T21_T03_polaris_v1_ga_launch_window_selection_mu/fixtures/contacts/contacts.json
+    CONTACTS_FIXTURES: fixtures/contacts/contacts.json
 - name: finance
   command: python mock_services/finance/server.py
   port: 9104
@@ -39,7 +39,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9104/finance/reset
   env:
-    FINANCE_FIXTURES: benchmark_final/skill/T21_T03_polaris_v1_ga_launch_window_selection_mu/fixtures/finance/transactions.json
+    FINANCE_FIXTURES: fixtures/finance/transactions.json
 - name: notes
   command: python mock_services/notes/server.py
   port: 9105
@@ -48,7 +48,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9105/notes/reset
   env:
-    NOTES_FIXTURES: benchmark_final/skill/T21_T03_polaris_v1_ga_launch_window_selection_mu/fixtures/notes/notes.json
+    NOTES_FIXTURES: fixtures/notes/notes.json
 - name: crm
   command: python mock_services/crm/server.py
   port: 9110
@@ -57,7 +57,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9110/crm/reset
   env:
-    CRM_FIXTURES: benchmark_final/skill/T21_T03_polaris_v1_ga_launch_window_selection_mu/fixtures/crm/customers.json
+    CRM_FIXTURES: fixtures/crm/customers.json
 - name: workmail
   command: python mock_services/workmail/server.py
   port: 9113
@@ -66,7 +66,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9113/workmail/reset
   env:
-    WORKMAIL_FIXTURES: benchmark_final/skill/T21_T03_polaris_v1_ga_launch_window_selection_mu/fixtures/workmail/inbox.json
+    WORKMAIL_FIXTURES: fixtures/workmail/inbox.json
 - name: claw_notion
   command: python mock_services/claw_notion/server.py
   port: 9114
@@ -75,7 +75,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9114/claw_notion/reset
   env:
-    CLAW_NOTION_FIXTURES: benchmark_final/skill/T21_T03_polaris_v1_ga_launch_window_selection_mu/fixtures/claw_notion/pages.json
+    CLAW_NOTION_FIXTURES: fixtures/claw_notion/pages.json
 - name: meeting
   command: python mock_services/meeting/server.py
   port: 9116
@@ -84,7 +84,7 @@ services:
   ready_timeout: 10
   reset_endpoint: http://localhost:9116/meeting/reset
   env:
-    MEETING_FIXTURES: benchmark_final/skill/T21_T03_polaris_v1_ga_launch_window_selection_mu/fixtures/meeting/meetings.json
+    MEETING_FIXTURES: fixtures/meeting/meetings.json
 tools:
 - name: calendar_list_events
   description: List calendar events starting from a given date. Returns full event details. Use days parameter to extend the
