@@ -112,19 +112,21 @@ def browse_posts(req: BrowsePostsRequest | None = None) -> dict[str, Any]:
             "post_id": post["post_id"],
             "author": post["author"],
             "content": post["content"][:200],
-            "tags": post["tags"],
-            "posted_at": post["posted_at"],
-            "likes_count": post["likes_count"],
-            "reposts_count": post["reposts_count"],
-            "liked": post["liked"],
-            "saved": post["saved"],
-            "reposted": post["reposted"],
+            "tags": post.get("tags", []),
+            # Fixtures (and create_post above) use "timestamp"/"likes"; tolerate
+            # both the legacy and current field names so browse never 500s.
+            "posted_at": post.get("posted_at") or post.get("timestamp"),
+            "likes_count": post.get("likes_count", post.get("likes", 0)),
+            "reposts_count": post.get("reposts_count", post.get("reposts", 0)),
+            "liked": post.get("liked", False),
+            "saved": post.get("saved", False),
+            "reposted": post.get("reposted", False),
         })
 
     if req.sort_by == "hot":
         results.sort(key=lambda p: p["likes_count"], reverse=True)
     else:
-        results.sort(key=lambda p: p["posted_at"], reverse=True)
+        results.sort(key=lambda p: p["posted_at"] or "", reverse=True)
 
     total = len(results)
     paged = results[req.offset: req.offset + req.max_results]
@@ -157,12 +159,12 @@ def search_posts(req: SearchPostsRequest) -> dict[str, Any]:
                 "post_id": post["post_id"],
                 "author": post["author"],
                 "content": post["content"][:200],
-                "tags": post["tags"],
-                "posted_at": post["posted_at"],
-                "likes_count": post["likes_count"],
-                "liked": post["liked"],
-                "saved": post["saved"],
-                "reposted": post["reposted"],
+                "tags": post.get("tags", []),
+                "posted_at": post.get("posted_at") or post.get("timestamp"),
+                "likes_count": post.get("likes_count", post.get("likes", 0)),
+                "liked": post.get("liked", False),
+                "saved": post.get("saved", False),
+                "reposted": post.get("reposted", False),
             })
 
     total = len(results)
