@@ -1761,12 +1761,22 @@ def _run_benchmark_suite(args: argparse.Namespace) -> None:
             gui_skipped_reason = "--cli-only set"
         else:
             # Validate gui prereqs once, before any phase runs, so the user
-            # finds out at second 0 rather than after the 150 CLI tasks.
-            pool = _resolve_device_pool(cfg, getattr(args, "oh_settings", None))
-            if not pool:
+            # finds out at second 0 rather than after the 150 CLI tasks. A
+            # device is "available" if EITHER a static one is configured
+            # (emulator_pool / oh-settings device_serial) OR the framework can
+            # auto-launch one (auto_launch_count > 0 and --no-auto-launch not
+            # set). This must mirror the real launch gate in cmd_batch so the
+            # pre-check never rejects a config that would actually have run.
+            static_pool = _resolve_device_pool(cfg, getattr(args, "oh_settings", None))
+            can_auto_launch = (
+                cfg.android.auto_launch_count > 0
+                and not getattr(args, "no_auto_launch", False)
+            )
+            if not static_pool and not can_auto_launch:
                 print(
                     "[suite] ERROR: benchmark suite includes the gui subset (50 tasks) "
                     "but no Android device is available. Either:\n"
+                    "  - Set android.auto_launch_count > 0 in config.yaml to auto-launch emulator container(s), or\n"
                     "  - Configure android.emulator_pool in config.yaml (or mobile_gui.device_serial in --oh-settings), or\n"
                     "  - Rerun with --cli-only to skip the gui subset (150 tasks).",
                     file=sys.stderr,

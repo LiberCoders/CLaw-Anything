@@ -57,6 +57,8 @@ Claw-Anything 将这一理念落地，沿着三个真实世界上下文维度评
   - [运行 benchmark 套件](#运行-benchmark-套件)
   - [运行单个任务](#运行单个任务)
   - [生成你自己的任务](#生成你自己的任务)
+  - [跑 mobile GUI / Android 任务](#跑-mobile-gui--android-任务)
+- [从零开始的完整 GUI 评测流程](#-从零开始的完整-gui-评测流程)
 - [Benchmark 数据](#-benchmark-数据)
 - [命令行速查](#-命令行速查)
 - [代码结构](#-代码结构)
@@ -187,7 +189,7 @@ claw-anything batch \
   --parallel 10
 ```
 
-如果没加 `--cli-only` 又不满足 gui 子集前置条件（`android.emulator_pool` 为空，或没传 `--oh-settings`），套件会在**第 0 秒就 fail-fast** 并给出清晰提示 —— 不会让你跑完 150 个 CLI 任务后才发现 gui phase 启不起来。
+如果没加 `--cli-only` 又不满足 gui 子集前置条件，套件会在**第 0 秒就 fail-fast** 并给出清晰提示 —— 不会让你跑完 150 个 CLI 任务后才发现 gui phase 启不起来。gui phase 可运行的判定需**同时满足**：(1) 有设备可用——要么 `android.auto_launch_count > 0`（框架自动拉起模拟器容器），要么配了静态的 `android.emulator_pool` / `mobile_gui.device_serial`；(2) 传了 `--oh-settings`。所以**只配 `auto_launch_count`（加 `--oh-settings`）就够了**，不必再额外固定一个静态设备。
 
 输出结构：
 
@@ -284,14 +286,19 @@ claw-anything batch \
 
 ### 跑 mobile GUI / Android 任务
 
-凡是 `task.yaml` 里声明了 `task_env: [mobile_gui]` 的任务，都要通过 `adb` 驱动 Android 模拟器。必须用 OH-Ext agent 和镜像：
+凡是 `task.yaml` 里声明了 `task_env: [mobile_gui]` 的任务，都要通过 `adb` 驱动 Android 模拟器。必须用 OH-Ext agent 和镜像。完整的从零搭建流程（模拟器镜像、`adb`、模型端点）见下方 [从零开始的完整 GUI 评测流程](#-从零开始的完整-gui-评测流程)。简版：
 
 ```bash
-# 在 config.yaml 里列出可用的模拟器序列号：
+# config.yaml 里二选一——要么列出已经起好的模拟器序列号：
 # android:
 #   emulator_pool:
 #     - emulator-5554
 #     - 127.0.0.1:5555      # TCP 形式的序列号会在 trial 前 `adb connect`
+#
+# 要么让框架在每次 run/batch 时自动拉起模拟器容器：
+# android:
+#   emulator_image: claw_anything:latest
+#   auto_launch_count: 1    # >0 ⇒ 起 N 个模拟器容器，分发，结束后回收
 
 claw-anything run \
   --task gen_tasks/<mobile_gui_task>/ \
@@ -302,6 +309,206 @@ claw-anything run \
 ```
 
 主机端会先调用 `init_gui_task()` 把日历事件、联系人等注入到模拟器，然后 trial 容器里跑 OH-Ext agent 与已经准备好的设备交互。
+
+
+## 🤖 从零开始的完整 GUI 评测流程
+
+本节是在一台干净机器上从头评测 **CLI + GUI** 基准的完整食谱——需要什么硬件、怎么把 Android 模拟器跑起来、怎么接 `adb`、以及一个 GUI 任务需要的两个模型端点怎么配。纯 CLI 评测可跳过大部分内容（直接看[第 6 步](#6-跑评测)）。
+
+### 架构：谁在跟谁通信
+
+一次 GUI trial 有**四个部件**：
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ 宿主机                                                                │
+│                                                                       │
+│  claw-anything CLI ──┬── EmulatorPool ──▶ 模拟器容器                   │
+│  （编排器）          │   （自动拉起）     (claw_anything:latest,       │
+│                      │                     Android AVD + adb)         │
+│                      │                          ▲                     │
+│                      └── trial 容器 ──────adb──┘                      │
+│                          (claw-anything-oh-ext)                       │
+│                            │         │                                │
+│                     planner LLM   GUI grounding LLM                   │
+│                    （OpenAI API） （GUI-Owl，视觉）                   │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+1. **编排器** —— 宿主机上的 `claw-anything` CLI。负责 GUI 状态注入、workspace 准备、config 改写、评分。
+2. **模拟器** —— 一个 Android AVD。要么你自己预先起好（`emulator_pool`），要么框架替你在容器里起（`auto_launch_count`，镜像 `claw_anything:latest`）。
+3. **trial runner** —— 跑 OH-Ext agent、通过 `adb` 驱动设备的 `claw-anything-oh-ext` 容器。
+4. **两个模型端点**，都写在 `--oh-settings` 里：
+   - **planner** —— 一个 OpenAI 兼容的对话模型（agent 的"大脑"）。
+   - **GUI grounding** —— 把截图转成点击/滑动坐标的视觉模型。标准选择是 **GUI-Owl**（`gui_plus` 后端）。
+
+### 1. 硬件与宿主机前置
+
+| 要求 | 为什么 | 检查命令 |
+|---|---|---|
+| **KVM**（`/dev/kvm` 存在、CPU 有 `vmx`/`svm`） | Android 模拟器需要硬件虚拟化；没有它 AVD 在合理时间内根本启动不完 | `ls /dev/kvm && egrep -c '(vmx\|svm)' /proc/cpuinfo` |
+| **Docker** | trial-in-container 和模拟器镜像都以容器形式跑 | `docker info` |
+| **Python 3.11+** | 运行时 | `python3.11 --version` |
+| 磁盘（约 30 GB 空闲） | `claw_anything:latest` 约 28 GB（DinD + AVD + 后端服务） | `df -h /var/lib/docker` |
+
+> 如果你的 GPU 机器（跑 planner / GUI-Owl 的地方）**没有 KVM**，而 KVM 机器**没有 GPU**，两者仍可通过 SSH 反向隧道协作——把 `--oh-settings` 里的 `base_url` 指向隧道端口即可。但最省事的方案是用一台既支持 KVM、又能访问到模型端点的机器。
+
+### 2. 安装 adb
+
+OH-Ext **镜像里已经带了 `adb`**（在 `/usr/local/bin/adb`），所以 trial 容器无需额外安装。只有在用静态 `emulator_pool` 时（主机直接跑 `init_gui_task` 注入）才需要**宿主机上的 `adb`**。用 `auto_launch_count` 时 EmulatorPool 在自己的 helper 里驱动 `adb`，宿主机 adb 可选但建议装上方便调试：
+
+```bash
+# Android platform-tools（提供 adb）
+wget https://dl.google.com/android/repository/platform-tools-latest-linux.zip
+unzip platform-tools-latest-linux.zip
+export PATH="$PWD/platform-tools:$PATH"
+adb version    # → Android Debug Bridge version 1.0.41
+```
+
+### 3. 获取模拟器镜像
+
+GUI 任务跑在 `claw_anything:latest`（注意是**下划线**——和 `claw-anything-*` 那几个 runner 镜像不同）。它是一个 MobileWorld 衍生镜像，打包了一个已 root 的 Android 14 AVD，预装了所有注入目标（Fossify 日历/短信/笔记、Loop Habits、My Expenses、Markor、Gmail clone……），外加一套 Docker-in-Docker 后端栈。
+
+```bash
+docker images | grep claw_anything    # 确认存在（约 28 GB）
+```
+
+> 该镜像单独分发（太大，无法从本仓库构建）。从发布渠道获取后 `docker load`，或从你的 registry 拉取。
+
+### 4. 构建 OH-Ext runner 镜像
+
+```bash
+# 需要 OpenHarnessExtended 源码（分支 main-clawgui）+ 一个 adb 二进制。
+OH_EXT_DIR=$HOME/code/OpenHarnessExtended \
+ADB_PATH=$PWD/platform-tools/adb \
+  scripts/build_oh_ext_image.sh
+# → 构建出 claw-anything-oh-ext:latest
+```
+
+### 5. 配置 `config.yaml` 和 `oh-settings.json`
+
+**`config.yaml`** —— 编排器配置。这里的 `model` / `judge` 块用于 **loop** agent 和 **LLM-judge 评分器**；OH-Ext agent 会忽略 `model`（它读自己的 `--oh-settings`）。加一个 `android` 块来启用自动拉起：
+
+```yaml
+model:                       # 给 loop agent 用 + （仅 model_id）用于 trace 目录命名
+  api_key: ${OPENAI_API_KEY}
+  base_url: https://api.openai.com/v1
+  model_id: gpt-4o-mini
+
+judge:                       # 通信质量评分用的 LLM-as-judge
+  api_key: ${OPENAI_API_KEY} # ⚠️ 这里 401 只会让 judge 评分失效；规则维度照常打分
+  base_url: https://api.openai.com/v1
+  model_id: gpt-4o-mini
+  enabled: true
+
+agent:
+  agent_type: loop           # CLI 默认；GUI 运行在命令行上覆盖成 openharness-ext
+
+android:
+  emulator_image: claw_anything:latest
+  auto_launch_count: 1       # >0 ⇒ 框架起 N 个模拟器容器并在结束时回收
+  container_adb_port: 5556   # 该镜像的 adb 监听 5556（不是上游的 5555）
+  host_port_start: 5556      # 主机端口分配的下界（实际端口动态分配）
+  boot_timeout_s: 600        # 该镜像首次启动约需 3 分钟
+```
+
+**`oh-settings.json`** —— OH-Ext agent 自包含的配置（复制 [`examples/oh-settings.example.json`](examples/oh-settings.example.json)）。**两个模型端点**写在这里。框架会在每个 trial 自动填 `mobile_gui.device_serial`、并在容器模式下把 `localhost`→`host.docker.internal` 改写好，所以你只需提供端点：
+
+```jsonc
+{
+  "active_profile": "default",
+  "api_key": "EMPTY",
+  "max_tokens": 8192,
+  "mobile_gui": {
+    "device_transport": "adb",
+    "device_serial": "",                       // ← 每个 trial 自动填；留空
+    "adb_path": "/usr/local/bin/adb",          // OH-Ext 镜像里的 adb
+    "gui_backend": {                           // ← GUI grounding（视觉）模型
+      "type": "gui_plus",
+      "base_url": "http://localhost:7267/v1",  // GUI-Owl 端点
+      "api_key": "EMPTY",
+      "model": "GUI-Owl-1.5-4B-Instruct",
+      "tls_verify": false,
+      "max_tokens": 2048,
+      "history_n": 4
+    }
+  },
+  "profiles": {
+    "default": {                               // ← planner（agent 的大脑）
+      "label": "planner",
+      "provider": "openai",
+      "api_format": "openai",
+      "auth_source": "openai_api_key",
+      "default_model": "your-planner-model",
+      "last_model": "your-planner-model",
+      "base_url": "http://localhost:7266/v1",  // planner 端点
+      "allowed_models": ["your-planner-model"]
+    }
+  }
+}
+```
+
+两个端点都必须**能从 trial 容器访问到**——通过 `host.docker.internal`（launcher 会把 `localhost`→`host.docker.internal` 改写，并加 `--add-host=host.docker.internal:host-gateway`）。如果你的模型只绑在 `127.0.0.1`，把它桥接到 docker 网关（例如在 `172.17.0.1:PORT → 127.0.0.1:PORT` 上起一个小 TCP 转发器）。
+
+> 用 vLLM 自部署模型？典型的一对：
+> ```bash
+> # planner（任意支持工具调用的对话模型）
+> vllm serve <planner-model> --served-model-name your-planner-model --port 7266 \
+>   --enable-auto-tool-choice --tool-call-parser hermes
+> # GUI grounding
+> vllm serve GUI-Owl-1.5-4B-Instruct --served-model-name GUI-Owl-1.5-4B-Instruct --port 7267 \
+>   --limit-mm-per-prompt '{"image": 5}'
+> ```
+
+### 6. 跑评测
+
+```bash
+# ── 单个 GUI 任务（冒烟测试）────────────────────────────────────────────
+claw-anything run \
+  --task benchmark/gui/TGUI01_myexpenses_overbudget_finance_email \
+  --config config.yaml \
+  --agent openharness-ext \
+  --trial-in-container \
+  --oh-settings oh-settings.json
+
+# ── 完整 200 任务基准（skill + tool + gui）──────────────────────────────
+claw-anything batch \
+  --config config.yaml \
+  --oh-settings oh-settings.json \
+  --trials 3 \
+  --parallel 10
+
+# ── 仅 CLI 子集（150 任务；无需模拟器 / oh-settings）────────────────────
+claw-anything batch --config config.yaml --cli-only --trials 3 --parallel 10
+
+# ── 仅 GUI 子集（50 任务）───────────────────────────────────────────────
+claw-anything batch \
+  --tasks-dir benchmark/gui \
+  --config config.yaml \
+  --agent openharness-ext \
+  --oh-settings oh-settings.json \
+  --trials 3 --parallel 4         # parallel ≤ android.auto_launch_count（每个 worker 一台设备）
+```
+
+批量跑 GUI 时，把 `android.auto_launch_count` 设到至少等于 `--parallel`，保证每个 worker 都有自己的设备。健康的运行会在开头打印 `[emu-pool] booted: …`、结尾打印 `[emu-pool] stop_all: removed N container(s)`；每个 trial 的分数块会打印 `completion / robustness / communication / safety / task_score / passed`。
+
+### 7. 清理
+
+`claw-anything cleanup` 会同时删掉 trial 容器（`app=claw-anything`）和任何泄漏的模拟器容器（`app=claw-anything-emu`）。EmulatorPool 本身在 `finally` 块里就会回收容器，所以只有在硬崩溃 / `Ctrl-C` 之后才需要 cleanup。
+
+```bash
+claw-anything cleanup
+```
+
+### 排错
+
+| 现象 | 原因 / 解法 |
+|---|---|
+| `[emu-pool]` 一直不打印 "booted"、超时 | 没 KVM，或 `boot_timeout_s` 太小。确认 `/dev/kvm`；`claw_anything:latest` 首次启动约 3 分钟。 |
+| trial 容器连不上模型 | `base_url` 写的是 `localhost` 但模型只绑了 `127.0.0.1`。把它桥接到 docker 网关 `172.17.0.1`，或让服务绑 `0.0.0.0`。 |
+| trial 里 `adb connect` 失败 | 模拟器的 adb 在它容器里绑死 `127.0.0.1`；launcher 期望它在 `host.docker.internal:<port>` 可达。确保主机端口映射（或桥接）把它暴露到 `0.0.0.0`。 |
+| 反复出现 `[judge-retry] (401)` | **judge** 的 API key 失效/过期。这**不会**让运行失败——规则维度（completion/safety/robustness/communication）照常打分，只是丢了 LLM-judge 质量分。修 `judge.api_key` 或加 `--no-judge`。 |
+| GUI 任务无视设备、走 CLI 解了 | 有些任务是双环境 `task_env: [mobile_gui, cli]`；如果数据能通过 CLI 工具拿到，agent 可能不去开 app。属正常现象，非基础设施错误。 |
 
 
 ## 📊 Benchmark 数据

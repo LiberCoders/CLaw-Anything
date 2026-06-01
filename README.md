@@ -59,7 +59,9 @@ Claw-Anything operationalizes this view, evaluating always-on LLM agents across 
   - [Run the benchmark suite](#run-the-benchmark-suite)
   - [Run a single task](#run-a-single-task)
   - [Generate your own tasks](#generate-your-own-tasks)
+  - [Run mobile GUI / Android tasks](#run-mobile-gui--android-tasks)
   - [Extra Command](#-extra-command)
+- [End-to-end GUI evaluation from scratch](#-end-to-end-gui-evaluation-from-scratch)
 - [Repo Layout](#-repo-layout)
 - [Authoring Tasks](#-authoring-tasks)
 - [Acknowledgments](#-acknowledgments)
@@ -224,7 +226,7 @@ claw-anything batch \
   --parallel 10
 ```
 
-If `--cli-only` is omitted and the gui subset's prerequisites aren't met (empty `android.emulator_pool`, or no `--oh-settings`), the suite **fails fast at second 0** with a clear message — so you don't burn 150 CLI tasks before discovering the gui phase can't start.
+If `--cli-only` is omitted and the gui subset's prerequisites aren't met, the suite **fails fast at second 0** with a clear message — so you don't burn 150 CLI tasks before discovering the gui phase can't start. The gui phase is considered runnable when **both**: (1) a device is available — either `android.auto_launch_count > 0` (framework auto-launches emulator containers) **or** a static `android.emulator_pool` / `mobile_gui.device_serial` is configured — and (2) `--oh-settings` is passed. So enabling `auto_launch_count` alone (plus `--oh-settings`) is enough; you do **not** need to also pin a static device.
 
 Output:
 
@@ -321,14 +323,19 @@ claw-anything batch \
 
 ### Run mobile GUI / Android tasks
 
-Tasks whose `task.yaml` declares `task_env: [mobile_gui]` drive an Android emulator via `adb`. They require the OH-Ext agent and image:
+Tasks whose `task.yaml` declares `task_env: [mobile_gui]` drive an Android emulator via `adb`. They require the OH-Ext agent and image. See [End-to-end GUI evaluation from scratch](#-end-to-end-gui-evaluation-from-scratch) below for the full setup (emulator image, `adb`, model endpoints). The short version:
 
 ```bash
-# In config.yaml, list the available emulator serials:
+# In config.yaml, EITHER list pre-launched emulator serials …
 # android:
 #   emulator_pool:
 #     - emulator-5554
 #     - 127.0.0.1:5555      # TCP-shaped serials trigger `adb connect` before each trial
+#
+# … OR let the framework auto-launch emulator containers per run/batch:
+# android:
+#   emulator_image: claw_anything:latest
+#   auto_launch_count: 1    # >0 ⇒ spin up N emulator containers, distribute, tear down
 
 claw-anything run \
   --task gen_tasks/<mobile_gui_task>/ \
@@ -339,6 +346,206 @@ claw-anything run \
 ```
 
 The host calls `init_gui_task()` to inject calendar events, contacts, etc. into the emulator before the agent starts; the trial container then runs the OH-Ext agent against that prepared device.
+
+
+## 🤖 End-to-end GUI evaluation from scratch
+
+This section is the complete recipe for evaluating an agent on the **CLI + GUI** benchmark from a clean machine — what hardware you need, how to stand up the Android emulator, how to wire up `adb`, and how to configure the two model endpoints a GUI task needs. CLI-only evaluation skips most of this (jump to [step 6](#6-run-the-evaluation)).
+
+### Architecture: what talks to what
+
+A GUI trial has **four moving parts**:
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ host                                                                  │
+│                                                                       │
+│  claw-anything CLI ──┬── EmulatorPool ──▶ emulator container          │
+│  (orchestrator)      │   (auto-launch)    (claw_anything:latest,      │
+│                      │                     Android AVD + adb)         │
+│                      │                          ▲                     │
+│                      └── trial container ───adb─┘                     │
+│                          (claw-anything-oh-ext)                       │
+│                            │         │                                │
+│                   planner LLM   GUI-grounding LLM                     │
+│                   (OpenAI API)  (GUI-Owl, vision)                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+1. **Orchestrator** — the `claw-anything` CLI on the host. Does GUI state injection, workspace prep, config rewriting, and grading.
+2. **Emulator** — an Android AVD. Either you pre-launch it (`emulator_pool`) or the framework launches it for you in a container (`auto_launch_count`, image `claw_anything:latest`).
+3. **Trial runner** — the `claw-anything-oh-ext` container that runs the OH-Ext agent and drives the device over `adb`.
+4. **Two model endpoints**, both declared in `--oh-settings`:
+   - **planner** — an OpenAI-compatible chat model (the agent's "brain").
+   - **GUI-grounding** — a vision model that turns a screenshot into a tap/swipe coordinate. The canonical choice is **GUI-Owl** (`gui_plus` backend).
+
+### 1. Hardware & host prerequisites
+
+| Requirement | Why | Check |
+|---|---|---|
+| **KVM** (`/dev/kvm` present, CPU has `vmx`/`svm`) | The Android emulator needs hardware virtualization; without it the AVD never finishes booting in reasonable time | `ls /dev/kvm && egrep -c '(vmx\|svm)' /proc/cpuinfo` |
+| **Docker** | Trial-in-container + the emulator image both run as containers | `docker info` |
+| **Python 3.11+** | Runtime | `python3.11 --version` |
+| Disk (~30 GB free) | `claw_anything:latest` is ~28 GB (DinD + AVD + backend services) | `df -h /var/lib/docker` |
+
+> If your GPU box (where the planner / GUI-Owl models live) has **no KVM**, and your KVM box has **no GPU**, the two can still cooperate over an SSH reverse tunnel — point the `--oh-settings` `base_url`s at the tunneled ports. But the simplest setup is a single KVM-capable host that can also reach your model endpoints.
+
+### 2. Install adb
+
+The OH-Ext **image already ships `adb`** at `/usr/local/bin/adb`, so the trial container needs nothing. You only need `adb` **on the host** if you use a static `emulator_pool` (the host runs `init_gui_task` injection directly). With `auto_launch_count` the EmulatorPool drives `adb` from inside its own helper, so a host `adb` is optional but recommended for debugging:
+
+```bash
+# Android platform-tools (provides adb)
+wget https://dl.google.com/android/repository/platform-tools-latest-linux.zip
+unzip platform-tools-latest-linux.zip
+export PATH="$PWD/platform-tools:$PATH"
+adb version    # → Android Debug Bridge version 1.0.41
+```
+
+### 3. Get the emulator image
+
+GUI tasks run against `claw_anything:latest` (note the **underscore** — distinct from the `claw-anything-*` runner images). It is a MobileWorld-derived image bundling a rooted Android 14 AVD with all inject targets pre-installed (Fossify Calendar/Messages/Notes, Loop Habits, My Expenses, Markor, Gmail clone, …) plus a Docker-in-Docker backend stack.
+
+```bash
+docker images | grep claw_anything    # confirm it's present (~28 GB)
+```
+
+> This image is distributed separately (it is too large to build from this repo). Obtain it from the release channel and `docker load` it, or pull it from your registry.
+
+### 4. Build the OH-Ext runner image
+
+```bash
+# Needs the OpenHarnessExtended source (branch main-clawgui) + an adb binary.
+OH_EXT_DIR=$HOME/code/OpenHarnessExtended \
+ADB_PATH=$PWD/platform-tools/adb \
+  scripts/build_oh_ext_image.sh
+# → builds claw-anything-oh-ext:latest
+```
+
+### 5. Configure `config.yaml` and `oh-settings.json`
+
+**`config.yaml`** — the orchestrator config. The `model` / `judge` blocks here are used for the **loop** agent and for the **LLM-judge grader**; the OH-Ext agent ignores `model` (it reads its own `--oh-settings`). Add an `android` block to enable auto-launch:
+
+```yaml
+model:                       # used by loop agent + (model_id only) for trace-dir naming
+  api_key: ${OPENAI_API_KEY}
+  base_url: https://api.openai.com/v1
+  model_id: gpt-4o-mini
+
+judge:                       # LLM-as-judge for communication-quality scoring
+  api_key: ${OPENAI_API_KEY} # ⚠️ a 401 here only disables judge scoring; rule-based dims still grade
+  base_url: https://api.openai.com/v1
+  model_id: gpt-4o-mini
+  enabled: true
+
+agent:
+  agent_type: loop           # CLI default; GUI runs override to openharness-ext on the command line
+
+android:
+  emulator_image: claw_anything:latest
+  auto_launch_count: 1       # >0 ⇒ framework launches N emulator containers and tears them down
+  container_adb_port: 5556   # the shipped image listens on 5556 (not the upstream 5555)
+  host_port_start: 5556      # lower bound for host-port allocation (actual ports are dynamic)
+  boot_timeout_s: 600        # first boot of this image takes ~3 min
+```
+
+**`oh-settings.json`** — the OH-Ext agent's self-contained config (copy [`examples/oh-settings.example.json`](examples/oh-settings.example.json)). This is where the **two model endpoints** go. The framework auto-fills `mobile_gui.device_serial` per trial and rewrites `localhost`→`host.docker.internal` for container mode, so you only supply the endpoints:
+
+```jsonc
+{
+  "active_profile": "default",
+  "api_key": "EMPTY",
+  "max_tokens": 8192,
+  "mobile_gui": {
+    "device_transport": "adb",
+    "device_serial": "",                       // ← auto-filled per trial; leave empty
+    "adb_path": "/usr/local/bin/adb",          // adb inside the OH-Ext image
+    "gui_backend": {                           // ← the GUI-grounding (vision) model
+      "type": "gui_plus",
+      "base_url": "http://localhost:7267/v1",  // GUI-Owl endpoint
+      "api_key": "EMPTY",
+      "model": "GUI-Owl-1.5-4B-Instruct",
+      "tls_verify": false,
+      "max_tokens": 2048,
+      "history_n": 4
+    }
+  },
+  "profiles": {
+    "default": {                               // ← the planner (the agent's brain)
+      "label": "planner",
+      "provider": "openai",
+      "api_format": "openai",
+      "auth_source": "openai_api_key",
+      "default_model": "your-planner-model",
+      "last_model": "your-planner-model",
+      "base_url": "http://localhost:7266/v1",  // planner endpoint
+      "allowed_models": ["your-planner-model"]
+    }
+  }
+}
+```
+
+Both endpoints must be **reachable from the trial container** via `host.docker.internal` (the launcher rewrites `localhost`→`host.docker.internal` and adds `--add-host=host.docker.internal:host-gateway`). If your models bind to `127.0.0.1` only, bridge them to the docker gateway (e.g. a small TCP forwarder on `172.17.0.1:PORT → 127.0.0.1:PORT`).
+
+> Self-hosting the models with vLLM? A typical pair:
+> ```bash
+> # planner (any tool-capable chat model)
+> vllm serve <planner-model> --served-model-name your-planner-model --port 7266 \
+>   --enable-auto-tool-choice --tool-call-parser hermes
+> # GUI grounding
+> vllm serve GUI-Owl-1.5-4B-Instruct --served-model-name GUI-Owl-1.5-4B-Instruct --port 7267 \
+>   --limit-mm-per-prompt '{"image": 5}'
+> ```
+
+### 6. Run the evaluation
+
+```bash
+# ── A single GUI task (smoke test) ──────────────────────────────────────
+claw-anything run \
+  --task benchmark/gui/TGUI01_myexpenses_overbudget_finance_email \
+  --config config.yaml \
+  --agent openharness-ext \
+  --trial-in-container \
+  --oh-settings oh-settings.json
+
+# ── The full 200-task benchmark (skill + tool + gui) ───────────────────
+claw-anything batch \
+  --config config.yaml \
+  --oh-settings oh-settings.json \
+  --trials 3 \
+  --parallel 10
+
+# ── CLI subsets only (150 tasks; no emulator / oh-settings needed) ──────
+claw-anything batch --config config.yaml --cli-only --trials 3 --parallel 10
+
+# ── GUI subset only (50 tasks) ─────────────────────────────────────────
+claw-anything batch \
+  --tasks-dir benchmark/gui \
+  --config config.yaml \
+  --agent openharness-ext \
+  --oh-settings oh-settings.json \
+  --trials 3 --parallel 4         # parallel ≤ android.auto_launch_count (one device per worker)
+```
+
+For batch GUI runs, set `android.auto_launch_count` to at least `--parallel` so every worker gets its own device. A healthy run logs `[emu-pool] booted: …` at the start and `[emu-pool] stop_all: removed N container(s)` at the end; a per-trial score block prints `completion / robustness / communication / safety / task_score / passed`.
+
+### 7. Clean up
+
+`claw-anything cleanup` removes both the trial containers (`app=claw-anything`) and any leaked emulator containers (`app=claw-anything-emu`). The EmulatorPool already tears its containers down in a `finally` block, so cleanup is only needed after a hard crash / `Ctrl-C`.
+
+```bash
+claw-anything cleanup
+```
+
+### Troubleshooting
+
+| Symptom | Cause / fix |
+|---|---|
+| `[emu-pool]` never prints "booted", times out | No KVM, or `boot_timeout_s` too low. Verify `/dev/kvm`; first boot of `claw_anything:latest` takes ~3 min. |
+| Trial container can't reach the model | `base_url` points at `localhost` but the model only binds `127.0.0.1`. Bridge it onto the docker gateway `172.17.0.1`, or bind the server on `0.0.0.0`. |
+| `adb connect` fails inside the trial | The emulator's adb is bound to `127.0.0.1` in its container; the launcher expects it reachable on `host.docker.internal:<port>`. Ensure the host-port mapping (or bridge) exposes it on `0.0.0.0`. |
+| `[judge-retry] (401)` repeated | The **judge** API key is invalid/expired. This does **not** fail the run — rule-based completion/safety/robustness/communication still score; only the LLM-judge quality component is lost. Fix the `judge.api_key` or set `--no-judge`. |
+| GUI task ignores the device, solves via CLI | Some tasks are dual `task_env: [mobile_gui, cli]`; if the data is reachable via a CLI tool the agent may not open the app. Expected — not an infra error. |
 
 
 ### 🛠️ Extra Command
