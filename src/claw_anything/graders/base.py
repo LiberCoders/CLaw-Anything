@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.util
 import inspect
+import json
 import re
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -14,6 +15,18 @@ from ..models.trace import DimensionScores, ToolDispatch, TraceMessage
 
 # base.py is at src/claw_anything/graders/base.py → parents[3] is the repo root.
 _DEFAULT_TASKS_DIR = Path(__file__).resolve().parents[3] / "tasks"
+
+# Infrastructure endpoints that are NOT agent tool calls — they must never be
+# surfaced to the LLM judge (they are noise and can mislead the evaluation).
+_INFRA_SUFFIXES = ("/health", "/audit", "/reset", "/docs", "/openapi.json")
+
+# Max characters for inlined tool-call params / results, to keep judge input bounded.
+_TRUNCATE_LEN = 300
+
+
+def _truncate(text: str, limit: int = _TRUNCATE_LEN) -> str:
+    text = text if isinstance(text, str) else str(text)
+    return text if len(text) <= limit else text[:limit] + "…"
 
 
 def load_peer_grader(task_id: str, tasks_dir: str | Path = _DEFAULT_TASKS_DIR) -> type:
@@ -194,25 +207,76 @@ class AbstractGrader(ABC):
         return svc_data.get("calls", [])
 
     @staticmethod
-    def format_conversation(messages: list[TraceMessage]) -> str:
-        """Format messages into a readable conversation transcript for judge input."""
-        lines = []
+    def format_conversation(
+        messages: list[TraceMessage],
+        dispatches: list[ToolDispatch] | None = None,
+    ) -> str:
+        """Format messages into a chronological transcript for judge input.
+
+        Walks each message's content blocks in order and inlines tool activity
+        so the judge sees a single timeline of "what the agent said → what it
+        called → whether it succeeded → what it got back":
+
+        - TextBlock        → ``[<ROLE>]: <text>``
+        - ToolUseBlock     → ``[TOOL CALL] <name>(<input>) -> OK|FAILED(<status>)``
+        - ToolResultBlock  → ``[TOOL RESULT] <text>`` (or ``[TOOL ERROR] ...``)
+
+        Success/failure is taken from the matching ToolDispatch.response_status
+        (linked by tool_use_id); when ``dispatches`` is not supplied it falls
+        back to the ToolResultBlock.is_error flag. Infrastructure endpoints
+        (/health, /audit, /reset …) are never agent tool calls and so never
+        appear here. Params and results are truncated to keep input bounded.
+        """
+        status_by_id: dict[str, int] = {
+            d.tool_use_id: d.response_status for d in (dispatches or [])
+        }
+
+        lines: list[str] = []
         for m in messages:
             role = m.message.role.upper()
-            text = m.message.text
-            if text:
-                lines.append(f"[{role}]: {text}")
+            for block in m.message.content:
+                btype = getattr(block, "type", None)
+                if btype == "text":
+                    if block.text and block.text.strip():
+                        lines.append(f"[{role}]: {block.text}")
+                elif btype == "tool_use":
+                    params = _truncate(json.dumps(block.input, ensure_ascii=False))
+                    status = status_by_id.get(block.id)
+                    if status is not None:
+                        outcome = "OK" if status < 400 else f"FAILED({status})"
+                    else:
+                        outcome = "OK"  # no dispatch record; refined below if a result errors
+                    lines.append(f"[TOOL CALL] {block.name}({params}) -> {outcome}")
+                elif btype == "tool_result":
+                    result_text = " ".join(
+                        tb.text for tb in block.content
+                        if getattr(tb, "type", None) == "text"
+                    )
+                    tag = "ERROR" if block.is_error else "RESULT"
+                    lines.append(f"[TOOL {tag}] {_truncate(result_text)}")
         return "\n".join(lines)
 
     @staticmethod
     def summarize_actions(audit_data: dict[str, dict] | None) -> str:
-        """Produce a human-readable summary of actions taken, for judge input."""
+        """Produce a human-readable summary of actions taken, for judge input.
+
+        Infrastructure endpoints (/health, /audit, /reset …) are filtered out —
+        they are not agent tool calls and only add noise. Note: the richer
+        per-call view (tool name + params + success/failure) now lives in the
+        unified transcript from ``format_conversation(messages, dispatches)``;
+        this method is kept as a lightweight, infra-filtered fallback.
+        """
         if not audit_data:
             return "No audit data available."
         parts = []
         for svc_name, svc_data in audit_data.items():
             calls = svc_data.get("calls", [])
-            if calls:
-                endpoints = [c.get("endpoint", "?") for c in calls]
-                parts.append(f"{svc_name}: {len(calls)} calls — {', '.join(endpoints)}")
+            endpoints = [
+                c.get("endpoint", "?") for c in calls
+                if not str(c.get("endpoint", "")).endswith(_INFRA_SUFFIXES)
+            ]
+            if endpoints:
+                parts.append(
+                    f"{svc_name}: {len(endpoints)} calls — {', '.join(endpoints)}"
+                )
         return "\n".join(parts) if parts else "No actions recorded."

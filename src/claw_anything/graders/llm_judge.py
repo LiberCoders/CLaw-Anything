@@ -22,7 +22,11 @@ class JudgeResult(BaseModel):
 
 _SYSTEM_PROMPT = """\
 You are an evaluation judge for an AI assistant.
-You will be given a task prompt, a conversation, a summary of actions taken, and a rubric.
+You will be given a task prompt, a conversation, and a rubric (and optionally a
+summary of actions taken). The conversation is a chronological transcript that
+already inlines every tool call the assistant made — its name, arguments, whether
+it succeeded or failed, and the returned result — interleaved with what the
+assistant said. Use it as the primary evidence.
 Follow the rubric to score the assistant's response on a 0.0-1.0 scale.
 
 IMPORTANT: You MUST reason BEFORE assigning a score. First write out your reasoning
@@ -54,6 +58,30 @@ class LLMJudge:
         self.client = OpenAI(**client_kwargs)
         self.model_id = model_id
 
+    @staticmethod
+    def build_user_message(
+        task_prompt: str,
+        conversation: str,
+        actions_summary: str,
+        rubric: str,
+    ) -> str:
+        """Assemble the judge's user message.
+
+        The ``## Actions Taken`` section is OMITTED when ``actions_summary`` is
+        blank — tool activity is already inlined in the conversation transcript,
+        so an empty section would only read as missing information. A grader may
+        still pass a non-empty summary (e.g. an audit-side final-state view) to
+        have it rendered.
+        """
+        parts = [
+            f"## Task Prompt\n{task_prompt}",
+            f"## Conversation\n{conversation}",
+        ]
+        if actions_summary and actions_summary.strip():
+            parts.append(f"## Actions Taken\n{actions_summary}")
+        parts.append(f"## Rubric\n{rubric}")
+        return "\n\n".join(parts)
+
     def evaluate(
         self,
         task_prompt: str,
@@ -62,11 +90,8 @@ class LLMJudge:
         rubric: str,
     ) -> JudgeResult:
         """Evaluate communication quality and return a JudgeResult."""
-        user_msg = (
-            f"## Task Prompt\n{task_prompt}\n\n"
-            f"## Conversation\n{conversation}\n\n"
-            f"## Actions Taken\n{actions_summary}\n\n"
-            f"## Rubric\n{rubric}"
+        user_msg = self.build_user_message(
+            task_prompt, conversation, actions_summary, rubric
         )
         max_retries = 20
         last_exc: Exception | None = None

@@ -80,8 +80,8 @@ Available inherited methods:
 - `self._get_all_assistant_text(messages)` -> str: Concatenate all assistant messages
 - `self.compute_robustness(dispatches)` -> float: Compute error recovery rate
 - `self.compute_communication_substance(final_text, tool_entities, fmt_score)` -> float: Compute communication quality
-- `self.format_conversation(messages)` -> str: Format conversation records
-- `self.summarize_actions(audit_data)` -> str: Summarize audit data
+- `self.format_conversation(messages, dispatches)` -> str: Build a single chronological transcript for the judge — assistant text plus each tool call inlined as `[TOOL CALL] <name>(<params>) -> OK|FAILED(<status>)` and its truncated result. Always pass `dispatches` so success/failure is shown; infra endpoints (/health, /audit, /reset) never appear. This is the preferred judge input — pass it as the `conversation` arg and pass `""` for the actions summary.
+- `self.summarize_actions(audit_data)` -> str: Lightweight infra-filtered fallback summary of audit calls. Prefer `format_conversation(messages, dispatches)` instead; only use this if you specifically need an audit-side view.
 - `self.get_service_actions(audit_data, service, action_key)` -> list[dict]: Get action records for a specific service
 
 ## ToolDispatch Field Definition
