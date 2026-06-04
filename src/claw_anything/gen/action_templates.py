@@ -1166,6 +1166,9 @@ def classify_record(service: str, record: dict, persona_email: str | None = None
         labels = [l.upper() for l in record.get("labels", [])]
         if "DRAFT" in labels:
             return "draft"
+        # Explicit folder label is the most reliable signal of authorship.
+        if "SENT" in labels:
+            return "sent"
         sender = record.get("from", "")
         if persona_email and persona_email.lower() in sender.lower():
             return "sent"
@@ -1176,10 +1179,20 @@ def classify_record(service: str, record: dict, persona_email: str | None = None
         return "received"
 
     if service == "calendar":
-        # If the persona is the organizer it was created, otherwise viewed/accepted
+        # If the persona is the organizer it was created, otherwise viewed/accepted.
         organizer = record.get("organizer", "")
         if persona_email and persona_email.lower() in str(organizer).lower():
             return "created"
+        # Generated fixtures almost never populate ``organizer``; the LLM lists
+        # the creator as the *first* attendee instead, so honor that convention.
+        if persona_email:
+            attendees = record.get("attendees") or []
+            if isinstance(attendees, (list, tuple)) and attendees:
+                first = attendees[0]
+                if isinstance(first, dict):
+                    first = first.get("email") or first.get("address") or ""
+                if isinstance(first, str) and persona_email.lower() in first.lower():
+                    return "created"
         return "viewed"
 
     if service == "contacts":
@@ -1222,6 +1235,9 @@ def classify_record(service: str, record: dict, persona_email: str | None = None
         return "viewed"
 
     if service == "workmail":
+        labels = [l.upper() for l in record.get("labels", [])]
+        if "SENT" in labels:
+            return "sent"
         sender = record.get("from", "")
         if persona_email and persona_email.lower() in sender.lower():
             return "sent"
@@ -1261,7 +1277,10 @@ def classify_record(service: str, record: dict, persona_email: str | None = None
         sender = (record.get("from") or "").lower()
         if persona_email and persona_email.lower() in sender:
             return "sent"
-        if record.get("reply_to_message_id"):
+        # A message from someone else is incoming mail, even when it is a reply
+        # (``reply_to_message_id`` set). Only treat a senderless reply as the
+        # persona's unsent draft.
+        if not sender and record.get("reply_to_message_id"):
             return "draft"
         return "received"
 

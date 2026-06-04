@@ -174,7 +174,9 @@ class ActivityLogEngine:
         Returns:
             Dict mapping service name -> list of new LogEntry objects.
         """
-        persona_email = self._infer_persona_email(persona)
+        persona_email = self._infer_persona_email(
+            persona, env, new_records_by_service
+        )
         result: dict[str, list[LogEntry]] = {}
 
         for service, new_records in new_records_by_service.items():
@@ -293,6 +295,13 @@ class ActivityLogEngine:
             # Use signal-specified duration if available, otherwise use template range
             override_duration = signal.get("edit_duration_sec") or signal.get("fill_duration_sec")
 
+            # Persistent fixture the behavior is *about* (contact emailed, note
+            # researched, ticket subject). Surfacing it in the log Reference
+            # column lets the patrol agent correlate the abandoned action with a
+            # real record and infer intent — without it the cluster is anonymous.
+            anchors = signal.get("related_fixture_anchors") or []
+            anchor_ref = str(anchors[0]) if anchors else None
+
             base_ts = self._random_timestamp(time_window_start, time_window_end)
             entries: list[LogEntry] = []
             current_ts = base_ts
@@ -307,11 +316,17 @@ class ActivityLogEngine:
                 else:
                     duration = self.rng.randint(dur_range[0], dur_range[1])
 
+                # Anchor the non-terminal steps (open/compose/edit…) to the
+                # persistent fixture. Terminal abandonment steps
+                # (discard/delete/abandon/close) reference no persistent record.
+                is_terminal = action.startswith(("discard_", "delete_", "abandon_", "close_"))
+                record_ref = None if is_terminal else anchor_ref
+
                 entries.append(LogEntry(
                     timestamp=current_ts,
                     service=service,
                     action=action,
-                    record_ref=None,  # deleted/discarded content has no persistent ref
+                    record_ref=record_ref,
                     duration_sec=duration,
                 ))
 
@@ -516,8 +531,22 @@ class ActivityLogEngine:
         window_start: datetime,
         window_end: datetime,
     ) -> datetime:
-        """Extract a base timestamp from a fixture record."""
-        for field_name in ("date", "start_time", "created_at", "published_at", "last_run"):
+        """Extract a base timestamp from a fixture record.
+
+        The field list is ordered by preference: explicit action/creation
+        timestamps first, then last-modified style fallbacks. Services use a
+        wide variety of date field names (``timestamp``, ``posted_at``,
+        ``date_added``, ``last_contact_date`` …); an unrecognized name silently
+        degrades the log entry to a random in-window time, so keep this list in
+        sync with the fixture schemas.
+        """
+        for field_name in (
+            "date", "start_time", "created_at", "created", "sent_at",
+            "timestamp", "applied_at", "posted_at", "published_at",
+            "date_added", "last_run", "last_reorder_date", "last_contact_date",
+            "last_verified", "last_updated", "updated_at", "date_modified",
+            "last_modified",
+        ):
             val = record.get(field_name)
             if val:
                 try:
@@ -554,11 +583,125 @@ class ActivityLogEngine:
         return s + timedelta(seconds=offset)
 
     @staticmethod
-    def _infer_persona_email(persona: PersonaDefinition) -> str | None:
-        """Try to infer persona email from persona fields."""
-        name = persona.persona_name.lower().replace(" ", ".")
-        company = persona.company.lower().replace(" ", "")
-        return f"{name}@{company}.com"
+    def _infer_persona_email(
+        persona: PersonaDefinition,
+        env: GoldEnvironment | None = None,
+        new_records_by_service: dict[str, list[dict]] | None = None,
+    ) -> str | None:
+        """Infer the persona's email address.
+
+        Strategy (most-reliable first):
+
+        1. Detect the real address from fixtures by matching the persona's name
+           against email local-parts. The LLM picks its own domain (e.g.
+           ``holdfast.cloud``) which rarely matches a naive company slug, so we
+           trust the data over a synthesized guess.
+        2. Fall back to ``<name>@<company-domain>`` where the company string is
+           sanitized into a plausible domain (stripping the free-text
+           descriptions personas commonly carry, e.g.
+           ``Holdfast Cloud (fictional, ~1,200 employees, ...)``).
+        """
+        detected = ActivityLogEngine._detect_email_from_fixtures(
+            persona, env, new_records_by_service
+        )
+        if detected:
+            return detected
+
+        name = persona.persona_name.lower().strip().replace(" ", ".")
+        domain = ActivityLogEngine._company_to_domain(persona.company)
+        if not name or not domain:
+            return None
+        return f"{name}@{domain}"
+
+    # Email-like fields scanned when detecting the persona address from data.
+    _EMAIL_FIELDS = ("from", "sender", "to", "cc", "bcc", "organizer", "attendees")
+
+    @staticmethod
+    def _company_to_domain(company: str) -> str | None:
+        """Turn a free-text company field into a plausible ``host.com`` domain.
+
+        Keeps only the leading proper-noun portion before any descriptive
+        clause (``(``, ``;``, ``,``, ``-``) and strips non-alphanumerics.
+        Returns ``None`` for self-employed / empty values where no company
+        domain makes sense.
+        """
+        import re
+
+        if not company:
+            return None
+        # Cut off the first descriptive clause.
+        head = re.split(r"[(;,]| - |–|—", company, maxsplit=1)[0]
+        head = head.strip().lower()
+        if not head or "self-employed" in head or "freelance" in head:
+            return None
+        slug = re.sub(r"[^a-z0-9]", "", head)
+        if not slug:
+            return None
+        return f"{slug}.com"
+
+    @staticmethod
+    def _name_local_part_candidates(persona_name: str) -> set[str]:
+        """Plausible email local-parts the LLM might use for the persona."""
+        import re
+
+        parts = [p for p in re.split(r"\s+", persona_name.lower().strip()) if p]
+        if not parts:
+            return set()
+        first, last = parts[0], parts[-1]
+        cands = {first, last, f"{first}.{last}", f"{first}{last}", f"{first}_{last}"}
+        if len(first) >= 1:
+            cands.add(f"{first[0]}{last}")
+            cands.add(f"{first[0]}.{last}")
+        cands.add(f"{last}.{first}")
+        return {c for c in cands if c}
+
+    @staticmethod
+    def _detect_email_from_fixtures(
+        persona: PersonaDefinition,
+        env: GoldEnvironment | None,
+        new_records_by_service: dict[str, list[dict]] | None,
+    ) -> str | None:
+        """Find the persona's actual email in the generated data.
+
+        Scans mail/calendar records for addresses whose local-part matches the
+        persona's name; among matches, returns the most frequent one (the
+        persona's own address dominates their own activity).
+        """
+        import re
+        from collections import Counter
+
+        candidates = ActivityLogEngine._name_local_part_candidates(persona.persona_name)
+        if not candidates:
+            return None
+
+        email_re = re.compile(r"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}")
+        counts: Counter[str] = Counter()
+
+        def scan(records: list[dict]) -> None:
+            for rec in records or []:
+                if not isinstance(rec, dict):
+                    continue
+                for fld in ActivityLogEngine._EMAIL_FIELDS:
+                    val = rec.get(fld)
+                    if val is None:
+                        continue
+                    for addr in email_re.findall(str(val)):
+                        counts[addr.lower()] += 1
+
+        mail_services = ("gmail", "workmail", "stumail", "calendar", "meeting")
+        for svc in mail_services:
+            if env is not None:
+                try:
+                    scan(env.get_fixtures(svc))
+                except Exception:
+                    pass
+            if new_records_by_service:
+                scan(new_records_by_service.get(svc, []))
+
+        for addr, _ in counts.most_common():
+            if addr.split("@", 1)[0] in candidates:
+                return addr
+        return None
 
     @staticmethod
     def _parse_service_log(file_path: Path, service: str) -> list[LogEntry]:

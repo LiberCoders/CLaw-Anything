@@ -376,9 +376,9 @@ class PersonaBuilder:
         """Run a single task-based build round (seed_task mode).
 
         Returns the (possibly unchanged) env/persona/registry. When the round
-        is skipped — incompatible seed, patrol_setup, or no fixtures — the
-        inputs are returned unchanged so the surrounding interleaved loop can
-        still run the noise rounds that follow this task slot.
+        is skipped — incompatible seed or no fixtures — the inputs are returned
+        unchanged so the surrounding interleaved loop can still run the noise
+        rounds that follow this task slot.
         """
         log.info("=== Task Round %d/%d ===", r, total_rounds)
 
@@ -393,11 +393,6 @@ class PersonaBuilder:
             "Task round %d: Adapted seed '%s' → '%s' (anchor=%s)",
             r, adapted.seed_id, adapted.adapted_name, scenario_anchor_date,
         )
-
-        # Skip patrol_setup seeds — patrol signal planting is deferred to gen-eval
-        if adapted.interaction_mode == "patrol_setup":
-            log.info("Task round %d: Skipping patrol_setup seed '%s' (deferred to gen-eval)", r, adapted.seed_id)
-            return env, persona, registry
 
         # Generate normal incremental fixtures
         new_records, signal_records = self._generate_incremental_fixtures(
@@ -533,15 +528,16 @@ class PersonaBuilder:
             if not seeds:
                 return None
             seed = seeds[0]
-            # Use patrol_setup mode for patrol setup seeds
+            # patrol_setup seeds are never used during persona build — patrol
+            # signal planting is deferred to gen-eval. Skip and try another.
             if seed.interaction_mode == "patrol_setup":
-                adapt_mode = TaskAdapter.ADAPT_MODE_PATROL_SETUP
-            else:
-                adapt_mode = TaskAdapter.ADAPT_MODE_HISTORY
+                log.info("Seed %s is patrol_setup (deferred to gen-eval), trying another", seed.seed_id)
+                used_seeds.add(seed.seed_id)
+                continue
             try:
                 adapted = self.adapter.adapt(
                     seed, persona, registry, env,
-                    mode=adapt_mode,
+                    mode=TaskAdapter.ADAPT_MODE_HISTORY,
                 )
             except Exception as e:
                 log.warning("Seed %s adapt failed (%s), trying another", seed.seed_id, e)
@@ -642,90 +638,6 @@ class PersonaBuilder:
 
         return records, signal_records
 
-    def _generate_patrol_setup_fixtures(
-        self,
-        adapted: AdaptedTask,
-        persona: PersonaDefinition,
-        registry: FixtureRegistry,
-        env: GoldEnvironment | None,
-    ) -> tuple[dict[str, list[dict]], dict[str, list[str]], list[dict]]:
-        """Generate patrol setup data: minimal fixture anchors + patrol signal metadata.
-
-        Returns:
-            (records, signal_records, patrol_signals) where patrol_signals describes
-            the behavioral log patterns to generate.
-        """
-        template = _load_prompt("gen_patrol_setup_fixtures.txt")
-
-        persona_summary = (
-            f"- Name: {persona.persona_name}\n"
-            f"- Role: {persona.role}\n"
-            f"- Company: {persona.company}\n"
-            f"- Industry: {persona.industry}\n"
-            f"- Seniority: {persona.seniority}"
-        )
-
-        ctx = persona.business_context
-        active_issues = "\n".join(f"  - {i}" for i in ctx.active_issues) or "  (none)"
-
-        data_threads_summary = persona.get_data_threads_summary()
-
-        prompt = template.format(
-            persona_summary=persona_summary,
-            time_window=ctx.time_window,
-            work_schedule=ctx.work_schedule or "(not specified)",
-            active_issues=active_issues,
-            task_name=adapted.adapted_name,
-            task_description=adapted.adapted_description,
-            involved_services=", ".join(adapted.involved_services),
-            key_actions="\n  - ".join([""] + adapted.key_actions),
-            schemas=_format_schemas_for_prompt(self.schemas, self.allowed_services),
-            id_rules=_format_id_rules(self.schemas, self.allowed_services),
-            next_ids=registry.get_next_ids_summary(),
-            used_ids_summary=registry.get_used_ids_summary(),
-            known_entities=registry.get_entities_summary(),
-            data_threads_summary=data_threads_summary,
-            allowed_services_list=", ".join(sorted(self.allowed_services)),
-        )
-
-        raw = self._call_llm(prompt)
-        result = parse_llm_json(raw, default={}, source="patrol_setup")
-
-        records = result.get("records", {})
-        signal_records = result.get("signal_records", {})
-        patrol_signals = result.get("patrol_signals", [])
-
-        # Filter invalid service names (must be known + in template whitelist).
-        records = {
-            svc: recs for svc, recs in records.items()
-            if svc in ALL_SERVICES and svc in self.allowed_services and recs
-        }
-        signal_records = {
-            svc: ids for svc, ids in signal_records.items()
-            if svc in ALL_SERVICES and svc in self.allowed_services and ids
-        }
-
-        # Validate no ID conflicts
-        for svc, recs in records.items():
-            if not recs:
-                continue
-            conflicts = registry.validate_no_conflicts(svc, recs)
-            if conflicts:
-                log.warning("Patrol setup ID conflicts in %s: %s — removing", svc, conflicts)
-                id_field = SERVICE_ID_FIELD.get(svc, "id")
-                records[svc] = [r for r in recs if r.get(id_field) not in conflicts]
-
-        # Backfill any fields the LLM dropped, per fixture_schemas.yaml.
-        records = {
-            svc: enforce_records(svc, recs, self.schemas, source="persona_patrol")
-            for svc, recs in records.items()
-        }
-
-        log.info("Patrol setup: %d fixture anchors, %d patrol signals",
-                 sum(len(v) for v in records.values()), len(patrol_signals))
-
-        return records, signal_records, patrol_signals
-
     def _append_fixtures(self, new_records: dict[str, list[dict]], fixtures_dir: Path) -> None:
         """Append new records to existing fixture JSON files."""
         for svc in ALL_SERVICES:
@@ -762,7 +674,6 @@ class PersonaBuilder:
         new_records: dict[str, list[dict]],
         signal_records: dict[str, list[str]],
         persona_path: Path,
-        patrol_signals: list[dict] | None = None,
     ) -> PersonaDefinition:
         """Update persona with new data thread from this round."""
         # Build the new data thread
@@ -784,8 +695,6 @@ class PersonaBuilder:
                     if ids:
                         involved_records[svc] = ids
 
-        is_patrol_setup = adapted.interaction_mode == "patrol_setup"
-
         new_thread = DataThread(
             name=thread_name,
             description=thread_desc,
@@ -793,8 +702,6 @@ class PersonaBuilder:
             involved_records=involved_records,
             difficulty=adapted.adapted_difficulty,
             category=adapted.adapted_category,
-            thread_type="patrol_setup" if is_patrol_setup else "standard",
-            patrol_signals=patrol_signals or [],
         )
 
         # Add to persona
@@ -838,8 +745,6 @@ class PersonaBuilder:
         signal_records: dict[str, list[str]],
         logs_by_service: dict,
         logs_dir: Path,
-        is_patrol_setup: bool = False,
-        patrol_signals: list[dict] | None = None,
     ) -> None:
         """Generate a Layer 2 work journal entry via LLM."""
         template = _load_prompt("gen_work_journal.txt")
@@ -874,18 +779,7 @@ class PersonaBuilder:
             activity_lines.append(f"- {svc}: {' → '.join(actions)}")
         activity_log_summary = "\n".join(activity_lines) or "(no activity log)"
 
-        # For patrol setup, augment the task description with hesitation/abandonment context
         task_description = adapted.adapted_description
-        if is_patrol_setup and patrol_signals:
-            intents = [s.get("inferred_intent", "") for s in patrol_signals if s.get("type") == "dynamic"]
-            if intents:
-                task_description += (
-                    "\n\nIMPORTANT NARRATIVE CONTEXT: This was an ABANDONED/HESITATION event. "
-                    "The user started these actions but did NOT complete them. "
-                    "The journal entry should subtly reflect the user's hesitation and the "
-                    "reasons they stopped. Inferred intents:\n"
-                    + "\n".join(f"  - {intent}" for intent in intents)
-                )
 
         # Read existing journal for continuity
         journal_path = logs_dir / "work_journal.md"

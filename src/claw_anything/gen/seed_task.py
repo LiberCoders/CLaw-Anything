@@ -70,8 +70,9 @@ INTERACTION_MODE_DESCRIPTIONS: dict[str, str] = {
         "Proactive daily overview — agent surfaces a simple list of pending "
         "items (today's todos, upcoming calendar, important unread messages).",
     "patrol_setup":
-        "Internal-only. Seed reserved for planting behavioral foreshadowing "
-        "during persona build; never sampled as a direct eval task.",
+        "Internal-only. Used only at gen-eval time to generate patrol signals "
+        "(behavioral foreshadowing planted in activity logs). Skipped during "
+        "persona build and never sampled as a direct eval task.",
 }
 
 INTERACTION_MODE_VALUES: tuple[str, ...] = tuple(INTERACTION_MODE_DESCRIPTIONS.keys())
