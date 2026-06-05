@@ -149,6 +149,22 @@ class AndroidConfig(BaseModel):
          this layer does not save/load AVD snapshots.
     """
 
+    backend: str = "kvm"
+    """Auto-launch backend: ``kvm`` (default — the MobileWorld
+    ``claw_anything:latest`` QEMU/AVD image; needs ``/dev/kvm`` + a socat ADB
+    bridge) or ``redroid`` (the ``redroid-claw_anything`` Android-in-container
+    image; runs on the host kernel's binder, **no KVM**, ADB published directly
+    on 5555). Only consulted when the framework auto-launches
+    (``auto_launch_count > 0``); a static ``emulator_pool`` is backend-agnostic.
+    Pick ``redroid`` on hosts without ``/dev/kvm`` (e.g. unaccelerated CI /
+    local dev boxes with the binder modules loaded)."""
+
+    redroid_image: str = "ghcr.io/libercoders/redroid-claw_anything:13"
+    """Image used when ``backend == 'redroid'``. Ships a rooted (userdebug)
+    Android 13 with the claw-anything inject targets pre-installed and adbd on
+    container port 5555. Each pool container gets its own ephemeral ``/data``
+    (no volume mount — eval state is reset per-trial by the inject pipeline)."""
+
     emulator_pool: list[str] = Field(default_factory=list)
     emulator_image: str = "claw_anything:latest"
     """Image used for auto-launched emulator containers.

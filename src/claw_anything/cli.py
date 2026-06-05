@@ -833,26 +833,15 @@ def cmd_run(args: argparse.Namespace) -> None:
     # try/finally below tears it down. ``--no-auto-launch`` forces "use only
     # statically-listed devices".
     device_serial: str | None = None
-    emulator_pool: "EmulatorPool | None" = None
+    emulator_pool = None  # EmulatorPool | RedroidPool, set on auto-launch below
     no_auto_launch = getattr(args, "no_auto_launch", False)
     if _task_needs_gui(task=task) and not inside_tc:
         static_pool = _resolve_device_pool(cfg, spec.oh_settings)
         if static_pool:
             device_serial = static_pool[0]
         elif not no_auto_launch and cfg.android.auto_launch_count > 0:
-            from .runner.emulator_pool import EmulatorPool
-            emulator_pool = EmulatorPool(
-                image=cfg.android.emulator_image,
-                size=1,
-                container_adb_port=cfg.android.container_adb_port,
-                privileged=cfg.android.privileged,
-                kvm=cfg.android.kvm,
-                preclean_avd_locks=cfg.android.preclean_avd_locks,
-                host_port_start=cfg.android.host_port_start,
-                boot_timeout_s=cfg.android.boot_timeout_s,
-                memory=cfg.android.emulator_memory,
-                cpus=cfg.android.emulator_cpus,
-            )
+            from .runner.emulator_pool import make_android_pool
+            emulator_pool = make_android_pool(cfg.android, size=1)
             device_serial = emulator_pool.start_all()[0]
         else:
             raise RuntimeError(
@@ -1441,20 +1430,11 @@ def cmd_batch(args: argparse.Namespace) -> None:
     static_devices = _resolve_device_pool(_cfg_early, batch_spec.oh_settings)
     gui_needed = any(_task_needs_gui(task_dir=td) for td in task_dirs)
     no_auto_launch = getattr(args, "no_auto_launch", False)
-    emulator_pool: "EmulatorPool | None" = None
+    emulator_pool = None
     if gui_needed and not static_devices and not no_auto_launch and _cfg_early.android.auto_launch_count > 0:
-        from .runner.emulator_pool import EmulatorPool
-        emulator_pool = EmulatorPool(
-            image=_cfg_early.android.emulator_image,
-            size=_cfg_early.android.auto_launch_count,
-            container_adb_port=_cfg_early.android.container_adb_port,
-            privileged=_cfg_early.android.privileged,
-            kvm=_cfg_early.android.kvm,
-            preclean_avd_locks=_cfg_early.android.preclean_avd_locks,
-            host_port_start=_cfg_early.android.host_port_start,
-            boot_timeout_s=_cfg_early.android.boot_timeout_s,
-            memory=_cfg_early.android.emulator_memory,
-            cpus=_cfg_early.android.emulator_cpus,
+        from .runner.emulator_pool import make_android_pool
+        emulator_pool = make_android_pool(
+            _cfg_early.android, size=_cfg_early.android.auto_launch_count
         )
         gui_devices = emulator_pool.start_all()
     else:

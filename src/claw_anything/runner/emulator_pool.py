@@ -408,6 +408,277 @@ class EmulatorPool:
         print(f"[emu-pool] stop_all: removed {n} container(s)")
 
 
+@dataclass
+class RedroidPool:
+    """Container pool for auto-launched **redroid** Android instances.
+
+    redroid runs Android directly on the host kernel (binder/ashmem), so unlike
+    the QEMU ``EmulatorPool`` it needs **no** ``/dev/kvm``, no AVD-lock cleanup,
+    and no socat bridge — its adbd is published straight on the mapped host port.
+    Boot is seconds, not minutes. State is ephemeral per container (no ``/data``
+    volume); per-trial reset stays the inject pipeline's job, mirroring
+    ``EmulatorPool``.
+
+    Shares ``EMU_CONTAINER_LABEL`` so ``cmd_cleanup`` sweeps leftovers from both
+    pool types, and exposes the same public surface (context manager,
+    ``serials`` / ``start_all`` / ``stop_all``) so callers are backend-agnostic.
+
+    Requires the host kernel to expose binder (``binder_linux`` loaded) and the
+    container to run ``--privileged``; the shipped image is userdebug, so
+    ``adb root`` elevates adbd for the root-requiring inject steps.
+    """
+
+    image: str
+    size: int
+    container_adb_port: int = 5555
+    host_port_start: int = 5564
+    boot_timeout_s: int = 300
+    memory: str = ""
+    cpus: float = 0.0
+    boot_stagger_s: int = 3
+
+    _instances: list[_Instance] = field(default_factory=list, init=False)
+    _started: bool = field(default=False, init=False)
+
+    # ── lifecycle ──────────────────────────────────────────────────────────
+
+    def __enter__(self) -> "RedroidPool":
+        try:
+            self.start_all()
+        except BaseException:
+            self.stop_all()
+            raise
+        return self
+
+    def __exit__(self, exc_type, exc, tb) -> None:
+        self.stop_all()
+
+    def serials(self) -> list[str]:
+        """Serials of every booted instance, in start order."""
+        return [inst.serial for inst in self._instances]
+
+    # ── start ──────────────────────────────────────────────────────────────
+
+    def start_all(self) -> list[str]:
+        """Launch ``size`` redroid containers in parallel and block until ready.
+
+        Returns the allocated ``localhost:<host_port>`` serials. On any failure
+        the pool is rolled back via ``stop_all`` and the exception re-raised.
+        """
+        if self._started:
+            raise RuntimeError("RedroidPool.start_all called twice")
+        self._started = True
+
+        if self.size <= 0:
+            return []
+
+        print(f"[redroid-pool] starting {self.size} redroid container(s) from {self.image}")
+
+        # Reserve N free host ports up-front (bind-on-0), releasing each socket
+        # immediately before docker binds it — same race-avoidance as EmulatorPool.
+        held_sockets: list[socket.socket] = []
+        ports: list[int] = []
+        try:
+            for _ in range(self.size):
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.bind(("", 0))
+                _, port = s.getsockname()
+                held_sockets.append(s)
+                ports.append(port)
+        except OSError:
+            for s in held_sockets:
+                s.close()
+            raise
+
+        try:
+            for port, sock in zip(ports, held_sockets):
+                sock.close()
+                inst = self._docker_run(port)
+                self._instances.append(inst)
+                print(f"[redroid-pool] launched {inst.container_name} on {inst.serial}")
+        except BaseException:
+            for s in held_sockets:
+                try:
+                    s.close()
+                except OSError:
+                    pass
+            self.stop_all()
+            raise
+
+        try:
+            self._wait_all_booted()
+        except BaseException:
+            self.stop_all()
+            raise
+
+        return self.serials()
+
+    def _docker_run(self, host_port: int) -> _Instance:
+        name = f"claw-redroid-{uuid.uuid4().hex[:8]}"
+        cmd: list[str] = [
+            "docker", "run", "-d", "--rm",
+            "--privileged",  # binder/ashmem access; no /dev/kvm needed
+            "--label", EMU_CONTAINER_LABEL,
+            "--name", name,
+            "-p", f"{host_port}:{self.container_adb_port}",
+        ]
+        if self.memory:
+            cmd += ["--memory", str(self.memory)]
+        if self.cpus and self.cpus > 0:
+            cmd += ["--cpus", str(self.cpus)]
+        # No entrypoint override: the image's /init + redroid CMD (gpu_mode,
+        # width/height/dpi) boot the device as-is.
+        cmd.append(self.image)
+
+        res = subprocess.run(cmd, capture_output=True, text=True)
+        if res.returncode != 0:
+            raise RuntimeError(
+                f"[redroid-pool] docker run failed for {name}: "
+                f"{res.stderr.strip() or res.stdout.strip()}"
+            )
+        return _Instance(
+            container_name=name,
+            host_port=host_port,
+            serial=f"localhost:{host_port}",
+        )
+
+    # ── boot probe (host adb only — redroid ships no in-container adb client) ─
+
+    def _wait_all_booted(self) -> None:
+        def _wait_one(idx_inst: tuple[int, _Instance]) -> None:
+            idx, inst = idx_inst
+            time.sleep(idx * self.boot_stagger_s)
+            self._host_boot_and_root(inst)
+            print(f"[redroid-pool] ready (rooted): {inst.serial} ({inst.container_name})")
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, self.size)) as ex:
+            futures = [ex.submit(_wait_one, pair) for pair in enumerate(self._instances)]
+            errors: list[BaseException] = []
+            for fut in concurrent.futures.as_completed(futures):
+                try:
+                    fut.result()
+                except BaseException as exc:
+                    errors.append(exc)
+        if errors:
+            raise errors[0]
+
+    def _host_boot_and_root(self, inst: _Instance) -> None:
+        """Wait for the device to finish booting, then elevate adbd to root.
+
+        Polls ``sys.boot_completed`` + ``pm path android`` over host adb, then
+        runs ``adb root`` (the image is userdebug) so the root-requiring inject
+        steps — DB pull/push, ``content`` writes — work, and confirms the device
+        is reachable again after adbd restarts.
+        """
+        from ..task.mobile_gui import resolve_adb_bin
+
+        adb = resolve_adb_bin(None)
+        deadline = time.monotonic() + self.boot_timeout_s
+        last = ""
+        while time.monotonic() < deadline:
+            subprocess.run([adb, "connect", inst.serial], capture_output=True, text=True)
+            res = subprocess.run(
+                [adb, "-s", inst.serial, "shell", "getprop", "sys.boot_completed"],
+                capture_output=True, text=True,
+            )
+            last = (res.stdout + res.stderr).strip()
+            if res.returncode == 0 and last == "1":
+                pm = subprocess.run(
+                    [adb, "-s", inst.serial, "shell", "pm", "path", "android"],
+                    capture_output=True, text=True,
+                )
+                if pm.returncode == 0 and pm.stdout.strip().startswith("package:"):
+                    break
+            time.sleep(3)
+        else:
+            raise TimeoutError(
+                f"[redroid-pool] {inst.serial} did not boot within "
+                f"{self.boot_timeout_s}s (last sys.boot_completed={last!r})"
+            )
+
+        # Elevate adbd to root, then wait for it to come back online.
+        subprocess.run([adb, "-s", inst.serial, "root"], capture_output=True, text=True)
+        root_deadline = time.monotonic() + 30
+        while time.monotonic() < root_deadline:
+            subprocess.run([adb, "connect", inst.serial], capture_output=True, text=True)
+            who = subprocess.run(
+                [adb, "-s", inst.serial, "shell", "whoami"],
+                capture_output=True, text=True,
+            )
+            if who.returncode == 0 and who.stdout.strip() == "root":
+                return
+            time.sleep(1)
+        # Non-fatal: some root-required steps self-heal via their own `adb root`.
+        print(f"[redroid-pool] warning: {inst.serial} adbd not confirmed root after elevate")
+
+    # ── stop ───────────────────────────────────────────────────────────────
+
+    def stop_all(self) -> None:
+        """Best-effort tear-down. Never raises."""
+        if not self._instances:
+            return
+        try:
+            from ..task.mobile_gui import resolve_adb_bin
+            host_adb = resolve_adb_bin(None)
+        except Exception:  # noqa: BLE001 - adb resolution must not block teardown
+            host_adb = None
+        for inst in self._instances:
+            if host_adb:
+                try:
+                    subprocess.run(
+                        [host_adb, "disconnect", inst.serial],
+                        capture_output=True, text=True, timeout=10,
+                    )
+                except (subprocess.SubprocessError, OSError) as exc:
+                    print(f"[redroid-pool] adb disconnect {inst.serial} failed (ignored): {exc}")
+            try:
+                subprocess.run(
+                    ["docker", "rm", "-f", inst.container_name],
+                    capture_output=True, text=True, timeout=30,
+                )
+            except (subprocess.SubprocessError, OSError) as exc:
+                print(f"[redroid-pool] docker rm -f {inst.container_name} failed: {exc}")
+        n = len(self._instances)
+        self._instances.clear()
+        print(f"[redroid-pool] stop_all: removed {n} container(s)")
+
+
+def make_android_pool(android_cfg, size: int):
+    """Construct the auto-launch device pool for the configured backend.
+
+    Returns an ``EmulatorPool`` (``backend == 'kvm'``) or ``RedroidPool``
+    (``backend == 'redroid'``); both share the same context-manager /
+    ``start_all`` / ``serials`` / ``stop_all`` surface so callers stay
+    backend-agnostic. ``size`` is the number of containers to launch.
+    """
+    backend = (getattr(android_cfg, "backend", "kvm") or "kvm").lower()
+    if backend == "redroid":
+        return RedroidPool(
+            image=android_cfg.redroid_image,
+            size=size,
+            host_port_start=android_cfg.host_port_start,
+            boot_timeout_s=android_cfg.boot_timeout_s,
+            memory=android_cfg.emulator_memory,
+            cpus=android_cfg.emulator_cpus,
+        )
+    if backend != "kvm":
+        raise ValueError(
+            f"Unknown android.backend {backend!r}; expected 'kvm' or 'redroid'."
+        )
+    return EmulatorPool(
+        image=android_cfg.emulator_image,
+        size=size,
+        container_adb_port=android_cfg.container_adb_port,
+        privileged=android_cfg.privileged,
+        kvm=android_cfg.kvm,
+        preclean_avd_locks=android_cfg.preclean_avd_locks,
+        host_port_start=android_cfg.host_port_start,
+        boot_timeout_s=android_cfg.boot_timeout_s,
+        memory=android_cfg.emulator_memory,
+        cpus=android_cfg.emulator_cpus,
+    )
+
+
 def cleanup_emulator_containers() -> list[str]:
     """Return container IDs labelled as claw-anything emulators.
 

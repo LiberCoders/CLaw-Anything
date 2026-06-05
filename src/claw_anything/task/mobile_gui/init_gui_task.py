@@ -53,7 +53,17 @@ CALL_LOG_URI     = "content://call_log/calls"
 FOSSIFY_MESSAGES_PACKAGE  = "org.fossify.messages"
 FOSSIFY_MESSAGES_ACTIVITY = f"{FOSSIFY_MESSAGES_PACKAGE}/.activities.MainActivity"
 SMS_URI                   = "content://sms"
-SMS_DB_REMOTE             = "/data/data/com.android.providers.telephony/databases/mmssms.db"
+# Candidate on-device locations of the TelephonyProvider SMS database, probed
+# in order at runtime by ``_resolve_sms_db``. The credential-encrypted
+# ``/data/data`` path is correct on the KVM MobileWorld image; redroid (and
+# stock Android 13) keeps the provider in device-encrypted storage because it
+# must run before first user unlock, so ``/data/data/<provider>`` does not even
+# resolve there and the DB lives under ``/data/user_de/0/``.
+SMS_DB_CANDIDATES         = (
+    "/data/data/com.android.providers.telephony/databases/mmssms.db",
+    "/data/user_de/0/com.android.providers.telephony/databases/mmssms.db",
+)
+SMS_DB_REMOTE             = SMS_DB_CANDIDATES[0]  # legacy default / fallback
 
 MARKOR_PACKAGE   = "net.gsantner.markor"
 MARKOR_ACTIVITY  = f"{MARKOR_PACKAGE}/.activity.MainActivity"
@@ -572,16 +582,43 @@ def inject_dialer(step: dict, task_dir: Path, device: str | None) -> bool:
     return ok
 
 
+# Per-device cache of the resolved SMS DB path so the candidate probe runs once
+# per inject, not once per SQL statement.
+_SMS_DB_RESOLVED: dict[str | None, str] = {}
+
+
+def _resolve_sms_db(device: str | None) -> str:
+    """Return the on-device SMS DB path that sqlite3 can actually open.
+
+    Probes ``SMS_DB_CANDIDATES`` in order (``.tables`` must succeed and expose
+    the ``sms`` table) so the KVM image keeps using ``/data/data`` while redroid
+    falls through to its device-encrypted ``/data/user_de/0`` location. Falls
+    back to the legacy default if none probe cleanly, so the caller still
+    surfaces a meaningful open error.
+    """
+    cached = _SMS_DB_RESOLVED.get(device)
+    if cached:
+        return cached
+    for path in SMS_DB_CANDIDATES:
+        ok, out = adb_shell(f"sqlite3 {path} '.tables'", device=device, root_required=True)
+        if ok and "sms" in out:
+            _SMS_DB_RESOLVED[device] = path
+            return path
+    return SMS_DB_REMOTE
+
+
 def _sqlite3_exec(sql: str, device: str | None) -> tuple[bool, str]:
     """Run a single SQL statement via sqlite3 on the device's SMS database."""
+    db = _resolve_sms_db(device)
     escaped = sql.replace('"', '\\"')
-    return adb_shell(f'sqlite3 {SMS_DB_REMOTE} "{escaped}"', device=device)
+    return adb_shell(f'sqlite3 {db} "{escaped}"', device=device)
 
 
 def _sqlite3_query(sql: str, device: str | None) -> str:
     """Run a SQL query and return stdout."""
+    db = _resolve_sms_db(device)
     escaped = sql.replace('"', '\\"')
-    _, out = adb_shell(f'sqlite3 {SMS_DB_REMOTE} "{escaped}"', device=device)
+    _, out = adb_shell(f'sqlite3 {db} "{escaped}"', device=device)
     return out.strip()
 
 

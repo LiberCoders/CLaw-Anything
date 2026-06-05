@@ -4,6 +4,7 @@
 
 [![arXiv](https://img.shields.io/badge/Arxiv-2605.26086-b31b1b.svg?logo=arXiv)](https://arxiv.org/pdf/2605.26086)
 [![Dataset](https://img.shields.io/badge/🤗%20Dataset-Claw--Anything-yellow.svg)](https://huggingface.co/datasets/LiberCoders/Claw-Anything)
+[![ModelScope](https://img.shields.io/badge/ModelScope-MyRepo-624aff?logo=modelscope)](https://modelscope.cn/)
 [![Benchmark](https://img.shields.io/badge/Benchmark-200%20-success.svg)](benchmark/)
 [![Environments](https://img.shields.io/badge/Environments-2%2C000%20-blueviolet.svg)](#-quick-start)
 [![Views](https://komarev.com/ghpvc/?username=LiberCoders-CLaw-Anything&label=Views&color=brightgreen&style=flat)](https://github.com/LiberCoders/CLaw-Anything)
@@ -189,7 +190,6 @@ claw-anything build-image --agent openharness   # vanilla OH:    claw-anything-o
 |-------|-----------------|----------|
 | `mock` | **Required** — needed by all `run` / `batch` / `gen-*` commands | `fastapi`, `uvicorn`, `pypdf`, `trafilatura`, `requests` |
 | `sandbox` | **Recommended** — required for `--trial-in-container` | `docker` |
-| `web` | Optional — only if you exercise the `web_real` mock service | `trafilatura`, `requests` |
 | `openharness` | Optional — only if `agent_type: openharness` or `openharness-ext` in `config.yaml` | `openharness-ai` |
 | `dev` | Optional — only if you run `pytest tests/` | `pytest` |
 
@@ -226,7 +226,7 @@ claw-anything batch \
   --parallel 10
 ```
 
-If `--cli-only` is omitted and the gui subset's prerequisites aren't met, the suite **fails fast at second 0** with a clear message — so you don't burn 150 CLI tasks before discovering the gui phase can't start. The gui phase is considered runnable when **both**: (1) a device is available — either `android.auto_launch_count > 0` (framework auto-launches emulator containers) **or** a static `android.emulator_pool` / `mobile_gui.device_serial` is configured — and (2) `--oh-settings` is passed. So enabling `auto_launch_count` alone (plus `--oh-settings`) is enough; you do **not** need to also pin a static device.
+If `--cli-only` is omitted and the gui subset's prerequisites aren't met, the suite **fails fast at second 0** with a clear message — so you don't burn 150 CLI tasks before discovering the gui phase can't start. The gui phase is considered runnable when **both**: (1) a device is available — either `android.auto_launch_count > 0` (framework auto-launches device containers via the `kvm` or `redroid` backend) **or** a static `android.emulator_pool` / `mobile_gui.device_serial` is configured — and (2) `--oh-settings` is passed. So enabling `auto_launch_count` alone (plus `--oh-settings`) is enough; you do **not** need to also pin a static device.
 
 Output:
 
@@ -323,19 +323,26 @@ claw-anything batch \
 
 ### Run mobile GUI / Android tasks
 
-Tasks whose `task.yaml` declares `task_env: [mobile_gui]` drive an Android emulator via `adb`. They require the OH-Ext agent and image. See [End-to-end GUI evaluation from scratch](#-end-to-end-gui-evaluation-from-scratch) below for the full setup (emulator image, `adb`, model endpoints). The short version:
+Tasks whose `task.yaml` declares `task_env: [mobile_gui]` drive a real Android device via `adb`. They require the OH-Ext agent and image. The device can come from **either** of two auto-launch backends — pick by what your host kernel offers:
+
+| Host capability | `android.backend` | Device image | Notes |
+|---|---|---|---|
+| **`/dev/kvm`** (HW virtualization) | `kvm` (default) | `claw_anything:latest` (QEMU + Android AVD) | Heavy (~28 GB), first boot ~3 min, needs a socat ADB bridge internally |
+| **binder** (`binder_linux` module, no KVM) | `redroid` | `redroid-claw_anything` (Android-in-container) | Light (~2.5 GB), boots in seconds, ADB published straight on 5555 |
+
+Both ship the same rooted Android with all inject targets pre-installed, so tasks and graders are identical — only the device source differs. See [End-to-end GUI evaluation from scratch](#-end-to-end-gui-evaluation-from-scratch) below for the full setup. The short version:
 
 ```bash
-# In config.yaml, EITHER list pre-launched emulator serials …
+# In config.yaml, EITHER list pre-launched device serials …
 # android:
 #   emulator_pool:
 #     - emulator-5554
 #     - 127.0.0.1:5555      # TCP-shaped serials trigger `adb connect` before each trial
 #
-# … OR let the framework auto-launch emulator containers per run/batch:
+# … OR let the framework auto-launch device containers per run/batch:
 # android:
-#   emulator_image: claw_anything:latest
-#   auto_launch_count: 1    # >0 ⇒ spin up N emulator containers, distribute, tear down
+#   backend: kvm            # 'kvm' (default) or 'redroid' — match your host (see table above)
+#   auto_launch_count: 1    # >0 ⇒ spin up N device containers, distribute, tear down
 
 claw-anything run \
   --task gen_tasks/<mobile_gui_task>/ \
@@ -350,7 +357,16 @@ The host calls `init_gui_task()` to inject calendar events, contacts, etc. into 
 
 ## 🤖 End-to-end GUI evaluation from scratch
 
-This section is the complete recipe for evaluating an agent on the **CLI + GUI** benchmark from a clean machine — what hardware you need, how to stand up the Android emulator, how to wire up `adb`, and how to configure the two model endpoints a GUI task needs. CLI-only evaluation skips most of this (jump to [step 6](#6-run-the-evaluation)).
+This section is the complete recipe for evaluating an agent on the **CLI + GUI** benchmark from a clean machine — what hardware you need, how to stand up the Android device (KVM emulator **or** redroid), how to wire up `adb`, and how to configure the two model endpoints a GUI task needs. CLI-only evaluation skips most of this (jump to [step 6](#6-run-the-evaluation)).
+
+### Images a GUI run needs
+
+A GUI trial depends on **two** docker images:
+
+| Image | How to get it |
+|---|---|
+| **Device image** | **redroid** (no KVM, recommended): `docker pull ghcr.io/libercoders/redroid-claw_anything:13` &nbsp;·&nbsp; **kvm**: `docker pull ghcr.io/libercoders/claw_anything:latest` |
+| **OH-Ext runner** `claw-anything-oh-ext` | Build it locally: `claw-anything build-image --agent openharness-ext` (details in [step 4](#4-build-the-oh-ext-runner-image)) |
 
 ### Architecture: what talks to what
 
@@ -360,9 +376,9 @@ A GUI trial has **four moving parts**:
 ┌─────────────────────────────────────────────────────────────────────┐
 │ host                                                                  │
 │                                                                       │
-│  claw-anything CLI ──┬── EmulatorPool ──▶ emulator container          │
-│  (orchestrator)      │   (auto-launch)    (claw_anything:latest,      │
-│                      │                     Android AVD + adb)         │
+│  claw-anything CLI ──┬── device pool ────▶ device container           │
+│  (orchestrator)      │   (auto-launch)     kvm:     claw_anything      │
+│                      │                     redroid: redroid-claw…      │
 │                      │                          ▲                     │
 │                      └── trial container ───adb─┘                     │
 │                          (claw-anything-oh-ext)                       │
@@ -373,7 +389,7 @@ A GUI trial has **four moving parts**:
 ```
 
 1. **Orchestrator** — the `claw-anything` CLI on the host. Does GUI state injection, workspace prep, config rewriting, and grading.
-2. **Emulator** — an Android AVD. Either you pre-launch it (`emulator_pool`) or the framework launches it for you in a container (`auto_launch_count`, image `claw_anything:latest`).
+2. **Device** — a rooted Android instance. Either you pre-launch it (`emulator_pool`) or the framework auto-launches it in a container (`auto_launch_count`). The backend (`android.backend`) selects **`kvm`** (QEMU AVD, `claw_anything:latest`) or **`redroid`** (Android-in-container, `redroid-claw_anything`).
 3. **Trial runner** — the `claw-anything-oh-ext` container that runs the OH-Ext agent and drives the device over `adb`.
 4. **Two model endpoints**, both declared in `--oh-settings`:
    - **planner** — an OpenAI-compatible chat model (the agent's "brain").
@@ -381,18 +397,28 @@ A GUI trial has **four moving parts**:
 
 ### 1. Hardware & host prerequisites
 
+Pick **one** Android backend based on what your host kernel exposes:
+
+| Backend | Host requirement | Why | Check |
+|---|---|---|---|
+| **`kvm`** (default) | `/dev/kvm` present, CPU has `vmx`/`svm` | The QEMU Android emulator needs hardware virtualization; without it the AVD never finishes booting in reasonable time | `ls /dev/kvm && egrep -c '(vmx\|svm)' /proc/cpuinfo` |
+| **`redroid`** | binder kernel module loaded (`binder_linux`); **no KVM needed** | redroid runs Android directly on the host kernel (binder/ashmem), so it works on boxes without hardware virtualization (most cloud CI, dev laptops) | `grep -w binder /proc/filesystems \|\| lsmod \| grep binder` |
+
+Shared requirements:
+
 | Requirement | Why | Check |
 |---|---|---|
-| **KVM** (`/dev/kvm` present, CPU has `vmx`/`svm`) | The Android emulator needs hardware virtualization; without it the AVD never finishes booting in reasonable time | `ls /dev/kvm && egrep -c '(vmx\|svm)' /proc/cpuinfo` |
-| **Docker** | Trial-in-container + the emulator image both run as containers | `docker info` |
+| **Docker** | Trial-in-container + the device image both run as containers | `docker info` |
 | **Python 3.11+** | Runtime | `python3.11 --version` |
-| Disk (~30 GB free) | `claw_anything:latest` is ~28 GB (DinD + AVD + backend services) | `df -h /var/lib/docker` |
+| Disk | `claw_anything:latest` ≈ 28 GB (`kvm`); `redroid-claw_anything` ≈ 2.5 GB | `df -h /var/lib/docker` |
 
-> If your GPU box (where the planner / GUI-Owl models live) has **no KVM**, and your KVM box has **no GPU**, the two can still cooperate over an SSH reverse tunnel — point the `--oh-settings` `base_url`s at the tunneled ports. But the simplest setup is a single KVM-capable host that can also reach your model endpoints.
+> **Which backend?** If `/dev/kvm` exists, use `kvm` (the default). If it doesn't but the host has the binder modules, use `redroid` — same tasks, same graders, just a lighter device that boots in seconds.
+>
+> If your GPU box (where the planner / GUI-Owl models live) is separate from your device host, the two can still cooperate over an SSH reverse tunnel — point the `--oh-settings` `base_url`s at the tunneled ports. The simplest setup is a single host that can run the device backend **and** reach your model endpoints.
 
 ### 2. Install adb
 
-The OH-Ext **image already ships `adb`** at `/usr/local/bin/adb`, so the trial container needs nothing. You only need `adb` **on the host** if you use a static `emulator_pool` (the host runs `init_gui_task` injection directly). With `auto_launch_count` the EmulatorPool drives `adb` from inside its own helper, so a host `adb` is optional but recommended for debugging:
+The OH-Ext **image already ships `adb`** at `/usr/local/bin/adb`, so the trial container needs nothing. You only need `adb` **on the host** because the host runs `init_gui_task` injection (and the device pool's boot probe) directly:
 
 ```bash
 # Android platform-tools (provides adb)
@@ -402,24 +428,37 @@ export PATH="$PWD/platform-tools:$PATH"
 adb version    # → Android Debug Bridge version 1.0.41
 ```
 
-### 3. Get the emulator image
+### 3. Get the device image
 
-GUI tasks run against `claw_anything:latest` (note the **underscore** — distinct from the `claw-anything-*` runner images). It is a MobileWorld-derived image bundling a rooted Android 14 AVD with all inject targets pre-installed (Fossify Calendar/Messages/Notes, Loop Habits, My Expenses, Markor, Gmail clone, …) plus a Docker-in-Docker backend stack.
+Both backends ship a **rooted** Android with every inject target pre-installed (Fossify Calendar/Messages/Notes, Loop Habits, My Expenses, Markor, OpenTracks, Gmail clone, …), so tasks and graders work identically against either. Pull only the one matching your `android.backend`:
+
+**`backend: kvm`** → `claw_anything:latest` (note the **underscore** — distinct from the `claw-anything-*` runner images). A QEMU image bundling an Android AVD + adb + a Docker-in-Docker backend stack. ADB listens on container port `5556`.
 
 ```bash
-docker images | grep claw_anything    # confirm it's present (~28 GB)
+docker pull ghcr.io/libercoders/claw_anything:latest
 ```
 
-> This image is distributed separately (it is too large to build from this repo). Obtain it from the release channel and `docker load` it, or pull it from your registry.
+**`backend: redroid`** → `redroid-claw_anything` (Android-in-container; runs on the host kernel's binder, no KVM). ADB published straight on `5555`.
+
+```bash
+docker pull ghcr.io/libercoders/redroid-claw_anything:13
+```
+
+> redroid needs the host's binder kernel modules. Most modern kernels build them in or as `binder_linux`; load with `sudo modprobe binder_linux` if missing. Each pool container runs `--privileged` (binder access) with an ephemeral `/data` — per-trial state is reset by the inject pipeline, same as the `kvm` backend.
 
 ### 4. Build the OH-Ext runner image
 
+This image is **not** published to a registry — build it locally (one-time). It needs the [OpenHarnessExtended](https://github.com/LiberCoders/OpenHarnessExtended) source (branch `main-clawgui`) plus an `adb` binary baked in. When `OH_EXT_DIR` is unset the build **auto-clones** OH-Ext into `vendor/`, so the only thing you must supply is `ADB_PATH` — pointing at the **official** platform-tools `adb` downloaded in [step 2](#2-install-adb) (a self-contained binary; the distro `adb` that links `libadb.so.0` fails inside the slim image):
+
 ```bash
-# Needs the OpenHarnessExtended source (branch main-clawgui) + an adb binary.
+# Simplest — let the CLI drive the build script (env vars are inherited):
+ADB_PATH=$PWD/platform-tools/adb \
+  claw-anything build-image --agent openharness-ext   # → claw-anything-oh-ext:latest
+
+# Or call the script directly for full control (e.g. an already-cloned OH-Ext):
 OH_EXT_DIR=$HOME/code/OpenHarnessExtended \
 ADB_PATH=$PWD/platform-tools/adb \
   scripts/build_oh_ext_image.sh
-# → builds claw-anything-oh-ext:latest
 ```
 
 ### 5. Configure `config.yaml` and `oh-settings.json`
@@ -441,12 +480,28 @@ judge:                       # LLM-as-judge for communication-quality scoring
 agent:
   agent_type: loop           # CLI default; GUI runs override to openharness-ext on the command line
 
+# ── Android device — pick ONE backend block ──
+
+# (a) KVM emulator (default; requires /dev/kvm)
 android:
+  backend: kvm
   emulator_image: claw_anything:latest
-  auto_launch_count: 1       # >0 ⇒ framework launches N emulator containers and tears them down
+  auto_launch_count: 1       # >0 ⇒ framework launches N device containers and tears them down
   container_adb_port: 5556   # the shipped image listens on 5556 (not the upstream 5555)
   host_port_start: 5556      # lower bound for host-port allocation (actual ports are dynamic)
   boot_timeout_s: 600        # first boot of this image takes ~3 min
+
+# (b) redroid (no KVM; needs host binder modules)
+# android:
+#   backend: redroid
+#   redroid_image: ghcr.io/libercoders/redroid-claw_anything:13
+#   auto_launch_count: 1     # boots in seconds; container_adb_port is fixed at 5555
+#   boot_timeout_s: 300
+
+# Or skip auto-launch entirely and point at an already-running device
+# (backend-agnostic — a static pool always wins over auto-launch):
+# android:
+#   emulator_pool: ["127.0.0.1:5555"]   # e.g. a redroid container you started by hand
 ```
 
 **`oh-settings.json`** — the OH-Ext agent's self-contained config (copy [`examples/oh-settings.example.json`](examples/oh-settings.example.json)). This is where the **two model endpoints** go. The framework auto-fills `mobile_gui.device_serial` per trial and rewrites `localhost`→`host.docker.internal` for container mode, so you only supply the endpoints:
@@ -527,11 +582,11 @@ claw-anything batch \
   --trials 3 --parallel 4         # parallel ≤ android.auto_launch_count (one device per worker)
 ```
 
-For batch GUI runs, set `android.auto_launch_count` to at least `--parallel` so every worker gets its own device. A healthy run logs `[emu-pool] booted: …` at the start and `[emu-pool] stop_all: removed N container(s)` at the end; a per-trial score block prints `completion / robustness / communication / safety / task_score / passed`.
+For batch GUI runs, set `android.auto_launch_count` to at least `--parallel` so every worker gets its own device. A healthy run logs the pool starting/booting at the start (`[emu-pool] booted: …` for `kvm`, `[redroid-pool] ready (rooted): …` for `redroid`) and `… stop_all: removed N container(s)` at the end; a per-trial score block prints `completion / robustness / communication / safety / task_score / passed`.
 
 ### 7. Clean up
 
-`claw-anything cleanup` removes both the trial containers (`app=claw-anything`) and any leaked emulator containers (`app=claw-anything-emu`). The EmulatorPool already tears its containers down in a `finally` block, so cleanup is only needed after a hard crash / `Ctrl-C`.
+`claw-anything cleanup` removes both the trial containers (`app=claw-anything`) and any leaked device containers (`app=claw-anything-emu`, used by both the `kvm` and `redroid` pools). The pool already tears its containers down in a `finally` block, so cleanup is only needed after a hard crash / `Ctrl-C`.
 
 ```bash
 claw-anything cleanup
@@ -541,7 +596,8 @@ claw-anything cleanup
 
 | Symptom | Cause / fix |
 |---|---|
-| `[emu-pool]` never prints "booted", times out | No KVM, or `boot_timeout_s` too low. Verify `/dev/kvm`; first boot of `claw_anything:latest` takes ~3 min. |
+| `[emu-pool]` (kvm) never prints "booted", times out | No KVM, or `boot_timeout_s` too low. Verify `/dev/kvm`; first boot of `claw_anything:latest` takes ~3 min. On a host without KVM, switch to `android.backend: redroid` instead. |
+| `[redroid-pool]` container exits / never boots | Host binder modules missing — `grep -w binder /proc/filesystems`; load with `sudo modprobe binder_linux`. The container needs `--privileged` (the pool already passes it). |
 | Trial container can't reach the model | `base_url` points at `localhost` but the model only binds `127.0.0.1`. Bridge it onto the docker gateway `172.17.0.1`, or bind the server on `0.0.0.0`. |
 | `adb connect` fails inside the trial | The emulator's adb is bound to `127.0.0.1` in its container; the launcher expects it reachable on `host.docker.internal:<port>`. Ensure the host-port mapping (or bridge) exposes it on `0.0.0.0`. |
 | `[judge-retry] (401)` repeated | The **judge** API key is invalid/expired. This does **not** fail the run — rule-based completion/safety/robustness/communication still score; only the LLM-judge quality component is lost. Fix the `judge.api_key` or set `--no-judge`. |
