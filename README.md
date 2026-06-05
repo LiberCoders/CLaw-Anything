@@ -226,8 +226,6 @@ claw-anything batch \
   --parallel 10
 ```
 
-If `--cli-only` is omitted and the gui subset's prerequisites aren't met, the suite **fails fast at second 0** with a clear message — so you don't burn 150 CLI tasks before discovering the gui phase can't start. The gui phase is considered runnable when **both**: (1) a device is available — either `android.auto_launch_count > 0` (framework auto-launches device containers via the `kvm` or `redroid` backend) **or** a static `android.emulator_pool` / `mobile_gui.device_serial` is configured — and (2) `--oh-settings` is passed. So enabling `auto_launch_count` alone (plus `--oh-settings`) is enough; you do **not** need to also pin a static device.
-
 Output:
 
 ```
@@ -325,10 +323,10 @@ claw-anything batch \
 
 Tasks whose `task.yaml` declares `task_env: [mobile_gui]` drive a real Android device via `adb`. They require the OH-Ext agent and image. The device can come from **either** of two auto-launch backends — pick by what your host kernel offers:
 
-| Host capability | `android.backend` | Device image | Notes |
-|---|---|---|---|
-| **`/dev/kvm`** (HW virtualization) | `kvm` (default) | `claw_anything:latest` (QEMU + Android AVD) | Heavy (~28 GB), first boot ~3 min, needs a socat ADB bridge internally |
-| **binder** (`binder_linux` module, no KVM) | `redroid` | `redroid-claw_anything` (Android-in-container) | Light (~2.5 GB), boots in seconds, ADB published straight on 5555 |
+| Host capability | `android.backend` | Device image |
+|---|---|---|
+| **/dev/kvm** (HW virtualization) | `kvm` (default) | `claw_anything:latest` |
+| **binder** (`binder_linux` module, no KVM) | `redroid` | `redroid-claw_anything:13` |
 
 Both ship the same rooted Android with all inject targets pre-installed, so tasks and graders are identical — only the device source differs. See [End-to-end GUI evaluation from scratch](#-end-to-end-gui-evaluation-from-scratch) below for the full setup. The short version:
 
@@ -404,17 +402,7 @@ Pick **one** Android backend based on what your host kernel exposes:
 | **`kvm`** (default) | `/dev/kvm` present, CPU has `vmx`/`svm` | The QEMU Android emulator needs hardware virtualization; without it the AVD never finishes booting in reasonable time | `ls /dev/kvm && egrep -c '(vmx\|svm)' /proc/cpuinfo` |
 | **`redroid`** | binder kernel module loaded (`binder_linux`); **no KVM needed** | redroid runs Android directly on the host kernel (binder/ashmem), so it works on boxes without hardware virtualization (most cloud CI, dev laptops) | `grep -w binder /proc/filesystems \|\| lsmod \| grep binder` |
 
-Shared requirements:
-
-| Requirement | Why | Check |
-|---|---|---|
-| **Docker** | Trial-in-container + the device image both run as containers | `docker info` |
-| **Python 3.11+** | Runtime | `python3.11 --version` |
-| Disk | `claw_anything:latest` ≈ 28 GB (`kvm`); `redroid-claw_anything` ≈ 2.5 GB | `df -h /var/lib/docker` |
-
 > **Which backend?** If `/dev/kvm` exists, use `kvm` (the default). If it doesn't but the host has the binder modules, use `redroid` — same tasks, same graders, just a lighter device that boots in seconds.
->
-> If your GPU box (where the planner / GUI-Owl models live) is separate from your device host, the two can still cooperate over an SSH reverse tunnel — point the `--oh-settings` `base_url`s at the tunneled ports. The simplest setup is a single host that can run the device backend **and** reach your model endpoints.
 
 ### 2. Install adb
 
@@ -430,21 +418,19 @@ adb version    # → Android Debug Bridge version 1.0.41
 
 ### 3. Get the device image
 
-Both backends ship a **rooted** Android with every inject target pre-installed (Fossify Calendar/Messages/Notes, Loop Habits, My Expenses, Markor, OpenTracks, Gmail clone, …), so tasks and graders work identically against either. Pull only the one matching your `android.backend`:
+Both Android images ship every target app pre-installed (Fossify Calendar/Messages/Notes, Loop Habits, My Expenses, Markor, OpenTracks, Gmail, …), so tasks and graders work identically against either. Pull only the one matching your `android.backend`:
 
-**`backend: kvm`** → `claw_anything:latest` (note the **underscore** — distinct from the `claw-anything-*` runner images). A QEMU image bundling an Android AVD + adb + a Docker-in-Docker backend stack. ADB listens on container port `5556`.
+**`backend: kvm`** → `claw_anything:latest`
 
 ```bash
 docker pull ghcr.io/libercoders/claw_anything:latest
 ```
 
-**`backend: redroid`** → `redroid-claw_anything` (Android-in-container; runs on the host kernel's binder, no KVM). ADB published straight on `5555`.
+**`backend: redroid`** → `redroid-claw_anything`
 
 ```bash
 docker pull ghcr.io/libercoders/redroid-claw_anything:13
 ```
-
-> redroid needs the host's binder kernel modules. Most modern kernels build them in or as `binder_linux`; load with `sudo modprobe binder_linux` if missing. Each pool container runs `--privileged` (binder access) with an ephemeral `/data` — per-trial state is reset by the inject pipeline, same as the `kvm` backend.
 
 ### 4. Build the OH-Ext runner image
 
@@ -600,8 +586,6 @@ claw-anything cleanup
 | `[redroid-pool]` container exits / never boots | Host binder modules missing — `grep -w binder /proc/filesystems`; load with `sudo modprobe binder_linux`. The container needs `--privileged` (the pool already passes it). |
 | Trial container can't reach the model | `base_url` points at `localhost` but the model only binds `127.0.0.1`. Bridge it onto the docker gateway `172.17.0.1`, or bind the server on `0.0.0.0`. |
 | `adb connect` fails inside the trial | The emulator's adb is bound to `127.0.0.1` in its container; the launcher expects it reachable on `host.docker.internal:<port>`. Ensure the host-port mapping (or bridge) exposes it on `0.0.0.0`. |
-| `[judge-retry] (401)` repeated | The **judge** API key is invalid/expired. This does **not** fail the run — rule-based completion/safety/robustness/communication still score; only the LLM-judge quality component is lost. Fix the `judge.api_key` or set `--no-judge`. |
-| GUI task ignores the device, solves via CLI | Some tasks are dual `task_env: [mobile_gui, cli]`; if the data is reachable via a CLI tool the agent may not open the app. Expected — not an infra error. |
 
 
 ### 🛠️ Extra Command
