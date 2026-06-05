@@ -4,7 +4,7 @@
 
 [arXiv](https://arxiv.org/pdf/2605.26086)
 [Dataset](https://huggingface.co/datasets/LiberCoders/Claw-Anything)
-[![ModelScope](https://img.shields.io/badge/ModelScope-MyRepo-624aff?logo=modelscope)](https://modelscope.cn/)
+[![ModelScope](https://img.shields.io/badge/ModelScope-MyRepo-624aff?logo=modelscope)](https://modelscope.cn/datasets/LiberCoders/Claw-Anything)
 [Benchmark](benchmark/)
 [Environments](#-quick-start)
 [Views](https://github.com/LiberCoders/CLaw-Anything)
