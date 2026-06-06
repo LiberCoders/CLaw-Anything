@@ -472,16 +472,16 @@ agent:
 android:
   backend: kvm
   emulator_image: claw_anything:latest
-  auto_launch_count: 1       # >0 ⇒ framework launches N device containers and tears them down
-  container_adb_port: 5556   # the shipped image listens on 5556 (not the upstream 5555)
-  host_port_start: 5556      # lower bound for host-port allocation (actual ports are dynamic)
-  boot_timeout_s: 600        # first boot of this image takes ~3 min
+  auto_launch_count: 1
+  container_adb_port: 5556
+  host_port_start: 5556
+  boot_timeout_s: 600
 
 # (b) redroid (no KVM; needs host binder modules)
 # android:
 #   backend: redroid
-#   redroid_image: ghcr.io/libercoders/redroid-claw_anything:13
-#   auto_launch_count: 1     # boots in seconds; container_adb_port is fixed at 5555
+#   redroid_image: redroid-claw_anything:13
+#   auto_launch_count: 1
 #   boot_timeout_s: 300
 
 # Or skip auto-launch entirely and point at an already-running device

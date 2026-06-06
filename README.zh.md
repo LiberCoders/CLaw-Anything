@@ -435,16 +435,16 @@ agent:
 android:
   backend: kvm
   emulator_image: claw_anything:latest
-  auto_launch_count: 1       # >0 ⇒ 框架起 N 个设备容器并在结束时回收
-  container_adb_port: 5556   # 该镜像的 adb 监听 5556（不是上游的 5555）
-  host_port_start: 5556      # 主机端口分配的下界（实际端口动态分配）
-  boot_timeout_s: 600        # 该镜像首次启动约需 3 分钟
+  auto_launch_count: 1
+  container_adb_port: 5556
+  host_port_start: 5556
+  boot_timeout_s: 600
 
 # (b) redroid（无需 KVM；需要主机 binder 模块）
 # android:
 #   backend: redroid
-#   redroid_image: ghcr.io/libercoders/redroid-claw_anything:13
-#   auto_launch_count: 1     # 秒级启动；container_adb_port 固定为 5555
+#   redroid_image: redroid-claw_anything:13
+#   auto_launch_count: 1
 #   boot_timeout_s: 300
 
 # 或者完全跳过自动拉起，直接指向一台已经在跑的设备
