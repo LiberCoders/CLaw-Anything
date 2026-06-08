@@ -207,17 +207,30 @@ def _render_tool_schemas(task: TaskDefinition, extra_tools: list | None = None) 
     return "\n".join(lines)
 
 
-def _render_activity_logs_section(workspace_root: Path | None) -> str:
+def _render_activity_logs_section(
+    workspace_root: Path | None, *, relative: bool = False
+) -> str:
     """If ``workspace_root/logs`` exists, render an activity logs section.
 
     This tells the agent about the user's historical work logs WITHOUT
     mentioning them in the task prompt (which is written from the user's
     perspective). The host stages these logs under the agent's workspace
-    (``_prepare_workspace`` in cli.py), so the advertised paths are absolute
-    paths under ``workspace_root`` — inside a trial container that is
-    ``/workspace/logs/...``; standalone it's the per-trial host workspace.
-    The agent reads them with its native file tools (loop's sandbox
-    read_file / OH's read_file), both of which honour absolute paths.
+    (``_prepare_workspace`` in cli.py).
+
+    ``relative`` controls the advertised path style, because the two agent
+    families resolve file paths against different roots:
+
+    - ``relative=True`` (loop): emit ``logs/...`` relative paths. loop's
+      sandbox read tool resolves relative paths against ``workspace_root``
+      (``sandbox_dispatcher._resolve``), so this is correct in BOTH local
+      (``workspace_root`` is the per-trial host dir) and container
+      (``workspace_root`` is ``/workspace``) modes, and keeps the prompt free
+      of machine-specific absolute host paths.
+    - ``relative=False`` (OH): emit ``{workspace_root}/logs/...`` absolute
+      paths. OH's ``read_file`` resolves relative paths against its own (empty,
+      anti-cheat) cwd, so it can only reach the staged logs via an absolute
+      path; in a trial container ``workspace_root`` is ``/workspace`` and the
+      host bind-mounts the logs there.
     """
     if workspace_root is None:
         return ""
@@ -234,7 +247,7 @@ def _render_activity_logs_section(workspace_root: Path | None) -> str:
     if not has_content:
         return ""
 
-    base = f"{workspace_root}/logs"
+    base = "logs" if relative else f"{workspace_root}/logs"
     lines = [
         "## Activity Logs",
         "The user's work history logs are available at the following locations:",
@@ -330,8 +343,11 @@ def build_system_prompt(
     blocks.append(_render_skills(prompt_cfg))
     blocks.append(_render_workspace_blocks(prompt_cfg))
 
-    # Inject activity logs section if present
-    activity_logs = _render_activity_logs_section(workspace_root)
+    # Inject activity logs section if present. loop's sandbox read tool
+    # resolves relative paths against workspace_root, so advertise relative
+    # ``logs/...`` paths — correct in both local and container modes, and free
+    # of machine-specific absolute host paths (unlike OH, see _build_oh_env).
+    activity_logs = _render_activity_logs_section(workspace_root, relative=True)
     if activity_logs:
         blocks.append(activity_logs)
 
