@@ -40,6 +40,15 @@ RUN pip install -e /opt/oh-ext \
         --trusted-host pypi.tuna.tsinghua.edu.cn \
         --no-cache-dir
 
+# ── Build-time patch ─────────────────────────────────────────────────────────
+# Append ``CLAW_SYSTEM_PROMPT_SUFFIX`` (the activity-logs section, set per-trial
+# by OpenHarnessAgent._build_oh_env) to OH-Ext's base system prompt. Shares the
+# exact patch script with claw-anything-oh — the ``build_system_prompt`` return
+# anchor is identical in vanilla OH and the OH-Ext fork. Runs after the editable
+# install so ``import openharness`` resolves to /opt/oh-ext/src.
+COPY oh/patch_system_prompt_suffix.py /tmp/patch_system_prompt_suffix.py
+RUN python /tmp/patch_system_prompt_suffix.py && rm /tmp/patch_system_prompt_suffix.py
+
 # ── adb ──────────────────────────────────────────────────────────────────────
 # Copy binary directly from host — no apt-get layer, same version as host.
 # Build script places the binary at <context>/adb before docker build.

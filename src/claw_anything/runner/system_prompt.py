@@ -207,16 +207,21 @@ def _render_tool_schemas(task: TaskDefinition, extra_tools: list | None = None) 
     return "\n".join(lines)
 
 
-def _render_activity_logs_section(task_dir: Path | None) -> str:
-    """If the task directory contains logs/, render an activity logs section.
+def _render_activity_logs_section(workspace_root: Path | None) -> str:
+    """If ``workspace_root/logs`` exists, render an activity logs section.
 
     This tells the agent about the user's historical work logs WITHOUT
     mentioning them in the task prompt (which is written from the user's
-    perspective).
+    perspective). The host stages these logs under the agent's workspace
+    (``_prepare_workspace`` in cli.py), so the advertised paths are absolute
+    paths under ``workspace_root`` — inside a trial container that is
+    ``/workspace/logs/...``; standalone it's the per-trial host workspace.
+    The agent reads them with its native file tools (loop's sandbox
+    read_file / OH's read_file), both of which honour absolute paths.
     """
-    if task_dir is None:
+    if workspace_root is None:
         return ""
-    logs_dir = task_dir / "logs"
+    logs_dir = workspace_root / "logs"
     if not logs_dir.exists() or not logs_dir.is_dir():
         return ""
 
@@ -229,6 +234,7 @@ def _render_activity_logs_section(task_dir: Path | None) -> str:
     if not has_content:
         return ""
 
+    base = f"{workspace_root}/logs"
     lines = [
         "## Activity Logs",
         "The user's work history logs are available at the following locations:",
@@ -238,16 +244,16 @@ def _render_activity_logs_section(task_dir: Path | None) -> str:
     if services_dir.exists():
         service_logs = sorted(services_dir.glob("*_activity.md"))
         if service_logs:
-            lines.append("- /workspace/logs/services/ — per-app activity logs:")
+            lines.append(f"- {base}/services/ — per-app activity logs:")
             for sl in service_logs:
                 svc_name = sl.stem.replace("_activity", "")
-                lines.append(f"  - /workspace/logs/services/{sl.name} ({svc_name})")
+                lines.append(f"  - {base}/services/{sl.name} ({svc_name})")
 
     weekly = sorted(logs_dir.glob("timeline_*.md"))
     weekly = [p for p in weekly if p.stat().st_size > 0]
     if weekly:
         lines.append(
-            "- /workspace/logs/timeline_YYYYMMDD_YYYYMMDD.md — merged activity timeline "
+            f"- {base}/timeline_YYYYMMDD_YYYYMMDD.md — merged activity timeline "
             "split into weekly files (Monday–Sunday ISO weeks; first/last file clipped "
             "to actual data range). Read only the week(s) you need:"
         )
@@ -255,13 +261,13 @@ def _render_activity_logs_section(task_dir: Path | None) -> str:
             rng = _parse_weekly_range(p.name)
             if rng is not None:
                 start, end = rng
-                lines.append(f"  - /workspace/logs/{p.name} ({start} to {end})")
+                lines.append(f"  - {base}/{p.name} ({start} to {end})")
             else:
-                lines.append(f"  - /workspace/logs/{p.name}")
+                lines.append(f"  - {base}/{p.name}")
     else:
         legacy = logs_dir / "timeline.md"
         if legacy.exists() and legacy.stat().st_size > 0:
-            lines.append("- /workspace/logs/timeline.md — System Log (legacy monolithic file)")
+            lines.append(f"- {base}/timeline.md — System Log (legacy monolithic file)")
 
     lines.append("")
     lines.append("You can read these files to understand the user's prior work context and decisions.")
@@ -289,15 +295,16 @@ def build_system_prompt(
     *,
     extra_tools: list | None = None,
     current_date: str | None = None,
-    task_dir: Path | None = None,
+    workspace_root: Path | None = None,
 ) -> str:
     """Build a dynamic system prompt from runtime config + task tools.
 
     Args:
         extra_tools: Additional tool specs (e.g. sandbox tools) to include
             in the tool definitions and schema sections of the prompt.
-        task_dir: Path to the task directory, used to detect and inject
-            activity log information into the system prompt.
+        workspace_root: The agent's workspace dir. When it contains a
+            ``logs/`` subtree (staged by ``_prepare_workspace``), an
+            "Activity Logs" section advertising those files is injected.
     """
     # Resolve current date: explicit parameter > task.execution_date
     effective_date = current_date or getattr(task, "execution_date", None)
@@ -324,7 +331,7 @@ def build_system_prompt(
     blocks.append(_render_workspace_blocks(prompt_cfg))
 
     # Inject activity logs section if present
-    activity_logs = _render_activity_logs_section(task_dir)
+    activity_logs = _render_activity_logs_section(workspace_root)
     if activity_logs:
         blocks.append(activity_logs)
 

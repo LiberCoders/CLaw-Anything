@@ -82,7 +82,10 @@ class LoopAgent(BaseAgent):
         _log(f"[config] max_turns={task.environment.max_turns} timeout={task.environment.timeout_seconds}s sandbox_tools={sandbox_tools}")
 
         # Build initial messages
-        system_prompt = build_system_prompt(task, prompt_cfg, extra_tools=sandbox_tool_list)
+        system_prompt = build_system_prompt(
+            task, prompt_cfg, extra_tools=sandbox_tool_list,
+            workspace_root=workspace_root,
+        )
         if model_cfg and model_cfg.system_prompt_prefix:
             system_prompt = model_cfg.system_prompt_prefix + "\n\n" + system_prompt
         self._system_prompt = system_prompt

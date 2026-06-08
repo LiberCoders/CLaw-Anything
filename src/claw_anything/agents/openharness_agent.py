@@ -472,7 +472,9 @@ class OpenHarnessAgent(BaseAgent):
         """
         skill_mode = prompt_cfg.skill_mode if prompt_cfg is not None else False
         cfg_root = self._prepare_oh_config(task, skill_mode=skill_mode)
-        oh_events, return_code = self._run_oh_subprocess(task, cfg_root)
+        oh_events, return_code = self._run_oh_subprocess(
+            task, cfg_root, workspace_root=workspace_root,
+        )
         self._emit_oh_turns(
             oh_events=oh_events,
             dispatch_log=cfg_root / "dispatch.jsonl",
@@ -512,7 +514,10 @@ class OpenHarnessAgent(BaseAgent):
         _log(f"{self.LOG_PREFIX} config dir: {cfg_root}")
         return cfg_root
 
-    def _build_oh_env(self, task: TaskDefinition, cfg_root: Path) -> dict[str, str]:
+    def _build_oh_env(
+        self, task: TaskDefinition, cfg_root: Path,
+        workspace_root: Path | None = None,
+    ) -> dict[str, str]:
         """Build the environment for the ``oh`` subprocess.
 
         Points OH at the per-task config dir and tells the generated plugin
@@ -527,6 +532,16 @@ class OpenHarnessAgent(BaseAgent):
         date aligned with the task's simulated date instead of the container
         wall clock. OH-Ext uses its own ``settings.prompt_meta.today`` path
         and ignores this env var.
+
+        ``CLAW_SYSTEM_PROMPT_SUFFIX`` carries the "Activity Logs" section —
+        absolute paths under ``workspace_root`` (``/workspace/logs/...`` inside
+        a trial container) where the host staged the user's work-history logs
+        (``_prepare_workspace``). A build-time patch
+        (``docker/oh/patch_system_prompt_suffix.py`` for vanilla OH; an inline
+        edit in the OH-Ext fork) appends this to OH's base system prompt so the
+        model knows the logs exist and can read them with its native
+        ``read_file``. OH's own cwd stays an empty workspace, so the paths are
+        absolute; both OH backends' read tools honour absolute paths.
         """
         env = dict(os.environ)
         env["OPENHARNESS_CONFIG_DIR"] = str(cfg_root)
@@ -539,6 +554,11 @@ class OpenHarnessAgent(BaseAgent):
         env.setdefault("NO_PROXY", "localhost,127.0.0.1")
         if task.execution_date:
             env["CLAW_TASK_EXECUTION_DATE"] = str(task.execution_date)
+        if workspace_root is not None:
+            from claw_anything.runner.system_prompt import _render_activity_logs_section
+            suffix = _render_activity_logs_section(workspace_root)
+            if suffix:
+                env["CLAW_SYSTEM_PROMPT_SUFFIX"] = suffix
         return env
 
     # ------------------------------------------------------------------ #
@@ -547,6 +567,7 @@ class OpenHarnessAgent(BaseAgent):
 
     def _run_oh_subprocess(
         self, task: TaskDefinition, cfg_root: Path,
+        workspace_root: Path | None = None,
     ) -> tuple[list[dict], int]:
         """Spawn ``oh``, stream its stdout, and return (parsed events, exit code).
 
@@ -567,7 +588,7 @@ class OpenHarnessAgent(BaseAgent):
         ]
         _log(f"{self.LOG_PREFIX} launching: oh -p ... (cwd={workspace})")
 
-        env = self._build_oh_env(task, cfg_root)
+        env = self._build_oh_env(task, cfg_root, workspace_root=workspace_root)
         wall_t0 = time.monotonic()
         try:
             proc = subprocess.Popen(
