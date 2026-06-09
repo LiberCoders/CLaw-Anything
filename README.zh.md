@@ -326,7 +326,7 @@ claw-anything run \
 
 | 镜像 | 怎么获取 |
 |---|---|
-| **设备镜像** | **redroid**（无需 KVM，推荐）：`docker pull ghcr.io/libercoders/redroid-claw_anything:13`;                              **kvm**：`docker pull ghcr.io/libercoders/claw_anything:latest` |
+| **设备镜像** | **redroid**（无需 KVM，推荐）：`docker pull ghcr.io/libercoders/redroid-claw_anything:13`;                              **kvm**：`docker pull ghcr.io/libercoders/claw-anything:latest` |
 | **OH-Ext 运行器** `claw-anything-oh-ext` | 本地构建：`claw-anything build-image --agent openharness-ext`（详见[第 4 步](#4-构建-oh-ext-runner-镜像)） |
 
 ### 架构：谁在跟谁通信
@@ -386,7 +386,7 @@ adb version    # → Android Debug Bridge version 1.0.41
 **`backend: kvm`** → `claw_anything:latest`
 
 ```bash
-docker pull ghcr.io/libercoders/claw_anything:latest
+docker pull ghcr.io/libercoders/claw-anything:latest
 ```
 
 **`backend: redroid`** → `redroid-claw_anything`

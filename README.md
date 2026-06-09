@@ -363,7 +363,7 @@ A GUI trial depends on **two** docker images:
 
 | Image | How to get it |
 |---|---|
-| **Device image** | **redroid** (no KVM, recommended): `docker pull ghcr.io/libercoders/redroid-claw_anything:13` &nbsp;·&nbsp; **kvm**: `docker pull ghcr.io/libercoders/claw_anything:latest` |
+| **Device image** | **redroid** (no KVM, recommended): `docker pull ghcr.io/libercoders/redroid-claw_anything:13` &nbsp;·&nbsp; **kvm**: `docker pull ghcr.io/libercoders/claw-anything:latest` |
 | **OH-Ext runner** `claw-anything-oh-ext` | Build it locally: `claw-anything build-image --agent openharness-ext` (details in [step 4](#4-build-the-oh-ext-runner-image)) |
 
 ### Architecture: what talks to what
@@ -423,7 +423,7 @@ Both Android images ship every target app pre-installed (Fossify Calendar/Messag
 **`backend: kvm`** → `claw_anything:latest`
 
 ```bash
-docker pull ghcr.io/libercoders/claw_anything:latest
+docker pull ghcr.io/libercoders/claw-anything:latest
 ```
 
 **`backend: redroid`** → `redroid-claw_anything`
