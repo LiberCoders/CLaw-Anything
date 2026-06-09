@@ -124,10 +124,12 @@ cp -r "$OH_EXT_DIR/frontend/terminal/src"                "$TMPCTX/oh-ext/fronten
 # adb binary
 cp "$ADB_PATH" "$TMPCTX/adb"
 
-# OH build-time patch (shared with claw-anything-oh): appends the activity-logs
-# suffix to OH-Ext's base system prompt.
+# OH build-time patches (shared with claw-anything-oh): append the activity-logs
+# suffix to OH-Ext's base system prompt, and emit the final system prompt as a
+# stream-json event for trace export.
 mkdir -p "$TMPCTX/oh"
 cp "$REPO_ROOT/docker/oh/patch_system_prompt_suffix.py" "$TMPCTX/oh/"
+cp "$REPO_ROOT/docker/oh/patch_emit_system_prompt.py" "$TMPCTX/oh/"
 
 # Dockerfile
 cp "$REPO_ROOT/Dockerfile.oh_ext" "$TMPCTX/"

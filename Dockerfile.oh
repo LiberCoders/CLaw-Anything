@@ -52,14 +52,17 @@ RUN pip install 'openharness-ai==0.1.9' \
 #   - patch_openai_client.py        → keep ``stream_options`` so per-turn usage chunks arrive
 #   - patch_environment_date.py     → honour ``CLAW_TASK_EXECUTION_DATE`` env var
 #   - patch_system_prompt_suffix.py → append ``CLAW_SYSTEM_PROMPT_SUFFIX`` (activity logs)
+#   - patch_emit_system_prompt.py   → emit final system prompt as a stream-json event
 COPY oh/patch_print_mode_usage.py    /tmp/patch_print_mode_usage.py
 COPY oh/patch_openai_client.py       /tmp/patch_openai_client.py
 COPY oh/patch_environment_date.py    /tmp/patch_environment_date.py
 COPY oh/patch_system_prompt_suffix.py /tmp/patch_system_prompt_suffix.py
+COPY oh/patch_emit_system_prompt.py  /tmp/patch_emit_system_prompt.py
 RUN python /tmp/patch_print_mode_usage.py \
  && python /tmp/patch_openai_client.py \
  && python /tmp/patch_environment_date.py \
  && python /tmp/patch_system_prompt_suffix.py \
+ && python /tmp/patch_emit_system_prompt.py \
  && rm /tmp/patch_*.py
 
 ENTRYPOINT ["claw-anything"]

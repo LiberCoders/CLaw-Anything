@@ -668,6 +668,18 @@ async def _run_one_trial(
     # tokens, ``f"{score:.2f}"``) blows up loudly instead of silently mixing a
     # fake zero into real measurements.
     if inside_tc:
+        # The inner trial-container stage returns here and never reaches the
+        # host-side _write_openai_trace below, so write the OpenAI-format dump
+        # now (messages/tools, plus the system row for agents that set it). The
+        # host reads this file back, then re-grades and overwrites only the
+        # metadata block — messages/tools/system survive. Without this write the
+        # host reads an empty file and the final openai.json keeps just metadata.
+        _write_openai_trace(
+            trace_path, openai_data,
+            task_id=task_copy.task_id,
+            model=model_id,
+            trace_id=trial_trace_id,
+        )
         return {
             "trace": str(trace_path),
             "openai_trace": None,

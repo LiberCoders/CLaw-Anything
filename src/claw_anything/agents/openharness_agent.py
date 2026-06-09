@@ -440,6 +440,22 @@ class OpenHarnessAgent(BaseAgent):
     #  Core execution                                                     #
     # ------------------------------------------------------------------ #
 
+    def _capture_system_prompt(self, ev: dict) -> None:
+        """Record OH's final system prompt from a stream-json event.
+
+        The build-time ``patch_emit_system_prompt`` patch (applied to both the
+        oh and oh-ext images) makes ``run_print_mode`` emit a single
+        ``{"type": "system_prompt", "text": ...}`` event at session start.
+        Stashing it on ``self._system_prompt`` lets ``BaseAgent.run_task``'s
+        ``convert_trace`` prepend a faithful system row to the exported
+        ``*.openai.json`` — OH never sets this attribute otherwise. No-op for
+        every other event type, and for an empty/missing text payload.
+        """
+        if ev.get("type") == "system_prompt":
+            sp = ev.get("text")
+            if sp:
+                self._system_prompt = sp
+
     def _execute(
         self,
         task: TaskDefinition,
@@ -635,6 +651,7 @@ class OpenHarnessAgent(BaseAgent):
                         stream_fh.flush()
                         continue
                     oh_events.append(ev)
+                    self._capture_system_prompt(ev)
                     stream_fh.write(json.dumps(ev, ensure_ascii=False) + "\n")
                     stream_fh.flush()
                     printer.feed(ev)
