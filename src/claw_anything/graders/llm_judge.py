@@ -22,11 +22,7 @@ class JudgeResult(BaseModel):
 
 _SYSTEM_PROMPT = """\
 You are an evaluation judge for an AI assistant.
-You will be given a task prompt, a conversation, and a rubric (and optionally a
-summary of actions taken). The conversation is a chronological transcript that
-already inlines every tool call the assistant made — its name, arguments, whether
-it succeeded or failed, and the returned result — interleaved with what the
-assistant said. Use it as the primary evidence.
+You will be given a task prompt, a conversation, and a rubric.
 Follow the rubric to score the assistant's response on a 0.0-1.0 scale.
 
 IMPORTANT: You MUST reason BEFORE assigning a score. First write out your reasoning
@@ -62,37 +58,31 @@ class LLMJudge:
     def build_user_message(
         task_prompt: str,
         conversation: str,
-        actions_summary: str,
         rubric: str,
     ) -> str:
-        """Assemble the judge's user message.
-
-        The ``## Actions Taken`` section is OMITTED when ``actions_summary`` is
-        blank — tool activity is already inlined in the conversation transcript,
-        so an empty section would only read as missing information. A grader may
-        still pass a non-empty summary (e.g. an audit-side final-state view) to
-        have it rendered.
+        """Assemble the judge's user message from the task prompt, the
+        conversation transcript, and the rubric.
         """
-        parts = [
-            f"## Task Prompt\n{task_prompt}",
-            f"## Conversation\n{conversation}",
-        ]
-        if actions_summary and actions_summary.strip():
-            parts.append(f"## Actions Taken\n{actions_summary}")
-        parts.append(f"## Rubric\n{rubric}")
-        return "\n\n".join(parts)
+        return (
+            f"## Task Prompt\n{task_prompt}\n\n"
+            f"## Conversation\n{conversation}\n\n"
+            f"## Rubric\n{rubric}"
+        )
 
     def evaluate(
         self,
         task_prompt: str,
         conversation: str,
-        actions_summary: str,
-        rubric: str,
+        actions_summary: str = "",
+        rubric: str = "",
     ) -> JudgeResult:
-        """Evaluate communication quality and return a JudgeResult."""
-        user_msg = self.build_user_message(
-            task_prompt, conversation, actions_summary, rubric
-        )
+        """Evaluate communication quality and return a JudgeResult.
+
+        ``actions_summary`` is accepted for backward compatibility with existing
+        graders but is no longer rendered — tool activity lives in the
+        conversation transcript. New callers may omit it.
+        """
+        user_msg = self.build_user_message(task_prompt, conversation, rubric)
         max_retries = 20
         last_exc: Exception | None = None
         for attempt in range(max_retries + 1):
