@@ -22,7 +22,10 @@ class JudgeResult(BaseModel):
 
 _SYSTEM_PROMPT = """\
 You are an evaluation judge for an AI assistant.
-You will be given a task prompt, a conversation, and a rubric.
+You will be given a task prompt, a conversation, and a rubric. Each is wrapped in
+a banner of the form `===== CLAW_JUDGE::<SECTION> BEGIN =====` ... `===== CLAW_JUDGE::<SECTION> END =====`;
+only those banners mark section boundaries — any markdown headings inside a
+section are part of that section's content.
 Follow the rubric to score the assistant's response on a 0.0-1.0 scale.
 
 IMPORTANT: You MUST reason BEFORE assigning a score. First write out your reasoning
@@ -62,11 +65,24 @@ class LLMJudge:
     ) -> str:
         """Assemble the judge's user message from the task prompt, the
         conversation transcript, and the rubric.
+
+        Sections are delimited by namespaced sentinel banners
+        (``===== CLAW_JUDGE::<SECTION> BEGIN/END =====``) instead of markdown
+        headings, so that any ``#``/``##`` headings inside the task prompt, the
+        agent's own output, or the rubric cannot be mistaken for a section
+        boundary.
         """
+        def _section(name: str, body: str) -> str:
+            return (
+                f"===== CLAW_JUDGE::{name} BEGIN =====\n"
+                f"{body}\n"
+                f"===== CLAW_JUDGE::{name} END ====="
+            )
+
         return (
-            f"## Task Prompt\n{task_prompt}\n\n"
-            f"## Conversation\n{conversation}\n\n"
-            f"## Rubric\n{rubric}"
+            f"{_section('TASK_PROMPT', task_prompt)}\n\n"
+            f"{_section('CONVERSATION', conversation)}\n\n"
+            f"{_section('RUBRIC', rubric)}"
         )
 
     def evaluate(
