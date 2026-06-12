@@ -58,6 +58,31 @@ def _render_tool_definitions(task: TaskDefinition, extra_tools: list | None = No
     return "\n".join(lines)
 
 
+def _render_autonomy_contract() -> str:
+    """Render the loop harness's turn contract.
+
+    The loop agent terminates the moment the model returns a message with no
+    tool call (``loop.py``: ``if not tool_uses: break``), and there is no human
+    available to answer follow-up questions. Neither fact is otherwise visible
+    to the model, so a well-behaved chat assistant defaults to deferring work
+    back to the user ("Do you want me to draft it?") or announcing an action
+    without issuing the call — both of which silently end the episode with the
+    task unfinished. State the contract as plain facts so the model can act on
+    it; leave the judgment of when to stop to the model's reading of the task.
+    """
+    return "\n".join([
+        "## Autonomy & Turn Contract",
+        "- You are operating autonomously. No human is available to answer "
+        "follow-up questions or confirmations during this task — a question "
+        "addressed to the user will simply go unanswered.",
+        "- A reply that contains NO tool call is treated as your FINAL answer "
+        "and ends the session immediately; you will not get another turn. The "
+        "session stays open as long as you keep issuing tool calls, so keep "
+        "working until the user's request is fully satisfied before giving "
+        "that final answer.",
+    ])
+
+
 def _render_agent_guidelines(task: TaskDefinition | None = None) -> str:
     """Render universal agent behavior guidelines injected into every prompt."""
     if task is not None:
@@ -339,6 +364,7 @@ def build_system_prompt(
         blocks.append(_render_tool_definitions(task, extra_tools))
         if prompt_cfg.include_tool_schema:
             blocks.append(_render_tool_schemas(task, extra_tools))
+    blocks.append(_render_autonomy_contract())
     blocks.append(_render_behavior_rules(prompt_cfg))
     blocks.append(_render_skills(prompt_cfg))
     blocks.append(_render_workspace_blocks(prompt_cfg))
