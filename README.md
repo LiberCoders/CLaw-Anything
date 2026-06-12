@@ -57,14 +57,11 @@ Claw-Anything operationalizes this view, evaluating always-on LLM agents across 
   - [Main Results](#-main-results)
 - [Install](#-install)
 - [Quick Start](#-quick-start)
-  - [Run the benchmark suite](#run-the-benchmark-suite)
-  - [Run a single task](#run-a-single-task)
-  - [Generate your own tasks](#generate-your-own-tasks)
-  - [Run mobile GUI / Android tasks](#run-mobile-gui--android-tasks)
+  - [1. Run CLI tasks](#1-run-cli-tasks)
+  - [2. Run CLI + GUI tasks](#2-run-cli--gui-tasks)
+  - [3. Generate your own tasks](#3-generate-your-own-tasks)
   - [Extra Command](#-extra-command)
-- [End-to-end GUI evaluation from scratch](#-end-to-end-gui-evaluation-from-scratch)
 - [Repo Layout](#-repo-layout)
-- [Authoring Tasks](#-authoring-tasks)
 - [Acknowledgments](#-acknowledgments)
 - [Citation](#-citation)
 - [License](#-license)
@@ -169,20 +166,7 @@ uv pip install -e ".[mock,sandbox]"
 # 4. Configure the model endpoint
 cp config.example.yaml config.yaml
 # edit config.yaml: api_key / base_url / model_id
-
-# 5. Build a trial-in-container image (one-time; pick the agent backend you'll use)
-claw-anything build-image                       # default: --agent openharness-ext (image claw-anything-oh-ext)
-claw-anything build-image --agent loop          # smallest image: claw-anything-loop
-claw-anything build-image --agent openharness   # vanilla OH:    claw-anything-oh
 ```
-
-> The OH-Ext build needs an `adb` binary and the [OpenHarnessExtended](https://github.com/LiberCoders/OpenHarnessExtended) source. Either let the script clone OH-Ext into `vendor/` and supply `ADB_PATH`, or set both:
-> ```bash
-> OH_EXT_DIR=$HOME/code/OpenHarnessExtended \
-> ADB_PATH=$HOME/android-sdk/platform-tools/adb \
->   scripts/build_oh_ext_image.sh
-> ```
-> The image expects the OH-Ext working copy to be on branch **`main-clawgui`** — the build script prints a warning otherwise. Sample OH settings file: [`examples/oh-settings.example.json`](examples/oh-settings.example.json) (copy and fill in `api_key`, `base_url`, etc.).
 
 **Available extras** (declared in `pyproject.toml`):
 
@@ -197,176 +181,148 @@ So the typical install is `uv pip install -e ".[mock,sandbox]"`. Add `,dev` if y
 
 > After install you can either `source .venv/bin/activate` and call `claw-anything ...` directly, or use `uv run claw-anything ...` to let uv manage the environment for you.
 
+That's all you need for CLI tasks run on the host. Sandboxed runs additionally need a one-time `claw-anything build-image` — introduced where it's first used in [Quick Start](#-quick-start) below.
+
 
 ## 🚀 Quick Start
 
-### Run the benchmark suite
+Claw-Anything has three things you can *do* with it:
 
-The benchmark is split into three subsets. `claw-anything batch` without `--tasks-dir` runs the **full 200-task suite**:
+1. **[Run CLI tasks](#1-run-cli-tasks)** — the 150 CLI benchmark tasks (or any single task). Needs only the install above + Docker. Start here.
+2. **[Run CLI + GUI tasks](#2-run-cli--gui-tasks)** — adds the 50 Android GUI tasks for the full 200-task benchmark. Needs an Android device image + the OH-Ext agent; a minimal working setup first, full details after.
+3. **[Generate your own tasks](#3-generate-your-own-tasks)** — turn a persona YAML into a populated digital world plus eval tasks with executable graders.
 
-- `skill` (100, CLI, `prompt.skill_mode = true`)
-- `tool` (50, CLI, `prompt.skill_mode = false`)
-- `gui` (50, Android GUI, forced to `openharness-ext` — needs an emulator + `--oh-settings`; see [Run mobile GUI / Android tasks](#run-mobile-gui--android-tasks))
+### 1. Run CLI tasks
 
-Each subset writes to its own trace subdirectory. Pass `--cli-only` to run only the CLI subsets (150 tasks). Note that `batch` always runs trials in containers — there is no `--trial-in-container` flag (only `run` exposes it).
+#### Evaluate the CLI benchmark
+
+OpenHarness agent (recommended; the backend used for all paper results — model endpoint comes from `oh-settings.json`, not `config.yaml`):
 
 ```bash
-# Full benchmark (200 tasks: skill + tool + gui)
-claw-anything batch \
-  --config config.yaml \
-  --oh-settings /path/to/oh-settings.json \
-  --trials 3 \
-  --parallel 10
+claw-anything build-image --agent openharness          # one-time
+cp examples/oh-settings.example.json oh-settings.json  # one-time; fill in api_key / base_url / model
 
-# CLI subsets only (150 tasks: skill + tool)
+# Both CLI subsets (150 tasks: skill + tool)
 claw-anything batch \
   --config config.yaml \
+  --agent openharness \
+  --oh-settings oh-settings.json \
   --cli-only \
-  --trials 3 \
-  --parallel 10
+  --trials 3 --parallel 10
+```
+
+Loop agent (lightweight alternative; model endpoint read straight from `config.yaml`):
+
+```bash
+claw-anything build-image --agent loop                 # one-time
+
+claw-anything batch --config config.yaml --cli-only --trials 3 --parallel 10
 ```
 
 Output:
 
 ```
-traces/loop_<model>_<ts>/
-├── skill/  # benchmark/skill, prompt.skill_mode = true
+traces/<agent>_<model>_<ts>/
+├── skill/  # 100 tasks, tools loaded on demand (prompt.skill_mode = true)
 │   ├── batch_results.json
 │   └── batch_summary.json
-├── tool/   # benchmark/tool,  prompt.skill_mode = false
-│   ├── batch_results.json
-│   └── batch_summary.json
-└── gui/    # benchmark/gui,   agent forced to openharness-ext  (skipped with --cli-only)
+└── tool/   # 50 tasks, full tool set pre-loaded
     ├── batch_results.json
     └── batch_summary.json
 ```
 
-Or run only one subset:
+To run one subset (or any task directory): add `--tasks-dir benchmark/skill`.
+
+#### Single tasks, re-grading, resuming
 
 ```bash
-claw-anything batch --tasks-dir benchmark/skill --config config.yaml --trials 3 --parallel 10
-claw-anything batch --tasks-dir benchmark/tool  --config config.yaml --trials 3 --parallel 10
-claw-anything batch --tasks-dir benchmark/gui   --config config.yaml --agent openharness-ext --oh-settings /path/to/oh-settings.json --trials 3 --parallel 10
-```
-
-To resume or repair a previous batch run, point at its trace dir with one of:
-
-```bash
-claw-anything batch --tasks-dir benchmark/skill --trace-dir traces/<prev_run>/ --continue       # skip completed
-claw-anything batch --tasks-dir benchmark/skill --trace-dir traces/<prev_run>/ --rerun-errors    # only failed
-```
-
-### Run a single task
-
-```bash
-# Loop agent — no sandbox (mock services started locally)
+# Single task (run works without a container; add --trial-in-container for the sandbox)
 claw-anything run --task examples/ready_to_run/T001_demo --config config.yaml
+claw-anything run --task examples/ready_to_run/T001_demo --config config.yaml \
+  --agent openharness --trial-in-container --oh-settings oh-settings.json
 
-# Loop agent — inside Docker (trial-in-container)
-claw-anything run --task examples/ready_to_run/T001_demo --config config.yaml --trial-in-container
-
-# OpenHarness agent (vanilla, trial-in-container)
-# Requires: scripts/build_oh_image.sh   (one-time)
-claw-anything run \
-  --task examples/ready_to_run/T001_demo \
-  --config config.yaml \
-  --agent openharness \
-  --trial-in-container \
-  --oh-settings /path/to/oh-settings.json
-
-# OpenHarness-Ext agent (GUI/mobile tasks, trial-in-container)
-# Requires: scripts/build_oh_ext_image.sh   (one-time)
-claw-anything run \
-  --task examples/ready_to_run/T001_demo \
-  --config config.yaml \
-  --agent openharness-ext \
-  --trial-in-container \
-  --oh-settings /path/to/oh-settings.json
-
-# Re-grade an existing trace
+# Re-grade an existing trace (no agent re-run)
 claw-anything grade --trace traces/<dir>/<trace>.jsonl --task examples/ready_to_run/T001_demo
+
+# Resume a previous batch / re-run only failures
+claw-anything batch --tasks-dir benchmark/skill --trace-dir traces/<prev_run>/ --continue
+claw-anything batch --tasks-dir benchmark/skill --trace-dir traces/<prev_run>/ --rerun-errors
 ```
 
-### Generate your own tasks
+### 2. Run CLI + GUI tasks
 
-The two-phase pipeline turns a single persona YAML into a fully populated digital world plus eval tasks with executable graders.
+GUI tasks (the `benchmark/gui/` subset) drive a real Android device via `adb`, require the **OH-Ext agent**, and need two model endpoints (a *planner* + a *GUI-grounding* vision model, canonically **GUI-Owl**). Follow the quick path first; details and alternatives come after.
+
+#### Quick path: a minimal working GUI run
+
+**Step 1 — pull a device image.** Two backends exist; pick by what your host kernel offers (details in [Choosing the Android backend](#choosing-the-android-backend)). If you have `/dev/kvm`, use `kvm`; otherwise `redroid` works on any box with the binder kernel module and boots in seconds:
 
 ```bash
-# Phase 1 — build a gold environment from a persona
-claw-anything build-persona \
-  --persona personas/sarah_chen_pm_persona.yaml \
-  --seed-tasks seed_tasks/ \
-  --rounds 30 \
-  --seed-noise seed_noise/ \
-  --noise-ratio 2 \
-  --output gold_envs/sarah_chen_pm/ \
-  --config config.yaml
-
-# Phase 2 — generate eval tasks from the gold environment
-claw-anything gen-eval \
-  --env gold_envs/sarah_chen_pm/ \
-  --seed-tasks seed_tasks/ \
-  --output gen_tasks/sarah_chen_pm_simple/ \
-  --max-tasks 20 \
-  --difficulty simple \
-  --execution-date 2026-04-03 \
-  --config config.yaml
-
-# Then evaluate the generated tasks
-claw-anything batch \
-  --tasks-dir gen_tasks/sarah_chen_pm_simple/ \
-  --config config.yaml \
-  --trials 3 --parallel 10
+# redroid (no KVM needed)
+docker pull ghcr.io/libercoders/redroid-claw_anything:13
+# — or — kvm (requires /dev/kvm)
+docker pull ghcr.io/libercoders/claw-anything:latest
 ```
 
-### Run mobile GUI / Android tasks
-
-Tasks whose `task.yaml` declares `task_env: [mobile_gui]` drive a real Android device via `adb`. They require the OH-Ext agent and image. The device can come from **either** of two auto-launch backends — pick by what your host kernel offers:
-
-| Host capability | `android.backend` | Device image |
-|---|---|---|
-| **/dev/kvm** (HW virtualization) | `kvm` (default) | `claw_anything:latest` |
-| **binder** (`binder_linux` module, no KVM) | `redroid` | `redroid-claw_anything:13` |
-
-Both ship the same rooted Android with all inject targets pre-installed, so tasks and graders are identical — only the device source differs. See [End-to-end GUI evaluation from scratch](#-end-to-end-gui-evaluation-from-scratch) below for the full setup. The short version:
+**Step 2 — install adb on the host** (the host injects GUI state into the device before each trial; the trial container already ships its own `adb`):
 
 ```bash
-# In config.yaml, EITHER list pre-launched device serials …
-# android:
-#   emulator_pool:
-#     - emulator-5554
-#     - 127.0.0.1:5555      # TCP-shaped serials trigger `adb connect` before each trial
-#
-# … OR let the framework auto-launch device containers per run/batch:
-# android:
-#   backend: kvm            # 'kvm' (default) or 'redroid' — match your host (see table above)
-#   auto_launch_count: 1    # >0 ⇒ spin up N device containers, distribute, tear down
+wget https://dl.google.com/android/repository/platform-tools-latest-linux.zip
+unzip platform-tools-latest-linux.zip
+export PATH="$PWD/platform-tools:$PATH"
+adb version    # → Android Debug Bridge version 1.0.41
+```
 
+**Step 3 — build the OH-Ext runner image** (one-time; not published to a registry). Point `ADB_PATH` at the platform-tools `adb` from step 2 — the build auto-clones [OpenHarnessExtended](https://github.com/LiberCoders/OpenHarnessExtended) into `vendor/`:
+
+```bash
+ADB_PATH=$PWD/platform-tools/adb \
+  claw-anything build-image --agent openharness-ext   # → claw-anything-oh-ext:latest
+```
+
+**Step 4 — minimal configuration.** Add an `android` block to `config.yaml` so the framework auto-launches one device container per run:
+
+```yaml
+android:
+  backend: redroid                          # or 'kvm' to match the image you pulled
+  redroid_image: redroid-claw_anything:13   # for kvm: emulator_image: claw_anything:latest
+  auto_launch_count: 1
+```
+
+Copy [`examples/oh-settings.example.json`](examples/oh-settings.example.json) to `oh-settings.json` and fill in the two endpoints: the planner under `profiles.default` (`base_url`, model name) and the GUI-grounding model under `mobile_gui.gui_backend`. Leave `mobile_gui.device_serial` empty — it's auto-filled per trial.
+
+**Step 5 — run.** Smoke-test one GUI task, then the GUI subset or the full 200-task benchmark:
+
+```bash
+# One GUI task (smoke test)
 claw-anything run \
-  --task gen_tasks/<mobile_gui_task>/ \
+  --task benchmark/gui/TGUI01_myexpenses_overbudget_finance_email \
   --config config.yaml \
   --agent openharness-ext \
   --trial-in-container \
-  --oh-settings /path/to/oh-settings.json
+  --oh-settings oh-settings.json
+
+# GUI subset only (50 tasks)
+claw-anything batch \
+  --tasks-dir benchmark/gui \
+  --config config.yaml \
+  --agent openharness-ext \
+  --oh-settings oh-settings.json \
+  --trials 3 --parallel 4         # parallel ≤ android.auto_launch_count (one device per worker)
+
+# Full benchmark (200 tasks: skill + tool + gui)
+claw-anything batch \
+  --config config.yaml \
+  --oh-settings oh-settings.json \
+  --trials 3 \
+  --parallel 10
 ```
 
-The host calls `init_gui_task()` to inject calendar events, contacts, etc. into the emulator before the agent starts; the trial container then runs the OH-Ext agent against that prepared device.
+A healthy run logs the device pool booting at the start (`[emu-pool] booted: …` for `kvm`, `[redroid-pool] ready (rooted): …` for `redroid`) and `… stop_all: removed N container(s)` at the end; a per-trial score block prints `completion / robustness / communication / safety / task_score / passed`. With the full suite, traces gain a `gui/` subdirectory next to `skill/` and `tool/`.
 
+If anything fails, see [Troubleshooting](#troubleshooting); the sections below explain each moving part and its alternatives.
 
-## 🤖 End-to-end GUI evaluation from scratch
-
-This section is the complete recipe for evaluating an agent on the **CLI + GUI** benchmark from a clean machine — what hardware you need, how to stand up the Android device (KVM emulator **or** redroid), how to wire up `adb`, and how to configure the two model endpoints a GUI task needs. CLI-only evaluation skips most of this (jump to [step 6](#6-run-the-evaluation)).
-
-### Images a GUI run needs
-
-A GUI trial depends on **two** docker images:
-
-| Image | How to get it |
-|---|---|
-| **Device image** | **redroid** (no KVM, recommended): `docker pull ghcr.io/libercoders/redroid-claw_anything:13` &nbsp;·&nbsp; **kvm**: `docker pull ghcr.io/libercoders/claw-anything:latest` |
-| **OH-Ext runner** `claw-anything-oh-ext` | Build it locally: `claw-anything build-image --agent openharness-ext` (details in [step 4](#4-build-the-oh-ext-runner-image)) |
-
-### Architecture: what talks to what
+#### Architecture: what talks to what
 
 A GUI trial has **four moving parts**:
 
@@ -386,14 +342,14 @@ A GUI trial has **four moving parts**:
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-1. **Orchestrator** — the `claw-anything` CLI on the host. Does GUI state injection, workspace prep, config rewriting, and grading.
+1. **Orchestrator** — the `claw-anything` CLI on the host. Does GUI state injection (`init_gui_task()` writes calendar events, contacts, etc. into the device before the agent starts), workspace prep, config rewriting, and grading.
 2. **Device** — a rooted Android instance. Either you pre-launch it (`emulator_pool`) or the framework auto-launches it in a container (`auto_launch_count`). The backend (`android.backend`) selects **`kvm`** (QEMU AVD, `claw_anything:latest`) or **`redroid`** (Android-in-container, `redroid-claw_anything`).
 3. **Trial runner** — the `claw-anything-oh-ext` container that runs the OH-Ext agent and drives the device over `adb`.
 4. **Two model endpoints**, both declared in `--oh-settings`:
    - **planner** — an OpenAI-compatible chat model (the agent's "brain").
    - **GUI-grounding** — a vision model that turns a screenshot into a tap/swipe coordinate. The canonical choice is **GUI-Owl** (`gui_plus` backend).
 
-### 1. Hardware & host prerequisites
+#### Choosing the Android backend
 
 Pick **one** Android backend based on what your host kernel exposes:
 
@@ -402,54 +358,25 @@ Pick **one** Android backend based on what your host kernel exposes:
 | **`kvm`** (default) | `/dev/kvm` present, CPU has `vmx`/`svm` | The QEMU Android emulator needs hardware virtualization; without it the AVD never finishes booting in reasonable time | `ls /dev/kvm && egrep -c '(vmx\|svm)' /proc/cpuinfo` |
 | **`redroid`** | binder kernel module loaded (`binder_linux`); **no KVM needed** | redroid runs Android directly on the host kernel (binder/ashmem), so it works on boxes without hardware virtualization (most cloud CI, dev laptops) | `grep -w binder /proc/filesystems \|\| lsmod \| grep binder` |
 
-> **Which backend?** If `/dev/kvm` exists, use `kvm` (the default). If it doesn't but the host has the binder modules, use `redroid` — same tasks, same graders, just a lighter device that boots in seconds.
+Both device images ship the same rooted Android with every target app pre-installed (Fossify Calendar/Messages/Notes, Loop Habits, My Expenses, Markor, OpenTracks, Gmail, …), so tasks and graders work identically against either — only the device source differs.
 
-### 2. Install adb
+#### OH-Ext image build details
 
-The OH-Ext **image already ships `adb`** at `/usr/local/bin/adb`, so the trial container needs nothing. You only need `adb` **on the host** because the host runs `init_gui_task` injection (and the device pool's boot probe) directly:
+`claw-anything build-image --agent openharness-ext` wraps `scripts/build_oh_ext_image.sh`. Two knobs:
 
-```bash
-# Android platform-tools (provides adb)
-wget https://dl.google.com/android/repository/platform-tools-latest-linux.zip
-unzip platform-tools-latest-linux.zip
-export PATH="$PWD/platform-tools:$PATH"
-adb version    # → Android Debug Bridge version 1.0.41
-```
-
-### 3. Get the device image
-
-Both Android images ship every target app pre-installed (Fossify Calendar/Messages/Notes, Loop Habits, My Expenses, Markor, OpenTracks, Gmail, …), so tasks and graders work identically against either. Pull only the one matching your `android.backend`:
-
-**`backend: kvm`** → `claw_anything:latest`
+- `ADB_PATH` (**required**) — must point at the **official** platform-tools `adb` (a self-contained binary); a distro `adb` that links `libadb.so.0` fails inside the slim image.
+- `OH_EXT_DIR` (optional) — an already-cloned [OpenHarnessExtended](https://github.com/LiberCoders/OpenHarnessExtended) working copy; when unset, the build auto-clones into `vendor/`. The working copy must be on branch **`main-clawgui`** — the build script prints a warning otherwise.
 
 ```bash
-docker pull ghcr.io/libercoders/claw-anything:latest
-```
-
-**`backend: redroid`** → `redroid-claw_anything`
-
-```bash
-docker pull ghcr.io/libercoders/redroid-claw_anything:13
-```
-
-### 4. Build the OH-Ext runner image
-
-This image is **not** published to a registry — build it locally (one-time). It needs the [OpenHarnessExtended](https://github.com/LiberCoders/OpenHarnessExtended) source (branch `main-clawgui`) plus an `adb` binary baked in. When `OH_EXT_DIR` is unset the build **auto-clones** OH-Ext into `vendor/`, so the only thing you must supply is `ADB_PATH` — pointing at the **official** platform-tools `adb` downloaded in [step 2](#2-install-adb) (a self-contained binary; the distro `adb` that links `libadb.so.0` fails inside the slim image):
-
-```bash
-# Simplest — let the CLI drive the build script (env vars are inherited):
-ADB_PATH=$PWD/platform-tools/adb \
-  claw-anything build-image --agent openharness-ext   # → claw-anything-oh-ext:latest
-
-# Or call the script directly for full control (e.g. an already-cloned OH-Ext):
+# Full control — call the script directly:
 OH_EXT_DIR=$HOME/code/OpenHarnessExtended \
 ADB_PATH=$PWD/platform-tools/adb \
   scripts/build_oh_ext_image.sh
 ```
 
-### 5. Configure `config.yaml` and `oh-settings.json`
+#### `config.yaml` and `oh-settings.json` in full
 
-**`config.yaml`** — the orchestrator config. The `model` / `judge` blocks here are used for the **loop** agent and for the **LLM-judge grader**; the OH-Ext agent ignores `model` (it reads its own `--oh-settings`). Add an `android` block to enable auto-launch:
+**`config.yaml`** — the orchestrator config. The `model` / `judge` blocks here are used for the **loop** agent and for the **LLM-judge grader**; the OH-Ext agent ignores `model` (it reads its own `--oh-settings`):
 
 ```yaml
 model:                       # used by loop agent + (model_id only) for trace-dir naming
@@ -488,6 +415,7 @@ android:
 # (backend-agnostic — a static pool always wins over auto-launch):
 # android:
 #   emulator_pool: ["127.0.0.1:5555"]   # e.g. a redroid container you started by hand
+#                                       # TCP-shaped serials trigger `adb connect` before each trial
 ```
 
 **`oh-settings.json`** — the OH-Ext agent's self-contained config (copy [`examples/oh-settings.example.json`](examples/oh-settings.example.json)). This is where the **two model endpoints** go. The framework auto-fills `mobile_gui.device_serial` per trial and rewrites `localhost`→`host.docker.internal` for container mode, so you only supply the endpoints:
@@ -538,39 +466,7 @@ Both endpoints must be **reachable from the trial container** via `host.docker.i
 >   --limit-mm-per-prompt '{"image": 5}'
 > ```
 
-### 6. Run the evaluation
-
-```bash
-# ── A single GUI task (smoke test) ──────────────────────────────────────
-claw-anything run \
-  --task benchmark/gui/TGUI01_myexpenses_overbudget_finance_email \
-  --config config.yaml \
-  --agent openharness-ext \
-  --trial-in-container \
-  --oh-settings oh-settings.json
-
-# ── The full 200-task benchmark (skill + tool + gui) ───────────────────
-claw-anything batch \
-  --config config.yaml \
-  --oh-settings oh-settings.json \
-  --trials 3 \
-  --parallel 10
-
-# ── CLI subsets only (150 tasks; no emulator / oh-settings needed) ──────
-claw-anything batch --config config.yaml --cli-only --trials 3 --parallel 10
-
-# ── GUI subset only (50 tasks) ─────────────────────────────────────────
-claw-anything batch \
-  --tasks-dir benchmark/gui \
-  --config config.yaml \
-  --agent openharness-ext \
-  --oh-settings oh-settings.json \
-  --trials 3 --parallel 4         # parallel ≤ android.auto_launch_count (one device per worker)
-```
-
-For batch GUI runs, set `android.auto_launch_count` to at least `--parallel` so every worker gets its own device. A healthy run logs the pool starting/booting at the start (`[emu-pool] booted: …` for `kvm`, `[redroid-pool] ready (rooted): …` for `redroid`) and `… stop_all: removed N container(s)` at the end; a per-trial score block prints `completion / robustness / communication / safety / task_score / passed`.
-
-### 7. Clean up
+#### Clean up
 
 `claw-anything cleanup` removes both the trial containers (`app=claw-anything`) and any leaked device containers (`app=claw-anything-emu`, used by both the `kvm` and `redroid` pools). The pool already tears its containers down in a `finally` block, so cleanup is only needed after a hard crash / `Ctrl-C`.
 
@@ -578,7 +474,7 @@ For batch GUI runs, set `android.auto_launch_count` to at least `--parallel` so 
 claw-anything cleanup
 ```
 
-### Troubleshooting
+#### Troubleshooting
 
 | Symptom | Cause / fix |
 |---|---|
@@ -587,6 +483,37 @@ claw-anything cleanup
 | Trial container can't reach the model | `base_url` points at `localhost` but the model only binds `127.0.0.1`. Bridge it onto the docker gateway `172.17.0.1`, or bind the server on `0.0.0.0`. |
 | `adb connect` fails inside the trial | The emulator's adb is bound to `127.0.0.1` in its container; the launcher expects it reachable on `host.docker.internal:<port>`. Ensure the host-port mapping (or bridge) exposes it on `0.0.0.0`. |
 
+### 3. Generate your own tasks
+
+The two-phase pipeline turns a single persona YAML into a fully populated digital world plus eval tasks with executable graders — the same pipeline that produced the 2,000 released training environments.
+
+```bash
+# Phase 1 — build a gold environment from a persona
+claw-anything build-persona \
+  --persona personas/sarah_chen_pm_persona.yaml \
+  --seed-tasks seed_tasks/ \
+  --rounds 30 \
+  --seed-noise seed_noise/ \
+  --noise-ratio 2 \
+  --output gold_envs/sarah_chen_pm/ \
+  --config config.yaml
+
+# Phase 2 — generate eval tasks from the gold environment
+claw-anything gen-eval \
+  --env gold_envs/sarah_chen_pm/ \
+  --seed-tasks seed_tasks/ \
+  --output gen_tasks/sarah_chen_pm_simple/ \
+  --max-tasks 20 \
+  --difficulty simple \
+  --execution-date 2026-04-03 \
+  --config config.yaml
+
+# Then evaluate the generated tasks
+claw-anything batch \
+  --tasks-dir gen_tasks/sarah_chen_pm_simple/ \
+  --config config.yaml \
+  --trials 3 --parallel 10
+```
 
 ### 🛠️ Extra Command
 
@@ -640,13 +567,6 @@ template/               # task.yaml / grader.py templates for authors
 docs/                   # task authoring guides
 ```
 
-
-## ✍️ Authoring Tasks
-
-- Hand-written tasks: copy `template/task_template.yaml` + `template/grader_template.py` and adapt them.
-- Generated tasks: use the [two-phase pipeline](#generate-your-own-tasks) instead of writing tasks by hand.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow. Bug fixes, new mock services, additional seed tasks, and persona templates are all welcome.
 
 ## 🙏 Acknowledgments
 
