@@ -356,6 +356,9 @@ judge:                       # 通信质量评分用的 LLM-as-judge
 agent:
   agent_type: loop           # CLI 默认；GUI 运行在命令行上覆盖成 openharness-ext
 
+logging:
+  llm_log: false             # 默认关闭；设为 true 可留存每一次 LLM 交互（见下方说明）
+
 # ── Android 设备——二选一后端块 ──
 
 # (a) KVM 模拟器（默认；需要 /dev/kvm）
@@ -380,6 +383,8 @@ android:
 #   emulator_pool: ["127.0.0.1:5555"]   # 例如你手动起的一个 redroid 容器
 #                                       # TCP 形式的序列号会在 trial 前 `adb connect`
 ```
+
+> **留存每一次 LLM 交互（`logging.llm_log`）** —— 默认关闭。设 `logging.llm_log: true`（或导出 `CLAW_ANYTHING_LLM_LOG=1`，env 优先级高于 config）即可把**每一次** LLM 调用的完整请求/响应落盘到 `<trace_dir>/.../llm_logs/<source>.jsonl`，按来源分文件：`runner.jsonl`（agent 逐步调用）、`judge.jsonl`（LLM-judge 评分器）、以及任务生成管线（`analyzer`、`task_generator`、`grader_generator`…）。每条记录都带着发送的完整 `messages` 和模型的原始 `response`。适合**逐轮观察 agentic 过程**、调试工具调用、统计 token 用量，或**采集 (输入, 输出) 对来训练/蒸馏你自己的 agent 或 judge 模型**。之所以默认关闭，是因为这些 payload 会很快变得很大，而大多数评测run 并不需要它们。
 
 **`oh-settings.json`** —— OH-Ext agent 自包含的配置（复制 [`examples/oh-settings.example.json`](examples/oh-settings.example.json)）。**两个模型端点**写在这里。框架会在每个 trial 自动填 `mobile_gui.device_serial`、并在容器模式下把 `localhost`→`host.docker.internal` 改写好，所以你只需提供端点：
 

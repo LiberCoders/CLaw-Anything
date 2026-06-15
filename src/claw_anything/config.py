@@ -62,6 +62,20 @@ class DefaultsConfig(BaseModel):
     tasks_dir: str = "tasks"
 
 
+class LoggingConfig(BaseModel):
+    """Diagnostic logging toggles.
+
+    ``llm_log`` controls whether raw LLM request/response payloads are persisted
+    to ``llm_logs/<source>.jsonl`` (used for API usage accounting). It is
+    **disabled by default** so open-source users don't accumulate large payload
+    dumps they didn't ask for. Set ``logging.llm_log: true`` in your local
+    ``config.yaml`` to turn it on, or override per-run with the environment
+    variable ``CLAW_ANYTHING_LLM_LOG=1`` (the env var, if set, wins over config).
+    """
+
+    llm_log: bool = False
+
+
 class ContainerConfig(BaseModel):
     """Container resource limits for ``--trial-in-container`` Docker execution.
 
@@ -236,6 +250,23 @@ class Config(BaseModel):
     prompt: PromptConfig = PromptConfig()
     agent: AgentConfig = AgentConfig()
     android: AndroidConfig = AndroidConfig()
+    logging: LoggingConfig = LoggingConfig()
+
+
+def _apply_llm_log_toggle(cfg: Config) -> None:
+    """Publish ``logging.llm_log`` to the process environment.
+
+    ``llm_logger.log_llm_call`` gates on ``CLAW_ANYTHING_LLM_LOG`` rather than on
+    the Config object, because it is called from places (gen subprocesses, the
+    in-container ``claw-anything run``) that don't thread the Config through. By
+    exporting the resolved value here — the one place every entry point already
+    funnels through — those contexts inherit the setting for free. An explicit
+    ``CLAW_ANYTHING_LLM_LOG`` already in the environment wins and is left alone,
+    so an ad-hoc run can override config without editing the YAML.
+    """
+    if "CLAW_ANYTHING_LLM_LOG" in os.environ:
+        return
+    os.environ["CLAW_ANYTHING_LLM_LOG"] = "1" if cfg.logging.llm_log else "0"
 
 
 def load_config(path: str | Path | None = None) -> Config:
@@ -254,6 +285,10 @@ def load_config(path: str | Path | None = None) -> Config:
             with open(p) as f:
                 raw = yaml.safe_load(f) or {}
             expanded = _walk_expand(raw)
-            return Config.model_validate(expanded)
+            cfg = Config.model_validate(expanded)
+            _apply_llm_log_toggle(cfg)
+            return cfg
 
-    return Config()
+    cfg = Config()
+    _apply_llm_log_toggle(cfg)
+    return cfg

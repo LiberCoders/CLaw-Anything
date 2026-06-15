@@ -393,6 +393,9 @@ judge:                       # LLM-as-judge for communication-quality scoring
 agent:
   agent_type: loop           # CLI default; GUI runs override to openharness-ext on the command line
 
+logging:
+  llm_log: false             # off by default; set true to persist every LLM interaction (see note below)
+
 # ── Android device — pick ONE backend block ──
 
 # (a) KVM emulator (default; requires /dev/kvm)
@@ -417,6 +420,8 @@ android:
 #   emulator_pool: ["127.0.0.1:5555"]   # e.g. a redroid container you started by hand
 #                                       # TCP-shaped serials trigger `adb connect` before each trial
 ```
+
+> **Logging every LLM interaction (`logging.llm_log`)** — off by default. Set `logging.llm_log: true` (or export `CLAW_ANYTHING_LLM_LOG=1`, which overrides the config) to persist the full request/response payload of **every** LLM call to `<trace_dir>/.../llm_logs/<source>.jsonl`, one file per source: `runner.jsonl` (the agent's step-by-step calls), `judge.jsonl` (the LLM-judge grader), and the task-generation pipeline (`analyzer`, `task_generator`, `grader_generator`, …). Each record carries the exact `messages` sent and the model's raw `response`. Useful for **inspecting the agentic process** turn-by-turn, debugging tool calls, accounting for token usage, or **harvesting (input, output) pairs to train/distill your own agent or judge model**. It is opt-in because these payloads grow large quickly and most eval runs don't need them.
 
 **`oh-settings.json`** — the OH-Ext agent's self-contained config (copy [`examples/oh-settings.example.json`](examples/oh-settings.example.json)). This is where the **two model endpoints** go. The framework auto-fills `mobile_gui.device_serial` per trial and rewrites `localhost`→`host.docker.internal` for container mode, so you only supply the endpoints:
 

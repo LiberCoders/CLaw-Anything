@@ -31,6 +31,12 @@ agent:
 defaults:
   trace_dir: traces
 
+# Persist raw LLM request/response payloads to llm_logs/<source>.jsonl.
+# Off by default; only needed for API usage accounting. Enable here, or per-run
+# with the env var CLAW_ANYTHING_LLM_LOG=1 (the env var wins over this setting).
+# logging:
+#   llm_log: true
+
 # container:
 #   memory_limit: 4g
 #   cpu_limit: 2.0

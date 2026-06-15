@@ -274,9 +274,20 @@ class _OHStreamPrinter:
 
         # Per-turn buffer; flushed on the NEXT assistant_complete or on close.
         self._cur_turn_record: dict | None = None
+        self._response_log: Path | None = None
         try:
-            from claw_anything.llm_logger import _get_log_dir as _claw_log_dir
-            self._response_log: Path | None = _claw_log_dir() / "oh_responses.jsonl"
+            from claw_anything.llm_logger import (
+                _get_log_dir as _claw_log_dir,
+                is_llm_log_enabled,
+            )
+            # Gated by the same CLAW_ANYTHING_LLM_LOG toggle as the central
+            # llm_logs payload dump: off by default. This is a pure diagnostic
+            # side channel (write-only; never read by grading) — disabling it
+            # does not affect evaluation, only operator request/response
+            # visibility. Console output + oh_stream.jsonl remain the source of
+            # truth either way.
+            if is_llm_log_enabled():
+                self._response_log = _claw_log_dir() / "oh_responses.jsonl"
         except Exception:
             # LLM_LOG_DIR unwritable etc. — silently disable the side channel;
             # console + oh_stream.jsonl remain the source of truth.

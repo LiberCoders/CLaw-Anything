@@ -22,6 +22,19 @@ _LOG_DIR: Path | None = None
 _lock = threading.Lock()
 _file_locks: dict[str, threading.Lock] = {}
 
+_TRUTHY = {"1", "true", "yes", "on"}
+
+
+def is_llm_log_enabled() -> bool:
+    """Whether raw LLM request/response payloads should be persisted.
+
+    Gated by the ``CLAW_ANYTHING_LLM_LOG`` env var (set from ``logging.llm_log``
+    in config by ``config._apply_llm_log_toggle``). Defaults to disabled so the
+    open-source default is "no payload dumps" — usage-accounting users opt in via
+    ``logging.llm_log: true`` or ``CLAW_ANYTHING_LLM_LOG=1``.
+    """
+    return os.environ.get("CLAW_ANYTHING_LLM_LOG", "").strip().lower() in _TRUTHY
+
 
 def _get_log_dir() -> Path:
     global _LOG_DIR
@@ -110,6 +123,8 @@ def log_llm_call(
         source: Log file name prefix (e.g. "runner", "judge", "gen_task").
         request_type: API endpoint type, typically "messages".
     """
+    if not is_llm_log_enabled():
+        return
     try:
         # Build request dict — always include messages
         request_dict = {}
