@@ -278,13 +278,19 @@ def _render_tool_registration(
     *, tool_name: str, description: str, endpoint_url: str, method: str, input_schema: dict
 ) -> str:
     """Render one module-level assignment that the OH plugin loader will discover."""
+    # NOTE: input_schema is rendered with repr(), NOT json.dumps(). json.dumps
+    # emits JSON literals (true/false/null) which are NOT valid Python and make
+    # the generated module raise NameError on import (e.g. skill mode's
+    # ``additionalProperties: True`` → ``true`` → the whole clawanything plugin
+    # silently fails to load, so the agent sees zero claw-anything tools). repr()
+    # produces a valid Python literal for any JSON-derived dict/list/str/num/bool/None.
     return (
         f"{_safe_attr_name(tool_name)} = _make_tool_class(\n"
         f"    tool_name={json.dumps(tool_name, ensure_ascii=False)},\n"
         f"    tool_description={json.dumps(description, ensure_ascii=False)},\n"
         f"    endpoint_url={json.dumps(endpoint_url)},\n"
         f"    method={json.dumps(method)},\n"
-        f"    input_schema={json.dumps(input_schema, ensure_ascii=False)},\n"
+        f"    input_schema={input_schema!r},\n"
         f")\n"
     )
 
@@ -336,7 +342,11 @@ def _render_skill_mode_get_tool_schema(task: TaskDefinition) -> str:
         },
         ensure_ascii=False,
     )
-    schemas_src = json.dumps(all_schemas, ensure_ascii=False, indent=4)
+    # repr(), not json.dumps(): this is embedded as a Python dict *literal* in
+    # the generated source. A task schema containing a JSON bool/null
+    # (additionalProperties: false, "default": true, …) would otherwise emit
+    # true/false/null and break the module import. See _render_tool_registration.
+    schemas_src = repr(all_schemas)
     return (
         f"\n_SKILL_MODE_SCHEMAS = {schemas_src}\n"
         "\n\n"
@@ -390,17 +400,20 @@ def _render_generated_tools(task: TaskDefinition, skill_mode: bool = False) -> s
             # would need a different backend; the LLM will see them missing.
             continue
         if skill_mode:
-            # Expose only the tool name; schema is available via get_tool_schema.
-            # Empty input_schema ({}) makes OH send "parameters": {} instead of
-            # the full {"type": "object", "properties": {}}, saving a few tokens
-            # per tool in the API request.
+            # Expose only the tool name; the real properties stay hidden behind
+            # get_tool_schema. The declared schema must still be a *valid* empty
+            # object schema — an empty {} serializes to inputSchema.properties=null,
+            # which Bedrock-backed Claude rejects ("$.properties: null found,
+            # object expected"), failing the whole request before any turn.
+            # additionalProperties keeps the call permissive once the agent has
+            # learned the real args via get_tool_schema.
             lines.append(
                 _render_tool_registration(
                     tool_name=spec.name,
                     description="",
                     endpoint_url=ep.url,
                     method=ep.method,
-                    input_schema={},
+                    input_schema={"type": "object", "properties": {}, "additionalProperties": True},
                 )
             )
         else:

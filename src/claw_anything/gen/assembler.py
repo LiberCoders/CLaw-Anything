@@ -205,13 +205,21 @@ class TaskAssembler:
             scoring_components = [e for e in scoring_components if not _refs_dropped_tool(e)]
             safety_checks = [e for e in safety_checks if not _refs_dropped_tool(e)]
 
-        # Compute the actual task dir path relative to CWD (e.g. gen_tasks/E_li_ming_10/T01_T01_xxx)
-        task_rel_path = str(Path(output_dir) / task_id) if output_dir else f"gen_tasks/{task_id}"
+        # Mock-service fixture env values (``*_FIXTURES``) must be RELATIVE to
+        # the task dir (e.g. ``fixtures/gmail/inbox.json``). ServiceManager
+        # resolves a ``fixtures/…`` value against task_dir in BOTH host and
+        # trial-in-container mode (see runner/services.py). Emitting the
+        # repo-rooted path (``gen_tasks/<env>/<task>/fixtures/…``) instead only
+        # happens to resolve in host mode run from the repo root, and breaks
+        # trial-in-container runs where that path doesn't exist in the snapshot.
         for svc in services:
             env_dict = svc.get("env", {})
             for key, val in env_dict.items():
                 if isinstance(val, str) and "TEMPLATE_TASK" in val:
-                    env_dict[key] = val.replace("gen_tasks/TEMPLATE_TASK", task_rel_path)
+                    env_dict[key] = (
+                        val.replace("gen_tasks/TEMPLATE_TASK/", "")
+                           .replace("gen_tasks/TEMPLATE_TASK", ".")
+                    )
 
         # Derive the fixtures list from the surviving services so new services
         # are picked up automatically and dropped ones are omitted. Include
