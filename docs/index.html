@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claw-Anything · Leaderboard</title>
+<meta name="description" content="Claw-Anything — benchmarking always-on personal assistant agents with broad access to the user's digital world.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* deep, composed midnight palette */
+    --bg:        #0a0e17;
+    --bg-soft:   #0e1320;
+    --panel:     #121829;
+    --panel-2:   #161d31;
+    --line:      #232c44;
+    --line-soft: #1a2236;
+    --text:      #e8edf7;
+    --muted:     #93a0bd;
+    --faint:     #6b7794;
+
+    --amber:     #f0a83c;   /* warm "claw" accent */
+    --amber-2:   #ffcf6b;
+    --teal:      #2dd4bf;   /* open-source */
+    --violet:    #a78bfa;   /* closed-source */
+    --indigo:    #6f8cff;   /* ours / primary */
+    --rose:      #fb7185;
+
+    --gold:      #ffcf6b;
+    --ours-bg:   rgba(111,140,255,.10);
+    --ours-line: #6f8cff;
+
+    --radius:    16px;
+    --shadow:    0 24px 60px -28px rgba(0,0,0,.75);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ambient animated aurora background */
+  .aurora {
+    position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    background:
+      radial-gradient(680px 520px at 8% -6%,  rgba(111,140,255,.18), transparent 60%),
+      radial-gradient(620px 520px at 95% 4%,  rgba(167,139,250,.14), transparent 58%),
+      radial-gradient(720px 620px at 50% 112%, rgba(45,212,191,.12), transparent 60%),
+      radial-gradient(520px 420px at 78% 70%, rgba(240,168,60,.08), transparent 60%);
+    animation: drift 26s ease-in-out infinite alternate;
+  }
+  @keyframes drift { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(0,-22px,0) scale(1.06); } }
+  .grid-fade {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .5;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size: 52px 52px;
+    -webkit-mask-image: radial-gradient(900px 700px at 50% 0%, #000 30%, transparent 78%);
+            mask-image: radial-gradient(900px 700px at 50% 0%, #000 30%, transparent 78%);
+  }
+
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 22px; }
+
+  /* ───────── nav ───────── */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: rgba(10,14,23,.72);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -.2px; }
+  .brand .paw { font-size: 19px; filter: drop-shadow(0 0 10px rgba(240,168,60,.5)); }
+  .brand .live { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--teal);
+    background: rgba(45,212,191,.1); border: 1px solid rgba(45,212,191,.25); padding: 3px 9px; border-radius: 999px; margin-left: 4px; }
+  .brand .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 0 rgba(45,212,191,.55); animation: pulse 2s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(45,212,191,.5);} 70% { box-shadow: 0 0 0 7px rgba(45,212,191,0);} 100% { box-shadow: 0 0 0 0 rgba(45,212,191,0);} }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 13.5px; font-weight: 500;
+    padding: 7px 14px; border-radius: 9px; transition: color .18s, background .18s;
+  }
+  .nav-links a:hover { color: var(--text); background: rgba(255,255,255,.05); }
+  .nav-links a.active { color: var(--text); background: rgba(111,140,255,.14); }
+  .nav-cta {
+    color: var(--text); text-decoration: none; font-size: 13px; font-weight: 600;
+    padding: 7px 15px; border-radius: 9px; border: 1px solid var(--line);
+    transition: border-color .18s, transform .18s; display: inline-flex; gap: 7px; align-items: center;
+  }
+  .nav-cta:hover { border-color: var(--indigo); transform: translateY(-1px); }
+  @media (max-width: 720px){ .nav-links { display: none; } }
+
+  /* ───────── hero ───────── */
+  header { text-align: center; padding: 76px 0 30px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600;
+    color: var(--amber-2); letter-spacing: .4px;
+    background: rgba(240,168,60,.08); border: 1px solid rgba(240,168,60,.22);
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 22px;
+  }
+  h1 {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(34px, 6vw, 60px); font-weight: 700; line-height: 1.04; letter-spacing: -1.4px;
+  }
+  h1 .grad {
+    background: linear-gradient(100deg, #6f8cff 0%, #a78bfa 38%, #2dd4bf 70%, #f0a83c 100%);
+    background-size: 220% auto;
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    animation: shimmer 9s linear infinite;
+  }
+  @keyframes shimmer { to { background-position: 220% center; } }
+  .tagline { color: var(--muted); margin: 22px auto 0; max-width: 720px; font-size: 17px; }
+  .tagline b { color: var(--text); font-weight: 600; }
+  .hero-cta { display: flex; gap: 12px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+  .btn {
+    text-decoration: none; font-size: 14px; font-weight: 600; padding: 11px 22px; border-radius: 11px;
+    display: inline-flex; align-items: center; gap: 8px; transition: transform .18s, box-shadow .18s, border-color .18s;
+  }
+  .btn.primary { color: #0a0e17; background: linear-gradient(100deg, var(--amber-2), var(--amber)); box-shadow: 0 12px 30px -12px rgba(240,168,60,.6); }
+  .btn.primary:hover { transform: translateY(-2px); box-shadow: 0 18px 36px -12px rgba(240,168,60,.7); }
+  .btn.ghost { color: var(--text); border: 1px solid var(--line); background: rgba(255,255,255,.02); }
+  .btn.ghost:hover { transform: translateY(-2px); border-color: var(--indigo); }
+
+  /* ───────── stat strip ───────── */
+  .stats {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px;
+    background: var(--line-soft); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); overflow: hidden; margin: 46px 0 12px; box-shadow: var(--shadow);
+  }
+  .stat { background: linear-gradient(180deg, var(--panel), var(--bg-soft)); padding: 22px 16px; text-align: center; }
+  .stat .v { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 27px; letter-spacing: -.5px;
+    background: linear-gradient(180deg, #fff, #aebbe0); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .stat .l { color: var(--faint); font-size: 11.5px; margin-top: 6px; text-transform: uppercase; letter-spacing: .5px; }
+  @media (max-width: 860px){ .stats { grid-template-columns: repeat(3,1fr); } }
+  @media (max-width: 460px){ .stats { grid-template-columns: repeat(2,1fr); } }
+
+  /* ───────── section scaffolding ───────── */
+  section { padding: 60px 0 8px; }
+  .sec-head { margin-bottom: 26px; }
+  .sec-kicker { color: var(--indigo); font-size: 12.5px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; }
+  .sec-title { font-family: "Space Grotesk", sans-serif; font-size: 30px; font-weight: 700; letter-spacing: -.7px; margin-top: 8px; }
+  .sec-sub { color: var(--muted); margin-top: 10px; max-width: 760px; font-size: 15px; }
+
+  /* ───────── dimension cards ───────── */
+  .dims { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  @media (max-width: 820px){ .dims { grid-template-columns: 1fr; } }
+  .dim {
+    background: linear-gradient(180deg, var(--panel), var(--bg-soft));
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 24px;
+    position: relative; overflow: hidden; transition: transform .2s, border-color .2s;
+  }
+  .dim:hover { transform: translateY(-4px); border-color: var(--line); }
+  .dim::before { content:""; position:absolute; inset:0 0 auto 0; height:3px; background: var(--g, var(--indigo)); opacity:.8; }
+  .dim .ic { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; font-size: 22px; margin-bottom: 16px;
+    background: rgba(255,255,255,.04); border: 1px solid var(--line); }
+  .dim h3 { font-family: "Space Grotesk", sans-serif; font-size: 18px; font-weight: 600; }
+  .dim p { color: var(--muted); font-size: 14px; margin-top: 9px; }
+  .dim .tag { display:inline-block; margin-top: 14px; font-size: 12px; color: var(--text); font-weight:600;
+    background: rgba(255,255,255,.05); border:1px solid var(--line); padding:4px 10px; border-radius:999px; }
+
+  /* ───────── controls ───────── */
+  .controls { display:flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 18px; }
+  .seg { display:flex; gap: 6px; background: var(--panel); border:1px solid var(--line); border-radius: 12px; padding: 5px; }
+  .seg button {
+    background: transparent; color: var(--muted); border: none; cursor: pointer;
+    font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; transition: all .16s;
+    font-family: inherit; display:inline-flex; align-items:center; gap:7px;
+  }
+  .seg button:hover { color: var(--text); }
+  .seg button.active { color: #0a0e17; background: linear-gradient(100deg, var(--amber-2), var(--amber)); }
+  .seg.cool button.active { color: #fff; background: linear-gradient(100deg, var(--indigo), var(--violet)); }
+
+  /* ───────── table ───────── */
+  .table-card {
+    background: linear-gradient(180deg, var(--panel), var(--bg-soft));
+    border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+  }
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 640px; }
+  thead th {
+    background: rgba(255,255,255,.025); color: var(--faint);
+    font-family: "Space Grotesk", sans-serif; font-weight: 600;
+    text-align: right; padding: 15px 13px; font-size: 11.5px; text-transform: uppercase; letter-spacing: .5px;
+    cursor: pointer; user-select: none; white-space: nowrap; border-bottom: 1px solid var(--line);
+    transition: color .16s; position: sticky; top: 0;
+  }
+  thead th:first-child, thead th.lft { text-align: left; }
+  thead th:first-child { padding-left: 18px; } thead th:last-child { padding-right: 18px; }
+  thead th:hover { color: var(--amber-2); }
+  thead th .arrow { opacity: .35; font-size: 9px; margin-left: 4px; }
+  thead th.sorted { color: var(--amber-2); }
+  thead th.sorted .arrow { opacity: 1; }
+  tbody td { padding: 14px 13px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--line-soft); }
+  tbody td:first-child { padding-left: 18px; } tbody td:last-child { padding-right: 18px; }
+  tbody td:first-child, tbody td.lft { text-align: left; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr { transition: background .14s; }
+  tbody tr:hover { background: rgba(255,255,255,.03); }
+  tbody tr.ours { background: var(--ours-bg); box-shadow: inset 3px 0 0 var(--ours-line); }
+  tbody tr.ours:hover { background: rgba(111,140,255,.16); }
+
+  .rank { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 9px;
+    background: rgba(255,255,255,.05); font-family:"Space Grotesk",sans-serif; font-size: 13px; font-weight: 700; color: var(--muted); border:1px solid var(--line); }
+  .rank.r1 { background: linear-gradient(160deg,#ffd97a,#f0a83c); color:#3a2600; border-color:transparent; box-shadow:0 4px 14px -4px rgba(240,168,60,.6);}
+  .rank.r2 { background: linear-gradient(160deg,#e3e9f5,#aab6cf); color:#1d2335; border-color:transparent;}
+  .rank.r3 { background: linear-gradient(160deg,#e6a878,#c07b46); color:#2a1500; border-color:transparent;}
+
+  .model-name { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 14.5px; }
+  .badge { display:inline-block; font-size: 10.5px; padding: 2px 8px; border-radius: 6px; margin-left: 9px; font-weight: 700; vertical-align: middle; letter-spacing:.4px; }
+  .badge.open   { background: rgba(45,212,191,.14); color: var(--teal); border:1px solid rgba(45,212,191,.3); }
+  .badge.closed { background: rgba(167,139,250,.14); color: var(--violet); border:1px solid rgba(167,139,250,.3); }
+  .badge.ours   { background: linear-gradient(100deg,var(--indigo),var(--violet)); color:#fff; }
+
+  .num { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); }
+  .best { color: var(--gold); font-weight: 700; position: relative; }
+  .best::after { content:"★"; font-size: 9px; margin-left: 4px; vertical-align: super; opacity:.8; }
+  .params { color: var(--muted); }
+
+  .barcell { display: flex; align-items: center; gap: 10px; justify-content: flex-start; }
+  .barval { min-width: 38px; text-align: left; font-weight: 600; }
+  .bar { width: 84px; height: 7px; background: rgba(255,255,255,.06); border-radius: 4px; overflow: hidden; flex: none; }
+  .bar i { display: block; height: 100%; border-radius: 4px; width: 0; transition: width 1s cubic-bezier(.22,1,.36,1); }
+
+  /* ───────── findings ───────── */
+  .finds { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  @media (max-width: 820px){ .finds { grid-template-columns: 1fr; } }
+  .find { background: linear-gradient(180deg, var(--panel), var(--bg-soft)); border:1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+  .find .big { font-family:"Space Grotesk",sans-serif; font-weight:700; font-size: 40px; letter-spacing:-1px; line-height:1; }
+  .find .big.amber { color: var(--amber-2); } .find .big.indigo { color: var(--indigo); } .find .big.rose { color: var(--rose); }
+  .find h4 { font-size: 15px; margin-top: 12px; font-weight: 600; }
+  .find p { color: var(--muted); font-size: 13.5px; margin-top: 8px; }
+
+  .callout {
+    margin-top: 18px; background: linear-gradient(100deg, rgba(111,140,255,.08), rgba(45,212,191,.06));
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; display:flex; gap:16px; align-items:flex-start;
+  }
+  .callout .ic { font-size: 24px; }
+  .callout b { color: var(--text); }
+  .callout p { color: var(--muted); font-size: 14px; }
+
+  /* ───────── footer ───────── */
+  .metric-note { margin: 22px 2px 0; font-size: 12.5px; color: var(--faint); display:flex; gap: 22px; flex-wrap: wrap; }
+  .metric-note span b { color: var(--muted); }
+  footer { border-top: 1px solid var(--line-soft); margin-top: 70px; padding: 36px 0 50px; }
+  footer .wrap { display:flex; justify-content: space-between; align-items:center; gap:20px; flex-wrap:wrap; color: var(--faint); font-size: 13px; }
+  footer code { font-family:"JetBrains Mono",monospace; color: var(--muted); background: rgba(255,255,255,.04); padding:2px 7px; border-radius:6px; font-size:12px; }
+  footer a { color: var(--muted); text-decoration: none; } footer a:hover { color: var(--amber-2); }
+
+  /* reveal-on-scroll */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .aurora, h1 .grad, .brand .dot { animation: none; }
+    .reveal { transition: none; opacity:1; transform:none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<div class="grid-fade"></div>
+
+<!-- ───────── NAV ───────── -->
+<nav>
+  <div class="wrap">
+    <div class="brand">
+      <span class="paw">🐾</span> Claw&#8209;Anything
+      <span class="live"><span class="dot"></span>always&#8209;on</span>
+    </div>
+    <div class="nav-links">
+      <a href="#home">Overview</a>
+      <a href="#leaderboard">Leaderboard</a>
+      <a href="#benchmark">Benchmark</a>
+      <a href="#findings">Findings</a>
+    </div>
+    <span style="display:flex;gap:8px">
+      <a class="nav-cta" href="https://github.com/LiberCoders/Claw-Anything" target="_blank" rel="noopener">★ GitHub</a>
+      <a class="nav-cta" href="https://arxiv.org/abs/2605.26086" target="_blank" rel="noopener">📄 Paper</a>
+    </span>
+  </div>
+</nav>
+
+<!-- ───────── HERO ───────── -->
+<header id="home" class="wrap">
+  <span class="eyebrow">✦ Benchmarking Personal Assistant Agents</span>
+  <h1>Benchmarking the <span class="grad">always&#8209;on assistant</span><br>across the user's digital world</h1>
+  <p class="tagline">
+    Claw&#8209;Anything places agents in a <b>context&#8209;rich, noisy digital life</b> — months of activity,
+    dozens of interdependent services, and coordinated <b>CLI&nbsp;+&nbsp;GUI</b> action across devices.
+    Even the strongest frontier model passes only <b>34.5%</b> of tasks on the first try.
+  </p>
+  <div class="hero-cta">
+    <a class="btn primary" href="#leaderboard">View the leaderboard →</a>
+    <a class="btn ghost" href="https://arxiv.org/abs/2605.26086" target="_blank" rel="noopener">📄 Read the paper</a>
+    <a class="btn ghost" href="https://github.com/LiberCoders/Claw-Anything" target="_blank" rel="noopener">★ GitHub</a>
+  </div>
+
+  <!-- stat strip -->
+  <div class="stats reveal">
+    <div class="stat"><div class="v" data-count="200">0</div><div class="l">Eval Tasks</div></div>
+    <div class="stat"><div class="v" data-count="2000" data-suffix="+">0</div><div class="l">Train Envs</div></div>
+    <div class="stat"><div class="v" data-count="35">0</div><div class="l">Backend Services</div></div>
+    <div class="stat"><div class="v" data-count="9">0</div><div class="l">Task Categories</div></div>
+    <div class="stat"><div class="v" data-count="3" data-suffix=" mo">0</div><div class="l">Activity Horizon</div></div>
+    <div class="stat"><div class="v" data-count="10.1" data-dec="1">0</div><div class="l">Services / Task</div></div>
+  </div>
+</header>
+
+<!-- ───────── LEADERBOARD ───────── -->
+<section id="leaderboard" class="wrap">
+  <div class="sec-head reveal">
+    <div class="sec-kicker">Main Results</div>
+    <h2 class="sec-title">Frontier model leaderboard</h2>
+    <p class="sec-sub">
+      Open- and closed-source models evaluated under a unified <b>OpenHarness</b> scaffold for a fair, apples-to-apples
+      comparison. <b>★</b> marks the best result in each column. Click any header to re-sort; rows respect the active filter.
+    </p>
+  </div>
+
+  <div class="controls reveal">
+    <div class="seg" id="filters">
+      <button data-filter="all" class="active">All models</button>
+      <button data-filter="open">Open&#8209;source</button>
+      <button data-filter="closed">Closed&#8209;source</button>
+    </div>
+    <div class="seg cool" id="views">
+      <button data-view="overall" class="active">📊 Overview</button>
+      <button data-view="bytype">🖥️ By task type</button>
+    </div>
+  </div>
+
+  <div class="table-card reveal">
+    <div class="table-scroll">
+      <table id="lb">
+        <thead><tr></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="metric-note" id="note"></div>
+</section>
+
+<!-- ───────── BENCHMARK ───────── -->
+<section id="benchmark" class="wrap">
+  <div class="sec-head reveal">
+    <div class="sec-kicker">The Benchmark</div>
+    <h2 class="sec-title">Three dimensions of expanded context</h2>
+    <p class="sec-sub">
+      Existing benchmarks expose only a narrow slice of the user's world. Claw&#8209;Anything widens the agent's
+      perceptual scope along three axes — then injects realistic noise, conflicts, and distractions on top.
+    </p>
+  </div>
+
+  <div class="dims">
+    <div class="dim reveal" style="--g:linear-gradient(90deg,#6f8cff,#a78bfa)">
+      <div class="ic">🕒</div>
+      <h3>Long-horizon event streams</h3>
+      <p>Three+ months of fine-grained, system- and service-level activity logs connect past and present. Agents must mine task-relevant signals from <b>83.7k words</b> of history.</p>
+      <span class="tag">temporal reasoning</span>
+    </div>
+    <div class="dim reveal" style="--g:linear-gradient(90deg,#2dd4bf,#6f8cff)">
+      <div class="ic">🧩</div>
+      <h3>Interdependent services</h3>
+      <p>35 backend services span work, lifestyle and social spaces; an average task touches <b>10.1</b> of them. Masking cross-service tools collapses success to near zero.</p>
+      <span class="tag">cross-service coordination</span>
+    </div>
+    <div class="dim reveal" style="--g:linear-gradient(90deg,#f0a83c,#fb7185)">
+      <div class="ic">📱</div>
+      <h3>Multi-device CLI + GUI</h3>
+      <p>Tasks coordinate Linux CLI containers and Android GUI emulators. 50 of 200 eval tasks demand joint CLI+GUI action — by far the hardest split.</p>
+      <span class="tag">heterogeneous interfaces</span>
+    </div>
+  </div>
+
+  <div class="callout reveal">
+    <span class="ic">⚡</span>
+    <div>
+      <p><b>Reactive + proactive.</b> Beyond explicit requests, Claw&#8209;Anything adopts a heartbeat mechanism:
+      the agent periodically monitors the user's environment and must surface timely, contextually grounded
+      recommendations <b>without being prompted</b> — testing genuine always-on assistance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── FINDINGS ───────── -->
+<section id="findings" class="wrap">
+  <div class="sec-head reveal">
+    <div class="sec-kicker">Key Findings</div>
+    <h2 class="sec-title">A pronounced capability gap</h2>
+    <p class="sec-sub">Bringing the agent's perceptual scope closer to the user's makes the benchmark markedly harder — success now requires both accurate understanding of the environment <i>and</i> correct grounded action.</p>
+  </div>
+
+  <div class="finds">
+    <div class="find reveal">
+      <div class="big rose">34.5%</div>
+      <h4>Best Pass@1 (GPT-5.5)</h4>
+      <p>The strongest frontier model still fails roughly two-thirds of tasks on the first attempt — far below scores on prior, narrower benchmarks.</p>
+    </div>
+    <div class="find reveal">
+      <div class="big amber">20.0%</div>
+      <h4>Pass^3 ceiling</h4>
+      <p>Requiring success across all three independent trials, no model clears 20%. Reliability under broad context remains the core challenge.</p>
+    </div>
+    <div class="find reveal">
+      <div class="big indigo">+23.7%</div>
+      <h4>Gain from our pipeline</h4>
+      <p>Post-training Qwen3.5-27B on 1,500 trajectories from our auto-generated environments lifts Pass@1 by 23.7 points — rivalling closed-source frontiers.</p>
+    </div>
+  </div>
+
+  <div class="callout reveal" style="background:linear-gradient(100deg,rgba(251,113,133,.07),rgba(240,168,60,.06))">
+    <span class="ic">🔎</span>
+    <div>
+      <p><b>The investigation–execution gap.</b> Across every model, the dominant failure mode is the same:
+      agents <i>locate</i> the relevant context yet fail to translate that understanding into successful action.
+      Execution — not perception — is the primary bottleneck in broad, always-on digital environments.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── FOOTER ───────── -->
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="brand" style="margin-bottom:8px"><span class="paw">🐾</span> Claw&#8209;Anything</div>
+      Source: <code>paper/arxiv.tex</code> · <span id="src"></span>
+    </div>
+    <div style="text-align:right">
+      <a href="https://arxiv.org/abs/2605.26086" target="_blank" rel="noopener">📄 Paper</a> &nbsp;·&nbsp;
+      <a href="https://github.com/LiberCoders/Claw-Anything" target="_blank" rel="noopener">★ GitHub</a> &nbsp;·&nbsp;
+      <a href="https://huggingface.co/datasets/LiberCoders/Claw-Anything" target="_blank" rel="noopener">🤗 Dataset</a> &nbsp;·&nbsp;
+      <a href="#home">Back to top ↑</a><br>
+      <span style="font-size:12px;color:var(--faint)">Generated 2026-05-15</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const DATA = [
+  { model:"Qwen3.5-27B",                    cite:"qwen3p5",      type:"open",   params:"27B",  pn:27,    score:0.50, p1:9.8,  p3:19.0, pk:2.0,  tin:83.8,  tout:0.9, cli:10.0, cligui:9.3 },
+  { model:"MiniMax-M2.7",                   cite:"minimax_m27",  type:"open",   params:"229B", pn:229,   score:0.52, p1:13.5, p3:28.5, pk:3.5,  tin:79.0,  tout:1.1, cli:14.2, cligui:11.3 },
+  { model:"Qwen3.6-27B",                    cite:"qwen3p6-27b",  type:"open",   params:"27B",  pn:27,    score:0.58, p1:22.5, p3:42.0, pk:6.0,  tin:99.4,  tout:2.0, cli:24.0, cligui:18.0 },
+  { model:"Kimi-K2.6",                      cite:"kimi26",       type:"open",   params:"1.1T", pn:1100,  score:0.57, p1:22.8, p3:44.0, pk:6.5,  tin:178.1, tout:2.3, cli:27.3, cligui:9.3 },
+  { model:"GLM-5.1",                        cite:"GLM51",        type:"open",   params:"754B", pn:754,   score:0.59, p1:31.7, p3:47.0, pk:17.0, tin:125.0, tout:2.2, cli:36.9, cligui:16.0 },
+  { model:"Claw-Anything-Qwen3.5-27B",      cite:"ours",         type:"open",   params:"27B",  pn:27,    score:0.61, p1:33.5, p3:52.0, pk:15.5, tin:117.8, tout:1.1, ours:true, cli:38.4, cligui:18.7 },
+  { model:"Claude Sonnet 4.5",              cite:"sonnet45",     type:"closed", params:"—",    pn:1e9,   score:0.59, p1:28.0, p3:45.0, pk:12.0, tin:149.0, tout:1.5, cli:35.1, cligui:6.0 },
+  { model:"Claude Opus 4.7",                cite:"opus47",       type:"closed", params:"—",    pn:1e9,   score:0.62, p1:31.8, p3:48.0, pk:13.5, tin:123.5, tout:1.5, cli:40.0, cligui:7.3 },
+  { model:"GPT-5.5",                        cite:"openai_gpt55", type:"closed", params:"—",    pn:1e9,   score:0.65, p1:34.5, p3:53.5, pk:20.0, tin:77.7,  tout:0.9, cli:40.2, cligui:17.3 },
+];
+
+// Column definitions per view. higher = larger value is better (gets ★ highlight).
+const COLS = {
+  overall: [
+    { key:"rank",   label:"#",          lft:true },
+    { key:"model",  label:"Model",      lft:true,  sort:true },
+    { key:"p1",     label:"Pass@1",     lft:true, sort:true, higher:true, bar:true, fmt:d=>d.p1.toFixed(1) },
+    { key:"score",  label:"Score",      sort:true, higher:true, fmt:d=>d.score.toFixed(2) },
+    { key:"p3",     label:"Pass@3",     sort:true, higher:true, fmt:d=>d.p3.toFixed(1) },
+    { key:"pk",     label:"Pass^3",     sort:true, higher:true, fmt:d=>d.pk.toFixed(1) },
+    { key:"tin",    label:"Tokens In",  sort:true, fmt:d=>d.tin.toFixed(1)+"M" },
+    { key:"tout",   label:"Tokens Out", sort:true, fmt:d=>d.tout.toFixed(1)+"M" },
+  ],
+  bytype: [
+    { key:"rank",   label:"#",                    lft:true },
+    { key:"model",  label:"Model",                lft:true, sort:true },
+    { key:"cli",    label:"CLI-only · Pass@1",    lft:true, sort:true, higher:true, bar:true, fmt:d=>d.cli.toFixed(1) },
+    { key:"cligui", label:"CLI+GUI · Pass@1",     lft:true, sort:true, higher:true, bar:true, fmt:d=>d.cligui.toFixed(1) },
+    { key:"p1",     label:"Overall Pass@1",       sort:true, higher:true, fmt:d=>d.p1.toFixed(1) },
+  ],
+};
+
+const NOTE = {
+  overall: ['<span><b>Score</b> — continuous execution score</span>',
+            '<span><b>Pass@1 / @3</b> — pass within 1 / 3 attempts (%)</span>',
+            '<span><b>Pass^3</b> — all 3 independent trials pass (%)</span>',
+            '<span><b>Tokens</b> — input / output (millions)</span>'].join(""),
+  bytype:  ['<span><b>CLI-only</b> — 150 CLI tasks, Pass@1 (%)</span>',
+            '<span><b>CLI+GUI</b> — 50 cross-device tasks, Pass@1 (%)</span>',
+            '<span>Every model drops sharply on CLI+GUI vs. CLI-only</span>'].join(""),
+};
+const SRC = { overall: 'Table 2 — Main results (tab:main)', bytype: 'Appendix — CLI / CLI+GUI split (tab:guiper)' };
+
+let sortKey = "p1", sortDir = -1, filter = "all", view = "overall";  // default: rank by Pass@1 (desc)
+
+function render() {
+  const cols = COLS[view];
+  let rows = DATA.filter(d => filter === "all" || d.type === filter);
+  const bests = {};
+  cols.forEach(c => { if (c.higher) bests[c.key] = Math.max(...rows.map(d => d[c.key])); });
+  // per-bar max for proportional width (so the leader's bar fills nicely)
+  const barMax = {};
+  cols.forEach(c => { if (c.bar) barMax[c.key] = Math.max(...rows.map(d => d[c.key]), 1); });
+
+  if (!cols.some(c => c.key === sortKey)) { sortKey = "rank"; sortDir = -1; }
+
+  rows.sort((a,b) => {
+    if (sortKey === "model") return sortDir * String(a.model).localeCompare(String(b.model));
+    let va = a[sortKey], vb = b[sortKey];
+    if (sortKey === "params") { va = a.pn; vb = b.pn; }
+    if (sortKey === "rank")   { va = a.pk; vb = b.pk; }   // default order: by Pass^3
+    return sortDir * (va - vb);
+  });
+
+  // header
+  document.querySelector("#lb thead tr").innerHTML = cols.map(c => {
+    const isSorted = c.key === sortKey;
+    const arrow = c.sort ? ` <span class="arrow">${isSorted ? (sortDir===-1?"▼":"▲") : "▼"}</span>` : "";
+    return `<th data-key="${c.key}" class="${c.lft?'lft':''} ${isSorted?'sorted':''}" ${c.sort?'data-sort="1"':''}>${c.label}${arrow}</th>`;
+  }).join("");
+
+  // body
+  document.querySelector("#lb tbody").innerHTML = rows.map((d, i) => {
+    const rk = i + 1, rkCls = rk <= 3 ? `r${rk}` : "";
+    const badge = d.ours ? '<span class="badge ours">OURS</span>'
+      : d.type === "open" ? '<span class="badge open">OPEN</span>' : '<span class="badge closed">CLOSED</span>';
+    const tds = cols.map(c => {
+      if (c.key === "rank")  return `<td class="lft"><span class="rank ${rkCls}">${rk}</span></td>`;
+      if (c.key === "model") return `<td class="lft"><span class="model-name">${d.model}</span>${badge}</td>`;
+      if (c.key === "params") return `<td class="num params">${d.params}</td>`;
+      const isBest = c.higher && d[c.key] === bests[c.key];
+      if (c.bar) {
+        const pct = Math.max(0, (d[c.key] / barMax[c.key]) * 100);
+        const v = d[c.key];
+        const h = 8 + Math.min(v, 55) / 55 * (158 - 8);   // amber → teal as value rises
+        const grad = `linear-gradient(90deg,hsl(${h},78%,52%),hsl(${h+8},85%,64%))`;
+        return `<td class="num lft"><div class="barcell">
+                  <span class="bar"><i data-w="${pct.toFixed(1)}" style="background:${grad}"></i></span>
+                  <span class="barval ${isBest?'best':''}">${c.fmt(d)}</span>
+                </div></td>`;
+      }
+      return `<td class="num ${isBest?'best':''}">${c.fmt(d)}</td>`;
+    }).join("");
+    return `<tr class="${d.ours?'ours':''}">${tds}</tr>`;
+  }).join("");
+
+  // animate bars in
+  requestAnimationFrame(() => {
+    document.querySelectorAll('#lb .bar i').forEach(el => { el.style.width = el.dataset.w + '%'; });
+  });
+
+  document.getElementById("note").innerHTML = NOTE[view];
+  document.getElementById("src").textContent = SRC[view];
+}
+
+document.querySelector("#lb thead").addEventListener("click", e => {
+  const th = e.target.closest("th[data-sort]");
+  if (!th) return;
+  const k = th.dataset.key;
+  if (sortKey === k) sortDir *= -1;
+  else { sortKey = k; sortDir = (k === "model") ? 1 : -1; }
+  render();
+});
+
+document.querySelectorAll("#filters button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("#filters button").forEach(x => x.classList.remove("active"));
+  b.classList.add("active"); filter = b.dataset.filter; render();
+}));
+document.querySelectorAll("#views button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("#views button").forEach(x => x.classList.remove("active"));
+  b.classList.add("active"); view = b.dataset.view; render();
+}));
+
+render();
+
+/* ── reveal on scroll ── */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ── count-up stats ── */
+function countUp(el) {
+  const target = parseFloat(el.dataset.count);
+  const dec = parseInt(el.dataset.dec || "0", 10);
+  const suffix = el.dataset.suffix || "";
+  const dur = 1400; const t0 = performance.now();
+  function step(now) {
+    const p = Math.min((now - t0) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    const val = target * eased;
+    el.textContent = (dec ? val.toFixed(dec) : Math.round(val).toLocaleString()) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+    else el.textContent = (dec ? target.toFixed(dec) : Math.round(target).toLocaleString()) + suffix;
+  }
+  requestAnimationFrame(step);
+}
+const statIO = new IntersectionObserver((entries) => {
+  entries.forEach(en => { if (en.isIntersecting) { countUp(en.target); statIO.unobserve(en.target); } });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat .v[data-count]').forEach(el => statIO.observe(el));
+
+/* ── active nav link on scroll ── */
+const navMap = {};
+document.querySelectorAll('.nav-links a').forEach(a => navMap[a.getAttribute('href').slice(1)] = a);
+const secIO = new IntersectionObserver((entries) => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      Object.values(navMap).forEach(a => a.classList.remove('active'));
+      const a = navMap[en.target.id]; if (a) a.classList.add('active');
+    }
+  });
+}, { rootMargin: "-45% 0px -50% 0px" });
+['home','leaderboard','benchmark','findings'].forEach(id => { const s = document.getElementById(id); if (s) secIO.observe(s); });
+</script>
+</body>
+</html>
