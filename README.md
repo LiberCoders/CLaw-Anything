@@ -44,7 +44,7 @@ Claw-Anything operationalizes this view, evaluating always-on LLM agents across 
 
 
 ## News
-- 🏆 [2026-06-18] **Interactive leaderboard** is live → [libercoders.github.io/CLaw-Anything](https://libercoders.github.io/CLaw-Anything/)
+- 🏆 [2026-06-18] **Interactive leaderboard** is live → [libercoders.github.io/Claw-Anything](https://libercoders.github.io/Claw-Anything/)
 - 🛠️ [2026-06-01] Support CLI + GUI automatic evaluation.
 - 📄 [2026-05-26] The [arXiv](https://arxiv.org/pdf/2605.26086) preprint has been released.
 - 🚀 [2026-05-26] **Data pipeline** has been released — the two-stage `build-persona` → `gen-eval` flow scales to 2,000 training environments and powers the benchmark's data generation.
