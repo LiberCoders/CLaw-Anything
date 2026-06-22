@@ -9,7 +9,7 @@ import copy
 import json
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -20,7 +20,7 @@ from pydantic import BaseModel
 
 app = FastAPI(title="Mock Scheduler API")
 
-from mock_services._base import add_error_injection
+from mock_services._base import add_error_injection, frozen_now
 
 add_error_injection(app)
 
@@ -36,10 +36,115 @@ _updated_jobs: list[dict[str, Any]] = []
 _deleted_jobs: list[dict[str, Any]] = []
 
 
+def _parse_cron_field(spec: str, lo: int, hi: int) -> set[int] | None:
+    """Expand one standard-cron field into the set of matching integers.
+
+    Supports ``*``, ``*/n``, ``a-b``, ``a-b/n``, ``a,b,c`` and bare values.
+    Returns None on anything unparseable (caller then skips computation).
+    """
+    allowed: set[int] = set()
+    for part in spec.split(","):
+        part = part.strip()
+        if not part:
+            return None
+        step = 1
+        if "/" in part:
+            base, _, step_s = part.partition("/")
+            try:
+                step = int(step_s)
+            except ValueError:
+                return None
+            if step <= 0:
+                return None
+        else:
+            base = part
+        if base == "*":
+            start, end = lo, hi
+        elif "-" in base:
+            a_s, _, b_s = base.partition("-")
+            try:
+                start, end = int(a_s), int(b_s)
+            except ValueError:
+                return None
+        else:
+            try:
+                start = end = int(base)
+            except ValueError:
+                return None
+        if start > end or start < lo or end > hi:
+            return None
+        allowed.update(range(start, end + 1, step))
+    return allowed or None
+
+
+def _cron_next(cron_expr: str, anchor: datetime) -> str | None:
+    """Best-effort next fire time for a 5-field cron at/after ``anchor``.
+
+    Used only to backfill ``next_run`` for fixtures that never ship it. Returns
+    an ISO date-minute string, or None if the expression can't be parsed or no
+    match is found within ~13 months.
+    """
+    if not cron_expr or not cron_expr.strip():
+        return None
+    fields = cron_expr.split()
+    if len(fields) != 5:
+        return None
+    minute = _parse_cron_field(fields[0], 0, 59)
+    hour = _parse_cron_field(fields[1], 0, 23)
+    dom = _parse_cron_field(fields[2], 1, 31)
+    month = _parse_cron_field(fields[3], 1, 12)
+    dow = _parse_cron_field(fields[4], 0, 7)
+    if None in (minute, hour, dom, month, dow):
+        return None
+    dow = {0 if d == 7 else d for d in dow}  # cron: 7 and 0 both mean Sunday
+    dom_restricted = fields[2].strip() != "*"
+    dow_restricted = fields[4].strip() != "*"
+    # Start at the next whole minute.
+    t = anchor.replace(second=0, microsecond=0) + timedelta(minutes=1)
+    for _ in range(367 * 24 * 60):
+        if t.month in month and t.hour in hour and t.minute in minute:
+            d_ok = t.day in dom
+            w_ok = (t.weekday() + 1) % 7 in dow  # python Mon=0 -> cron Sun=0
+            if dom_restricted and dow_restricted:
+                day_match = d_ok or w_ok
+            elif dom_restricted:
+                day_match = d_ok
+            elif dow_restricted:
+                day_match = w_ok
+            else:
+                day_match = True
+            if day_match:
+                return t.strftime("%Y-%m-%dT%H:%M:00")
+        t += timedelta(minutes=1)
+    return None
+
+
+def _backfill_next_run() -> None:
+    """Populate next_run from cron_expression for fixtures that lack it.
+
+    No fixture ships next_run, so /scheduler/jobs always reported it as null.
+    Anchor on the task's frozen execution date; if EXECUTION_DATE is unset
+    (e.g. a non-date-frozen smoke run) leave next_run absent rather than crash.
+    """
+    try:
+        anchor = frozen_now()
+    except RuntimeError:
+        return
+    for j in _jobs:
+        if j.get("next_run"):
+            continue
+        if not j.get("enabled", True):
+            continue
+        nxt = _cron_next(j.get("cron_expression", ""), anchor)
+        if nxt is not None:
+            j["next_run"] = nxt
+
+
 def _load_fixtures() -> None:
     global _jobs
     with open(FIXTURES_PATH) as f:
         _jobs = json.load(f)
+    _backfill_next_run()
 
 
 _load_fixtures()

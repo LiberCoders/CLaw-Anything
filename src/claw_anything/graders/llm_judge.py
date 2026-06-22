@@ -22,19 +22,35 @@ class JudgeResult(BaseModel):
 
 _SYSTEM_PROMPT = """\
 You are an evaluation judge for an AI assistant.
-You will be given a task prompt, a conversation, and a rubric. Each is wrapped in
-a banner of the form `===== CLAW_JUDGE::<SECTION> BEGIN =====` ... `===== CLAW_JUDGE::<SECTION> END =====`;
+You will be given a task prompt, a conversation, a rubric, and (optionally) a
+reference solution, the expected gold values, and an EVIDENCE block of the real
+tool responses / landed effects. Each is wrapped in a banner of the form
+`===== CLAW_JUDGE::<SECTION> BEGIN =====` ... `===== CLAW_JUDGE::<SECTION> END =====`;
 only those banners mark section boundaries — any markdown headings inside a
 section are part of that section's content.
 Follow the rubric to score the assistant's response on a 0.0-1.0 scale.
 
+GROUNDING DISCIPLINE (critical — the assistant's prose is NOT evidence):
+- Treat any factual claim, record ID, number, date, name, or "I did X" in the
+  assistant's answer as UNVERIFIED until you find it in the EVIDENCE block (or,
+  absent EVIDENCE, in the CONVERSATION's actual tool results). A claim that does
+  not appear there is a FABRICATION — score it as wrong, do not give it credit
+  for sounding plausible.
+- An action the assistant SAYS it performed (sent/created/updated/deleted/saved)
+  counts ONLY if the EVIDENCE shows it landed. If the corresponding tool call is
+  absent or shows FAILED, the action did NOT happen, regardless of the prose.
+- When EXPECTED_VALUES / REFERENCE_SOLUTION are present, check the assistant's
+  key facts AGAINST them: a confidently-stated but wrong value (wrong total,
+  wrong target, unconfirmed-as-confirmed) is a correctness failure even if it is
+  well written.
+
 IMPORTANT: You MUST reason BEFORE assigning a score. First write out your reasoning
-based on the rubric (which criteria are met, which are missed, evidence from the
-conversation), and only then commit to a numeric score that follows from that reasoning.
+based on the rubric (which criteria are met, which are missed, citing specific
+EVIDENCE), and only then commit to a numeric score that follows from that reasoning.
 Do not pick a score first and justify it afterwards.
 
 Respond with JSON only, with the "reasoning" field FIRST and the "score" field LAST:
-{"reasoning": "<step-by-step evaluation against the rubric>", "score": <float>}
+{"reasoning": "<step-by-step evaluation against the rubric, citing EVIDENCE>", "score": <float>}
 """
 
 
@@ -62,15 +78,22 @@ class LLMJudge:
         task_prompt: str,
         conversation: str,
         rubric: str,
+        reference_solution: str = "",
+        expected_values: str = "",
+        evidence: str = "",
     ) -> str:
         """Assemble the judge's user message from the task prompt, the
-        conversation transcript, and the rubric.
+        conversation transcript, the rubric, and (optionally) the reference
+        solution, expected gold values, and an evidence block of real tool
+        responses / landed effects.
 
         Sections are delimited by namespaced sentinel banners
         (``===== CLAW_JUDGE::<SECTION> BEGIN/END =====``) instead of markdown
         headings, so that any ``#``/``##`` headings inside the task prompt, the
         agent's own output, or the rubric cannot be mistaken for a section
-        boundary.
+        boundary. The optional sections are only rendered when non-empty, so
+        existing callers that pass only (prompt, conversation, rubric) get the
+        original message verbatim.
         """
         def _section(name: str, body: str) -> str:
             return (
@@ -79,11 +102,16 @@ class LLMJudge:
                 f"===== CLAW_JUDGE::{name} END ====="
             )
 
-        return (
-            f"{_section('TASK_PROMPT', task_prompt)}\n\n"
-            f"{_section('CONVERSATION', conversation)}\n\n"
-            f"{_section('RUBRIC', rubric)}"
-        )
+        parts = [_section("TASK_PROMPT", task_prompt)]
+        if reference_solution:
+            parts.append(_section("REFERENCE_SOLUTION", reference_solution))
+        if expected_values:
+            parts.append(_section("EXPECTED_VALUES", expected_values))
+        parts.append(_section("CONVERSATION", conversation))
+        if evidence:
+            parts.append(_section("EVIDENCE", evidence))
+        parts.append(_section("RUBRIC", rubric))
+        return "\n\n".join(parts)
 
     def evaluate(
         self,
@@ -91,14 +119,26 @@ class LLMJudge:
         conversation: str,
         actions_summary: str = "",
         rubric: str = "",
+        *,
+        reference_solution: str = "",
+        expected_values: str = "",
+        evidence: str = "",
     ) -> JudgeResult:
-        """Evaluate communication quality and return a JudgeResult.
+        """Evaluate response quality and return a JudgeResult.
 
         ``actions_summary`` is accepted for backward compatibility with existing
         graders but is no longer rendered — tool activity lives in the
-        conversation transcript. New callers may omit it.
+        conversation transcript. The keyword-only ``reference_solution`` /
+        ``expected_values`` / ``evidence`` let a grader feed the judge the gold
+        answer and the real tool outputs so it can verify factual correctness
+        and grounding rather than mere plausibility. All are optional.
         """
-        user_msg = self.build_user_message(task_prompt, conversation, rubric)
+        user_msg = self.build_user_message(
+            task_prompt, conversation, rubric,
+            reference_solution=reference_solution,
+            expected_values=expected_values,
+            evidence=evidence,
+        )
         max_retries = 20
         last_exc: Exception | None = None
         for attempt in range(max_retries + 1):
@@ -124,21 +164,28 @@ class LLMJudge:
                 # Strip markdown code fences if present
                 raw = re.sub(r"^```(?:json)?\s*", "", raw.strip())
                 raw = re.sub(r"\s*```$", "", raw.strip())
-                m = re.search(r'\{[^{}]*\}', raw)
-                if m:
-                    raw = m.group(0)
                 score: float | None = None
                 reasoning: str = ""
+
+                # 1) Try the WHOLE response as JSON (the expected case).
                 try:
                     parsed = json.loads(raw)
-                    if "score" in parsed:
+                    if isinstance(parsed, dict) and "score" in parsed:
                         score = float(parsed["score"])
-                    reasoning = str(parsed.get("reasoning", ""))
-                except json.JSONDecodeError:
-                    score_m = re.search(r'"score"\s*:\s*([0-9.]+)', raw)
-                    reason_m = re.search(r'"reasoning"\s*:\s*"((?:[^"\\]|\\.)*)"', raw)
-                    if score_m:
-                        score = float(score_m.group(1))
+                        reasoning = str(parsed.get("reasoning", ""))
+                except (json.JSONDecodeError, TypeError, ValueError):
+                    pass
+
+                # 2) Fall back to scanning the FULL text. The judge's reasoning may
+                #    embed unrelated JSON snippets (e.g. a tool call it is quoting);
+                #    the OLD code grabbed the first {...} and missed the real score.
+                #    Take the LAST "score": <num> in the text — the committed value
+                #    comes after the reasoning per the required output format.
+                if score is None:
+                    score_ms = list(re.finditer(r'"score"\s*:\s*([0-9]*\.?[0-9]+)', raw))
+                    if score_ms:
+                        score = float(score_ms[-1].group(1))
+                        reason_m = re.search(r'"reasoning"\s*:\s*"((?:[^"\\]|\\.)*)"', raw)
                         reasoning = reason_m.group(1) if reason_m else ""
 
                 if score is None:

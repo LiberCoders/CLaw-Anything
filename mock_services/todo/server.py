@@ -29,6 +29,7 @@ _tasks: list[dict[str, Any]] = []
 _audit_log: list[dict[str, Any]] = []
 _deleted: list[dict[str, Any]] = []
 _updated_tasks: list[dict[str, Any]] = []
+_created_tasks: list[dict[str, Any]] = []
 
 
 def _load_fixtures() -> None:
@@ -121,6 +122,7 @@ def create_task(req: CreateTaskRequest) -> dict[str, Any]:
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
     _tasks.append(task)
+    _created_tasks.append(copy.deepcopy(task))
     resp = {"status": "created", "task": task}
     _log_call("/todo/tasks/create", req.model_dump(), resp)
     return resp
@@ -142,15 +144,21 @@ def delete_task(req: DeleteTaskRequest) -> dict[str, Any]:
 
 @app.get("/todo/audit")
 def get_audit() -> dict[str, Any]:
-    return {"calls": _audit_log, "deleted": _deleted, "updated_tasks": _updated_tasks}
+    return {
+        "calls": _audit_log,
+        "deleted": _deleted,
+        "updated_tasks": _updated_tasks,
+        "created_tasks": _created_tasks,
+    }
 
 
 @app.post("/todo/reset")
 def reset_state() -> dict[str, str]:
-    global _audit_log, _deleted, _updated_tasks
+    global _audit_log, _deleted, _updated_tasks, _created_tasks
     _audit_log = []
     _deleted = []
     _updated_tasks = []
+    _created_tasks = []
     _load_fixtures()
     return {"status": "reset"}
 

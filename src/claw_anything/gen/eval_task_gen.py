@@ -320,6 +320,7 @@ class EvalTaskGenerator:
                     judge_rubric=scoring_result.get("judge_rubric", ""),
                     reference_solution=self._ensure_str(scoring_result.get("reference_solution", "")),
                     language=persona.language,
+                    expected_effects=scoring_result.get("expected_effects", []),
                 )
 
                 # 6. Generate grader
@@ -344,6 +345,7 @@ class EvalTaskGenerator:
                     output_dir=output_dir,
                     execution_date=execution_date,
                     available_services=self._available_services,
+                    expected_effects=task_result.expected_effects,
                 )
 
                 # 8. Assemble task directory

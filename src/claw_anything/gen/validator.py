@@ -93,6 +93,8 @@ class TaskValidator:
         results.append(self._check_signal_density(task_dir, env))
         results.append(self._check_safety_consistency(task_dir))
         results.append(self._check_grader_tool_existence(task_dir))
+        results.append(self._check_effect_grounding(task_dir))
+        results.append(self._check_fixture_collision(task_dir))
 
         return results
 
@@ -342,6 +344,155 @@ class TaskValidator:
             f"All {len(yaml_forbidden)} safety_check tools present in FORBIDDEN_TOOLS "
             f"(grader has {len(grader_forbidden)} total)",
             severity=Severity.WARNING,
+        )
+
+    def _check_effect_grounding(self, task_dir: Path) -> ValidationResult:
+        """For ACTION tasks (with expected_effects), require the grader to verify
+        world-state via audit_data, and require every effect's action_key to be a
+        real audit key. This is what stops a regression back to narration-only
+        grading that misses silent write-failures.
+        """
+        from claw_anything.graders.base import ACTION_KEYS
+
+        task_yaml = task_dir / "task.yaml"
+        with open(task_yaml, "r", encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+
+        effects = data.get("expected_effects", []) or []
+        if not effects:
+            # advisory task — nothing to verify here
+            return ValidationResult(
+                "effect_grounding", True,
+                "No expected_effects (advisory task) — state check N/A",
+                severity=Severity.WARNING,
+            )
+
+        # 1) every action_key must be a real audit key for its service
+        bad_keys = []
+        for e in effects:
+            svc, key = e.get("service"), e.get("action_key")
+            if svc not in ACTION_KEYS or key not in ACTION_KEYS.get(svc, []):
+                bad_keys.append(f"{svc}.{key}")
+        if bad_keys:
+            return ValidationResult(
+                "effect_grounding", False,
+                f"expected_effects use unknown audit keys: {bad_keys}. "
+                f"Use real keys from ACTION_KEYS (e.g. gmail.sent_messages, calendar.deleted).",
+                severity=Severity.BLOCKING,
+            )
+
+        # 2) the grader must verify state, not just narration
+        grader_code = (task_dir / "grader.py").read_text(encoding="utf-8")
+        if not any(tok in grader_code for tok in (
+            "assert_effect", "get_service_actions", "detect_silent_failure", "EXPECTED_EFFECTS",
+        )):
+            return ValidationResult(
+                "effect_grounding", False,
+                "Task has expected_effects but grader.py never verifies world-state via "
+                "audit_data (no assert_effect / get_service_actions / detect_silent_failure / "
+                "EXPECTED_EFFECTS). It would score narration and miss silent write-failures.",
+                severity=Severity.BLOCKING,
+            )
+
+        return ValidationResult(
+            "effect_grounding", True,
+            f"{len(effects)} expected_effects with valid keys; grader verifies world-state",
+            severity=Severity.BLOCKING,
+        )
+
+    # (service, action_key) → (fixture filenames, severity).
+    # Severity reflects how a real agent reacts to the collision:
+    #   BLOCKING — a reasonable agent will NOT redo the work when the gold
+    #     state already exists (e.g. won't create a duplicate calendar event),
+    #     so the task is unsolvable.
+    #   WARNING — an agent will likely still perform the write even when a
+    #     similar record exists (todos, drafts), but it's a poor-design signal.
+    # gmail.sent_messages can't collide here because fixtures only ship
+    # `inbox.json` (incoming) — outgoing mail has no pre-state.
+    _COLLISION_FIXTURES: dict[tuple[str, str], tuple[list[str], "Severity"]] = {
+        ("calendar", "created_events"): (["events.json"], Severity.BLOCKING),
+        ("gmail", "drafts"):            (["drafts.json"], Severity.BLOCKING),
+        ("todo", "created_tasks"):      (["tasks.json"],  Severity.WARNING),
+    }
+
+    def _check_fixture_collision(self, task_dir: Path) -> ValidationResult:
+        """Reject tasks whose gold `expected_effects` state already exists in
+        the seed fixtures — the agent's write would be a no-op and the grader
+        would always judge it as a silent failure.
+
+        We use the same case-insensitive substring matching as
+        `AbstractGrader._record_matches` so a "collision" here is exactly what
+        would later satisfy `assert_effect` at grade time.
+        """
+        from claw_anything.graders.base import AbstractGrader
+
+        task_yaml = task_dir / "task.yaml"
+        with open(task_yaml, "r", encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+
+        effects = data.get("expected_effects", []) or []
+        if not effects:
+            return ValidationResult(
+                "fixture_collision", True,
+                "No expected_effects to check for collisions",
+                severity=Severity.WARNING,
+            )
+
+        blocking: list[str] = []
+        warning: list[str] = []
+        for e in effects:
+            svc = e.get("service")
+            ak = e.get("action_key")
+            match = e.get("match") or {}
+            if not match:
+                continue
+            cfg = self._COLLISION_FIXTURES.get((svc, ak))
+            if cfg is None:
+                continue
+            files, sev = cfg
+            fixture_dir = task_dir / "fixtures" / svc
+            if not fixture_dir.exists():
+                continue
+            for fname in files:
+                fp = fixture_dir / fname
+                if not fp.exists():
+                    continue
+                try:
+                    records = json.loads(fp.read_text(encoding="utf-8"))
+                except Exception:
+                    continue
+                if not isinstance(records, list):
+                    continue
+                hits = [
+                    r for r in records
+                    if isinstance(r, dict) and AbstractGrader._record_matches(r, match)
+                ]
+                if hits:
+                    sample = hits[0]
+                    sid = (sample.get("event_id") or sample.get("message_id") or
+                           sample.get("task_id") or sample.get("ticket_id") or
+                           sample.get("title") or "<no-id>")
+                    msg = f"{svc}.{ak} match={match} already satisfied by {fname} record {sid!r}"
+                    (blocking if sev == Severity.BLOCKING else warning).append(msg)
+
+        if blocking:
+            return ValidationResult(
+                "fixture_collision", False,
+                "expected_effects collide with seed fixtures (gold state pre-exists, "
+                "agent will reasonably skip the write): " + "; ".join(blocking),
+                severity=Severity.BLOCKING,
+            )
+        if warning:
+            return ValidationResult(
+                "fixture_collision", False,
+                "expected_effects share match keys with seed fixtures (agent may still "
+                "land the write but task design is ambiguous): " + "; ".join(warning),
+                severity=Severity.WARNING,
+            )
+        return ValidationResult(
+            "fixture_collision", True,
+            f"{len(effects)} expected_effects don't collide with seed fixtures",
+            severity=Severity.BLOCKING,
         )
 
     def _check_grader_tool_existence(self, task_dir: Path) -> ValidationResult:

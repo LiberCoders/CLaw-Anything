@@ -6,6 +6,7 @@
 [![Dataset](https://img.shields.io/badge/🤗%20Dataset-Claw--Anything-yellow.svg)](https://huggingface.co/datasets/LiberCoders/Claw-Anything)
 [![ModelScope](https://img.shields.io/badge/ModelScope-MyRepo-624aff?logo=modelscope)](https://modelscope.cn/datasets/LiberCoders/Claw-Anything)
 [![Benchmark](https://img.shields.io/badge/Benchmark-200%20-success.svg)](benchmark/)
+[![Leaderboard](https://img.shields.io/badge/🏆%20在线榜单-Live-f0a83c.svg)](https://libercoders.github.io/CLaw-Anything/)
 [![Environments](https://img.shields.io/badge/Environments-2%2C000%20-blueviolet.svg)](#-快速上手)
 [![Views](https://komarev.com/ghpvc/?username=LiberCoders-CLaw-Anything&label=Views&color=brightgreen&style=flat)](https://github.com/LiberCoders/CLaw-Anything)
 
@@ -43,6 +44,7 @@ Claw-Anything 将这一理念落地，沿着三个真实世界上下文维度评
 
 
 ## 新闻
+- 🏆 [2026-06-18] **交互式在线榜单**已上线 → [libercoders.github.io/CLaw-Anything](https://libercoders.github.io/CLaw-Anything/)
 - 🛠️ [2026-06-01] 支持 CLI + GUI 任务自动化评测。
 - 📄 [2026-05-26] [arXiv](https://arxiv.org/pdf/2605.26086) 预印本已发布。
 - 🚀 [2026-05-26] 数据流水线已发布 —— 两阶段 `build-persona` → `gen-eval` 流程可扩展至 2,000 个训练环境，为评测基准提供数据生成能力。

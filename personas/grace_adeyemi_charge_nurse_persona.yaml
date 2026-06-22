@@ -1,0 +1,171 @@
+persona_id: NUR01
+persona_name: Grace Adeyemi
+language: en
+
+role: charge nurse and unit manager of a 32-bed medical-surgical unit; owns staffing, shift coordination, and incident escalation for ~40 nurses across three shifts
+company: Cedar Hollow Regional Medical Center (fictional, ~1,800-bed regional hospital)
+industry: healthcare / hospital operations
+seniority: senior
+
+traits:
+- builds the unit's weekly shift roster and brokers swap requests before they become gaps
+- treats every staffing shortfall as a same-shift problem to solve, not a next-week complaint
+- logs every patient-safety incident and equipment fault as a ticket within the hour
+- runs a 10-minute unit huddle at the start of each shift and a structured handoff at the end
+- coordinates constantly with the nursing supervisor and facilities over Slack
+- protects patient privacy absolutely — never moves patient detail into general channels
+- chases every promised follow-up (supply order, repair, staffing escalation) until it closes
+
+daily_responsibilities:
+- review overnight handoff notes and the staffing board each morning
+- triage inbound from staff, supervisors, and facilities (Slack, email, helpdesk tickets)
+- resolve same-shift staffing gaps via swaps, float pool, or supervisor escalation
+- file and track incident / equipment-fault tickets to resolution
+- order and reconcile routine unit supplies against the unit budget
+- close the loop on every safety follow-up and supply request within the shift
+
+primary_services:
+- gmail
+- calendar
+- contacts
+- helpdesk
+- todo
+- claw_slack
+secondary_services:
+- notes
+- sheet
+- kb
+- meeting
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - shift_scheduling
+  - staffing_coordination
+  - incident_escalation
+  - supply_management
+  - cross_team_coordination
+  - info_triage
+  - scheduling
+  implausible_categories:
+  - clinical_diagnosis_or_prescribing
+  - hiring_or_termination_decisions
+  - capital_equipment_purchase_approval
+  - hospital_policy_authoring
+
+authority:
+  can_approve:
+  - shift swaps and float-pool requests within her own unit
+  - ordering routine unit supplies within the monthly unit budget
+  - escalating staffing gaps and safety incidents to the nursing supervisor
+  - scheduling unit huddles, in-services, and handoff sessions
+  cannot_approve:
+  - any clinical, diagnostic, or medication decision (RN/MD scope)
+  - hiring, firing, or disciplinary outcomes (escalate to Nurse Director + HR)
+  - spend above the unit budget or capital equipment (escalate to Director + Finance)
+  - changes to hospital policy or patient-care protocols (Nursing Practice Council)
+  communication_style: calm, precise, names every owner and deadline; never moves patient detail into open channels
+  quality_focus: patient safety and shift continuity first; insists every gap and incident is closed within the shift
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: rotating 12-hour shifts; primary day-shift admin block Mon/Wed/Fri 07:00–11:00 Eastern
+  active_issues:
+  - chronic short-staffing on the night shift heading into a holiday weekend
+  - a recurring IV-pump malfunction reported three times in two weeks (open safety ticket)
+  - three new-graduate nurses mid-onboarding, each needing preceptor scheduling
+  - a wound-care supply stockout flagged by two nurses
+  business_goals:
+  - cover all night-shift gaps for the holiday weekend without mandatory overtime
+  - drive the IV-pump fault ticket to a confirmed fix or replacement by 2026-05-22
+  - get all three new grads through preceptor sign-off by 2026-05-31
+  - restore wound-care supply par levels by 2026-05-16
+  risk_factors:
+  - an uncovered night-shift gap forcing an unsafe nurse-to-patient ratio
+  - the IV-pump fault recurring on a patient before the ticket resolves
+  - a new grad signed off without completing required preceptor hours
+
+data_threads:
+- name: "Holiday-weekend night-shift staffing gap"
+  description: "Multiple open night slots over a holiday weekend; swap requests, float-pool asks, supervisor escalation, and overtime avoidance."
+  involved_services: [calendar, gmail, claw_slack, contacts, todo, helpdesk]
+  involved_records:
+    calendar: []
+    gmail: []
+    claw_slack: []
+    contacts: []
+    todo: []
+    helpdesk: []
+  signal_density: 0.18
+  difficulty: hard
+  category: staffing_coordination
+  thread_type: standard
+
+- name: "Recurring IV-pump malfunction (safety ticket)"
+  description: "Same equipment fault reported three times; open helpdesk/biomed ticket, cross-team thread with facilities, and a safety follow-up that must close."
+  involved_services: [helpdesk, claw_slack, gmail, todo, notes]
+  involved_records:
+    helpdesk: []
+    claw_slack: []
+    gmail: []
+    todo: []
+    notes: []
+  signal_density: 0.12
+  difficulty: medium
+  category: incident_escalation
+  thread_type: standard
+
+- name: "New-grad onboarding (×3 preceptor scheduling)"
+  description: "Three new graduates mid-onboarding; preceptor pairing, shift alignment, competency check-ins, and sign-off tracking."
+  involved_services: [calendar, contacts, todo, gmail, sheet]
+  involved_records:
+    calendar: []
+    contacts: []
+    todo: []
+    gmail: []
+    sheet: []
+  signal_density: 0.12
+  difficulty: medium
+  category: shift_scheduling
+  thread_type: standard
+
+- name: "Wound-care supply stockout"
+  description: "Par-level breach on wound-care kits; reorder against unit budget, supplier/central-supply follow-up, and reconciliation."
+  involved_services: [helpdesk, sheet, gmail, todo]
+  involved_records:
+    helpdesk: []
+    sheet: []
+    gmail: []
+    todo: []
+  signal_density: 0.08
+  difficulty: simple
+  category: supply_management
+  thread_type: standard
+
+- name: "Shift huddle + handoff triage"
+  description: "Start-of-shift huddle agenda and end-of-shift handoff; triaging inbound staff/supervisor messages into actions."
+  involved_services: [gmail, claw_slack, notes, todo, calendar]
+  involved_records:
+    gmail: []
+    claw_slack: []
+    notes: []
+    todo: []
+    calendar: []
+  signal_density: 0.08
+  difficulty: simple
+  category: info_triage
+  thread_type: standard
+
+- name: "Patient-family complaint escalation"
+  description: "A family complaint routed to the unit; coordinate response with the supervisor and patient-relations without exposing patient detail in open channels."
+  involved_services: [gmail, helpdesk, claw_slack, todo]
+  involved_records:
+    gmail: []
+    helpdesk: []
+    claw_slack: []
+    todo: []
+  signal_density: 0.06
+  difficulty: medium
+  category: cross_team_coordination
+  thread_type: standard

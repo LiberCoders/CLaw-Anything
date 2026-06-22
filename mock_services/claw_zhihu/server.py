@@ -126,19 +126,24 @@ def search_questions(req: SearchQuestionsRequest | None = None) -> dict[str, Any
             if req.query.lower() not in searchable:
                 continue
         results.append({
-            "question_id": q["question_id"],
-            "title": q["title"],
-            "topic": q["topic"],
+            "question_id": q.get("question_id"),
+            "title": q.get("title", ""),
+            "topic": q.get("topic", []),
             "author": q.get("author", ""),
-            "created_at": q["created_at"],
-            "answer_count": q["answer_count"],
-            "followed": q["followed"],
+            "created_at": q.get("created_at", ""),
+            # Generated question fixtures carry follow_count, not a per-viewer
+            # ``followed`` flag (that only exists on activity-log records) — a
+            # hard q["followed"] index 500'd the whole listing. Default to False
+            # and surface follow_count when present.
+            "answer_count": q.get("answer_count", 0),
+            "follow_count": q.get("follow_count"),
+            "followed": q.get("followed", False),
         })
 
     if req.sort_by == "hot":
-        results.sort(key=lambda x: x["answer_count"], reverse=True)
+        results.sort(key=lambda x: x.get("answer_count") or 0, reverse=True)
     else:
-        results.sort(key=lambda x: x["created_at"], reverse=True)
+        results.sort(key=lambda x: x.get("created_at") or "", reverse=True)
 
     total = len(results)
     paged = results[req.offset: req.offset + req.max_results]
@@ -205,7 +210,7 @@ def collect_answer(req: CollectAnswerRequest) -> dict[str, Any]:
 def follow_question(req: FollowQuestionRequest) -> dict[str, Any]:
     for q in _questions:
         if q["question_id"] == req.question_id:
-            if q["followed"]:
+            if q.get("followed"):
                 resp = {"status": "already_followed", "question_id": req.question_id}
                 _log_call("/claw_zhihu/follow_question", req.model_dump(), resp)
                 return resp

@@ -40,10 +40,55 @@ _created_decks: list[dict[str, Any]] = []
 _deleted: list[dict[str, Any]] = []
 
 
+def _normalize_slide(slide: dict[str, Any], counter: list[int]) -> dict[str, Any]:
+    """Bridge the content-based fixture schema onto the element-based read model.
+
+    Fixtures in the wild describe slides with ``slide_number``/``title``/
+    ``content``/``notes`` and carry NO ``elements``/``layout`` keys, but
+    ``get_slide``/``open`` read ``elements`` and ``layout`` — so every slide
+    body was invisible (elements: [], layout: null). Synthesize a single text
+    element from ``content`` (preserving the original ``content`` key, additive)
+    and default a layout when absent. ``counter`` carries the deck-wide running
+    element index so synthesized ids stay unique and the E### allocator's
+    max-scan keeps working.
+    """
+    if not slide.get("elements"):
+        content = slide.get("content")
+        elements: list[dict[str, Any]] = []
+        if content not in (None, ""):
+            counter[0] += 1
+            elements.append({
+                "element_id": f"E{counter[0]:03d}",
+                "type": "text",
+                "content": content,
+            })
+        slide["elements"] = elements
+    else:
+        # Keep the deck-wide counter ahead of any pre-existing element ids.
+        for e in slide["elements"]:
+            m = re.match(r"^E(\d+)$", e.get("element_id", ""))
+            if m:
+                counter[0] = max(counter[0], int(m.group(1)))
+    if slide.get("layout") is None:
+        slide["layout"] = "title_content"
+    return slide
+
+
+def _normalize_deck(deck: dict[str, Any]) -> dict[str, Any]:
+    if deck.get("last_updated") is None and deck.get("last_modified") is not None:
+        deck["last_updated"] = deck["last_modified"]
+    counter = [0]
+    for slide in deck.get("slides", []):
+        _normalize_slide(slide, counter)
+    return deck
+
+
 def _load_fixtures() -> None:
     global _decks
     with open(FIXTURES_PATH) as f:
         _decks = json.load(f)
+    for deck in _decks:
+        _normalize_deck(deck)
 
 
 _load_fixtures()
@@ -247,6 +292,7 @@ def get_slide(req: GetSlideRequest) -> dict[str, Any]:
         "title": slide.get("title"),
         "layout": slide.get("layout"),
         "notes": slide.get("notes"),
+        "content": slide.get("content"),
         "elements": copy.deepcopy(slide.get("elements", [])),
     }
     _log_call("/slide/get_slide", req.model_dump(), resp)

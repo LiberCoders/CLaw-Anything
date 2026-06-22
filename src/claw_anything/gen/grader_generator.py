@@ -126,8 +126,22 @@ class GraderGenerator:
         # be allowed to call, derived from available_services + SERVICE_TOOLS.
         allowed_tools = _flat_allowed_tools(available_services)
 
+        # Effect-verification context for the grader-LLM: the gold end-state
+        # (expected_effects) plus the authoritative audit-key table, so the
+        # generated grader uses assert_effect with real keys (sent_messages,
+        # created_events, …) instead of narration-based keyword checks.
+        from ..graders.base import ACTION_KEYS
+        expected_effects = getattr(task_result, "expected_effects", []) or []
+        action_keys_table = "\n".join(
+            f"- {svc}: {', '.join(keys)}" for svc, keys in ACTION_KEYS.items()
+        )
+        task_kind = "action" if expected_effects else "advisory"
+
         prompt_template = _load_prompt("generate_grader.txt")
         prompt = prompt_template.format(
+            expected_effects_json=json.dumps(expected_effects, ensure_ascii=False, indent=2),
+            action_keys_table=action_keys_table,
+            task_kind=task_kind,
             persona_name=persona.persona_name,
             role=persona.role,
             company=persona.company,
@@ -180,7 +194,10 @@ class GraderGenerator:
                 log.debug("Grader generator attempt %d, response length: %d", attempt, len(raw))
 
                 code = self._extract_python_code(raw)
-                self._validate_code(code, allowed_tools=set(allowed_tools))
+                self._validate_code(
+                    code, allowed_tools=set(allowed_tools),
+                    require_effect_check=bool(expected_effects),
+                )
                 return code
 
             except (ValueError, SyntaxError) as e:
@@ -369,7 +386,11 @@ class {class_name}(AbstractGrader):
 '''
 
     @staticmethod
-    def _validate_code(code: str, allowed_tools: set[str] | None = None) -> None:
+    def _validate_code(
+        code: str,
+        allowed_tools: set[str] | None = None,
+        require_effect_check: bool = False,
+    ) -> None:
         """Basic validation that the generated code is syntactically correct.
 
         When ``allowed_tools`` is provided, also reject the code if it
@@ -379,6 +400,12 @@ class {class_name}(AbstractGrader):
         persona doesn't even have inventory installed — the generated
         grader would silently fail at runtime, so we hard-reject here and
         let the caller's retry loop ask for a corrected grader.
+
+        When ``require_effect_check`` is set (the task has expected_effects, i.e.
+        it is an ACTION task), the grader MUST verify world-state via
+        ``audit_data`` — otherwise it would score the agent's narration and
+        miss silent write-failures. We hard-reject graders that don't, so the
+        retry loop asks for a state-verifying grader.
         """
         try:
             compile(code, "<generated_grader>", "exec")
@@ -394,6 +421,20 @@ class {class_name}(AbstractGrader):
 
         if "FORBIDDEN_TOOLS" not in code:
             raise ValueError("Generated grader.py does not define FORBIDDEN_TOOLS")
+
+        if require_effect_check and not (
+            "assert_effect" in code
+            or "get_service_actions" in code
+            or "detect_silent_failure" in code
+            or "EXPECTED_EFFECTS" in code
+        ):
+            raise ValueError(
+                "This is an ACTION task (has expected_effects) but the generated "
+                "grader never verifies world-state via audit_data (no assert_effect / "
+                "get_service_actions / detect_silent_failure / EXPECTED_EFFECTS). "
+                "Completion must be scored from whether the required mutation landed, "
+                "not from the agent's narration."
+            )
 
         if allowed_tools is not None:
             hallucinated = GraderGenerator._find_hallucinated_tools(code, allowed_tools)

@@ -144,6 +144,7 @@ class TaskAssembler:
         output_dir: Path | None = None,
         execution_date: str | None = None,
         available_services: set[str] | None = None,
+        expected_effects: list[dict] | None = None,
     ) -> str:
         """Build a complete task.yaml by combining generated content with the fixed template.
 
@@ -163,6 +164,7 @@ class TaskAssembler:
         tool_endpoints = copy.deepcopy(self._fixed_tool_endpoints)
         scoring_components = copy.deepcopy(scoring_components)
         safety_checks = copy.deepcopy(safety_checks)
+        expected_effects = copy.deepcopy(expected_effects or [])
 
         # Apply persona-specific service filter.
         if available_services is not None:
@@ -204,6 +206,12 @@ class TaskAssembler:
 
             scoring_components = [e for e in scoring_components if not _refs_dropped_tool(e)]
             safety_checks = [e for e in safety_checks if not _refs_dropped_tool(e)]
+
+            # 5. Drop expected_effects whose service is not in the persona's apps.
+            expected_effects = [
+                e for e in expected_effects
+                if isinstance(e, dict) and e.get("service") in available
+            ]
 
         # Mock-service fixture env values (``*_FIXTURES``) must be RELATIVE to
         # the task dir (e.g. ``fixtures/gmail/inbox.json``). ServiceManager
@@ -255,6 +263,7 @@ class TaskAssembler:
             "scoring_components": scoring_components,
             "safety_checks": safety_checks,
             "expected_actions": expected_actions,
+            "expected_effects": expected_effects,
             "judge_rubric": judge_rubric,
             "reference_solution": reference_solution,
             "primary_dimensions": ["completion", "robustness", "communication", "safety"],

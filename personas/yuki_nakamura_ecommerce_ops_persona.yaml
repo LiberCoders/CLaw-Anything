@@ -1,0 +1,171 @@
+persona_id: ECOM01
+persona_name: Yuki Nakamura
+language: en
+
+role: operations manager for a direct-to-consumer home-goods brand; owns inventory, fulfillment, and supplier coordination across ~120 SKUs
+company: Komorebi Living (fictional, ~25-staff DTC home-goods brand)
+industry: e-commerce / consumer goods
+seniority: mid-senior
+
+traits:
+- watches stock levels daily and reorders before bestsellers hit zero, balancing cashflow
+- treats every supplier delay as a restock-and-communicate problem to get ahead of
+- resolves escalated customer order issues that support can't close alone
+- maintains a rolling inventory-forecast sheet feeding monthly buy decisions
+- coordinates with the founder, support, and the 3PL warehouse over Slack
+- keeps supplier terms and customer data tidy and never cross-shares between vendors
+- closes every supplier and customer-escalation follow-up within one business day
+
+daily_responsibilities:
+- review the stock-level and low-inventory dashboard each morning
+- triage inbound from suppliers, the 3PL, support, and the founder (email, Slack-style)
+- place and track restock POs against cashflow and lead-time constraints
+- resolve escalated customer order issues (refunds, reships, lost shipments)
+- update the inventory-forecast sheet and CRM/supplier records after changes
+- close the loop on every restock and escalation within 24h
+
+primary_services:
+- gmail
+- inventory
+- sheet
+- crm
+- calendar
+- todo
+secondary_services:
+- contacts
+- finance
+- claw_slack
+- helpdesk
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - inventory_management
+  - supplier_coordination
+  - order_issue_resolution
+  - restock_planning
+  - info_triage
+  - decision_making
+  - scheduling
+  implausible_categories:
+  - product_design_signoff
+  - marketing_creative_approval
+  - hiring_decisions
+  - retail_lease_negotiation
+
+authority:
+  can_approve:
+  - placing restock POs within agreed supplier terms and the monthly buy budget
+  - issuing customer refunds/reships within the support-escalation policy limit
+  - scheduling supplier and 3PL coordination calls
+  - committing operations-team follow-ups and warehouse instructions
+  cannot_approve:
+  - new supplier contracts or renegotiated terms (founder + Finance)
+  - spend above the monthly buy budget or new credit lines (founder + Finance)
+  - product assortment, pricing, or promo decisions (founder + Marketing)
+  - goodwill credits above the policy limit (founder)
+  communication_style: crisp, numbers-first, always states SKU / PO / order IDs and dates; confirms before committing spend
+  quality_focus: never stock out a bestseller while protecting cashflow; every number traceable to the forecast sheet
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 08:30–17:00 Pacific; weekly buy-review block Monday mornings
+  active_issues:
+  - two bestseller SKUs trending toward stockout with tight cashflow this month
+  - a key supplier flagging a 3-week delay on a ceramic-mug restock
+  - a cluster of escalated customer order issues (a lost-shipment batch) from support
+  - Q2 inventory forecast due before the next monthly buy decision
+  business_goals:
+  - keep both bestseller SKUs in stock through the month without breaching the buy budget
+  - secure a workaround or partial shipment for the delayed mugs by 2026-05-20
+  - clear the escalated lost-shipment order issues by 2026-05-16
+  - finalize the Q2 inventory forecast by 2026-05-22
+  risk_factors:
+  - a bestseller stocking out during a planned email push, costing peak-season revenue
+  - over-ordering to avoid stockout and straining cashflow into next month
+  - the supplier delay cascading into a second SKU that shares the same factory
+
+data_threads:
+- name: "Bestseller restock vs cashflow (×2 SKUs)"
+  description: "Two bestsellers near stockout under a tight buy budget; reorder timing, quantity, and supplier lead-time tradeoffs feeding a buy decision."
+  involved_services: [inventory, sheet, finance, gmail, crm, todo]
+  involved_records:
+    inventory: []
+    sheet: []
+    finance: []
+    gmail: []
+    crm: []
+    todo: []
+  signal_density: 0.18
+  difficulty: hard
+  category: restock_planning
+  thread_type: standard
+
+- name: "Supplier delay — ceramic mugs"
+  description: "A 3-week supplier delay; negotiate partial shipment / workaround, assess downstream SKU impact, and communicate timelines."
+  involved_services: [gmail, inventory, crm, claw_slack, todo]
+  involved_records:
+    gmail: []
+    inventory: []
+    crm: []
+    claw_slack: []
+    todo: []
+  signal_density: 0.12
+  difficulty: medium
+  category: supplier_coordination
+  thread_type: standard
+
+- name: "Escalated customer order issues (lost-shipment batch)"
+  description: "A batch of lost-shipment escalations from support; resolve via refund/reship within policy and update records."
+  involved_services: [helpdesk, gmail, inventory, crm, todo]
+  involved_records:
+    helpdesk: []
+    gmail: []
+    inventory: []
+    crm: []
+    todo: []
+  signal_density: 0.10
+  difficulty: medium
+  category: order_issue_resolution
+  thread_type: standard
+
+- name: "Q2 inventory forecast sheet"
+  description: "Rolling forecast feeding the monthly buy; sell-through rates, lead times, and reorder points consolidated into one sheet."
+  involved_services: [sheet, inventory, finance, todo]
+  involved_records:
+    sheet: []
+    inventory: []
+    finance: []
+    todo: []
+  signal_density: 0.08
+  difficulty: medium
+  category: inventory_management
+  thread_type: standard
+
+- name: "Daily ops inbound triage"
+  description: "Daily inbound from suppliers, the 3PL, support, and the founder; sort into act / schedule / escalate with owners."
+  involved_services: [gmail, claw_slack, todo, inventory]
+  involved_records:
+    gmail: []
+    claw_slack: []
+    todo: []
+    inventory: []
+  signal_density: 0.08
+  difficulty: simple
+  category: info_triage
+  thread_type: standard
+
+- name: "Peak-season prep planning"
+  description: "Planning a seasonal sales push; pre-positioning stock, supplier heads-up, and warehouse capacity coordination."
+  involved_services: [calendar, inventory, sheet, gmail, todo]
+  involved_records:
+    calendar: []
+    inventory: []
+    sheet: []
+    gmail: []
+    todo: []
+  signal_density: 0.06
+  difficulty: simple
+  category: scheduling
+  thread_type: standard

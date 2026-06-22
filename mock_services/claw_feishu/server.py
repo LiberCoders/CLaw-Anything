@@ -85,7 +85,10 @@ def _all_message_ids() -> list[str]:
     ids: list[str] = []
     for g in _groups:
         for m in g.get("messages", []):
-            ids.append(m.get("message_id", ""))
+            # Fixtures key the message identifier under ``id``; server-allocated
+            # messages use ``message_id``. Consider both so the allocator never
+            # collides with an existing fixture message.
+            ids.append(m.get("message_id") or m.get("id") or "")
     return ids
 
 
@@ -272,7 +275,7 @@ def search_messages(req: SearchMessagesRequest) -> dict[str, Any]:
                 matches.append({
                     "group_id": g.get("group_id"),
                     "group_name": g.get("name"),
-                    "message_id": m.get("message_id"),
+                    "message_id": m.get("message_id") or m.get("id"),
                     "sender": m.get("sender"),
                     "text": m.get("text"),
                     "timestamp": m.get("timestamp"),

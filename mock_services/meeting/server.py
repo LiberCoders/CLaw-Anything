@@ -392,13 +392,29 @@ def list_recordings(req: ListRecordingsRequest | None = None) -> dict[str, Any]:
         if req.host and req.host.lower() not in (m.get("host", "") or "").lower():
             continue
         for r in m.get("recordings") or []:
-            rec_date = (r.get("recorded_at") or "")[:10]
+            # Fixtures store the recording timestamp under a variety of keys
+            # (uploaded_at / upload_time / created_at / start_time /
+            # available_at); none use recorded_at. Fall back across them so the
+            # date filter and sort don't silently drop every fixture recording,
+            # and surface the resolved value as recorded_at for consumers.
+            rec_ts = (
+                r.get("recorded_at")
+                or r.get("uploaded_at")
+                or r.get("upload_time")
+                or r.get("created_at")
+                or r.get("start_time")
+                or r.get("available_at")
+                or ""
+            )
+            rec_date = rec_ts[:10]
             if req.start_date and rec_date < req.start_date:
                 continue
             if req.end_date and rec_date > req.end_date:
                 continue
+            rec_out = copy.deepcopy(r)
+            rec_out.setdefault("recorded_at", rec_ts)
             results.append({
-                **copy.deepcopy(r),
+                **rec_out,
                 "topic": m.get("topic", ""),
                 "host": m.get("host", ""),
             })

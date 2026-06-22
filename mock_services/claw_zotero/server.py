@@ -65,6 +65,19 @@ def _load_fixtures() -> None:
         # Tolerate a bare list of items (no collections).
         _items = list(data)
         _collections = []
+    # Every real fixture is a bare list of items with collection identity living
+    # only inside each item's ``collection_ids``; no fixture ships an explicit
+    # ``collections`` array. Without this, list_collections returns nothing and
+    # add_to_collection fails "Collection <id> not found" for collections that
+    # items demonstrably belong to. Synthesize the missing collection records
+    # from the distinct ids referenced across items (first-seen order).
+    if not _collections:
+        seen: dict[str, dict[str, Any]] = {}
+        for it in _items:
+            for cid in it.get("collection_ids") or []:
+                if cid not in seen:
+                    seen[cid] = {"collection_id": cid, "name": cid, "parent": None}
+        _collections = list(seen.values())
 
 
 _load_fixtures()

@@ -37,13 +37,76 @@ _created_workbooks: list[dict[str, Any]] = []
 _deleted: list[dict[str, Any]] = []
 
 
+def _normalize_sheet(sheet: dict[str, Any]) -> dict[str, Any]:
+    """Normalize a fixture sheet into the cell-addressed form the endpoints use.
+
+    Fixtures in the wild come in several row-oriented shapes (the LLM generator
+    emits ``sheet_name``/``headers``/``rows``; hand-authored benchmark tasks use
+    ``name``/``columns``/``rows``; none populate the ``cells`` map the
+    set_cell/get_range/compute endpoints read). Without this, ``_find_sheet``
+    matches on ``name`` (often absent → ``None``) and ``cells`` is empty, so every
+    named-sheet read/write fails with "not found"/empty.
+
+    This guarantees each sheet has a ``name`` and a populated ``cells`` map
+    (header row at row 1, data rows from row 2). It is *additive*: the original
+    ``headers``/``columns``/``rows`` keys are left untouched so callers/graders
+    that read them via ``/sheet/open`` keep working. An already cell-addressed
+    sheet (non-empty ``cells``) is left as-is.
+    """
+    if "name" not in sheet and "sheet_name" in sheet:
+        sheet["name"] = sheet["sheet_name"]
+    if sheet.get("cells"):
+        return sheet  # already cell-addressed; respect it
+
+    headers = sheet.get("headers") or sheet.get("columns") or []
+    rows = sheet.get("rows") or []
+    # Derive column order from row dict keys when no explicit header list exists.
+    if not headers:
+        seen: list[str] = []
+        for r in rows:
+            if isinstance(r, dict):
+                for k in r.keys():
+                    if k not in seen:
+                        seen.append(k)
+        headers = seen
+
+    cells: dict[str, Any] = {}
+    for c_idx, header in enumerate(headers):
+        cells[f"{_idx_to_col(c_idx)}1"] = header
+    for r_idx, row in enumerate(rows):
+        row_num = r_idx + 2  # data starts at row 2 (row 1 = headers)
+        if isinstance(row, dict):
+            for c_idx, header in enumerate(headers):
+                if header in row:
+                    cells[f"{_idx_to_col(c_idx)}{row_num}"] = row[header]
+        elif isinstance(row, (list, tuple)):
+            for c_idx, val in enumerate(row):
+                cells[f"{_idx_to_col(c_idx)}{row_num}"] = val
+    sheet["cells"] = cells
+    return sheet
+
+
+_FIXTURES_EXPLICIT = "SHEET_FIXTURES" in os.environ
+
+
 def _load_fixtures() -> None:
     global _workbooks
-    with open(FIXTURES_PATH) as f:
-        _workbooks = json.load(f)
-
-
-_load_fixtures()
+    try:
+        with open(FIXTURES_PATH) as f:
+            _workbooks = json.load(f)
+    except FileNotFoundError:
+        # An explicitly-configured fixture that is missing is a real
+        # misconfiguration — fail loudly. A missing *default* smoke fixture
+        # (env var unset, e.g. when the module is imported in unit tests)
+        # degrades to an empty service rather than crashing on import.
+        if _FIXTURES_EXPLICIT:
+            raise
+        print(f"[sheet] default fixture {FIXTURES_PATH} absent; starting empty")
+        _workbooks = []
+        return
+    for wb in _workbooks:
+        for sheet in wb.get("sheets", []):
+            _normalize_sheet(sheet)
 
 
 def _log_call(endpoint: str, request_body: dict[str, Any], response_body: Any) -> None:
@@ -125,6 +188,11 @@ def _parse_range(rng: str) -> tuple[int, int, int, int] | None:
     c_lo, c_hi = sorted([col_a, col_b])
     r_lo, r_hi = sorted([row_a, row_b])
     return c_lo, r_lo, c_hi, r_hi
+
+
+# Load fixtures now that the cell-reference helpers (used by _normalize_sheet)
+# are defined.
+_load_fixtures()
 
 
 def _sheet_summary(wb: dict[str, Any]) -> dict[str, Any]:

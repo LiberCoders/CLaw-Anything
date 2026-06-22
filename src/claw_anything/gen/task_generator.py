@@ -44,6 +44,7 @@ class TaskGenerationResult:
         judge_rubric: str,
         reference_solution: str,
         language: str = "en",
+        expected_effects: list[dict] | None = None,
     ):
         self.task_id = task_id
         self.task_name = task_name
@@ -56,6 +57,7 @@ class TaskGenerationResult:
         self.judge_rubric = judge_rubric
         self.reference_solution = reference_solution
         self.language = language
+        self.expected_effects = expected_effects or []
 
     def __repr__(self) -> str:
         return f"TaskGenerationResult({self.task_id!r}, {self.task_name!r})"
@@ -177,4 +179,5 @@ class TaskGenerator:
             judge_rubric=data.get("judge_rubric", ""),
             reference_solution=data.get("reference_solution", ""),
             language=data.get("language", "zh"),
+            expected_effects=data.get("expected_effects", []),
         )

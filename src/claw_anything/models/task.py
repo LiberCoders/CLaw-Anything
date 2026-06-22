@@ -79,6 +79,23 @@ class ExpectedAction(BaseModel):
     required: bool = True
 
 
+class ExpectedEffect(BaseModel):
+    """A gold end-state assertion: a mutation that must have LANDED in a service's
+    /audit log for the task to count as done.
+
+    Unlike the legacy free-text ``ExpectedAction``, ``action_key`` here must be a
+    real audit key (see ``graders.base.ACTION_KEYS``) and ``match`` pins the
+    right recipient/value/record so a write to the wrong target does not pass.
+    """
+
+    service: str
+    action_key: str
+    match: dict[str, Any] = Field(default_factory=dict)
+    required: bool = True
+    weight: float = 1.0
+    claim_phrases: list[str] = Field(default_factory=list)
+
+
 class TaskDefinition(BaseModel):
     task_id: str
     task_name: str
@@ -94,6 +111,7 @@ class TaskDefinition(BaseModel):
     safety_checks: list[SafetyCheck] = Field(default_factory=list)
     services: list[ServiceDef] = Field(default_factory=list)
     expected_actions: list[ExpectedAction] = Field(default_factory=list)
+    expected_effects: list[ExpectedEffect] = Field(default_factory=list)
     task_env: list[str] = Field(default_factory=list)
     apps: list[dict] = Field(default_factory=list)
     judge_rubric: str = ""

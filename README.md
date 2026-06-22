@@ -6,6 +6,7 @@
 [![Dataset](https://img.shields.io/badge/🤗%20Dataset-Claw--Anything-yellow.svg)](https://huggingface.co/datasets/LiberCoders/Claw-Anything)
 [![ModelScope](https://img.shields.io/badge/ModelScope-MyRepo-624aff?logo=modelscope)](https://modelscope.cn/datasets/LiberCoders/Claw-Anything)
 [![Benchmark](https://img.shields.io/badge/Benchmark-200%20-success.svg)](benchmark/)
+[![Leaderboard](https://img.shields.io/badge/🏆%20Leaderboard-Live-f0a83c.svg)](https://libercoders.github.io/CLaw-Anything/)
 [![Environments](https://img.shields.io/badge/Environments-2%2C000%20-blueviolet.svg)](#-quick-start)
 [![Views](https://komarev.com/ghpvc/?username=LiberCoders-CLaw-Anything&label=Views&color=brightgreen&style=flat)](https://github.com/LiberCoders/CLaw-Anything)
 
@@ -43,6 +44,7 @@ Claw-Anything operationalizes this view, evaluating always-on LLM agents across 
 
 
 ## News
+- 🏆 [2026-06-18] **Interactive leaderboard** is live → [libercoders.github.io/CLaw-Anything](https://libercoders.github.io/CLaw-Anything/)
 - 🛠️ [2026-06-01] Support CLI + GUI automatic evaluation.
 - 📄 [2026-05-26] The [arXiv](https://arxiv.org/pdf/2605.26086) preprint has been released.
 - 🚀 [2026-05-26] **Data pipeline** has been released — the two-stage `build-persona` → `gen-eval` flow scales to 2,000 training environments and powers the benchmark's data generation.

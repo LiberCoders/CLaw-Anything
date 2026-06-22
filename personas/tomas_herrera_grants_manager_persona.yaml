@@ -1,0 +1,173 @@
+persona_id: NGO01
+persona_name: Tomás Herrera
+language: en
+
+role: program & grants manager at an environmental nonprofit; owns 6 active grants and the major-donor stewardship pipeline
+company: GreenRoots Alliance (fictional, ~40-staff environmental nonprofit)
+industry: nonprofit / environmental advocacy
+seniority: mid-senior
+
+traits:
+- tracks every grant against its reporting calendar and never lets a funder deadline slip
+- treats each major donor as a relationship to steward, logging touchpoints and next steps
+- reconciles program spend against grant budgets before every report
+- coordinates field-program logistics with volunteers and partner orgs
+- writes program updates in Notion and shares a clean summary with leadership weekly
+- guards donor and beneficiary privacy — never cross-shares donor details
+- closes every funder or donor follow-up within two business days
+
+daily_responsibilities:
+- review the grant-reporting calendar and upcoming funder deadlines each morning
+- triage inbound from funders, donors, partners, and volunteers (email, Slack-style)
+- update the donor CRM and stewardship notes after every meaningful touchpoint
+- reconcile program budgets and assemble figures for grant reports
+- coordinate volunteer and partner logistics for field programs
+- close the loop on every committed funder/donor follow-up within 48h
+
+primary_services:
+- gmail
+- calendar
+- crm
+- sheet
+- claw_notion
+- todo
+secondary_services:
+- contacts
+- finance
+- kb
+- claw_linkedin
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - grant_reporting
+  - donor_stewardship
+  - program_coordination
+  - budget_tracking
+  - info_triage
+  - scheduling
+  - decision_making
+  implausible_categories:
+  - board_governance_decisions
+  - legal_filing_or_compliance_signoff
+  - staff_compensation_setting
+  - financial_audit_signoff
+
+authority:
+  can_approve:
+  - scheduling and rescheduling funder/donor calls and program logistics
+  - drafting grant reports and donor updates (leadership sign-off before submission)
+  - committing program-team follow-ups and volunteer assignments
+  - reallocating within an approved program budget line
+  cannot_approve:
+  - moving money between grants or exceeding a grant budget (ED + Finance)
+  - new funding commitments or contracts (Executive Director + Board)
+  - public statements or press on behalf of the org (Comms + ED)
+  - any change to donor restrictions or grant terms (Finance + funder)
+  communication_style: warm, mission-first, structured with clear owners and deadlines; mirrors funder language
+  quality_focus: funder trust and clean reporting over speed; every figure traceable to source
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 09:00–17:30 Pacific; grant-writing focus block Thursday mornings
+  active_issues:
+  - three funder reports due within the same two-week window in late May
+  - a major donor signaling interest in upgrading their annual gift
+  - a program budget line over-spent and needing reconciliation before reporting
+  - a spring volunteer field event needing logistics locked
+  business_goals:
+  - submit all three Q2 grant reports on time with reconciled figures by 2026-05-29
+  - advance the major-donor upgrade conversation to a concrete proposal by 2026-05-21
+  - bring the over-spent program line back into reconciliation by 2026-05-18
+  - confirm volunteer event logistics by 2026-05-15
+  risk_factors:
+  - a late or inaccurate report jeopardizing renewal from a key funder
+  - mishandling the donor upgrade and losing momentum on a six-figure relationship
+  - a budget discrepancy surfacing in a funder report instead of before it
+
+data_threads:
+- name: "Q2 grant report deadlines (×3 funders)"
+  description: "Three funder reports clustered in late May; narrative drafts, reconciled budget figures, internal sign-off, and submission tracking."
+  involved_services: [calendar, sheet, claw_notion, gmail, crm, todo]
+  involved_records:
+    calendar: []
+    sheet: []
+    claw_notion: []
+    gmail: []
+    crm: []
+    todo: []
+  signal_density: 0.18
+  difficulty: hard
+  category: grant_reporting
+  thread_type: standard
+
+- name: "Major-donor upgrade stewardship"
+  description: "A major donor exploring a larger gift; touchpoint history, tailored proposal, meeting scheduling, and same-week follow-ups."
+  involved_services: [crm, gmail, claw_notion, calendar, todo, contacts]
+  involved_records:
+    crm: []
+    gmail: []
+    claw_notion: []
+    calendar: []
+    todo: []
+    contacts: []
+  signal_density: 0.12
+  difficulty: medium
+  category: donor_stewardship
+  thread_type: standard
+
+- name: "Program budget reconciliation"
+  description: "An over-spent program line; reconcile actuals against the grant budget and flag the variance before it hits a report."
+  involved_services: [sheet, finance, crm, gmail, todo]
+  involved_records:
+    sheet: []
+    finance: []
+    crm: []
+    gmail: []
+    todo: []
+  signal_density: 0.10
+  difficulty: medium
+  category: budget_tracking
+  thread_type: standard
+
+- name: "Spring volunteer field event logistics"
+  description: "A field program event; volunteer roster, partner-org coordination, scheduling, and confirmations."
+  involved_services: [calendar, contacts, gmail, todo, claw_notion]
+  involved_records:
+    calendar: []
+    contacts: []
+    gmail: []
+    todo: []
+    claw_notion: []
+  signal_density: 0.08
+  difficulty: simple
+  category: program_coordination
+  thread_type: standard
+
+- name: "Inbound triage (funders + donors + partners)"
+  description: "Daily inbound across funders, donors, partners, and volunteers; sort into respond / schedule / escalate with owners."
+  involved_services: [gmail, crm, todo, claw_notion]
+  involved_records:
+    gmail: []
+    crm: []
+    todo: []
+    claw_notion: []
+  signal_density: 0.08
+  difficulty: simple
+  category: info_triage
+  thread_type: standard
+
+- name: "Annual report figures prep"
+  description: "Assembling program-impact and financial figures for the annual report; pulling from sheets and CRM with traceable sources."
+  involved_services: [sheet, crm, finance, claw_notion, gmail]
+  involved_records:
+    sheet: []
+    crm: []
+    finance: []
+    claw_notion: []
+    gmail: []
+  signal_density: 0.06
+  difficulty: medium
+  category: decision_making
+  thread_type: standard

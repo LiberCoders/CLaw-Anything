@@ -1,0 +1,169 @@
+persona_id: JRN01
+persona_name: Dahlia Mansour
+language: en
+
+role: investigative reporter on a regional newsroom's accountability desk; runs 2–3 active investigations plus a weekly accountability column
+company: The Meridian Dispatch (fictional regional news outlet)
+industry: journalism / media
+seniority: senior
+
+traits:
+- tracks every source, document, and FOIA request against the story it supports
+- treats every tip as something to verify before it becomes a lead, never a publish-now item
+- keeps a citation/evidence library so every claim traces to a primary document
+- monitors RSS feeds and public filings for developments on her beats
+- protects source confidentiality absolutely — never names a confidential source in shared notes
+- coordinates deadlines with her editor and never misses a column slot
+- closes every source and records-request follow-up within two days
+
+daily_responsibilities:
+- scan RSS feeds and filings for developments on her active investigations each morning
+- triage inbound tips, source replies, and records-request responses (email)
+- log new documents and quotes into the research workspace with citations
+- schedule and prep source interviews and editor check-ins
+- track FOIA/records-request status and chase overdue responses
+- close the loop on every source and records follow-up within 48h
+
+primary_services:
+- gmail
+- rss
+- claw_notion
+- calendar
+- todo
+secondary_services:
+- contacts
+- kb
+- claw_zotero
+- sheet
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - source_management
+  - story_research
+  - deadline_coordination
+  - fact_tracking
+  - info_triage
+  - info_aggregation
+  - scheduling
+  implausible_categories:
+  - editorial_publish_decision
+  - legal_clearance_signoff
+  - payroll_or_finance_authorization
+  - advertising_sales
+
+authority:
+  can_approve:
+  - scheduling source interviews and editor check-ins
+  - filing and chasing records/FOIA requests
+  - committing her own reporting follow-ups and research tasks
+  - drafting column and story copy (editor sign-off before publication)
+  cannot_approve:
+  - publishing or scheduling anything to go live (editor + legal review)
+  - legal clearance on potentially defamatory material (Legal)
+  - paying or contracting sources/fixers (Finance + editor; ethics constraints)
+  - committing the outlet's position publicly (Editor-in-Chief)
+  communication_style: precise, sourced, careful with attribution; never exposes a confidential source in shared notes
+  quality_focus: verification and traceable evidence over speed; every claim tied to a primary document before it advances
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri flexible field hours; weekly column due Thursday 17:00 Central
+  active_issues:
+  - a city-contracts investigation waiting on two overdue FOIA responses
+  - a confidential source ready to talk but needing careful scheduling and handling
+  - this week's accountability column due with one fact still unverified
+  - a backlog of inbound tips to sort after a recent column ran
+  business_goals:
+  - secure both overdue FOIA responses or escalate by 2026-05-20
+  - complete and verify the confidential-source interview by 2026-05-19
+  - file the weekly column on time with every claim sourced by 2026-05-21
+  - triage the post-column tip backlog down to a clear lead list by 2026-05-16
+  risk_factors:
+  - publishing the column with an unverified claim and issuing a correction
+  - mishandling confidential-source detail in a shared workspace
+  - the city-contracts story stalling indefinitely on unanswered records requests
+
+data_threads:
+- name: "City-contracts investigation (FOIA tracking)"
+  description: "Active investigation hinging on records requests; FOIA status tracking, document logging with citations, and escalation on overdue responses."
+  involved_services: [gmail, claw_notion, claw_zotero, todo, sheet, rss]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    claw_zotero: []
+    todo: []
+    sheet: []
+    rss: []
+  signal_density: 0.18
+  difficulty: hard
+  category: story_research
+  thread_type: standard
+
+- name: "Confidential-source interview"
+  description: "A sensitive source ready to talk; careful scheduling, confidentiality-preserving notes, and verification of their account."
+  involved_services: [gmail, calendar, claw_notion, contacts, todo]
+  involved_records:
+    gmail: []
+    calendar: []
+    claw_notion: []
+    contacts: []
+    todo: []
+  signal_density: 0.12
+  difficulty: medium
+  category: source_management
+  thread_type: standard
+
+- name: "Weekly accountability column"
+  description: "Recurring column with a hard deadline; drafting, the last unverified fact, citation check, and editor hand-off."
+  involved_services: [claw_notion, claw_zotero, gmail, calendar, todo]
+  involved_records:
+    claw_notion: []
+    claw_zotero: []
+    gmail: []
+    calendar: []
+    todo: []
+  signal_density: 0.12
+  difficulty: medium
+  category: deadline_coordination
+  thread_type: standard
+
+- name: "RSS / filings monitoring"
+  description: "Daily scan of feeds and public filings for developments on active beats; clipping relevant items into the research workspace."
+  involved_services: [rss, claw_notion, todo, kb]
+  involved_records:
+    rss: []
+    claw_notion: []
+    todo: []
+    kb: []
+  signal_density: 0.08
+  difficulty: simple
+  category: info_aggregation
+  thread_type: standard
+
+- name: "Inbound tip triage"
+  description: "Sorting a backlog of inbound tips after a column ran; verify-worthy leads vs noise, with owners and next steps."
+  involved_services: [gmail, claw_notion, todo, contacts]
+  involved_records:
+    gmail: []
+    claw_notion: []
+    todo: []
+    contacts: []
+  signal_density: 0.08
+  difficulty: simple
+  category: info_triage
+  thread_type: standard
+
+- name: "Evidence / citation library upkeep"
+  description: "Keeping the citation library clean so every claim across stories traces to a primary document."
+  involved_services: [claw_zotero, claw_notion, kb, todo]
+  involved_records:
+    claw_zotero: []
+    claw_notion: []
+    kb: []
+    todo: []
+  signal_density: 0.06
+  difficulty: medium
+  category: fact_tracking
+  thread_type: standard

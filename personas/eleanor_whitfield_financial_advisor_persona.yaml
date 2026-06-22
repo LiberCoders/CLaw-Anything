@@ -1,0 +1,170 @@
+persona_id: FIN01
+persona_name: Eleanor Whitfield
+language: en
+
+role: independent certified financial planner running a solo advisory practice; manages ~30 household clients
+company: Whitfield Wealth Advisory (fictional solo RIA practice)
+industry: financial advisory / wealth management
+seniority: senior
+
+traits:
+- runs a structured annual review with every client and a mid-year check on tier-1 households
+- treats market volatility as a proactive client-outreach trigger, not a wait-and-see event
+- prepares a written recommendation before every meeting and never acts without client consent
+- tracks missing client documents and chases them until the file is complete
+- logs every client conversation and next step in her CRM the same day
+- guards client financial data strictly — never discusses one client's situation with another
+- closes every client follow-up and document request within two business days
+
+daily_responsibilities:
+- review the portfolio-monitoring and client-review calendar each morning
+- triage inbound from clients, custodians, and prospects (email)
+- prepare review packets and written recommendations ahead of client meetings
+- track outstanding client documents and signatures to completion
+- log client touchpoints and next steps in the CRM after every interaction
+- close the loop on every client follow-up within 48h
+
+primary_services:
+- gmail
+- calendar
+- crm
+- finance
+- sheet
+- todo
+secondary_services:
+- contacts
+- claw_notion
+- kb
+- claw_linkedin
+
+fixture_scale: standard
+
+task_constraints:
+  plausible_categories:
+  - client_review_prep
+  - portfolio_monitoring
+  - meeting_scheduling
+  - document_followup
+  - info_triage
+  - decision_making
+  - scheduling
+  implausible_categories:
+  - executing_trades_without_consent
+  - tax_return_filing
+  - legal_estate_document_drafting
+  - lending_or_credit_decisions
+
+authority:
+  can_approve:
+  - scheduling and rescheduling client reviews and check-ins
+  - preparing portfolio recommendations (client sign-off required before execution)
+  - drafting financial-plan summaries and review packets
+  - committing her own client follow-ups and document requests
+  cannot_approve:
+  - executing any trade or reallocation without documented client consent
+  - tax filing or definitive tax advice beyond planning scope (refer to CPA)
+  - legal/estate document drafting (refer to estate attorney)
+  - guarantees about returns or performance (compliance prohibits)
+  communication_style: measured, plain-language, fiduciary-first; always states assumptions and asks for consent before any action
+  quality_focus: client interest and suitability over speed; every recommendation documented and consented before execution
+
+business_context:
+  time_window: "2026-02-15 ~ 2026-06-15"
+  work_schedule: Mon–Fri 09:00–17:00 Mountain; client-prep block Wednesday afternoons
+  active_issues:
+  - Q2 annual-review season with five tier-1 household reviews in the next four weeks
+  - a bout of market volatility prompting anxious inbound from several clients
+  - the annual rebalance prep due, pending updated client data
+  - three client files missing required documents or signatures
+  business_goals:
+  - deliver all five tier-1 annual reviews on schedule with prepared recommendations by 2026-05-31
+  - proactively reach every affected client about the volatility with a consistent message by 2026-05-18
+  - complete the rebalance prep sheet (pending consent) by 2026-05-22
+  - close out all three incomplete client files by 2026-05-16
+  risk_factors:
+  - a client acting on anxiety and making an unsuitable move before their review
+  - a rebalance recommendation going out without documented consent
+  - an incomplete file delaying a time-sensitive client transaction
+
+data_threads:
+- name: "Q2 client review season (×5 tier-1 households)"
+  description: "Five annual reviews in four weeks; review packets, written recommendations, scheduling logistics, and same-day CRM logging."
+  involved_services: [calendar, crm, finance, sheet, gmail, todo]
+  involved_records:
+    calendar: []
+    crm: []
+    finance: []
+    sheet: []
+    gmail: []
+    todo: []
+  signal_density: 0.18
+  difficulty: hard
+  category: client_review_prep
+  thread_type: standard
+
+- name: "Market-volatility client outreach"
+  description: "A volatility episode prompting anxious inbound; proactive, consistent outreach with a clear message and no unsuitable moves before reviews."
+  involved_services: [gmail, crm, finance, todo, claw_notion]
+  involved_records:
+    gmail: []
+    crm: []
+    finance: []
+    todo: []
+    claw_notion: []
+  signal_density: 0.12
+  difficulty: medium
+  category: portfolio_monitoring
+  thread_type: standard
+
+- name: "Annual rebalance prep"
+  description: "Rebalance preparation pending updated client data and consent; target allocations and drift consolidated into a prep sheet."
+  involved_services: [finance, sheet, crm, todo]
+  involved_records:
+    finance: []
+    sheet: []
+    crm: []
+    todo: []
+  signal_density: 0.10
+  difficulty: medium
+  category: decision_making
+  thread_type: standard
+
+- name: "Incomplete client files (missing docs / signatures)"
+  description: "Three client files missing required documents or signatures; track outstanding items and chase to completion."
+  involved_services: [crm, gmail, todo, contacts]
+  involved_records:
+    crm: []
+    gmail: []
+    todo: []
+    contacts: []
+  signal_density: 0.08
+  difficulty: simple
+  category: document_followup
+  thread_type: standard
+
+- name: "Inbound client triage"
+  description: "Daily inbound from clients, custodians, and prospects; sort into respond / schedule / escalate with owners and deadlines."
+  involved_services: [gmail, crm, todo, calendar]
+  involved_records:
+    gmail: []
+    crm: []
+    todo: []
+    calendar: []
+  signal_density: 0.08
+  difficulty: simple
+  category: info_triage
+  thread_type: standard
+
+- name: "Prospect / referral follow-up"
+  description: "Warm referrals and prospect follow-ups; light-touch scheduling and CRM tracking without commercial over-commitment."
+  involved_services: [claw_linkedin, contacts, crm, gmail, todo]
+  involved_records:
+    claw_linkedin: []
+    contacts: []
+    crm: []
+    gmail: []
+    todo: []
+  signal_density: 0.05
+  difficulty: simple
+  category: meeting_scheduling
+  thread_type: standard

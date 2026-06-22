@@ -104,7 +104,10 @@ def create_order(req: CreateOrderRequest) -> dict[str, Any]:
 
 @app.get("/inventory/audit")
 def get_audit() -> dict[str, Any]:
-    return {"calls": _audit_log, "orders": _orders}
+    # `_orders` is reset on each task and only `create_order` appends to it,
+    # so it really is the list of newly-created orders. Expose it under the
+    # canonical ACTION_KEYS name plus the legacy alias for back-compat.
+    return {"calls": _audit_log, "created_orders": _orders, "orders": _orders}
 
 
 @app.post("/inventory/reset")

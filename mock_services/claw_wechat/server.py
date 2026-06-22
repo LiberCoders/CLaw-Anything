@@ -148,8 +148,8 @@ def list_chats(req: ListChatsRequest | None = None) -> dict[str, Any]:
             "type": chat["type"],
             "name": chat["name"],
             "members": chat["members"],
-            "is_muted": chat.get("is_muted", False),
-            "last_message_at": chat.get("last_message_at"),
+            "is_muted": chat.get("is_muted", chat.get("muted", False)),
+            "last_message_at": chat.get("last_message_at") or chat.get("last_updated"),
             "message_count": len(chat.get("messages", [])),
         })
     total = len(results)
