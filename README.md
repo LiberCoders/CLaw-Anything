@@ -6,7 +6,7 @@
 [![Dataset](https://img.shields.io/badge/🤗%20Dataset-Claw--Anything-yellow.svg)](https://huggingface.co/datasets/LiberCoders/Claw-Anything)
 [![ModelScope](https://img.shields.io/badge/ModelScope-MyRepo-624aff?logo=modelscope)](https://modelscope.cn/datasets/LiberCoders/Claw-Anything)
 [![Benchmark](https://img.shields.io/badge/Benchmark-200%20-success.svg)](benchmark/)
-[![Leaderboard](https://img.shields.io/badge/🏆%20Leaderboard-Live-f0a83c.svg)](https://libercoders.github.io/CLaw-Anything/)
+[![Leaderboard](https://img.shields.io/badge/🏆%20Leaderboard-Live-f0a83c.svg)](https://libercoders.github.io/Claw-Anything/)
 [![Environments](https://img.shields.io/badge/Environments-2%2C000%20-blueviolet.svg)](#-quick-start)
 [![Views](https://komarev.com/ghpvc/?username=LiberCoders-CLaw-Anything&label=Views&color=brightgreen&style=flat)](https://github.com/LiberCoders/CLaw-Anything)
 
