@@ -1,4 +1,4 @@
-task_id: TGUI30_loop_habit_expense_training
+task_id: TGUI29_loop_habit_expense_training
 task_name: Reconcile training expense notification with department budget records and update tracking systems
 version: '1.0'
 category: finance
@@ -16,10 +16,10 @@ apps:
 inject:
 - type: loop_habits
   fixture: fixtures/gui/loop_habit_gui/habits.json
-  description: Loop Habit Tracker fixture data for task TGUI30
+  description: Loop Habit Tracker fixture data for task TGUI29
 - type: my_expenses
   fixture: fixtures/gui/my_expenses_gui/data.json
-  description: My Expenses fixture data for task TGUI30
+  description: My Expenses fixture data for task TGUI29
 services:
 - name: todo
   command: python mock_services/todo/server.py
