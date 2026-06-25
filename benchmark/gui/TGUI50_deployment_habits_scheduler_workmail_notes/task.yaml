@@ -116,6 +116,15 @@ tools:
     properties:
       query:
         type: string
+- name: loop_habits_get_habit
+  description: 获取单个习惯的完整详情和打卡记录
+  input_schema:
+    type: object
+    properties:
+      habit_id:
+        type: string
+    required:
+    - habit_id
 - name: loop_habits_check_habit
   description: 完成某个习惯的今日打卡
   input_schema:
@@ -603,6 +612,9 @@ tool_endpoints:
 - tool_name: loop_habits_list_habits
   url: http://localhost:9120/gui/loop_habit/list_habits
   method: POST
+- tool_name: loop_habits_get_habit
+  url: http://localhost:9120/gui/loop_habit/get_habit
+  method: POST
 - tool_name: loop_habits_check_habit
   url: http://localhost:9120/gui/loop_habit/check_habit
   method: POST
@@ -772,7 +784,7 @@ scoring_components:
   weight: 0.1
   check:
     type: tool_called
-    tool_name: loop_habit_gui_list_habits
+    tool_name: loop_habits_list_habits
     min_calls: 1
 - name: Analyzed Obsidian incident postmortems
   weight: 0.15
@@ -957,7 +969,7 @@ judge_rubric: '# Q1 DevOps Retrospective Evaluation Rubric
 
   **Total: 100 points** (deductions applied after base scoring)'
 reference_solution: "# Reference Solution: Q1 DevOps Retrospective\n\n## Step 1: Extract\
-  \ Q1 Habit Completion Data\n\n**Action**: Call `loop_habit_gui_list_habits` to retrieve\
+  \ Q1 Habit Completion Data\n\n**Action**: Call `loop_habits_list_habits` to retrieve\
   \ all tracked habits\n\n**Expected findings**:\n- Pre-deployment stress testing:\
   \ 30 completions from 2026-03-03 to 2026-04-13 (need to filter Q1: Jan-Mar 2026)\n\
   \  - Q1 completions (2026-01-01 to 2026-03-31): Count dates in January-March = 24\

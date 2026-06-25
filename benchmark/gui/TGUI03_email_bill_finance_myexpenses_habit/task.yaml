@@ -40,6 +40,87 @@ services:
     FINANCE_FIXTURES: fixtures/finance/transactions.json
 
 tools:
+# ---- gmail_clone_gui ----
+- name: gmail_clone_list_messages
+  description: 列出 Gmail Clone 邮件，支持标签、未读和关键词过滤
+  input_schema:
+    type: object
+    properties:
+      label:
+        type: string
+      unread_only:
+        type: boolean
+      query:
+        type: string
+      max_results:
+        type: integer
+- name: gmail_clone_get_message
+  description: 获取单封 Gmail Clone 邮件的完整内容
+  input_schema:
+    type: object
+    properties:
+      message_id:
+        type: string
+    required: [message_id]
+
+# ---- my_expenses_gui ----
+- name: my_expenses_list_transactions
+  description: 列出 My Expenses 交易，用于确认是否已补录
+  input_schema:
+    type: object
+    properties:
+      start_date:
+        type: string
+      end_date:
+        type: string
+      category:
+        type: string
+      account_id:
+        type: string
+      query:
+        type: string
+      max_results:
+        type: integer
+- name: my_expenses_add_transaction
+  description: 在 My Expenses 中新增一笔交易
+  input_schema:
+    type: object
+    properties:
+      date:
+        type: string
+      account:
+        type: string
+      category:
+        type: string
+      payee:
+        type: string
+      amount:
+        type: number
+      description:
+        type: string
+      notes:
+        type: string
+    required: [date, account, category, amount, description]
+
+# ---- loop_habit_gui ----
+- name: loop_habits_list_habits
+  description: 列出 Loop Habit Tracker 中的习惯
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+- name: loop_habits_check_habit
+  description: 为指定习惯在指定日期打卡
+  input_schema:
+    type: object
+    properties:
+      habit_id:
+        type: string
+      date:
+        type: string
+    required: [habit_id]
+
 # ---- finance CLI ----
 - name: finance_list_transactions
   description: 查询 CLI finance 历史流水，验证账单是否已记录
@@ -52,6 +133,24 @@ tools:
         type: string
 
 tool_endpoints:
+- tool_name: gmail_clone_list_messages
+  url: http://localhost:9120/gui/gmail_clone/list_messages
+  method: POST
+- tool_name: gmail_clone_get_message
+  url: http://localhost:9120/gui/gmail_clone/get_message
+  method: POST
+- tool_name: my_expenses_list_transactions
+  url: http://localhost:9120/gui/my_expenses/list_transactions
+  method: POST
+- tool_name: my_expenses_add_transaction
+  url: http://localhost:9120/gui/my_expenses/add_transaction
+  method: POST
+- tool_name: loop_habits_list_habits
+  url: http://localhost:9120/gui/loop_habit/list_habits
+  method: POST
+- tool_name: loop_habits_check_habit
+  url: http://localhost:9120/gui/loop_habit/check_habit
+  method: POST
 - tool_name: finance_list_transactions
   url: http://localhost:9104/finance/transactions
   method: POST
