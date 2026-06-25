@@ -1059,6 +1059,71 @@ _MY_EXP_TYPE_ALIASES = {
 }
 
 
+def _normalize_my_expenses_account_type(raw_type) -> str:
+    raw_type = str(raw_type or "CASH")
+    return _MY_EXP_TYPE_ALIASES.get(raw_type.lower(), raw_type.upper())
+
+
+def _normalize_my_expenses_account_color(value) -> int:
+    return _hex_to_android_color(value, default=-3355444)
+
+
+def _my_expenses_record_key(item: object, fields: tuple[str, ...]) -> str | None:
+    if not isinstance(item, dict):
+        return None
+    for field in fields:
+        value = item.get(field)
+        if value not in (None, ""):
+            return str(value)
+    return None
+
+
+def _dedupe_my_expenses_records(
+    records: list, fields: tuple[str, ...], *, prefer_latest: bool = False
+) -> list:
+    seen: dict[str, int] = {}
+    result: list = []
+    for record in records:
+        key = _my_expenses_record_key(record, fields)
+        if key is None or key not in seen:
+            if key is not None:
+                seen[key] = len(result)
+            result.append(record)
+            continue
+        if prefer_latest:
+            result[seen[key]] = record
+    return result
+
+
+def _merge_my_expenses_containers(raw) -> dict:
+    if isinstance(raw, dict):
+        return raw
+    if not isinstance(raw, list):
+        return {}
+
+    merged = {"accounts": [], "categories": [], "payees": [], "transactions": []}
+    for container in raw:
+        if not isinstance(container, dict):
+            continue
+        for key in merged:
+            values = container.get(key) or []
+            if isinstance(values, list):
+                merged[key].extend(values)
+    merged["accounts"] = _dedupe_my_expenses_records(
+        merged["accounts"], ("account_id", "id", "label", "name")
+    )
+    merged["categories"] = _dedupe_my_expenses_records(
+        merged["categories"], ("category_id", "id", "label", "name")
+    )
+    merged["payees"] = _dedupe_my_expenses_records(
+        merged["payees"], ("payee_id", "id", "name")
+    )
+    merged["transactions"] = _dedupe_my_expenses_records(
+        merged["transactions"], ("transaction_id", "id"), prefer_latest=True
+    )
+    return merged
+
+
 def _normalize_my_expenses_data(raw) -> dict:
     """Convert ID-based or list-wrapped fixtures to the label-reference format
     expected by inject_my_expenses.
@@ -1068,13 +1133,22 @@ def _normalize_my_expenses_data(raw) -> dict:
       2. Dict with name/account_id/category_id fields (TGUI10 style).
       3. Single-element list wrapping either of the above (most complex_tasks).
     """
-    data = raw[0] if isinstance(raw, list) else raw
+    data = _merge_my_expenses_containers(raw)
 
     accs = data.get("accounts", [])
     txs  = data.get("transactions", [])
     # Already correct if first account uses "label" and first tx uses "account"
     if accs and "label" in accs[0] and (not txs or "account" in txs[0]):
-        return data
+        normalized = dict(data)
+        normalized["accounts"] = [
+            {
+                **acc,
+                "type": _normalize_my_expenses_account_type(acc.get("type", "CASH")),
+                "color": _normalize_my_expenses_account_color(acc.get("color", -3355444)),
+            }
+            for acc in accs
+        ]
+        return normalized
 
     # Build id → label maps
     acc_id_to_label: dict[str, str] = {}
@@ -1084,8 +1158,7 @@ def _normalize_my_expenses_data(raw) -> dict:
         acc_id = acc.get("account_id") or acc.get("id", "")
         if acc_id:
             acc_id_to_label[acc_id] = label
-        raw_type = acc.get("type", "CASH")
-        norm_type = _MY_EXP_TYPE_ALIASES.get(raw_type.lower(), raw_type.upper())
+        norm_type = _normalize_my_expenses_account_type(acc.get("type", "CASH"))
         opening = acc.get("opening_balance") or acc.get("initial_balance") or acc.get("balance") or 0
         norm_accounts.append({
             "label":           label,
@@ -1093,7 +1166,7 @@ def _normalize_my_expenses_data(raw) -> dict:
             "type":            norm_type,
             "opening_balance": opening,
             "description":     acc.get("description", ""),
-            "color":           acc.get("color", -3355444),
+            "color":           _normalize_my_expenses_account_color(acc.get("color", -3355444)),
         })
 
     cat_id_to_label: dict[str, str] = {}
@@ -1124,8 +1197,18 @@ def _normalize_my_expenses_data(raw) -> dict:
 
     norm_transactions = []
     for tx in txs:
-        acc_label = tx.get("account") or acc_id_to_label.get(tx.get("account_id", ""), "")
-        cat_label = tx.get("category") or cat_id_to_label.get(tx.get("category_id", ""), "")
+        raw_account = tx.get("account")
+        raw_category = tx.get("category")
+        acc_label = (
+            acc_id_to_label.get(str(raw_account), "")
+            if raw_account not in (None, "")
+            else acc_id_to_label.get(tx.get("account_id", ""), "")
+        ) or raw_account or ""
+        cat_label = (
+            cat_id_to_label.get(str(raw_category), "")
+            if raw_category not in (None, "")
+            else cat_id_to_label.get(tx.get("category_id", ""), "")
+        ) or raw_category or ""
         payee     = tx.get("payee") or payee_id_to_name.get(tx.get("payee_id", ""), "")
         comment   = tx.get("comment") or tx.get("description") or tx.get("notes", "")
         norm_transactions.append({
@@ -1135,6 +1218,7 @@ def _normalize_my_expenses_data(raw) -> dict:
             "category": cat_label,
             "payee":    payee,
             "comment":  comment,
+            "transaction_id": tx.get("transaction_id") or tx.get("id", ""),
         })
 
     return {
@@ -1596,7 +1680,8 @@ def inject_my_expenses(step: dict, task_dir: Path, device: str | None) -> bool:
             """, (
                 acc["label"], acc.get("currency", "USD"), acc_type,
                 int(acc.get("opening_balance", 0)), acc.get("description", ""),
-                int(acc.get("color", -3355444)), str(uuid_mod.uuid4()), "NONE", "DESC",
+                _normalize_my_expenses_account_color(acc.get("color", -3355444)),
+                str(uuid_mod.uuid4()), "NONE", "DESC",
             ))
             account_id_map[acc["label"]] = cur.lastrowid
             print(f"  [OK] account '{acc['label']}'")
