@@ -624,49 +624,47 @@ def _sqlite3_query(sql: str, device: str | None) -> str:
 
 def _normalize_fossify_message_item(msg: dict) -> dict:
     """Normalise a single message dict to {id, time, text, is_outgoing}."""
+    sender = str(msg.get("sender") or msg.get("from") or "").strip().lower()
     return {
-        "id":          str(msg.get("id", "")),
-        "time":        msg.get("time") or msg.get("timestamp", ""),
-        "text":        msg.get("text") or msg.get("body") or msg.get("message_text", ""),
-        "is_outgoing": msg.get("is_outgoing", msg.get("is_sent", False)),
+        "id":          str(msg.get("id") or msg.get("message_id") or ""),
+        "time":        msg.get("time") or msg.get("timestamp") or msg.get("date") or "",
+        "text":        (
+            msg.get("text")
+            or msg.get("body")
+            or msg.get("message_text")
+            or msg.get("content")
+            or ""
+        ),
+        "is_outgoing": msg.get("is_outgoing", msg.get("is_sent", sender == "me")),
     }
 
 
-def _normalize_fossify_messages(raw: list) -> list:
-    """Convert various fixture formats to the threaded format expected by
-    inject_fossify_messages.
+def _thread_participants(thread: dict) -> list[str]:
+    participants = thread.get("participants")
+    if isinstance(participants, list):
+        return [str(p) for p in participants if p]
+    contact = thread.get("contact") or thread.get("contact_number") or thread.get("address")
+    return [str(contact)] if contact else []
 
-    Three observed variants:
-      1. Correct threaded: items have 'participants' (list) + 'messages' — returned as-is.
-      2. Threaded-wrong: items have 'messages' but use 'contact' (str) instead of
-         'participants', and messages use 'timestamp'/'body' field names.
-      3. Flat: items are individual messages with 'contact_number'/'is_sent', grouped
-         by 'thread_id'.
-    """
-    if not raw:
-        return raw
 
-    first = raw[0]
+def _normalize_fossify_thread(thread: dict) -> dict:
+    norm_msgs = [_normalize_fossify_message_item(m) for m in thread.get("messages", [])]
+    unread = int(thread.get("unread_count", 0) or 0)
+    if unread <= 0:
+        unread = sum(
+            1
+            for msg in thread.get("messages", [])
+            if not _normalize_fossify_message_item(msg).get("is_outgoing")
+            and not msg.get("is_read", True)
+        )
+    return {
+        "participants": _thread_participants(thread),
+        "unread_count": unread,
+        "messages":     norm_msgs,
+    }
 
-    # Format 1: already correct
-    if "participants" in first:
-        return raw
 
-    # Format 2: threaded but with wrong field names
-    if "messages" in first:
-        result = []
-        for thread in raw:
-            contact = thread.get("contact") or thread.get("contact_number", "")
-            norm_msgs = [_normalize_fossify_message_item(m) for m in thread.get("messages", [])]
-            unread = int(thread.get("unread_count", 0))
-            result.append({
-                "participants": [contact] if contact else [],
-                "unread_count": unread,
-                "messages":     norm_msgs,
-            })
-        return result
-
-    # Format 3: flat list — group by thread_id
+def _group_flat_fossify_messages(raw: list[dict]) -> list[dict]:
     thread_order: list[str] = []
     threads: dict[str, dict] = {}
     for msg in raw:
@@ -684,6 +682,34 @@ def _normalize_fossify_messages(raw: list) -> list:
             threads[tid]["unread_count"] += 1
         threads[tid]["messages"].append(_normalize_fossify_message_item(msg))
     return [threads[tid] for tid in thread_order]
+
+
+def _normalize_fossify_messages(raw: list) -> list:
+    """Convert various fixture formats to the threaded format expected by
+    inject_fossify_messages.
+
+    Fixtures may be all-threaded, all-flat, or a mixed list that combines both.
+    Threaded rows carry a ``messages`` list; flat rows are individual SMS rows
+    grouped by ``thread_id``.
+    """
+    if not raw:
+        return raw
+
+    result: list[dict] = []
+    pending_flat: list[dict] = []
+    for item in raw:
+        if not isinstance(item, dict):
+            continue
+        if "messages" in item:
+            if pending_flat:
+                result.extend(_group_flat_fossify_messages(pending_flat))
+                pending_flat = []
+            result.append(_normalize_fossify_thread(item))
+        else:
+            pending_flat.append(item)
+    if pending_flat:
+        result.extend(_group_flat_fossify_messages(pending_flat))
+    return result
 
 
 def inject_fossify_messages(step: dict, task_dir: Path, device: str | None) -> bool:
