@@ -192,13 +192,13 @@
     ]
   },
   {
-    "job_id": "JOB-705",
+    "job_id": "JOB-712",
     "name": "db_migration_user_preferences",
-    "description": "Database migration to add user preferences schema for rate-limiting feature",
-    "cron_expression": "",
+    "description": "One-time database migration to add user preferences schema for rate-limiting feature",
+    "cron_expression": "30 2 * * *",
     "enabled": true,
-    "last_status": "running",
-    "last_run": "2026-04-02T17:30:00+08:00",
+    "last_status": "success",
+    "last_run": "2026-04-02T02:30:00+08:00",
     "action": "run_db_migration",
     "created_by": "Lin Zhenkai",
     "tags": [
@@ -206,13 +206,25 @@
       "migration",
       "rate-limiting"
     ],
-    "notes": "Migration started at 17:30, estimated completion 20:00. Conflicts with proposed deployment window. Holds exclusive lock on user_accounts table.",
+    "notes": "Accidentally left enabled after the one-time migration on 2026-03-30. Runs at 02:30 and holds 15+ database connections for 45-60 minutes, overlapping with nightly_cache_warmup at 03:00.",
     "execution_history": [
       {
-        "run_time": "2026-04-02T17:30:00+08:00",
-        "status": "running",
-        "duration_seconds": 4500,
-        "notes": "Migration in progress - processing 2.3M rows, 45% complete"
+        "run_time": "2026-03-31T02:30:00+08:00",
+        "status": "success",
+        "duration_seconds": 3420,
+        "notes": "Migration job held 18 database connections while nightly_cache_warmup started at 03:00."
+      },
+      {
+        "run_time": "2026-04-01T02:30:00+08:00",
+        "status": "success",
+        "duration_seconds": 3510,
+        "notes": "Migration job overlapped with cache warmup window and saturated the connection pool."
+      },
+      {
+        "run_time": "2026-04-02T02:30:00+08:00",
+        "status": "success",
+        "duration_seconds": 3380,
+        "notes": "Migration job overlapped with nightly_cache_warmup; pool size 20, active connections peaked at 20."
       }
     ]
   },
@@ -398,7 +410,7 @@
     ]
   },
   {
-    "job_id": "JOB-712",
+    "job_id": "JOB-727",
     "name": "weekly_cache_warmup",
     "description": "Weekly Redis cache pre-population for frequently accessed user data",
     "cron_expression": "0 4 * * 0",

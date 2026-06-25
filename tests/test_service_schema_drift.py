@@ -17,6 +17,7 @@ from __future__ import annotations
 import importlib
 import json
 import os
+from pathlib import Path
 
 from fastapi.testclient import TestClient
 
@@ -189,6 +190,21 @@ def test_scheduler_next_run_backfilled(tmp_path):
     # Anchored at 2026-06-10: next daily 08:30 is 06-11; next Monday 02:00 is 06-15.
     assert jobs["JOB-1"]["next_run"] == "2026-06-11T08:30:00"
     assert jobs["JOB-2"]["next_run"] == "2026-06-15T02:00:00"
+
+
+def test_tgui46_scheduler_fixture_matches_reference_ground_truth():
+    fixture = (
+        Path(__file__).resolve().parents[1]
+        / "benchmark/gui/TGUI46_job_failure_triage_workmail_sms_notes"
+        / "fixtures/scheduler/jobs.json"
+    )
+    jobs = json.loads(fixture.read_text(encoding="utf-8"))
+    by_id = {job["job_id"]: job for job in jobs}
+
+    assert by_id["JOB-712"]["name"] == "db_migration_user_preferences"
+    assert by_id["JOB-712"]["enabled"] is True
+    assert "02:30" in by_id["JOB-712"]["notes"]
+    assert by_id["JOB-725"]["name"] == "nightly_cache_warmup"
 
 
 def test_scheduler_cron_parser_units():
