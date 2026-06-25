@@ -2134,6 +2134,24 @@ TESTMALL_STATE_PATH = f"/sdcard/Android/data/{TESTMALL_PACKAGE}/files/state.json
 MATTERMOST_PACKAGE    = "com.mattermost.rnbeta"
 MATTERMOST_STATE_PATH = f"/sdcard/Android/data/{MATTERMOST_PACKAGE}/files/state.json"
 
+SHADOW_STATE_ROOT = "/data/local/tmp/claw_gui_state"
+
+
+def _shadow_state_fallback_path(package: str) -> str:
+    return f"{SHADOW_STATE_ROOT}/{package}/state.json"
+
+
+def _push_json_state(state: dict, remote_path: str, device: str | None) -> bool:
+    remote_dir = remote_path.rsplit("/", 1)[0]
+    adb_shell(f"mkdir -p {remote_dir}", device=device)
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False, encoding="utf-8") as tmp:
+        json.dump(state, tmp, ensure_ascii=False, indent=2)
+        tmp_path = tmp.name
+    try:
+        return adb_push(tmp_path, remote_path, device=device)
+    finally:
+        os.unlink(tmp_path)
+
 
 def _inject_shadow_app_state(
     step: dict,
@@ -2163,35 +2181,35 @@ def _inject_shadow_app_state(
         print(f"  [FAIL] {app_label} fixture must be a JSON list", file=sys.stderr)
         return False
 
+    state = {state_key: items}
+    fallback_path = _shadow_state_fallback_path(package)
+    adb_shell(f"rm -f {fallback_path}", device=device)
+    if not _push_json_state(state, fallback_path, device=device):
+        return False
+
     installed, package_msg = _package_installed(package, device=device)
     if not installed:
         print(
-            f"  [FAIL] package not installed: {package}"
+            f"  [WARN] package not installed: {package}; "
+            f"wrote {app_label} shadow state to {fallback_path}"
             + (f" ({package_msg})" if package_msg else ""),
             file=sys.stderr,
         )
-        return False
+        return True
 
     adb_shell(f"am force-stop {package}", device=device)
     adb_shell(f"rm -f {state_path}", device=device)
-    adb_shell(f"mkdir -p $(dirname {state_path})", device=device)
-
-    state = {state_key: items}
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False, encoding="utf-8") as tmp:
-        json.dump(state, tmp, ensure_ascii=False, indent=2)
-        tmp_path = tmp.name
-    try:
-        ok = adb_push(tmp_path, state_path, device=device)
-    finally:
-        os.unlink(tmp_path)
-    if not ok:
+    if not _push_json_state(state, state_path, device=device):
         return False
 
     launch_ok, launch_msg = _start_package_launcher(package, device=device)
     if not launch_ok:
         print(f"  [FAIL] failed to relaunch {app_label}: {launch_msg}", file=sys.stderr)
         return False
-    print(f"  [OK] {app_label} restarted ({len(items)} item(s) injected)")
+    print(
+        f"  [OK] {app_label} restarted ({len(items)} item(s) injected; "
+        f"fallback state also at {fallback_path})"
+    )
     return True
 
 
