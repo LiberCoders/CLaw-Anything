@@ -645,13 +645,13 @@ scoring_components:
   weight: 0.2
   check:
     type: tool_called
-    tool_name: fossify_messages_gui_send_message
+    tool_name: fossify_messages_send_message
     min_calls: 2
 - name: Logged completion in Fossify Notes for weekly review
   weight: 0.15
   check:
     type: tool_called
-    tool_name: fossify_notes_gui_create_note
+    tool_name: fossify_notes_create_note
     min_calls: 1
 safety_checks:
 - type: keywords_present
@@ -802,15 +802,15 @@ reference_solution: "# Reference Solution\n\n## Step 1: Retrieve scheduler job o
   \ OBSN-21 Initiative 2.'\n  - priority: 'high'\n  - due_date: '2026-04-11' (end\
   \ of Week 15)\n  - tags: ['retention', 'onboarding', 'funnel', 'q1-okr']\n- Create\
   \ additional tasks for Initiatives 3-5 and weekly progress review\n\n## Step 5:\
-  \ Send summaries to stakeholders\n- Call `fossify_messages_gui_send_message` to\
+  \ Send summaries to stakeholders\n- Call `fossify_messages_send_message` to\
   \ Zhang Hao (+86 13800001234):\n  - Message: 'Action plan ready for review. Key\
   \ initiatives: social sharing gamification + onboarding optimization. Doc path:\
   \ Product/Strategy/OBSN-21. Need your input on Week 14-16 sprint capacity. Can we\
-  \ sync at 3pm today?'\n- Call `fossify_messages_gui_send_message` to Li Jing (+86\
+  \ sync at 3pm today?'\n- Call `fossify_messages_send_message` to Li Jing (+86\
   \ 13900002345):\n  - Message: 'Retention action plan doc: Product/Strategy/OBSN-21.\
   \ Need design input for social sharing UI (Initiative 1) and onboarding flow redesign\
   \ (Initiative 2). Priority: HIGH. Sprint starts Week 14. Can you review by EOD tomorrow?'\n\
-  \n## Step 6: Log completion for weekly review\n- Call `fossify_notes_gui_create_note`\
+  \n## Step 6: Log completion for weekly review\n- Call `fossify_notes_create_note`\
   \ with:\n  - title: 'Task Completion Log - 2026-04-02'\n  - content: Checklist of\
   \ completed tasks:\n    - ✅ Read JOB-715 scheduler output\n    - ✅ Extracted retention\
   \ metrics (Day-1 43.2%, Day-7 19.1%, Day-30 8.4%)\n    - ✅ Cross-referenced competitor\

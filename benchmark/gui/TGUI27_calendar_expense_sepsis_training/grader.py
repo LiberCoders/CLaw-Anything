@@ -187,14 +187,14 @@ Scoring criteria:
 
         # Check coverage of involved services: fossify_calendar_gui, finance
         service_checks = [
-            bool(called & {"fossify_calendar_gui_list_events", "fossify_calendar_gui_get_event"}),
+            bool(called & {"fossify_calendar_list_events", "fossify_calendar_get_event"}),
             bool(called & {"finance_list_transactions", "finance_get_transaction"}),
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
         # Depth: detail/get calls
         detail_tools = {
-            "fossify_calendar_gui_get_event",
+            "fossify_calendar_get_event",
             "finance_get_transaction",
         }
         detail_count = len([d for d in dispatches if d.tool_name in detail_tools])
@@ -213,7 +213,7 @@ Scoring criteria:
 
         # Check if calendar event FCAL-105 was accessed
         calendar_accessed = any(
-            d.tool_name == "fossify_calendar_gui_get_event" and
+            d.tool_name == "fossify_calendar_get_event" and
             d.request_body.get("event_id") == "FCAL-105"
             for d in dispatches
         )

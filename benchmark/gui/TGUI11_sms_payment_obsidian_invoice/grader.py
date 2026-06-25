@@ -125,7 +125,7 @@ Scoring criteria:
         # ---- Sub-item 2: Key actions (0.15) ----
         # Check if agent sent payment request SMS and updated tracking
         sms_sent = any(
-            d.tool_name == "fossify_messages_gui_send_message"
+            d.tool_name == "fossify_messages_send_message"
             for d in dispatches
         )
         tracking_updated = any(
@@ -195,17 +195,17 @@ Scoring criteria:
         # Service checks: SMS, Obsidian, Notes (optional), Contacts (optional)
         service_checks = [
             # SMS: read thread to get payment inquiry
-            bool(called & {"fossify_messages_gui_list_threads", "fossify_messages_gui_get_thread"}),
+            bool(called & {"fossify_messages_list_threads", "fossify_messages_get_thread"}),
             # Obsidian: retrieve contract and deliverables
             bool(called & {"claw_obsidian_search", "claw_obsidian_get_note", "claw_obsidian_list_notes"}),
             # SMS: send payment request (critical action)
-            "fossify_messages_gui_send_message" in called,
+            "fossify_messages_send_message" in called,
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
         # Depth: detail calls to get contract and deliverables
         detail_tools = {
-            "fossify_messages_gui_get_thread",
+            "fossify_messages_get_thread",
             "claw_obsidian_get_note",
         }
         detail_count = len([d for d in dispatches if d.tool_name in detail_tools])

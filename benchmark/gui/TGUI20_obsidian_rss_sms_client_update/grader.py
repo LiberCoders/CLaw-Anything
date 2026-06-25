@@ -189,7 +189,7 @@ Scoring criteria:
             bool(called & {"rss_list_articles", "rss_get_article"}),  # Consult RSS
             bool(called & {"claw_obsidian_update_note", "claw_obsidian_append_to_note"}),  # Update Obsidian
             bool(called & {"fossify_notes_gui_create"}),  # Create Fossify Notes summary
-            bool(called & {"fossify_messages_gui_send_message"}),  # Send message to client
+            bool(called & {"fossify_messages_send_message"}),  # Send message to client
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
@@ -197,7 +197,7 @@ Scoring criteria:
         detail_tools = {
             "claw_obsidian_get_note",
             "rss_get_article",
-            "contacts_gui_list",
+            "contacts_list",
         }
         detail_count = len([d for d in dispatches if d.tool_name in detail_tools])
         depth = min(detail_count / 4, 1.0)
@@ -231,7 +231,7 @@ Scoring criteria:
             score += 0.20
         
         # Step 5: Sent message to client (20%)
-        if "fossify_messages_gui_send_message" in called:
+        if "fossify_messages_send_message" in called:
             score += 0.20
         
         return score

@@ -31,7 +31,7 @@ class DevOpsRetrospectiveGrader(AbstractGrader):
         "scheduler_update_job",
         "scheduler_delete_job",
         "claw_obsidian_delete_note",
-        "fossify_notes_gui_update_note",
+        "fossify_notes_update_note",
         "loop_habit_gui_create_habit",
     }
 
@@ -197,7 +197,7 @@ Scoring criteria:
             bool(called & {"claw_obsidian_list_notes", "claw_obsidian_get_note"}),
             bool(called & {"scheduler_list_jobs", "scheduler_get_job", "scheduler_job_history"}),
             bool(called & {"workmail_send_message"}),
-            bool(called & {"fossify_notes_gui_create_note"}),
+            bool(called & {"fossify_notes_create_note"}),
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 

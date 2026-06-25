@@ -181,7 +181,7 @@ Scoring criteria:
 
         # Check coverage of three core services: messages, scheduler, obsidian
         service_checks = [
-            bool(called & {"fossify_messages_gui_list_threads", "fossify_messages_gui_get_thread"}),
+            bool(called & {"fossify_messages_list_threads", "fossify_messages_get_thread"}),
             bool(called & {"scheduler_list_jobs", "scheduler_get_job", "scheduler_job_history"}),
             bool(called & {"claw_obsidian_list_notes", "claw_obsidian_get_note", "claw_obsidian_search"}),
         ]
@@ -189,7 +189,7 @@ Scoring criteria:
 
         # Depth: detail/get calls that retrieve specific records
         detail_tools = {
-            "fossify_messages_gui_get_thread",
+            "fossify_messages_get_thread",
             "scheduler_get_job",
             "claw_obsidian_get_note",
         }
@@ -209,7 +209,7 @@ Scoring criteria:
 
         # Check if message thread FSMS-305 was accessed
         if any(
-            d.tool_name == "fossify_messages_gui_get_thread"
+            d.tool_name == "fossify_messages_get_thread"
             and d.request_body.get("thread_id") == "FSMS-305"
             for d in dispatches
         ):

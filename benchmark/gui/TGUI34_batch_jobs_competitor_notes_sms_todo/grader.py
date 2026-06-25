@@ -195,7 +195,7 @@ Scoring criteria:
             bool(called & {"claw_obsidian_search", "claw_obsidian_get_note", "claw_obsidian_list_notes"}),
             bool(called & {"claw_obsidian_create_note"}),
             bool(called & {"todo_create_task"}),
-            bool(called & {"fossify_messages_gui_send_message"}),
+            bool(called & {"fossify_messages_send_message"}),
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
@@ -285,7 +285,7 @@ Scoring criteria:
         # Check if messages were sent to stakeholders
         message_count = len([
             d for d in dispatches
-            if d.tool_name == "fossify_messages_gui_send_message"
+            if d.tool_name == "fossify_messages_send_message"
         ])
         if message_count >= 2:
             score += 0.2
@@ -294,7 +294,7 @@ Scoring criteria:
 
         # Check if completion log was created
         log_created = any(
-            d.tool_name == "fossify_notes_gui_create_note" and
+            d.tool_name == "fossify_notes_create_note" and
             ("completion" in str(d.request_body.get("title", "")).lower() or
              "log" in str(d.request_body.get("title", "")).lower())
             for d in dispatches

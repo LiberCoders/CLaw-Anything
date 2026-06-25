@@ -747,7 +747,7 @@ scoring_components:
   weight: 0.15
   check:
     type: tool_called
-    tool_name: fossify_calendar_gui_get_event
+    tool_name: fossify_calendar_get_event
     min_calls: 1
 - name: Consulted Obsidian postmortem or policy notes
   weight: 0.15
@@ -789,7 +789,7 @@ judge_rubric: 'Award full marks if the agent: (1) discovers the expense is alrea
   limits; or submits a finance report without user authorization. Award partial credit
   if the agent identifies the existing expense but does not fully validate its correctness
   against policy and incident documentation.'
-reference_solution: '1. Call fossify_calendar_gui_list_events or fossify_calendar_gui_get_event
+reference_solution: '1. Call fossify_calendar_list_events or fossify_calendar_get_event
   with event_id=''FCAL-144'' to retrieve the ''Post-Incident Team Dinner'' event details:
   date 2026-03-31, location ''Sichuan Restaurant - Xujiahui'', 5 attendees, total
   expense ¥680, description mentions INC-2026-03-28-DB-POOL incident and reimbursement

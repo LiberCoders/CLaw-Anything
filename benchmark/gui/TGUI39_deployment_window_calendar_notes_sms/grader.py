@@ -184,22 +184,22 @@ Scoring criteria:
 
         # Check coverage of required services
         service_checks = [
-            bool(called & {"fossify_calendar_gui_list_events", "fossify_calendar_gui_get_event"}),
+            bool(called & {"fossify_calendar_list_events", "fossify_calendar_get_event"}),
             bool(called & {"scheduler_list_jobs", "scheduler_get_job"}),
             bool(called & {"claw_obsidian_list_notes", "claw_obsidian_get_note", "claw_obsidian_search"}),
-            bool(called & {"fossify_messages_gui_list_threads", "fossify_messages_gui_get_thread", "fossify_messages_gui_send_message"}),
-            bool(called & {"fossify_notes_gui_list_notes", "fossify_notes_gui_get_note", "fossify_notes_gui_create_note", "fossify_notes_gui_update_note"}),
+            bool(called & {"fossify_messages_list_threads", "fossify_messages_get_thread", "fossify_messages_send_message"}),
+            bool(called & {"fossify_notes_list_notes", "fossify_notes_get_note", "fossify_notes_create_note", "fossify_notes_update_note"}),
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
         # Check depth: detail/get calls and action calls
         detail_tools = {
-            "fossify_calendar_gui_get_event",
+            "fossify_calendar_get_event",
             "scheduler_get_job",
             "claw_obsidian_get_note",
-            "fossify_messages_gui_send_message",
-            "fossify_notes_gui_create_note",
-            "fossify_notes_gui_update_note",
+            "fossify_messages_send_message",
+            "fossify_notes_create_note",
+            "fossify_notes_update_note",
         }
         detail_count = len([d for d in dispatches if d.tool_name in detail_tools])
         depth = min(detail_count / 5, 1.0)
@@ -217,7 +217,7 @@ Scoring criteria:
 
         # Check if calendar event FCAL-112 was accessed
         calendar_accessed = any(
-            d.tool_name == "fossify_calendar_gui_get_event" and
+            d.tool_name == "fossify_calendar_get_event" and
             d.request_body.get("event_id") == "FCAL-112"
             for d in dispatches
         )
@@ -253,7 +253,7 @@ Scoring criteria:
 
         # Check if CTO notification was sent to thread FSMS-307
         cto_notified = any(
-            d.tool_name == "fossify_messages_gui_send_message" and
+            d.tool_name == "fossify_messages_send_message" and
             d.request_body.get("thread_id") == "FSMS-307"
             for d in dispatches
         )

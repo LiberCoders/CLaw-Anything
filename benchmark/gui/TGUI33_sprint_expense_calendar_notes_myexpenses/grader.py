@@ -182,19 +182,19 @@ Scoring criteria:
 
         # Check coverage of involved services
         service_checks = [
-            bool(called & {"fossify_calendar_gui_list_events", "fossify_calendar_gui_get_event"}),
+            bool(called & {"fossify_calendar_list_events", "fossify_calendar_get_event"}),
             bool(called & {"my_expenses_gui_list_expenses", "my_expenses_gui_get_expense"}),
             bool(called & {"claw_obsidian_list_notes", "claw_obsidian_get_note", "claw_obsidian_search"}),
-            bool(called & {"fossify_notes_gui_list_notes", "fossify_notes_gui_get_note"}),
+            bool(called & {"fossify_notes_list_notes", "fossify_notes_get_note"}),
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
         # Depth: detail/get calls
         detail_tools = {
-            "fossify_calendar_gui_get_event",
+            "fossify_calendar_get_event",
             "my_expenses_gui_get_expense",
             "claw_obsidian_get_note",
-            "fossify_notes_gui_get_note",
+            "fossify_notes_get_note",
         }
         detail_count = len([d for d in dispatches if d.tool_name in detail_tools])
         depth = min(detail_count / 4, 1.0)
@@ -212,7 +212,7 @@ Scoring criteria:
 
         # Calendar event FCAL-123 (0.25)
         calendar_accessed = any(
-            d.tool_name == "fossify_calendar_gui_get_event" and
+            d.tool_name == "fossify_calendar_get_event" and
             d.request_body.get("event_id") == "FCAL-123"
             for d in dispatches
         )
@@ -239,7 +239,7 @@ Scoring criteria:
 
         # Fossify Notes weekly review FNOT-226 (0.25)
         notes_accessed = any(
-            d.tool_name == "fossify_notes_gui_get_note" and
+            d.tool_name == "fossify_notes_get_note" and
             d.request_body.get("note_id") == "FNOT-226"
             for d in dispatches
         )

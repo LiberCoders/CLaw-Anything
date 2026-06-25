@@ -176,9 +176,9 @@ Scoring criteria:
             bool(called & {"claw_obsidian_search", "claw_obsidian_list_notes"}),
             bool(called & {"claw_obsidian_get_note"}),
             # Fossify Notes or Messages - draft or send recommendation
-            bool(called & {"fossify_notes_gui_create_note", "fossify_messages_gui_send_message"}),
+            bool(called & {"fossify_notes_gui_create_note", "fossify_messages_send_message"}),
             # Fossify Messages or Contacts - find client contact
-            bool(called & {"fossify_messages_gui_list_threads", "fossify_messages_gui_get_thread", "contacts_gui_list"}),
+            bool(called & {"fossify_messages_list_threads", "fossify_messages_get_thread", "contacts_gui_list"}),
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
@@ -186,7 +186,7 @@ Scoring criteria:
         detail_tools = {
             "rss_get_article",
             "claw_obsidian_get_note",
-            "fossify_messages_gui_get_thread",
+            "fossify_messages_get_thread",
         }
         detail_count = len([d for d in dispatches if d.tool_name in detail_tools])
         depth = min(detail_count / 3, 1.0)
@@ -213,7 +213,7 @@ Scoring criteria:
             score += 0.35
 
         # FSMS-310: Message thread with Wang Zong (or sent message to this thread)
-        message_calls = [d for d in dispatches if d.tool_name in {"fossify_messages_gui_send_message", "fossify_messages_gui_get_thread"}]
+        message_calls = [d for d in dispatches if d.tool_name in {"fossify_messages_send_message", "fossify_messages_get_thread"}]
         if any("FSMS-310" in str(d.request_body.get("thread_id", "")) for d in message_calls):
             score += 0.30
 

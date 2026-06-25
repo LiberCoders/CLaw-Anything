@@ -172,17 +172,17 @@ Scoring criteria:
 
         # Check coverage of required services for this workflow
         service_checks = [
-            bool(called & {"fossify_notes_gui_list_notes", "fossify_notes_gui_get_note"}),  # Fossify Notes for competitor discovery
+            bool(called & {"fossify_notes_list_notes", "fossify_notes_get_note"}),  # Fossify Notes for competitor discovery
             bool(called & {"claw_obsidian_search", "claw_obsidian_get_note"}),  # Obsidian for competitive analysis
             bool(called & {"scheduler_list_jobs", "scheduler_get_job", "scheduler_job_history"}),  # Scheduler for retention data
             bool(called & {"claw_obsidian_update_note", "claw_obsidian_append_to_note"}),  # PRD update
-            bool(called & {"fossify_messages_gui_send_message"}),  # Stakeholder communication
+            bool(called & {"fossify_messages_send_message"}),  # Stakeholder communication
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
         # Depth: detail/get calls that show thorough investigation
         detail_tools = {
-            "fossify_notes_gui_get_note",
+            "fossify_notes_get_note",
             "claw_obsidian_get_note",
             "scheduler_get_job",
             "scheduler_job_history",
@@ -215,7 +215,7 @@ Scoring criteria:
             score += 0.2
 
         # Key action 4: Notify stakeholder via message (0.2)
-        if "fossify_messages_gui_send_message" in called:
+        if "fossify_messages_send_message" in called:
             score += 0.2
 
         return score

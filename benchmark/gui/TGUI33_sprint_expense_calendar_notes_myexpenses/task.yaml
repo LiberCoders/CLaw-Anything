@@ -719,7 +719,7 @@ scoring_components:
   weight: 0.15
   check:
     type: tool_called
-    tool_name: fossify_calendar_gui_get_event
+    tool_name: fossify_calendar_get_event
     min_calls: 1
 - name: Updated tracking notes
   weight: 0.1
@@ -766,7 +766,7 @@ judge_rubric: 'Award full marks if the agent: (1) Retrieved the sprint retrospec
   should demonstrate end-to-end workflow execution: discovery (calendar + finance
   query) → gap analysis → verification/correction (My Expenses) → documentation (Obsidian
   + Notes).'
-reference_solution: '1. Call fossify_calendar_gui_list_events or fossify_calendar_gui_get_event
+reference_solution: '1. Call fossify_calendar_list_events or fossify_calendar_get_event
   with event_id FCAL-123 to retrieve ''Sprint Retrospective - Q1 Final Sprint'' on
   2026-03-28, noting the ¥1,200 budget for 6 people at Haidilao Hot Pot (Sanlitun)
   and category team_expense.
@@ -787,7 +787,7 @@ reference_solution: '1. Call fossify_calendar_gui_list_events or fossify_calenda
   My Expenses ¥1,200, ¥400 variance with root cause (cash tip not auto-synced), and
   audit trail cross-references.
 
-  6. Call fossify_notes_gui_get_note with note_id FNOT-226 to confirm ''Weekly Expense
+  6. Call fossify_notes_get_note with note_id FNOT-226 to confirm ''Weekly Expense
   Review - 2026-W14'' shows the reconciliation as completed with checkmarks and pending
   action to submit variance explanation to finance by 2026-04-05.
 

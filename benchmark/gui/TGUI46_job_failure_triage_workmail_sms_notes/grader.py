@@ -171,14 +171,14 @@ Scoring criteria:
             bool(called & {"workmail_list_messages", "workmail_get_message"}),
             bool(called & {"scheduler_list_jobs", "scheduler_get_job"}),
             bool(called & {"claw_obsidian_create_note", "claw_obsidian_update_note", "claw_obsidian_append_to_note"}),
-            bool(called & {"fossify_messages_gui_send_message"}),
+            bool(called & {"fossify_messages_send_message"}),
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
         # Check depth (detail/get calls)
         detail_tools = {
             "workmail_get_message", "scheduler_get_job",
-            "claw_obsidian_get_note", "fossify_messages_gui_get_thread",
+            "claw_obsidian_get_note", "fossify_messages_get_thread",
         }
         detail_count = len([d for d in dispatches if d.tool_name in detail_tools])
         depth = min(detail_count / 3, 1.0)
@@ -248,7 +248,7 @@ Scoring criteria:
         
         # Check if CTO was notified via fossify_messages
         for d in dispatches:
-            if d.tool_name == "fossify_messages_gui_send_message":
+            if d.tool_name == "fossify_messages_send_message":
                 thread_id = d.request_body.get("thread_id", "")
                 message = str(d.request_body.get("message", "")).lower()
                 if thread_id == "FSMS-317" or "cto" in message or "wang ming" in message:

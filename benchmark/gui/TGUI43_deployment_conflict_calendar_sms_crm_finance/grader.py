@@ -174,8 +174,8 @@ Scoring criteria:
 
         # Check coverage of involved services
         service_checks = [
-            bool(called & {"fossify_calendar_gui_list_events", "fossify_calendar_gui_get_event"}),
-            bool(called & {"fossify_messages_gui_list_threads", "fossify_messages_gui_get_thread"}),
+            bool(called & {"fossify_calendar_list_events", "fossify_calendar_get_event"}),
+            bool(called & {"fossify_messages_list_threads", "fossify_messages_get_thread"}),
             bool(called & {"claw_obsidian_list_notes", "claw_obsidian_get_note", "claw_obsidian_search"}),
             bool(called & {"scheduler_list_jobs", "scheduler_get_job", "scheduler_job_history"}),
             bool(called & {"finance_list_transactions", "finance_get_transaction"}),
@@ -185,8 +185,8 @@ Scoring criteria:
 
         # Depth: detail/get calls
         detail_tools = {
-            "fossify_calendar_gui_get_event",
-            "fossify_messages_gui_get_thread",
+            "fossify_calendar_get_event",
+            "fossify_messages_get_thread",
             "claw_obsidian_get_note",
             "scheduler_get_job",
             "finance_get_transaction",
@@ -208,7 +208,7 @@ Scoring criteria:
         
         # Check CTO message thread (FSMS-311)
         if any(
-            d.tool_name == "fossify_messages_gui_get_thread" 
+            d.tool_name == "fossify_messages_get_thread"
             and d.request_body.get("thread_id") == "FSMS-311"
             for d in dispatches
         ):
@@ -216,7 +216,7 @@ Scoring criteria:
         
         # Check calendar conflict event (FCAL-122)
         if any(
-            d.tool_name == "fossify_calendar_gui_get_event"
+            d.tool_name == "fossify_calendar_get_event"
             and d.request_body.get("event_id") == "FCAL-122"
             for d in dispatches
         ):

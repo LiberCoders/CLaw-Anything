@@ -914,11 +914,11 @@ judge_rubric: '# Evaluation Rubric: Deployment Window Conflict Resolution
 
   - No structured analysis or recommendation'
 reference_solution: "# Reference Solution: Deployment Window Conflict Resolution\n\
-  \n## Step 1: Read mobile calendar notification\n- Tool: `fossify_calendar_gui_list_events`\
-  \ or `fossify_calendar_gui_get_event` with event_id FCAL-122\n- Discovery: Conflict\
+  \n## Step 1: Read mobile calendar notification\n- Tool: `fossify_calendar_list_events`\
+  \ or `fossify_calendar_get_event` with event_id FCAL-122\n- Discovery: Conflict\
   \ notification shows rate-limiting deployment request overlaps with CloudInfra DB\
   \ maintenance (April 8-9, 22:00-02:00)\n\n## Step 2: Read CTO's urgent message\n\
-  - Tool: `fossify_messages_gui_get_thread` with thread_id FSMS-311\n- Discovery:\
+  - Tool: `fossify_messages_get_thread` with thread_id FSMS-311\n- Discovery:\
   \ CTO requests rate-limiting deployment tonight for $500K customer (Enterprise Solutions\
   \ Group) signing tomorrow\n\n## Step 3: Check Obsidian runbook for rate-limiting\
   \ deployment dependencies\n- Tool: `claw_obsidian_get_note` with note_id OBSN-31\
@@ -950,14 +950,14 @@ reference_solution: "# Reference Solution: Deployment Window Conflict Resolution
   \ fee, enables customer signing, preserves maintenance schedule\n- Risk: Tight 2-hour\
   \ deployment window, but all health checks passed\n- Justification: Database migration\
   \ (3-5 min) + application deployment fits within 2-hour buffer before 22:00 maintenance\
-  \ start\n\n## Step 9: Communicate recommendation to CTO\n- Tool: `fossify_messages_gui_send_message`\
+  \ start\n\n## Step 9: Communicate recommendation to CTO\n- Tool: `fossify_messages_send_message`\
   \ to thread FSMS-311\n- Message content:\n  - Confirm rate-limiting can deploy tonight\n\
   \  - Explain database dependency requires stable DB (cannot deploy during maintenance)\n\
   \  - Recommend deployment window 20:00-22:00 (before maintenance)\n  - Note all\
   \ health checks passed (JOB-719, JOB-720)\n  - Highlight cost savings: avoids $2,500\
   \ rescheduling fee\n  - Confirm enables customer signing tomorrow\n\n## Step 10:\
-  \ Update calendar with deployment plan\n- Tool: `fossify_calendar_gui_create_event`\
-  \ or `fossify_calendar_gui_update_event`\n- Create deployment event: April 8, 20:00-22:00,\
+  \ Update calendar with deployment plan\n- Tool: `fossify_calendar_create_event`\
+  \ or `fossify_calendar_update_event`\n- Create deployment event: April 8, 20:00-22:00,\
   \ \"Rate-Limiting Feature Deployment\"\n- Update conflict notification (FCAL-122)\
   \ to reflect resolution\n\n## Step 11: Document decision in Obsidian (optional but\
   \ recommended)\n- Tool: `claw_obsidian_update_note` or `claw_obsidian_append_to_note`\

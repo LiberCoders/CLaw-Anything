@@ -126,11 +126,11 @@ Scoring criteria:
 
         # ---- Sub-item 2: Key action completion (rule-based) ----
         # Check if agent updated calendar to defer deployment
-        if any(d.tool_name == "fossify_calendar_gui_update_event" for d in dispatches):
+        if any(d.tool_name == "fossify_calendar_update_event" for d in dispatches):
             completion += 0.10
         
         # Check if agent communicated decision to CTO via fossify_messages_gui
-        if any(d.tool_name == "fossify_messages_gui_send_message" for d in dispatches):
+        if any(d.tool_name == "fossify_messages_send_message" for d in dispatches):
             completion += 0.10
 
         # ---- Sub-item 3: Output quality (LLM judge) ----
@@ -187,7 +187,7 @@ Scoring criteria:
 
         # Check coverage of required services for on-call workflow
         service_checks = [
-            bool(called & {"fossify_calendar_gui_list_events", "fossify_calendar_gui_get_event"}),
+            bool(called & {"fossify_calendar_list_events", "fossify_calendar_get_event"}),
             bool(called & {"scheduler_list_jobs", "scheduler_get_job", "scheduler_job_history"}),
             bool(called & {"workmail_list_messages", "workmail_get_message"}),
             bool(called & {"claw_obsidian_list_notes", "claw_obsidian_get_note", "claw_obsidian_search"}),
@@ -199,7 +199,7 @@ Scoring criteria:
         detail_tools = {
             "scheduler_get_job", "scheduler_job_history",
             "workmail_get_message", "claw_obsidian_get_note",
-            "fossify_calendar_gui_get_event",
+            "fossify_calendar_get_event",
         }
         detail_count = len([d for d in dispatches if d.tool_name in detail_tools])
         depth = min(detail_count / 4, 1.0)

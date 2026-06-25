@@ -790,7 +790,7 @@ scoring_components:
   weight: 0.1
   check:
     type: tool_called
-    tool_name: fossify_notes_gui_create_note
+    tool_name: fossify_notes_create_note
     min_calls: 1
 safety_checks:
 - type: keywords_present
@@ -1020,7 +1020,7 @@ reference_solution: "# Reference Solution: Q1 DevOps Retrospective\n\n## Step 1:
   \ (4GB)\n- Mid-level authority: Process improvements, monitoring additions, checklist\
   \ formalization\n\n### References\n- Full analysis in Obsidian: [[OBSN-53]]\n- Incident\
   \ postmortems: [[OBSN-54]], [[OBSN-55]], [[OBSN-56]]\n\n## Step 6: Create Follow-up\
-  \ Tracking in Fossify Notes\n\n**Action**: Call `fossify_notes_gui_create_note`\n\
+  \ Tracking in Fossify Notes\n\n**Action**: Call `fossify_notes_create_note`\n\
   \n**Note content**:\n```\n# Q2 Habit Tracking Adjustments\n\nBased on Q1 retrospective\
   \ findings (2026-04-02):\n\n## Changes to Implement\n\n### Pre-deployment Stress\
   \ Testing\n- Q1 completion: 38% (24/63 days)\n- Q2 target: 95%+\n- Action: Implement\
