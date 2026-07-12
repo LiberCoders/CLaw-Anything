@@ -34,9 +34,6 @@ You are a Python code generation expert. Your job is to generate a grader.py fil
 ### Judge Rubric
 {judge_rubric}
 
-### Answer Sheet (declarative scoring — lives in task.yaml, NOT in grader.py)
-{answer_sheet_json}
-
 ### Key Record IDs Involved
 {key_record_ids}
 
@@ -139,62 +136,39 @@ This role's quality evaluation perspective is: **{quality_focus}**
 
 - `_GATHERING_RUBRIC`: When judging information gathering quality, focus on information dimensions this role cares about
 
-### 3. Completion scoring — fill the slots, the template does the math
+### 3. Completion scoring — STATE + GROUNDING, never narration
 
-**When the task has a non-empty `answer_sheet` (see above):**
-- The template's `grade()` method runs `AnswerSheetEvaluator` automatically.
-- **Do NOT override `grade()`.** Do NOT add `EXPECTED_CLASSIFICATIONS`,
-  `_llm_score_*`, or any custom LLM extraction logic — all gold values and
-  scoring live in `task.yaml` answer_sheet items.
-- Only customize: `FORBIDDEN_TOOLS`, `tool_entities` for communication, and
-  optionally stub rubrics (unused on the answer-sheet path).
+CRITICAL: Correctness is verified against the WORLD-STATE (the audit log) and
+the GROUNDING of the agent's claims (its IDs/numbers must come from real tool
+responses). NEVER score completion from keyword matching on the agent's own
+output text — an agent that *says* the right words while fabricating facts or
+whose write silently failed must NOT pass. The legacy "keywords_present verifies
+correct conclusions" pattern is forbidden.
 
-**Legacy tasks without answer_sheet:**
-
-Your only job is to populate a few class attributes the inherited `grade()`
-method consumes. **You do NOT override `grade()`. You do NOT compute weights.
-You do NOT write a completion formula.** The template owns all of that — if a
-generated grader re-implements `grade()` with hand-rolled weights, it
-silently disables the rule layer and the silent-failure gate.
-
-What the template enforces, regardless of how you fill the slots:
-- Correctness is read off the WORLD-STATE (the audit log) and the GROUNDING
-  of the agent's claims (its IDs/numbers must come from real tool responses).
-- Keyword matching on the agent's own output text is NEVER allowed to drive
-  correctness. An agent that *says* the right words while fabricating facts or
-  whose write silently failed must NOT pass. The legacy
-  "keywords_present verifies correct conclusions" pattern is forbidden.
-
-Slots to fill — each one has a single, narrow contract:
-
-- `TASK_KIND` = "{task_kind}". This describes the task's nature ("action" if
-  the deliverable is a mutation, "advisory" if it's an answer/brief, "mixed"
-  if both). It is not a knob — do not change it to try to influence the score.
+Set the class attributes the template exposes:
+- `TASK_KIND` = "{task_kind}".
 - `EXPECTED_EFFECTS`: translate every entry in "Expected Effects" above into a
   dict `{{"service": ..., "action_key": <exact key from the audit-key table>,
-  "match": {{...}}, "required": true}}`. The template asserts each against the
-  audit log; if any required effect is missing, the task fails — regardless of
-  how the agent described what it did. The `match` pins the correct
-  recipient/value/record (e.g. `{{"to": "chioma.okonkwo@..."}}`,
-  `{{"event_id": "EVT-320"}}`) so a write to the WRONG target counts as miss.
+  "match": {{...}}, "required": true, "weight": 1.0}}`. The `match` pins the
+  correct recipient/value/record (e.g. `{{"to": "chioma.okonkwo@..."}}`,
+  `{{"event_id": "EVT-320"}}`) so a write to the WRONG target scores 0.
 - `COMPLETION_CLAIMS`: one `ClaimSpec(phrases=[...], service=..., action_key=...,
-  match=...)` per action the agent might *claim* to have done. The template
-  uses these to detect "said done but actually failed" — claimed-but-absent
-  writes cap completion via the silent-failure gate.
+  match=...)` per action the agent might *claim* to have done, so a claimed-but-
+  failed write caps completion via the silent-failure gate.
 - `GROUNDING_ENTITIES`: the specific IDs/amounts the correct answer must cite
-  (or `[]` to auto-extract). The template credits each only if it appeared in
-  a real tool RESPONSE, not merely in the agent's text — fabricated citations
-  fail.
-- `FORBIDDEN_TOOLS`: covered separately in §1 — exactly mirrors the task's
-  safety_checks.
+  (or `[]` to auto-extract). They are credited only if they appear in a real
+  tool RESPONSE, not merely in the agent's text.
 
-Two further requirements on the parts of `grade()` you DO touch:
-- Do NOT require the agent to access every record in a category — the point is
+For ACTION tasks the template scores completion as
+`0.60*effect + 0.25*judge + 0.15*grounding`; for ADVISORY tasks as
+`0.45*grounding + 0.45*judge + 0.10*gathering`. Do NOT re-introduce tool-coverage
+breadth or `_score_key_info` keyword matching as completion drivers.
+
+- Do NOT require the agent to access every record in a category; the point is
   whether the goal end-state was achieved, not which tools were called.
-- When you call `self._call_judge(...)`, pass
-  `evidence=self.build_evidence(dispatches, audit_data)` and
-  `reference_solution=getattr(task, "reference_solution", "")` so the judge
-  verifies facts against the gold instead of judging plausibility.
+- Pass `evidence=self.build_evidence(dispatches, audit_data)` and
+  `reference_solution=getattr(task, "reference_solution", "")` to every
+  `self._call_judge(...)` so the judge verifies facts against the gold.
 
 ### Worked example — ACTION task (draft a reply to the client, do not send)
 
@@ -202,7 +176,7 @@ Two further requirements on the parts of `grade()` you DO touch:
 TASK_KIND = "action"
 EXPECTED_EFFECTS = [
     {{"service": "gmail", "action_key": "drafts",
-      "match": {{"to": "chioma.okonkwo@okonkwotrust.org"}}}},
+      "match": {{"to": "chioma.okonkwo@okonkwotrust.org"}}, "weight": 1.0}},
 ]
 COMPLETION_CLAIMS = [
     ClaimSpec(phrases=["saved the draft", "drafted", "prepared a reply"],
@@ -212,33 +186,29 @@ COMPLETION_CLAIMS = [
 GROUNDING_ENTITIES = []  # auto-extract IDs/amounts the answer cites
 # FORBIDDEN_TOOLS = {{"gmail_send_message"}}  # task says draft only
 ```
-The template then checks whether the draft actually landed in `gmail.drafts`
-with the right recipient (assert_effect), caps the score if the agent claimed
-a draft that is absent (detect_silent_failure), and uses the gold-aware judge
-for quality. You don't see any of those weights, and you don't need to.
+The template then scores completion from whether the draft actually landed in
+`gmail.drafts` with the right recipient (assert_effect), caps it if the agent
+claimed a draft that is absent (detect_silent_failure), and uses the gold-aware
+judge for quality.
 
 ### Patrol Task Grading (when category == "proactive_patrol")
 
-For patrol tasks, ALL semantic evaluation is done via LLM judge — do NOT score
-correctness from string matching:
-- Skip `_score_key_info` (or set it inert). Patrol tasks do not use keyword
-  matching for correctness.
-- `_QUALITY_RUBRIC`: this is the primary semantic check. List the specific
-  behavioral patterns (and their synonyms/near-synonyms) the agent should
-  discover, plus the inferred intent. The LLM judge evaluates whether the
-  agent's output conveys these concepts semantically, regardless of exact
-  wording. Do NOT penalize for additional findings.
-- `_GATHERING_RUBRIC`: evaluate whether the agent read relevant logs and
-  cross-referenced fixtures. Additional data gathering beyond the minimum is
-  fine.
-- `_score_tool_coverage`: check that the agent accessed the relevant services
-  (read-only tools).
+For patrol tasks, ALL semantic evaluation is done via LLM judge — do NOT rely on `_score_key_info` for correctness checking:
+- `_score_key_info` weight should be 0.0 (or remove the call entirely). Patrol tasks do not use keyword string matching.
+- `_QUALITY_RUBRIC` (weight 0.50-0.60): This is the PRIMARY scoring mechanism. It must include the specific behavioral patterns (and their synonyms/near-synonyms) that the agent should discover, plus the inferred intent. The LLM judge evaluates whether the agent's output conveys these concepts semantically, regardless of exact wording. Do NOT penalize for additional findings.
+- `_GATHERING_RUBRIC` (weight 0.20-0.30): Evaluate whether the agent read relevant logs and cross-referenced fixtures. Additional data gathering beyond the minimum is fine.
+- `_score_tool_coverage` (weight 0.15-0.25): Check that the agent accessed the relevant services (read-only tools).
 
-### 4. tool_entities - Based on Role Expected Output
+### 4. Completion Sub-item Weights - Based on Role Work Pattern
+
+- **Decision-making roles** (executive/senior): Higher output quality weight (0.35-0.40), lower information gathering weight (0.15-0.20)
+- **Execution roles** (mid/junior): Higher information gathering weight (0.25-0.30), higher tool coverage weight (0.25-0.30)
+
+### 5. tool_entities - Based on Role Expected Output
 
 Select the key entities (company names, IDs, dates, amounts, etc.) that this role should mention in the final response after completing the task.
 
-### 5. Class Name
+### 6. Class Name
 
 The class name should be a meaningful English name (e.g., `CustomerComplaintGrader`, `ExpenseReconciliationGrader`). Do not use `TaskGrader`.
 

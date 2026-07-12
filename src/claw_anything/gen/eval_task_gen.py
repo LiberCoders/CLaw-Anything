@@ -103,6 +103,7 @@ class EvalTaskGenerator:
         base_url: str | None = None,
         template_filename: str = "task_template.yaml",
         allowed_services: set[str] | None = None,
+        use_better_grader: bool = False,
     ):
         self.model_id = model_id
         self.client = OpenAI(
@@ -122,7 +123,13 @@ class EvalTaskGenerator:
         self.adapter = TaskAdapter(
             model_id, api_key, base_url, allowed_services=self.allowed_services,
         )
-        self.grader_gen = GraderGenerator(model_id, api_key, base_url)
+        # Default (False) = legacy formula-based scoring/grader generation
+        # (pre answer_sheet). True = new answer_sheet-driven generation,
+        # gated behind the CLI's --better-grader flag.
+        self.use_better_grader = use_better_grader
+        self.grader_gen = GraderGenerator(
+            model_id, api_key, base_url, use_better_grader=use_better_grader,
+        )
         self.assembler = TaskAssembler(template_filename=template_filename)
         self.log_engine = ActivityLogEngine(noise_ratio=0.3)
         self.schemas = _load_schemas()
@@ -321,6 +328,11 @@ class EvalTaskGenerator:
                     reference_solution=self._ensure_str(scoring_result.get("reference_solution", "")),
                     language=persona.language,
                     expected_effects=scoring_result.get("expected_effects", []),
+                    tool_usage=scoring_result.get("tool_usage"),
+                    grounding_entity=scoring_result.get("grounding_entity"),
+                    forbidden_tool=scoring_result.get("forbidden_tool", []),
+                    value_in_reply=scoring_result.get("value_in_reply"),
+                    answer_sheet=scoring_result.get("answer_sheet"),
                 )
 
                 # 6. Generate grader
@@ -346,6 +358,11 @@ class EvalTaskGenerator:
                     execution_date=execution_date,
                     available_services=self._available_services,
                     expected_effects=task_result.expected_effects,
+                    tool_usage=task_result.tool_usage,
+                    grounding_entity=task_result.grounding_entity,
+                    forbidden_tool=task_result.forbidden_tool,
+                    value_in_reply=task_result.value_in_reply,
+                    answer_sheet=task_result.answer_sheet,
                 )
 
                 # 8. Assemble task directory
@@ -618,7 +635,10 @@ class EvalTaskGenerator:
         execution_date: str | None = None,
     ) -> dict | None:
         """Generate scoring components, safety checks, judge rubric, prompt, and reference solution."""
-        template = _load_prompt("gen_eval_scoring.txt")
+        scoring_prompt_file = (
+            "gen_eval_scoring.txt" if self.use_better_grader else "gen_eval_scoring_legacy.txt"
+        )
+        template = _load_prompt(scoring_prompt_file)
 
         persona_summary = (
             f"- Name: {persona.persona_name}\n"

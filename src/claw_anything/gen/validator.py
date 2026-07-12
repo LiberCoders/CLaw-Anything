@@ -95,6 +95,7 @@ class TaskValidator:
         results.append(self._check_grader_tool_existence(task_dir))
         results.append(self._check_effect_grounding(task_dir))
         results.append(self._check_fixture_collision(task_dir))
+        results.append(self._check_answer_sheet(task_dir))
 
         return results
 
@@ -539,6 +540,71 @@ class TaskValidator:
         return ValidationResult(
             "grader_tool_existence", True,
             f"All grader tool references exist in task.yaml"
+        )
+
+    def _check_answer_sheet(self, task_dir: Path) -> ValidationResult:
+        """Validate answer_sheet items when present."""
+        task_yaml = task_dir / "task.yaml"
+        with open(task_yaml, "r", encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+
+        sheet = data.get("answer_sheet") or {}
+        items = sheet.get("items") or []
+        if not items:
+            return ValidationResult(
+                "answer_sheet", True, "no answer_sheet (legacy task)",
+                severity=Severity.WARNING,
+            )
+
+        valid_scorers = {
+            "tool_call", "forbidden_tool", "effect_assert",
+            "grounding", "enum_match", "llm_judge",
+        }
+        valid_kinds = {"objective", "subjective"}
+        valid_fills = {"rule", "llm_extract"}
+        ids: set[str] = set()
+        weight_sum = 0.0
+        errors: list[str] = []
+
+        for i, item in enumerate(items):
+            if not isinstance(item, dict):
+                errors.append(f"item[{i}] is not a dict")
+                continue
+            iid = item.get("id", "")
+            if not iid:
+                errors.append(f"item[{i}] missing id")
+            elif iid in ids:
+                errors.append(f"duplicate id {iid!r}")
+            else:
+                ids.add(iid)
+            if item.get("kind") not in valid_kinds:
+                errors.append(f"{iid}: invalid kind {item.get('kind')!r}")
+            if item.get("fill") not in valid_fills:
+                errors.append(f"{iid}: invalid fill {item.get('fill')!r}")
+            scorer = item.get("scorer", "")
+            if scorer not in valid_scorers:
+                errors.append(f"{iid}: invalid scorer {scorer!r}")
+            weight_sum += float(item.get("weight", 0) or 0)
+            if scorer == "enum_match":
+                opts = item.get("options") or []
+                expected = item.get("expected") or []
+                if isinstance(expected, list):
+                    for exp in expected:
+                        if exp not in opts:
+                            errors.append(
+                                f"{iid}: expected value {exp!r} not in options"
+                            )
+
+        if items and abs(weight_sum - 1.0) > 0.1:
+            errors.append(f"weights sum to {weight_sum:.3f}, expected ~1.0")
+
+        if errors:
+            return ValidationResult(
+                "answer_sheet", False, "; ".join(errors[:5]),
+            )
+        return ValidationResult(
+            "answer_sheet", True,
+            f"{len(items)} items, weights={weight_sum:.2f}",
         )
 
     def print_results(self, results: list[ValidationResult]) -> bool:

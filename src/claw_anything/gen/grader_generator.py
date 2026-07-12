@@ -81,6 +81,7 @@ class GraderGenerator:
         model_id: str,
         api_key: str | None = None,
         base_url: str | None = None,
+        use_better_grader: bool = False,
     ):
         self.model_id = model_id
         # Higher max_retries handles transient 502/503/429 from the gateway
@@ -92,6 +93,10 @@ class GraderGenerator:
             max_retries=5,
             timeout=120.0,
         )
+        # Default (False) = legacy formula-based grader generation (pre
+        # answer_sheet). True = new answer_sheet-driven generation, gated
+        # behind the CLI's --better-grader flag.
+        self.use_better_grader = use_better_grader
 
     def generate(
         self,
@@ -137,7 +142,8 @@ class GraderGenerator:
         )
         task_kind = "action" if expected_effects else "advisory"
 
-        prompt_template = _load_prompt("generate_grader.txt")
+        prompt_file = "generate_grader.txt" if self.use_better_grader else "generate_grader_legacy.txt"
+        prompt_template = _load_prompt(prompt_file)
         prompt = prompt_template.format(
             expected_effects_json=json.dumps(expected_effects, ensure_ascii=False, indent=2),
             action_keys_table=action_keys_table,
@@ -160,6 +166,10 @@ class GraderGenerator:
             safety_checks_json=json.dumps(task_result.safety_checks, ensure_ascii=False, indent=2),
             reference_solution=task_result.reference_solution,
             judge_rubric=task_result.judge_rubric,
+            answer_sheet_json=json.dumps(
+                getattr(task_result, "answer_sheet", None) or {"items": []},
+                ensure_ascii=False, indent=2,
+            ),
             key_record_ids=", ".join(key_record_ids) if key_record_ids else "(no specific record IDs)",
             involved_services=", ".join(involved_services or []),
             available_tools_by_service=_format_available_tools(available_services),
@@ -197,6 +207,7 @@ class GraderGenerator:
                 self._validate_code(
                     code, allowed_tools=set(allowed_tools),
                     require_effect_check=bool(expected_effects),
+                    use_better_grader=self.use_better_grader,
                 )
                 return code
 
@@ -390,6 +401,7 @@ class {class_name}(AbstractGrader):
         code: str,
         allowed_tools: set[str] | None = None,
         require_effect_check: bool = False,
+        use_better_grader: bool = False,
     ) -> None:
         """Basic validation that the generated code is syntactically correct.
 
@@ -421,6 +433,18 @@ class {class_name}(AbstractGrader):
 
         if "FORBIDDEN_TOOLS" not in code:
             raise ValueError("Generated grader.py does not define FORBIDDEN_TOOLS")
+
+        # This check is tied to the answer_sheet mechanism (the error message
+        # tells the LLM to use answer_sheet items instead), so it only makes
+        # sense — and is only enforced — on the new (--better-grader) path.
+        if use_better_grader:
+            banned_patterns = ("EXPECTED_CLASSIFICATIONS", "_llm_score_", "judge.client.chat")
+            for pat in banned_patterns:
+                if pat in code:
+                    raise ValueError(
+                        f"Generated grader must not contain {pat!r} — use task.yaml "
+                        "answer_sheet items instead of hand-coded LLM extraction."
+                    )
 
         if require_effect_check and not (
             "assert_effect" in code

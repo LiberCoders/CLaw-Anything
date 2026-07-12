@@ -44,6 +44,7 @@ Claw-Anything operationalizes this view, evaluating always-on LLM agents across 
 
 
 ## News
+- 🧾 [2026-07-13] **New answer-sheet grader logic** (opt-in via `gen-eval --better-grader`) — task.yaml can now carry a declarative `answer_sheet` (rule-scored + LLM-judge-scored items) instead of a hand-rolled grading formula; see [Answer-sheet grading](#-answer-sheet-grading-opt-in) below. Default `gen-eval` behavior is unchanged (legacy formula-based generation); trial execution/grading auto-detects either shape.
 - 🏆 [2026-06-18] **Interactive leaderboard** is live → [libercoders.github.io/Claw-Anything](https://libercoders.github.io/Claw-Anything/)
 - 🛠️ [2026-06-01] Support CLI + GUI automatic evaluation.
 - 📄 [2026-05-26] The [arXiv](https://arxiv.org/pdf/2605.26086) preprint has been released.
@@ -62,6 +63,7 @@ Claw-Anything operationalizes this view, evaluating always-on LLM agents across 
   - [1. Run CLI tasks](#1-run-cli-tasks)
   - [2. Run CLI + GUI tasks](#2-run-cli--gui-tasks)
   - [3. Generate your own tasks](#3-generate-your-own-tasks)
+  - [Answer-sheet grading (opt-in)](#-answer-sheet-grading-opt-in)
   - [Extra Command](#-extra-command)
 - [Repo Layout](#-repo-layout)
 - [Acknowledgments](#-acknowledgments)
@@ -522,6 +524,26 @@ claw-anything batch \
   --trials 3 --parallel 10
 ```
 
+### 🧾 Answer-sheet grading (opt-in)
+
+By default, `gen-eval` generates `task.yaml` + `grader.py` with the **legacy** logic: fixed weight formulas (e.g. `0.60*effect + 0.25*quality + 0.15*grounding`) hand-written per task by the grader-generation LLM. Passing **`--better-grader`** switches Phase 2 to a newer, declarative design centered on an **answer sheet**:
+
+- Instead of writing a bespoke `grade()` function, the LLM fills in an `answer_sheet.items` list on `task.yaml` — one row per thing being checked.
+- Each item declares `kind` (`objective` = rule-scored, `subjective` = LLM-judge-scored), `fill` (`rule` = auto-filled from tool dispatches/audit log, `llm_extract` = filled by one batched LLM pass over the transcript), a `scorer` (`tool_call` · `forbidden_tool` · `effect_assert` · `grounding` · `enum_match` · `llm_judge`), and a `weight` (all items sum to ~1.0).
+- At grading time, the same generated `grader.py` auto-detects whether `task.yaml` has a non-empty `answer_sheet`: if so, it runs `AnswerSheetEvaluator` to fill + score every item; otherwise it falls back to the legacy rule-formula path. **No extra flag is needed at `run` / `batch` / `grade` time** — both task shapes execute through the same pipeline.
+
+```bash
+claw-anything gen-eval \
+  --env gold_envs/sarah_chen_pm/ \
+  --seed-tasks seed_tasks/ \
+  --output gen_tasks/sarah_chen_pm_simple/ \
+  --max-tasks 20 \
+  --difficulty simple \
+  --execution-date 2026-04-03 \
+  --config config.yaml \
+  --better-grader
+```
+
 ### 🛠️ Extra Command
 
 | Group    | Command / Script                  | Purpose |
@@ -534,7 +556,7 @@ claw-anything batch \
 | Images   | `scripts/build_{loop,oh,oh_ext}_image.sh` | Lower-level shell builders. `build_oh_ext_image.sh` needs `OH_EXT_DIR` and `ADB_PATH`. |
 | Sandbox  | `cleanup`                         | Remove all `claw-anything` trial containers (label `app=claw-anything`) |
 | Generate | `build-persona`                   | **Phase 1** — adapt seed tasks to a persona, build a gold environment |
-| Generate | `gen-eval`                        | **Phase 2** — generate evaluation tasks from a gold environment |
+| Generate | `gen-eval`                        | **Phase 2** — generate evaluation tasks from a gold environment. Add `--better-grader` for the new answer_sheet-driven scoring/grader generation (default: legacy formula-based) — see [Answer-sheet grading](#-answer-sheet-grading-opt-in) |
 
 Common `run` flags: `--agent {loop, openai-compat, openharness, openharness-ext}` · `--trial-in-container` · `--docker-image` (override image name) · `--oh-settings PATH` (OH-only) · `--oh-disable-builtin-tools` (only expose claw-anything tools, deny all OH builtins) · `--proxy URL` (for model / judge API traffic) · `--judge-model` / `--no-judge`.
 

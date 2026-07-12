@@ -734,6 +734,18 @@ async def _run_one_trial(
         print(f"  robustness:     {scores.robustness:.2f}")
         print(f"  communication:  {scores.communication:.2f}")
         print(f"  safety:         {scores.safety:.1f}")
+        for _r in getattr(scores, "rule_results", []) or []:
+            _tag = "✓" if _r.get("passed") else "✗"
+            print(
+                f"  [{_tag}] {_r.get('name'):<18}"
+                f" score={_r.get('score', 0.0):.2f}  {_r.get('detail', '')}"
+            )
+        for _r in getattr(scores, "answer_sheet_results", []) or []:
+            _tag = "✓" if _r.get("passed") else "✗"
+            print(
+                f"  [{_tag}] sheet.{_r.get('id', '?'):<14}"
+                f" score={_r.get('score', 0.0):.2f}  {_r.get('detail', '')[:80]}"
+            )
         print(f"  task_score:     {task_score:.2f}")
         print(f"  passed:         {passed}")
         print(
@@ -764,6 +776,9 @@ async def _run_one_trial(
         "safety": scores.safety,
         "task_score": task_score,
         "passed": passed,
+        "rule_results": getattr(scores, "rule_results", []) or [],
+        "answer_sheet_results": getattr(scores, "answer_sheet_results", []) or [],
+        "filled_answer_sheet": getattr(scores, "filled_answer_sheet", {}) or {},
     }
 
 
@@ -966,6 +981,18 @@ def cmd_grade(args: argparse.Namespace) -> None:
     print(f"completion:     {scores.completion:.2f}")
     print(f"robustness:     {scores.robustness:.2f}")
     print(f"communication:  {scores.communication:.2f}")
+    for _r in getattr(scores, "rule_results", []) or []:
+        _tag = "✓" if _r.get("passed") else "✗"
+        print(
+            f"  [{_tag}] {_r.get('name'):<18}"
+            f" score={_r.get('score', 0.0):.2f}  {_r.get('detail', '')}"
+        )
+    for _r in getattr(scores, "answer_sheet_results", []) or []:
+        _tag = "✓" if _r.get("passed") else "✗"
+        print(
+            f"  [{_tag}] sheet.{_r.get('id', '?'):<14}"
+            f" score={_r.get('score', 0.0):.2f}  {_r.get('detail', '')[:80]}"
+        )
     print(f"safety:         {scores.safety:.1f}")
     print(f"task_score:     {task_score:.2f}")
     print(f"passed:         {passed}")
@@ -982,6 +1009,9 @@ def _append_grading_to_trace(
     """Append a grading_result event to the end of a trace JSONL file."""
     from .models.trace import GradingResult, DimensionScores
 
+    rule_results = getattr(scores, "rule_results", []) or []
+    answer_sheet_results = getattr(scores, "answer_sheet_results", []) or []
+    filled_answer_sheet = getattr(scores, "filled_answer_sheet", {}) or {}
     event = GradingResult(
         trace_id=trace_id,
         task_id=task_id,
@@ -990,9 +1020,15 @@ def _append_grading_to_trace(
             robustness=scores.robustness,
             communication=scores.communication,
             safety=scores.safety,
+            rule_results=rule_results,
+            answer_sheet_results=answer_sheet_results,
+            filled_answer_sheet=filled_answer_sheet,
         ),
         task_score=task_score,
         passed=passed,
+        rule_results=rule_results,
+        answer_sheet_results=answer_sheet_results,
+        filled_answer_sheet=filled_answer_sheet,
     )
     with open(trace_path, "a") as fh:
         fh.write(event.model_dump_json() + "\n")
@@ -1114,6 +1150,9 @@ def _load_completed_results(trace_dir: Path) -> list[dict]:
             "safety": scores.get("safety", 1.0),
             "task_score": grading.get("task_score", 0.0),
             "passed": grading.get("passed", False),
+            # Mirror rule outcomes from either the top-level or scores subfield —
+            # _append_grading_to_trace writes both; older traces have neither.
+            "rule_results": grading.get("rule_results") or scores.get("rule_results", []),
         }
         task_trials[task_id].append(trial_info)
 
@@ -2042,11 +2081,13 @@ def cmd_gen_eval(args: argparse.Namespace) -> None:
     print(f"Max tasks: {args.max_tasks}")
     print(f"Template: {template_filename} → services {sorted(allowed_services)}")
     print(f"Output: {args.output}")
+    print(f"Grader logic: {'better (answer_sheet-driven)' if getattr(args, 'better_grader', False) else 'legacy (formula-based)'}")
 
     generator = EvalTaskGenerator(
         model_id=model_id, api_key=api_key, base_url=base_url,
         template_filename=template_filename,
         allowed_services=allowed_services,
+        use_better_grader=getattr(args, "better_grader", False),
     )
     task_dirs = generator.generate(
         env=env,
@@ -2222,6 +2263,11 @@ def main(argv: list[str] | None = None) -> None:
     p_ge.add_argument("--model", default=None, help="Override model for generation")
     p_ge.add_argument("--api-key", default=None, help="Override API key")
     p_ge.add_argument("--base-url", default=None, help="Override base URL")
+    p_ge.add_argument("--better-grader", action="store_true",
+                      help="Use the new answer_sheet-driven scoring/grader generation logic "
+                           "(default: legacy formula-based scoring_components/judge_rubric "
+                           "generation). The trial-execution/grading side already auto-detects "
+                           "which task.yaml shape it's given, so this only affects gen-eval.")
 
     args = parser.parse_args(argv)
 

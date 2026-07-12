@@ -44,7 +44,8 @@ Claw-Anything 将这一理念落地，沿着三个真实世界上下文维度评
 
 
 ## 新闻
-- 🏆 [2026-06-18] **交互式在线榜单**已上线 → [libercoders.github.io/CLaw-Anything](https://libercoders.github.io/CLaw-Anything/)
+- 🧾 [2026-07-13] **新版"答题卡"（answer_sheet）grader 逻辑**（通过 `gen-eval --better-grader` 开启）—— task.yaml 现在可以携带一份声明式的 `answer_sheet`（规则打分 + LLM-judge 打分的条目集合），取代手写的打分公式；详见下文[答题卡打分（可选开启）](#-答题卡打分可选开启)。`gen-eval` 默认行为不变（仍是旧版公式化生成）；任务执行/评分侧会自动识别两种 task.yaml 结构，无需额外配置。
+- 🏆 [2026-06-18] **交互式在线榜单**已上线 → [libercoders.github.io/Claw-Anything](https://libercoders.github.io/CLaw-Anything/)
 - 🛠️ [2026-06-01] 支持 CLI + GUI 任务自动化评测。
 - 📄 [2026-05-26] [arXiv](https://arxiv.org/pdf/2605.26086) 预印本已发布。
 - 🚀 [2026-05-26] 数据流水线已发布 —— 两阶段 `build-persona` → `gen-eval` 流程可扩展至 2,000 个训练环境，为评测基准提供数据生成能力。
@@ -60,6 +61,7 @@ Claw-Anything 将这一理念落地，沿着三个真实世界上下文维度评
   - [1. 跑 CLI 任务](#1-跑-cli-任务)
   - [2. 跑 CLI + GUI 任务](#2-跑-cli--gui-任务)
   - [3. 生成你自己的任务](#3-生成你自己的任务)
+  - [答题卡打分（可选开启）](#-答题卡打分可选开启)
   - [命令行速查](#-命令行速查)
 - [Benchmark 数据](#-benchmark-数据)
 - [代码结构](#-代码结构)
@@ -485,6 +487,26 @@ claw-anything batch \
   --trials 3 --parallel 10
 ```
 
+### 🧾 答题卡打分（可选开启）
+
+默认情况下，`gen-eval` 生成的 `task.yaml` + `grader.py` 用的是**旧版**逻辑：由生成 grader 的 LLM 针对每个任务手写固定权重公式（例如 `0.60*effect + 0.25*quality + 0.15*grounding`）。加上 **`--better-grader`** 参数后，Phase 2 会切换到一套更新的、以"**答题卡**"（answer sheet）为中心的声明式打分设计：
+
+- LLM 不再手写一个 `grade()` 函数，而是在 `task.yaml` 里填一份 `answer_sheet.items` 列表 —— 每一条对应一个要检查的点。
+- 每个条目声明 `kind`（`objective` = 规则打分，`subjective` = LLM-judge 打分）、`fill`（`rule` = 从工具调用记录/审计日志自动填充，`llm_extract` = 由一次批量 LLM 调用扫描 transcript 填充）、`scorer`（`tool_call`·`forbidden_tool`·`effect_assert`·`grounding`·`enum_match`·`llm_judge`）以及 `weight`（所有条目权重之和约为 1.0）。
+- 评分时，同一份生成出来的 `grader.py` 会自动检测 `task.yaml` 里 `answer_sheet` 是否非空：非空则调用 `AnswerSheetEvaluator` 逐条填充并打分；为空则回退到旧版的规则+公式打分路径。**`run` / `batch` / `grade` 阶段完全不需要额外加参数** —— 两种结构的任务都走同一套执行流程。
+
+```bash
+claw-anything gen-eval \
+  --env gold_envs/sarah_chen_pm/ \
+  --seed-tasks seed_tasks/ \
+  --output gen_tasks/sarah_chen_pm_simple/ \
+  --max-tasks 20 \
+  --difficulty simple \
+  --execution-date 2026-04-03 \
+  --config config.yaml \
+  --better-grader
+```
+
 ### 🛠️ 命令行速查
 
 | 分组    | 命令 / 脚本                          | 用途 |
@@ -497,7 +519,7 @@ claw-anything batch \
 | 镜像    | `scripts/build_{loop,oh,oh_ext}_image.sh` | 更底层的 shell 构建脚本。`build_oh_ext_image.sh` 需要 `OH_EXT_DIR` 与 `ADB_PATH`。 |
 | 容器    | `cleanup`                            | 清理所有 claw-anything trial 容器（label `app=claw-anything`） |
 | 数据生成 | `build-persona`                     | **Phase 1** —— 把 seed task 适配到 persona，构建 gold environment |
-| 数据生成 | `gen-eval`                          | **Phase 2** —— 从 gold environment 生成评测任务 |
+| 数据生成 | `gen-eval`                          | **Phase 2** —— 从 gold environment 生成评测任务。加 `--better-grader` 启用新版答题卡驱动的打分/grader 生成逻辑（默认：旧版公式化生成）—— 见[答题卡打分（可选开启）](#-答题卡打分可选开启) |
 
 `run` 常用 flag：`--agent {loop, openai-compat, openharness, openharness-ext}` · `--trial-in-container` · `--docker-image`（覆盖镜像名）· `--oh-settings PATH`（OH 专用）· `--oh-disable-builtin-tools`（禁用 OH 内置工具，只暴露 claw-anything 自己的工具）· `--proxy URL`（模型/judge API 走代理）· `--judge-model` / `--no-judge`。
 

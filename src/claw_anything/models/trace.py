@@ -27,6 +27,14 @@ class DimensionScores(BaseModel):
     efficiency_turns: int = 0
     efficiency_tokens: int = 0
     efficiency_wall_time_s: float = 0.0
+    # Per-rule pass/fail surfaced by RuleEvaluator (4-template backend). Empty
+    # when the task does not declare any of {tool_usage, grounding_entity,
+    # forbidden_tool, value_in_reply} or when an old (pre-rules) grader runs.
+    rule_results: list[dict[str, Any]] = Field(default_factory=list)
+    # Per-item outcomes from AnswerSheetEvaluator (fill + score). Empty when the
+    # task has no answer_sheet or uses the legacy grader path.
+    answer_sheet_results: list[dict[str, Any]] = Field(default_factory=list)
+    filled_answer_sheet: dict[str, Any] = Field(default_factory=dict)
 
 
 # --- JSONL Event Types ---
@@ -99,6 +107,12 @@ class GradingResult(BaseModel):
     task_score: float = 0.0
     passed: bool = False
     failure_modes: list[str] = Field(default_factory=list)
+    # Per-rule pass/fail surfaced by RuleEvaluator. Mirrored from
+    # ``scores.rule_results`` so downstream tooling that only consumes the
+    # GradingResult event still sees the rule outcomes.
+    rule_results: list[dict[str, Any]] = Field(default_factory=list)
+    answer_sheet_results: list[dict[str, Any]] = Field(default_factory=list)
+    filled_answer_sheet: dict[str, Any] = Field(default_factory=dict)
     timestamp: str = Field(default_factory=_now)
 
 

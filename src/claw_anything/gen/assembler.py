@@ -145,6 +145,11 @@ class TaskAssembler:
         execution_date: str | None = None,
         available_services: set[str] | None = None,
         expected_effects: list[dict] | None = None,
+        tool_usage: dict | None = None,
+        grounding_entity: dict | None = None,
+        forbidden_tool: list[str] | None = None,
+        value_in_reply: dict | None = None,
+        answer_sheet: dict | None = None,
     ) -> str:
         """Build a complete task.yaml by combining generated content with the fixed template.
 
@@ -165,6 +170,15 @@ class TaskAssembler:
         scoring_components = copy.deepcopy(scoring_components)
         safety_checks = copy.deepcopy(safety_checks)
         expected_effects = copy.deepcopy(expected_effects or [])
+        tool_usage = copy.deepcopy(tool_usage or {"must_call": [], "call_order": []})
+        grounding_entity = copy.deepcopy(
+            grounding_entity or {"patterns": [], "threshold": 0.8}
+        )
+        forbidden_tool = list(forbidden_tool or [])
+        value_in_reply = copy.deepcopy(
+            value_in_reply or {"must_contain": [], "must_not_contain": []}
+        )
+        answer_sheet = copy.deepcopy(answer_sheet or {"items": []})
 
         # Apply persona-specific service filter.
         if available_services is not None:
@@ -212,6 +226,38 @@ class TaskAssembler:
                 e for e in expected_effects
                 if isinstance(e, dict) and e.get("service") in available
             ]
+
+            # 6. Drop tool_usage / forbidden_tool entries that reference tools
+            #    the agent will not have at runtime.
+            tool_usage["must_call"] = [
+                rule for rule in tool_usage.get("must_call", []) or []
+                if isinstance(rule, dict) and rule.get("tool") in kept_tool_names
+            ]
+            tool_usage["call_order"] = [
+                pair for pair in tool_usage.get("call_order", []) or []
+                if isinstance(pair, list) and len(pair) == 2
+                and pair[0] in kept_tool_names and pair[1] in kept_tool_names
+            ]
+            forbidden_tool = [
+                t for t in forbidden_tool if t in kept_tool_names
+            ]
+            # 7. Drop answer_sheet items whose rule references removed tools.
+            filtered_items = []
+            for item in answer_sheet.get("items", []) or []:
+                if not isinstance(item, dict):
+                    continue
+                rule = item.get("rule") or {}
+                scorer = item.get("scorer", "")
+                if scorer == "tool_call":
+                    if rule.get("tool") not in kept_tool_names:
+                        continue
+                elif scorer == "forbidden_tool":
+                    tools_in_rule = rule.get("tools") or []
+                    rule["tools"] = [t for t in tools_in_rule if t in kept_tool_names]
+                    if not rule["tools"]:
+                        continue
+                filtered_items.append(item)
+            answer_sheet["items"] = filtered_items
 
         # Mock-service fixture env values (``*_FIXTURES``) must be RELATIVE to
         # the task dir (e.g. ``fixtures/gmail/inbox.json``). ServiceManager
@@ -264,6 +310,11 @@ class TaskAssembler:
             "safety_checks": safety_checks,
             "expected_actions": expected_actions,
             "expected_effects": expected_effects,
+            "tool_usage": tool_usage,
+            "grounding_entity": grounding_entity,
+            "forbidden_tool": forbidden_tool,
+            "value_in_reply": value_in_reply,
+            "answer_sheet": answer_sheet,
             "judge_rubric": judge_rubric,
             "reference_solution": reference_solution,
             "primary_dimensions": ["completion", "robustness", "communication", "safety"],

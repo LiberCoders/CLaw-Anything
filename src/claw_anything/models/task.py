@@ -96,6 +96,96 @@ class ExpectedEffect(BaseModel):
     claim_phrases: list[str] = Field(default_factory=list)
 
 
+# ======================================================================
+# Rule-template models (RuleEvaluator backend, filled by LLM at gen-eval time)
+# ----------------------------------------------------------------------
+# Four deterministic checks the grader runs BEFORE the LLM judge:
+#   1. ToolUsage      — must_call / call_order
+#   2. GroundingEntityRule — anti-hallucination
+#   3. forbidden_tool — list[str] on TaskDefinition (no nested model needed)
+#   4. ValueInReplyRule    — must_contain / must_not_contain in final text
+# ======================================================================
+
+
+class MustCallRule(BaseModel):
+    """A tool the agent is required to invoke.
+
+    ``args_match`` constrains the *arguments* of the call (case-insensitive
+    substring per field; list-valued → any-of). ``success`` (default True)
+    requires the call to return < 400. ``min_count`` allows requiring multiple
+    invocations (e.g. "must read at least 2 KB articles").
+    """
+
+    tool: str
+    args_match: dict[str, Any] = Field(default_factory=dict)
+    success: bool = True
+    min_count: int = 1
+
+
+class ToolUsage(BaseModel):
+    """Tool-usage check: which tools must / must-not be called, and in what order."""
+
+    must_call: list[MustCallRule] = Field(default_factory=list)
+    call_order: list[list[str]] = Field(default_factory=list)
+
+
+class GroundingEntityRule(BaseModel):
+    """Anti-hallucination check.
+
+    Every entity matching one of ``patterns`` extracted from the agent's final
+    text must appear in some successful read-tool response (or audit ``calls``
+    payload). ``threshold`` is the minimum supported/asserted ratio for pass.
+    """
+
+    patterns: list[str] = Field(default_factory=list)
+    threshold: float = 0.8
+
+
+class ValueInReplyRule(BaseModel):
+    """Final-reply keyword check.
+
+    ``must_contain`` is AND-of-OR: every outer list element must have at least
+    one inner alternative present in the final reply (case-insensitive substring).
+    ``must_not_contain`` rejects on any inner alternative matching.
+    """
+
+    must_contain: list[list[str]] = Field(default_factory=list)
+    must_not_contain: list[list[str]] = Field(default_factory=list)
+
+
+# ======================================================================
+# Answer-sheet models (unified scoring: objective + subjective items)
+# ======================================================================
+
+
+class AnswerSheetItem(BaseModel):
+    """One row on the answer sheet — filled at grade time, scored by rule or judge.
+
+    ``kind`` distinguishes objective (rule-scored) vs subjective (LLM-judge-scored).
+    ``fill`` is how the value is populated: ``rule`` from dispatches/audit,
+    ``llm_extract`` from a batched LLM pass over the trace transcript.
+    ``scorer`` selects the scoring backend once filled.
+    """
+
+    id: str
+    kind: str = "objective"  # objective | subjective
+    fill: str = "rule"  # rule | llm_extract
+    scorer: str = "enum_match"
+    weight: float = 1.0
+    label: str = ""
+    question: str = ""
+    options: list[str] = Field(default_factory=list)
+    expected: Any = None  # list[str] for enum_match OR; str for subjective gold
+    rubric: str = ""
+    rule: dict[str, Any] = Field(default_factory=dict)
+
+
+class AnswerSheet(BaseModel):
+    """Declarative answer sheet written into task.yaml at gen-eval time."""
+
+    items: list[AnswerSheetItem] = Field(default_factory=list)
+
+
 class TaskDefinition(BaseModel):
     task_id: str
     task_name: str
@@ -112,6 +202,14 @@ class TaskDefinition(BaseModel):
     services: list[ServiceDef] = Field(default_factory=list)
     expected_actions: list[ExpectedAction] = Field(default_factory=list)
     expected_effects: list[ExpectedEffect] = Field(default_factory=list)
+    # Rule-template fields (RuleEvaluator backend). All optional, default empty;
+    # tasks generated before rule templates were introduced simply skip the
+    # rule layer and fall back to the legacy completion formula.
+    tool_usage: ToolUsage = Field(default_factory=ToolUsage)
+    grounding_entity: GroundingEntityRule = Field(default_factory=GroundingEntityRule)
+    forbidden_tool: list[str] = Field(default_factory=list)
+    value_in_reply: ValueInReplyRule = Field(default_factory=ValueInReplyRule)
+    answer_sheet: AnswerSheet = Field(default_factory=AnswerSheet)
     task_env: list[str] = Field(default_factory=list)
     apps: list[dict] = Field(default_factory=list)
     judge_rubric: str = ""
