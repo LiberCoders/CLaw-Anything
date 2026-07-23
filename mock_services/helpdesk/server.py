@@ -69,22 +69,41 @@ class CloseTicketRequest(BaseModel):
     resolution: str
 
 
+def _ticket_summary(t: dict[str, Any]) -> dict[str, Any]:
+    customer_id = t.get("customer_id") or t.get("customer_name") or ""
+    department = (
+        t.get("department")
+        or t.get("org")
+        or t.get("organization")
+        or (customer_id.split("/", 1)[1] if isinstance(customer_id, str) and "/" in customer_id else customer_id)
+        or ""
+    )
+    summary = {
+        "ticket_id": t.get("ticket_id"),
+        "title": t.get("title"),
+        "reporter": t.get("reporter") or t.get("requester") or customer_id,
+        "department": department,
+        "priority": t.get("priority"),
+        "status": t.get("status"),
+        "created_at": t.get("created_at"),
+    }
+    if customer_id:
+        summary["customer_id"] = customer_id
+    if t.get("customer_phone"):
+        summary["customer_phone"] = t.get("customer_phone")
+    if t.get("category"):
+        summary["category"] = t.get("category")
+    return summary
+
+
 @app.post("/helpdesk/tickets")
 def list_tickets(req: ListTicketsRequest | None = None) -> dict[str, Any]:
     if req is None:
         req = ListTicketsRequest()
     results = []
     for t in _tickets:
-        if req.status == "all" or t["status"] == req.status:
-            results.append({
-                "ticket_id": t["ticket_id"],
-                "title": t["title"],
-                "reporter": t["reporter"],
-                "department": t["department"],
-                "priority": t["priority"],
-                "status": t["status"],
-                "created_at": t["created_at"],
-            })
+        if req.status == "all" or t.get("status") == req.status:
+            results.append(_ticket_summary(t))
     resp = {"tickets": results, "total": len(results)}
     _log_call("/helpdesk/tickets", req.model_dump(), resp)
     return resp

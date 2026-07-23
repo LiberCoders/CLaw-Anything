@@ -90,6 +90,30 @@ def test_zotero_collections_synthesized_from_items(tmp_path):
     assert r["status"] == "added_to_collection"
 
 
+# --- helpdesk: customer-shaped tickets still summarize for list --------------
+
+
+def test_helpdesk_ticket_list_accepts_customer_shaped_fixture(tmp_path):
+    f = _write(tmp_path, "tickets.json", [{
+        "ticket_id": "TKT-8004",
+        "customer_id": "陈总/海星科技",
+        "customer_phone": "+86 18912345678",
+        "title": "系统响应缓慢投诉",
+        "status": "open",
+        "priority": "medium",
+        "category": "performance",
+        "created_at": "2026-04-25T15:30:00+08:00",
+    }])
+    H = _reload("mock_services.helpdesk.server", {"HELPDESK_FIXTURES": f})
+    c = TestClient(H.app)
+    r = c.post("/helpdesk/tickets", json={"status": "all"})
+    assert r.status_code == 200
+    ticket = r.json()["tickets"][0]
+    assert ticket["reporter"] == "陈总/海星科技"
+    assert ticket["department"] == "海星科技"
+    assert ticket["customer_phone"] == "+86 18912345678"
+
+
 # --- meeting: recordings date filter falls back across timestamp keys --------
 
 
