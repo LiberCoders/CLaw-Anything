@@ -152,7 +152,11 @@ class LLMJudge:
                         {"role": "user", "content": user},
                     ],
                     "temperature": 0.0,
-                    "max_tokens": max_tokens,
+                    # Clamp to the model's real output cap. The default 32768 is
+                    # above gpt-4o-mini's 16384 limit; ollama silently ignores an
+                    # oversized max_tokens but OpenAI 400s, and the 20x retry loop
+                    # then hangs grading until the batch drops the result.
+                    "max_tokens": min(max_tokens, 16384),
                 }
                 resp = self.client.chat.completions.create(**kwargs)
                 log_llm_call(
@@ -334,7 +338,7 @@ class LLMJudge:
                         {"role": "user", "content": user_msg},
                     ],
                     "temperature": 0.0,
-                    "max_tokens": 32768,
+                    "max_tokens": 16384,   # gpt-4o-mini output cap; see the note above
                 }
                 resp = self.client.chat.completions.create(**_judge_kwargs)
                 log_llm_call(
