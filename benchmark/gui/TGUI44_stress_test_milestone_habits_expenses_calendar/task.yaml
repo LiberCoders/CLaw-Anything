@@ -168,6 +168,15 @@ tools:
     properties:
       query:
         type: string
+- name: loop_habits_get_habit
+  description: 获取单个习惯的完整详情和打卡记录
+  input_schema:
+    type: object
+    properties:
+      habit_id:
+        type: string
+    required:
+    - habit_id
 - name: loop_habits_check_habit
   description: 完成某个习惯的今日打卡
   input_schema:
@@ -730,6 +739,9 @@ tool_endpoints:
 - tool_name: loop_habits_list_habits
   url: http://localhost:9120/gui/loop_habit/list_habits
   method: POST
+- tool_name: loop_habits_get_habit
+  url: http://localhost:9120/gui/loop_habit/get_habit
+  method: POST
 - tool_name: loop_habits_check_habit
   url: http://localhost:9120/gui/loop_habit/check_habit
   method: POST
@@ -809,7 +821,7 @@ scoring_components:
   weight: 0.15
   check:
     type: tool_called
-    tool_name: loop_habit_gui_get_habit
+    tool_name: loop_habits_get_habit
     min_calls: 1
 - name: Checked Q1 team activities budget availability
   weight: 0.15
@@ -971,8 +983,8 @@ judge_rubric: '## Evaluation Criteria
   - **-10 points**: Created calendar event without checking for deployment window
   conflicts'
 reference_solution: "## Step-by-Step Reference Solution\n\n### Step 1: Verify the\
-  \ 30-day milestone in Loop Habit\n- Call `loop_habit_gui_list_habits` to find the\
-  \ 'Pre-deployment stress testing' habit\n- Call `loop_habit_gui_get_habit` for the\
+  \ 30-day milestone in Loop Habit\n- Call `loop_habits_list_habits` to find the\
+  \ 'Pre-deployment stress testing' habit\n- Call `loop_habits_get_habit` for the\
   \ specific habit to retrieve completion dates\n- Verify that completions array shows\
   \ 30 consecutive days from 2026-03-03 to 2026-04-02 (with weekends appropriately\
   \ handled based on reminder_days)\n- Confirm the milestone has been reached\n\n\

@@ -57,6 +57,15 @@ tools:
     properties:
       query:
         type: string
+- name: loop_habits_get_habit
+  description: 获取单个习惯的完整详情和打卡记录
+  input_schema:
+    type: object
+    properties:
+      habit_id:
+        type: string
+    required:
+    - habit_id
 - name: loop_habits_check_habit
   description: 完成某个习惯的今日打卡
   input_schema:
@@ -69,6 +78,22 @@ tools:
         description: YYYY-MM-DD，默认今天
     required:
     - habit_id
+- name: my_expenses_list_accounts
+  description: 列出 My Expenses 中的账户，用于确认余额和币种
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+- name: my_expenses_get_account
+  description: 获取 My Expenses 单个账户详情
+  input_schema:
+    type: object
+    properties:
+      account_id:
+        type: string
+    required:
+    - account_id
 - name: my_expenses_list_transactions
   description: 列出 My Expenses 中的交易记录，支持日期和分类过滤
   input_schema:
@@ -354,8 +379,17 @@ tool_endpoints:
 - tool_name: loop_habits_list_habits
   url: http://localhost:9120/gui/loop_habit/list_habits
   method: POST
+- tool_name: loop_habits_get_habit
+  url: http://localhost:9120/gui/loop_habit/get_habit
+  method: POST
 - tool_name: loop_habits_check_habit
   url: http://localhost:9120/gui/loop_habit/check_habit
+  method: POST
+- tool_name: my_expenses_list_accounts
+  url: http://localhost:9120/gui/my_expenses/list_accounts
+  method: POST
+- tool_name: my_expenses_get_account
+  url: http://localhost:9120/gui/my_expenses/get_account
   method: POST
 - tool_name: my_expenses_list_transactions
   url: http://localhost:9120/gui/my_expenses/list_transactions

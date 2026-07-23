@@ -39,6 +39,52 @@ services:
     CALENDAR_FIXTURES: fixtures/calendar/events.json
 
 tools:
+# ---- loop_habit_gui ----
+- name: loop_habits_list_habits
+  description: 列出 Loop Habit Tracker 中的习惯和打卡摘要
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+- name: loop_habits_get_habit
+  description: 获取单个习惯的完整详情和打卡记录
+  input_schema:
+    type: object
+    properties:
+      habit_id:
+        type: string
+    required: [habit_id]
+
+# ---- clock_gui ----
+- name: clock_list_alarms
+  description: 列出手机闹钟，支持按标签或时间关键词搜索
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+- name: clock_update_alarm
+  description: 更新已有闹钟的时间、标签、重复日期或启用状态
+  input_schema:
+    type: object
+    properties:
+      alarm_id:
+        type: string
+      time:
+        type: string
+      label:
+        type: string
+      repeat_days:
+        type: array
+        items:
+          type: string
+      enabled:
+        type: boolean
+      vibrate:
+        type: boolean
+    required: [alarm_id]
+
 # ---- calendar CLI ----
 - name: calendar_list_events
   description: 从 CLI 日历服务查询指定日期范围内的事件，用于排查时间冲突根因
@@ -72,6 +118,18 @@ tools:
     required: [title, start_time, end_time]
 
 tool_endpoints:
+- tool_name: loop_habits_list_habits
+  url: http://localhost:9120/gui/loop_habit/list_habits
+  method: POST
+- tool_name: loop_habits_get_habit
+  url: http://localhost:9120/gui/loop_habit/get_habit
+  method: POST
+- tool_name: clock_list_alarms
+  url: http://localhost:9120/gui/clock/list_alarms
+  method: POST
+- tool_name: clock_update_alarm
+  url: http://localhost:9120/gui/clock/update_alarm
+  method: POST
 - tool_name: calendar_list_events
   url: http://localhost:9101/calendar/events
   method: POST

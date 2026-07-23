@@ -45,6 +45,23 @@ services:
     WORKMAIL_FIXTURES: fixtures/workmail/inbox.json
 
 tools:
+# ---- loop_habit_gui ----
+- name: loop_habits_list_habits
+  description: 列出 Loop Habit Tracker 中的工作习惯和本周完成记录
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+- name: loop_habits_get_habit
+  description: 获取单个工作习惯的完整详情和打卡记录
+  input_schema:
+    type: object
+    properties:
+      habit_id:
+        type: string
+    required: [habit_id]
+
 # ---- crm CLI ----
 - name: crm_list_customers
   description: 查询 CRM 客户列表，含跟进记录
@@ -105,6 +122,12 @@ tools:
     required: [to, subject, body]
 
 tool_endpoints:
+- tool_name: loop_habits_list_habits
+  url: http://localhost:9120/gui/loop_habit/list_habits
+  method: POST
+- tool_name: loop_habits_get_habit
+  url: http://localhost:9120/gui/loop_habit/get_habit
+  method: POST
 - tool_name: crm_list_customers
   url: http://localhost:9110/crm/customers
   method: POST

@@ -39,6 +39,93 @@ services:
     CALENDAR_FIXTURES: fixtures/calendar/events.json
 
 tools:
+# ---- contacts_gui ----
+- name: contacts_list
+  description: 列出手机联系人，支持关键词和分组过滤
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+      group:
+        type: string
+      max_results:
+        type: integer
+- name: contacts_get
+  description: 获取单个手机联系人的完整详情
+  input_schema:
+    type: object
+    properties:
+      contact_id:
+        type: string
+    required: [contact_id]
+
+# ---- fossify_calendar_gui ----
+- name: fossify_calendar_list_events
+  description: 查看手机日历事件，支持日期范围和关键词过滤
+  input_schema:
+    type: object
+    properties:
+      start_date:
+        type: string
+      end_date:
+        type: string
+      query:
+        type: string
+      max_results:
+        type: integer
+- name: fossify_calendar_get_event
+  description: 获取单个手机日历事件详情
+  input_schema:
+    type: object
+    properties:
+      event_id:
+        type: string
+    required: [event_id]
+- name: fossify_calendar_create_event
+  description: 在手机日历中新建提醒事件
+  input_schema:
+    type: object
+    properties:
+      title:
+        type: string
+      start_time:
+        type: string
+      end_time:
+        type: string
+      location:
+        type: string
+      description:
+        type: string
+      reminder_minutes:
+        type: integer
+    required: [title, start_time, end_time]
+
+# ---- testmall_gui ----
+- name: testmall_list_products
+  description: 浏览或搜索 TestMall 商品，支持关键词、类别和价格范围过滤
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+      category:
+        type: string
+      min_price:
+        type: number
+      max_price:
+        type: number
+      max_results:
+        type: integer
+- name: testmall_get_product
+  description: 获取 TestMall 单个商品详情
+  input_schema:
+    type: object
+    properties:
+      product_id:
+        type: string
+    required: [product_id]
+
 # ---- calendar CLI ----
 - name: calendar_list_events
   description: 查询指定日期范围内的日程，用于确认生日前后的空档时间
@@ -54,6 +141,27 @@ tools:
     required: [date]
 
 tool_endpoints:
+- tool_name: contacts_list
+  url: http://localhost:9120/gui/contacts/list
+  method: POST
+- tool_name: contacts_get
+  url: http://localhost:9120/gui/contacts/get
+  method: POST
+- tool_name: fossify_calendar_list_events
+  url: http://localhost:9120/gui/fossify_calendar/list_events
+  method: POST
+- tool_name: fossify_calendar_get_event
+  url: http://localhost:9120/gui/fossify_calendar/get_event
+  method: POST
+- tool_name: fossify_calendar_create_event
+  url: http://localhost:9120/gui/fossify_calendar/create_event
+  method: POST
+- tool_name: testmall_list_products
+  url: http://localhost:9120/gui/testmall/list_products
+  method: POST
+- tool_name: testmall_get_product
+  url: http://localhost:9120/gui/testmall/get_product
+  method: POST
 - tool_name: calendar_list_events
   url: http://localhost:9101/calendar/events
   method: POST

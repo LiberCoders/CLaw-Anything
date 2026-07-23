@@ -36,6 +36,40 @@ services:
     GMAIL_FIXTURES: fixtures/gmail/inbox.json
 
 tools:
+# ---- my_expenses_gui ----
+- name: my_expenses_list_accounts
+  description: 列出 My Expenses 中的账户，用于确认账户范围和币种
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+- name: my_expenses_get_account
+  description: 获取 My Expenses 单个账户详情
+  input_schema:
+    type: object
+    properties:
+      account_id:
+        type: string
+    required: [account_id]
+- name: my_expenses_list_transactions
+  description: 列出 My Expenses 交易，支持日期、类别、账户和关键词过滤
+  input_schema:
+    type: object
+    properties:
+      start_date:
+        type: string
+      end_date:
+        type: string
+      category:
+        type: string
+      account_id:
+        type: string
+      query:
+        type: string
+      max_results:
+        type: integer
+
 # ---- finance CLI ----
 - name: finance_list_transactions
   description: 查询 CLI finance 服务的历史流水，支持按日期过滤，用于建立历史基线
@@ -86,6 +120,15 @@ tools:
     required: [to, subject, body]
 
 tool_endpoints:
+- tool_name: my_expenses_list_accounts
+  url: http://localhost:9120/gui/my_expenses/list_accounts
+  method: POST
+- tool_name: my_expenses_get_account
+  url: http://localhost:9120/gui/my_expenses/get_account
+  method: POST
+- tool_name: my_expenses_list_transactions
+  url: http://localhost:9120/gui/my_expenses/list_transactions
+  method: POST
 - tool_name: finance_list_transactions
   url: http://localhost:9104/finance/transactions
   method: POST

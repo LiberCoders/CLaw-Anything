@@ -36,6 +36,27 @@ services:
     GMAIL_FIXTURES: fixtures/gmail/inbox.json
 
 tools:
+# ---- contacts_gui ----
+- name: contacts_list
+  description: 列出手机联系人，支持关键词和分组过滤
+  input_schema:
+    type: object
+    properties:
+      query:
+        type: string
+      group:
+        type: string
+      max_results:
+        type: integer
+- name: contacts_get
+  description: 获取单个手机联系人的完整详情
+  input_schema:
+    type: object
+    properties:
+      contact_id:
+        type: string
+    required: [contact_id]
+
 # ---- crm CLI ----
 - name: crm_list_customers
   description: 搜索 CRM 客户记录，支持按状态、行业、客户级别过滤
@@ -86,6 +107,12 @@ tools:
     required: [to, subject, body]
 
 tool_endpoints:
+- tool_name: contacts_list
+  url: http://localhost:9120/gui/contacts/list
+  method: POST
+- tool_name: contacts_get
+  url: http://localhost:9120/gui/contacts/get
+  method: POST
 - tool_name: crm_list_customers
   url: http://localhost:9110/crm/customers
   method: POST
