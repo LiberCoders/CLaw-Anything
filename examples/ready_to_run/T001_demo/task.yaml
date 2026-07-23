@@ -13,7 +13,7 @@ services:
     ready_timeout: 10
     reset_endpoint: http://localhost:9100/gmail/reset
     env:
-      GMAIL_FIXTURES: examples/ready_to_run/T001_demo/fixtures/gmail/inbox.json
+      GMAIL_FIXTURES: fixtures/gmail/inbox.json
 
   - name: calendar
     command: python mock_services/calendar/server.py
@@ -23,10 +23,10 @@ services:
     ready_timeout: 10
     reset_endpoint: http://localhost:9101/calendar/reset
     env:
-      CALENDAR_FIXTURES: examples/ready_to_run/T001_demo/fixtures/calendar/events.json
+      CALENDAR_FIXTURES: fixtures/calendar/events.json
 
 tools:
-  - { name: gmail_list_messages, description: "List inbox messages.", input_schema: { type: object, properties: { days_back: { type: integer }, max_results: { type: integer }, query: { type: string } } } }
+  - { name: gmail_list_messages, description: "List recent inbox messages. Omit query to browse; if query is used, it is a simple keyword filter over subject/from, not Gmail search syntax.", input_schema: { type: object, properties: { days_back: { type: integer }, max_results: { type: integer }, query: { type: string } } } }
   - { name: gmail_get_message,   description: "Get a message body by id.", input_schema: { type: object, properties: { message_id: { type: string } }, required: [message_id] } }
   - { name: gmail_save_draft,    description: "Save an email as draft (not sent).", input_schema: { type: object, properties: { to: { type: string }, subject: { type: string }, body: { type: string } }, required: [to, subject, body] } }
   - { name: gmail_send_message,  description: "Send an email immediately. Forbidden in this demo task.", input_schema: { type: object, properties: { to: { type: string }, subject: { type: string }, body: { type: string } }, required: [to, subject, body] } }
