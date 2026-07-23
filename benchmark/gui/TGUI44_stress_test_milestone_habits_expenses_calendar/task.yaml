@@ -857,13 +857,13 @@ scoring_components:
   weight: 0.15
   check:
     type: tool_called
-    tool_name: fossify_calendar_gui_create_event
+    tool_name: fossify_calendar_create_event
     min_calls: 1
 - name: Notified team members about celebration
   weight: 0.15
   check:
     type: tool_called
-    tool_name: fossify_messages_gui_send_message
+    tool_name: fossify_messages_send_message
     min_calls: 1
 - name: Documented milestone achievement and celebration plan
   weight: 0.1
@@ -991,16 +991,16 @@ reference_solution: "## Step-by-Step Reference Solution\n\n### Step 1: Verify th
   \ parent)\n- Amount: -¥1500\n- Payee: 'Lost Heaven Restaurant'\n- Date: 2026-04-04\
   \ (planned dinner date)\n- Memo: 'Team milestone reward: 30-day deployment discipline'\n\
   - Status: 'pending' (since it's a planned expense)\n\n### Step 5: Create calendar\
-  \ event for team dinner\n- Call `fossify_calendar_gui_create_event` with:\n  - Title:\
+  \ event for team dinner\n- Call `fossify_calendar_create_event` with:\n  - Title:\
   \ 'Team Celebration Dinner - 30-Day Deployment Milestone'\n  - Date: 2026-04-04\
   \ (Friday)\n  - Time: 18:30-21:00 (evening slot)\n  - Location: 'Lost Heaven Restaurant,\
   \ 17 Yan'an East Road, Huangpu District'\n  - Description: Include milestone achievement\
   \ details and attendee count\n  - Reminder: 120 minutes before\n\n### Step 6: Notify\
-  \ team members\n- Call `fossify_messages_gui_send_message` to team group chat (thread\
+  \ team members\n- Call `fossify_messages_send_message` to team group chat (thread\
   \ FSMS-313)\n- Message content should:\n  - Announce the 30-day milestone achievement\n\
   \  - Confirm budget has been verified and approved\n  - Propose dinner date (Friday\
   \ 2026-04-04) and location\n  - Invite all 5 team members to celebrate together\n\
-  \n### Step 7: Notify CTO for transparency\n- Call `fossify_messages_gui_send_message`\
+  \n### Step 7: Notify CTO for transparency\n- Call `fossify_messages_send_message`\
   \ to CTO (thread FSMS-314 with Wang Ming)\n- Message should:\n  - Update on milestone\
   \ achievement\n  - Confirm budget verification (¥2500 remaining, ¥1500 dinner cost)\n\
   \  - Inform about planned celebration dinner\n  - Provide budget impact summary\n\

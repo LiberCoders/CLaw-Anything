@@ -610,7 +610,7 @@ scoring_components:
   weight: 0.2
   check:
     type: tool_called
-    tool_name: fossify_messages_gui_get_thread
+    tool_name: fossify_messages_get_thread
     min_calls: 1
 - name: Verified current system state via scheduler CLI
   weight: 0.2
@@ -742,7 +742,7 @@ judge_rubric: "# Evaluation Rubric for Incident Runbook Archival\n\n## Excellent
   \ actionable. It should not require the reader to hunt for missing context across\
   \ multiple systems."
 reference_solution: "# Step-by-Step Reference Solution\n\n## Step 1: Retrieve Incident\
-  \ Coordination Messages\n- Call `fossify_messages_gui_get_thread` with thread_id=\"\
+  \ Coordination Messages\n- Call `fossify_messages_get_thread` with thread_id=\"\
   FSMS-305\"\n- Extract key information from messages:\n  - MSG-305-001: Root cause\
   \ confirmed (db_connection_pool_monitor spawned 50+ connections), rolled back to\
   \ v2.3.1, error rate dropped to 0.2%\n  - MSG-305-002: CTO asked for prevention\

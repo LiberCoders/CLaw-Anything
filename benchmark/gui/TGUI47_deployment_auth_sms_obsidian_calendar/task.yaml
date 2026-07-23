@@ -814,7 +814,7 @@ scoring_components:
   weight: 0.15
   check:
     type: tool_called
-    tool_name: fossify_calendar_gui_list_events
+    tool_name: fossify_calendar_list_events
     min_calls: 1
 - name: Prepared SMS response to CTO with decision
   weight: 0.2
@@ -962,7 +962,7 @@ judge_rubric: '# Evaluation Rubric for Production Deployment Authorization
   6. **Workflow completeness**: Did agent plan for post-deployment monitoring and
   follow-up actions?'
 reference_solution: "# Reference Solution: Production Deployment Authorization Verification\n\
-  \n## Step 1: Read the incoming SMS request\n- Tool: `fossify_messages_gui_get_thread`\
+  \n## Step 1: Read the incoming SMS request\n- Tool: `fossify_messages_get_thread`\
   \ with thread_id=\"thread_cto_deployment_approval\"\n- Extract: CTO Wang Ming requesting\
   \ deployment approval within 30 minutes, claims \"all pre-deployment checks passed\"\
   , mentions \"API timeout issue affecting premium customers\"\n- Identify information\
@@ -986,12 +986,12 @@ reference_solution: "# Reference Solution: Production Deployment Authorization V
   \ criteria: 47/47 health checks must pass, API response time < 200ms p95, error\
   \ rate < 0.1%\n- Cross-reference: Scheduler JOB-727 output matches runbook acceptance\
   \ criteria\n\n## Step 4: Check recent incident notes for system stability\n- Tool:\
-  \ `fossify_notes_gui_list_notes` to find recent notes\n- Tool: `fossify_notes_gui_get_note`\
+  \ `fossify_notes_list_notes` to find recent notes\n- Tool: `fossify_notes_get_note`\
   \ with note_id=\"FNOT-224\" (Recent Production Stability Notes)\n- Verify: Production\
   \ stable in last 24 hours, no major incidents\n- Note: API error rate 0.08% (within\
   \ normal), database pool 45% utilization, Redis 94% hit rate\n- Assessment: System\
   \ stable and suitable for deployment\n\n## Step 5: Verify deployment window and\
-  \ calendar conflicts\n- Tool: `fossify_calendar_gui_list_events` for date range\
+  \ calendar conflicts\n- Tool: `fossify_calendar_list_events` for date range\
   \ 2026-04-02 21:00 to 23:00\n- Verify: Deployment window scheduled 21:30-22:00 (event\
   \ FCAL-133)\n- Check: No conflicting maintenance windows or other scheduled changes\n\
   - Note: Post-deployment monitoring window already scheduled 22:00-00:00 (event FCAL-134)\n\
@@ -1003,7 +1003,7 @@ reference_solution: "# Reference Solution: Production Deployment Authorization V
   \ confirmed with no calendar conflicts\n  5. Post-deployment monitoring window already\
   \ scheduled\n- Caveats: Deployment must start within scheduled window (21:30-22:00),\
   \ monitor closely for error rate and API response time per runbook acceptance criteria\n\
-  \n## Step 7: Send SMS response to CTO\n- Tool: `fossify_messages_gui_send_message`\
+  \n## Step 7: Send SMS response to CTO\n- Tool: `fossify_messages_send_message`\
   \ to thread \"thread_cto_deployment_approval\" or phone \"+86 13800138001\"\n- Message\
   \ content:\n  \"Approved for deployment. Verified: JOB-727 health checks passed\
   \ all 47 tests at 20:00, runbook OBSN-43 checklist complete, production stable.\

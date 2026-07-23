@@ -128,11 +128,11 @@ Scoring criteria:
 
         # ---- Sub-item 2: Key action completion (rule-based, 15%) ----
         # Check if agent responded to CTO
-        if any(d.tool_name == "fossify_messages_gui_send_message" for d in dispatches):
+        if any(d.tool_name == "fossify_messages_send_message" for d in dispatches):
             completion += 0.10
         
         # Check if agent documented decision
-        if any(d.tool_name == "fossify_notes_gui_create_note" for d in dispatches):
+        if any(d.tool_name == "fossify_notes_create_note" for d in dispatches):
             completion += 0.05
 
         # ---- Sub-item 3: Output quality (LLM judge, 35%) ----
@@ -195,7 +195,7 @@ Scoring criteria:
 
         # Check coverage of required services
         service_checks = [
-            bool(called & {"fossify_messages_gui_list_threads", "fossify_messages_gui_get_thread"}),  # CTO message
+            bool(called & {"fossify_messages_list_threads", "fossify_messages_get_thread"}),  # CTO message
             bool(called & {"scheduler_list_jobs", "scheduler_get_job"}),  # Scheduler status
             bool(called & {"claw_obsidian_list_notes", "claw_obsidian_get_note", "claw_obsidian_search"}),  # Runbook/health docs
         ]
@@ -203,7 +203,7 @@ Scoring criteria:
 
         # Check depth (detail calls)
         detail_tools = {
-            "fossify_messages_gui_get_thread",
+            "fossify_messages_get_thread",
             "scheduler_get_job",
             "claw_obsidian_get_note",
         }

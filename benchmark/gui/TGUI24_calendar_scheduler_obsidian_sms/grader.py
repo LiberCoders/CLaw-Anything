@@ -185,15 +185,15 @@ Scoring criteria:
             bool(called & {"scheduler_list_jobs", "scheduler_get_job"}),
             bool(called & {"config_list_integrations", "config_get_integration"}),
             bool(called & {"claw_obsidian_list_notes", "claw_obsidian_get_note", "claw_obsidian_search"}),
-            bool(called & {"fossify_calendar_gui_list_events", "fossify_calendar_gui_get_event"}),
+            bool(called & {"fossify_calendar_list_events", "fossify_calendar_get_event"}),
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
         # Check depth: detail/get calls
         detail_tools = {
             "scheduler_get_job", "config_get_integration",
-            "claw_obsidian_get_note", "fossify_calendar_gui_get_event",
-            "fossify_messages_gui_get_thread"
+            "claw_obsidian_get_note", "fossify_calendar_get_event",
+            "fossify_messages_get_thread"
         }
         detail_count = len([d for d in dispatches if d.tool_name in detail_tools])
         depth = min(detail_count / 4, 1.0)

@@ -863,7 +863,7 @@ judge_rubric: 'Award full marks if the agent: (1) successfully located calendar 
   entries for already-recorded expenses, fails to query finance system before recommending action, does not distinguish estimated
   vs exact amounts, or recommends incorrect expense categories. The agent should provide actionable guidance that prevents
   duplicate recording while ensuring complete expense tracking.'
-reference_solution: '1. Call fossify_calendar_gui_list_events or fossify_calendar_gui_get_event with event_id FCAL-105 to
+reference_solution: '1. Call fossify_calendar_list_events or fossify_calendar_get_event with event_id FCAL-105 to
   retrieve the ''Sepsis Protocol Training Session'' event from March 28, 2026.
 
   2. Extract expense details from the event description: reference handbook set (¥280), training simulation supplies (¥450),

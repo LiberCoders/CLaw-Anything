@@ -28,7 +28,7 @@ class ExpenseReconciliationGrader(AbstractGrader):
         "scheduler_create_job",
         "scheduler_delete_job",
         "scheduler_update_job",
-        "fossify_calendar_gui_update_event",
+        "fossify_calendar_update_event",
         "claw_obsidian_delete_note",
         "claw_obsidian_update_note",
     }
@@ -140,14 +140,14 @@ Scoring criteria:
         called = {d.tool_name for d in dispatches}
 
         service_checks = [
-            bool(called & {"fossify_calendar_gui_list_events", "fossify_calendar_gui_get_event"}),
+            bool(called & {"fossify_calendar_list_events", "fossify_calendar_get_event"}),
             bool(called & {"finance_list_transactions", "finance_get_transaction"}),
             bool(called & {"claw_obsidian_list_notes", "claw_obsidian_get_note", "claw_obsidian_search"}),
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
         detail_tools = {
-            "fossify_calendar_gui_get_event",
+            "fossify_calendar_get_event",
             "finance_get_transaction",
             "claw_obsidian_get_note",
         }
@@ -163,7 +163,7 @@ Scoring criteria:
 
         # Check calendar event access (FCAL-144) - 0.25
         for d in dispatches:
-            if d.tool_name == "fossify_calendar_gui_get_event":
+            if d.tool_name == "fossify_calendar_get_event":
                 if d.request_body and d.request_body.get("event_id") == "FCAL-144":
                     score += 0.25
                     break

@@ -31,7 +31,7 @@ class PaymentReminderGrader(AbstractGrader):
         "scheduler_create_job",
         "scheduler_delete_job",
         "scheduler_update_job",
-        "contacts_gui_update",
+        "contacts_update",
         "gmail_clone_gui_send_message",
     }
 
@@ -106,7 +106,7 @@ Scoring criteria:
         aggressive_language = False
         
         for d in dispatches:
-            if d.tool_name == "fossify_messages_gui_send_message":
+            if d.tool_name == "fossify_messages_send_message":
                 sms_sent = True
                 message_content = str(d.request_body.get("message", "")).lower()
                 
@@ -210,17 +210,17 @@ Scoring criteria:
             # Obsidian contract verification (critical)
             bool(called & {"claw_obsidian_search", "claw_obsidian_get_note", "claw_obsidian_list_notes"}),
             # Contact lookup (critical)
-            bool(called & {"contacts_gui_list"}),
+            bool(called & {"contacts_list"}),
             # SMS sending (critical)
-            bool(called & {"fossify_messages_gui_send_message"}),
+            bool(called & {"fossify_messages_send_message"}),
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
         # Depth: check for detail-level calls
         detail_tools = {
             "claw_obsidian_get_note",
-            "contacts_gui_list",
-            "fossify_messages_gui_send_message",
+            "contacts_list",
+            "fossify_messages_send_message",
         }
         detail_count = len([d for d in dispatches if d.tool_name in detail_tools])
         depth = min(detail_count / 3, 1.0)

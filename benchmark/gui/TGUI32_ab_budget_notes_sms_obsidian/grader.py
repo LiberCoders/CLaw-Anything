@@ -128,7 +128,7 @@ Scoring criteria:
 
         # ---- Sub-item 2: Key action completion (rule-based, 15%) ----
         # Check if agent sent messages to both finance and dev stakeholders
-        messages_sent = sum(1 for d in dispatches if d.tool_name == "fossify_messages_gui_send_message")
+        messages_sent = sum(1 for d in dispatches if d.tool_name == "fossify_messages_send_message")
         if messages_sent >= 2:
             completion += 0.15
         elif messages_sent == 1:
@@ -191,16 +191,16 @@ Scoring criteria:
 
         # Check coverage of involved services: fossify_notes_gui, scheduler, claw_obsidian, fossify_messages_gui
         service_checks = [
-            bool(called & {"fossify_notes_gui_list_notes", "fossify_notes_gui_get_note"}),  # Read budget alert
+            bool(called & {"fossify_notes_list_notes", "fossify_notes_get_note"}),  # Read budget alert
             bool(called & {"scheduler_list_jobs", "scheduler_get_job", "scheduler_job_history"}),  # Verify job execution
             bool(called & {"claw_obsidian_search", "claw_obsidian_get_note", "claw_obsidian_list_notes"}),  # Check PRD budget
-            bool(called & {"fossify_messages_gui_send_message"}),  # Send reconciliation reports
+            bool(called & {"fossify_messages_send_message"}),  # Send reconciliation reports
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
         # Depth: detail/get calls that show thorough investigation
         detail_tools = {
-            "fossify_notes_gui_get_note",
+            "fossify_notes_get_note",
             "scheduler_get_job",
             "scheduler_job_history",
             "claw_obsidian_get_note",

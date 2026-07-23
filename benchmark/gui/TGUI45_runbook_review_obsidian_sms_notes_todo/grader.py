@@ -143,7 +143,7 @@ Scoring criteria:
         service_checks = [
             bool(called & {"claw_obsidian_search", "claw_obsidian_get_note", "claw_obsidian_list_notes"}),
             bool(called & {"scheduler_list_jobs", "scheduler_get_job", "scheduler_job_history"}),
-            bool(called & {"fossify_messages_gui_list_threads", "fossify_messages_gui_send_message"}),
+            bool(called & {"fossify_messages_list_threads", "fossify_messages_send_message"}),
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
@@ -151,8 +151,8 @@ Scoring criteria:
             "claw_obsidian_get_note",
             "scheduler_get_job",
             "scheduler_job_history",
-            "fossify_messages_gui_send_message",
-            "fossify_notes_gui_create_note",
+            "fossify_messages_send_message",
+            "fossify_notes_create_note",
         }
         detail_count = len([d for d in dispatches if d.tool_name in detail_tools])
         depth = min(detail_count / 4, 1.0)
@@ -185,7 +185,7 @@ Scoring criteria:
 
         # Check if CTO was notified via Fossify Messages
         cto_notified = any(
-            d.tool_name == "fossify_messages_gui_send_message"
+            d.tool_name == "fossify_messages_send_message"
             for d in dispatches
         )
         if cto_notified:

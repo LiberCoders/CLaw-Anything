@@ -127,7 +127,7 @@ Scoring criteria:
 
         # ---- Sub-item 2: Key action completion (rule-based) ----
         # Check if email was sent for internal documentation
-        if any(d.tool_name == "gmail_clone_gui_send_message" for d in dispatches):
+        if any(d.tool_name == "gmail_clone_send_message" for d in dispatches):
             completion += 0.15
 
         # ---- Sub-item 3: Output quality (LLM judge) ----
@@ -191,7 +191,7 @@ Scoring criteria:
             bool(called & {"my_expenses_gui"}),  # Must review expenses
             bool(called & {"claw_obsidian_search", "claw_obsidian_get_note", "claw_obsidian_list_notes"}),  # Must check project notes
             bool(called & {"finance_list_transactions"}),  # Should verify finance records
-            bool(called & {"gmail_clone_gui_send_message"}),  # Must send internal report
+            bool(called & {"gmail_clone_send_message"}),  # Must send internal report
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 

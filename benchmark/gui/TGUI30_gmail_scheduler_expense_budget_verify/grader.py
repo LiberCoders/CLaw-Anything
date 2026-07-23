@@ -188,7 +188,7 @@ Scoring criteria:
             bool(called & {"scheduler_list_jobs", "scheduler_get_job", "scheduler_job_history"}),
             bool(called & {"finance_list_transactions", "finance_get_transaction"}),
             bool(called & {"claw_obsidian_list_notes", "claw_obsidian_get_note", "claw_obsidian_search"}),
-            bool(called & {"my_expenses_gui_list_transactions", "my_expenses_gui_get_transaction"}),
+            bool(called & {"my_expenses_list_transactions", "my_expenses_get_transaction"}),
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
@@ -199,7 +199,7 @@ Scoring criteria:
             "scheduler_job_history",
             "finance_get_transaction",
             "claw_obsidian_get_note",
-            "my_expenses_gui_get_transaction",
+            "my_expenses_get_transaction",
         }
         detail_count = len([d for d in dispatches if d.tool_name in detail_tools])
         depth = min(detail_count / 5, 1.0)
@@ -249,7 +249,7 @@ Scoring criteria:
 
         # Check if expense entry TXN-001 was accessed
         if any(
-            d.tool_name == "my_expenses_gui_get_transaction" and
+            d.tool_name == "my_expenses_get_transaction" and
             d.request_body.get("transaction_id") == "TXN-001"
             for d in dispatches
         ):

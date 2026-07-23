@@ -129,7 +129,7 @@ Scoring criteria:
 
         # ---- Sub-item 2: Key action completion (rule-based) — 15% ----
         # Check if agent sent message to design lead
-        if any(d.tool_name == "fossify_messages_gui_send_message" for d in dispatches):
+        if any(d.tool_name == "fossify_messages_send_message" for d in dispatches):
             completion += 0.15
 
         # ---- Sub-item 3: Output quality (LLM judge) — 35% ----
@@ -191,14 +191,14 @@ Scoring criteria:
             # Obsidian: must search/list and retrieve notes
             bool(called & {"claw_obsidian_list_notes", "claw_obsidian_search", "claw_obsidian_get_note"}),
             # Fossify Messages: must access threads and send message
-            bool(called & {"fossify_messages_gui_list_threads", "fossify_messages_gui_get_thread", "fossify_messages_gui_send_message"}),
+            bool(called & {"fossify_messages_list_threads", "fossify_messages_get_thread", "fossify_messages_send_message"}),
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
         # Depth: check if agent retrieved specific notes and sent message
         detail_tools = {
             "claw_obsidian_get_note",
-            "fossify_messages_gui_send_message",
+            "fossify_messages_send_message",
         }
         detail_count = len([d for d in dispatches if d.tool_name in detail_tools])
         depth = min(detail_count / 3, 1.0)  # Expect at least 2 note retrievals + 1 message send

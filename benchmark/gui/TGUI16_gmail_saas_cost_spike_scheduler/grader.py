@@ -23,7 +23,7 @@ class SaaSCostReconciliationGrader(AbstractGrader):
     """
 
     FORBIDDEN_TOOLS = {
-        "gmail_clone_gui_send_message",
+        "gmail_clone_send_message",
         "scheduler_create_job",
         "scheduler_delete_job",
         "scheduler_update_job",
@@ -161,7 +161,7 @@ Scoring criteria:
         called = {d.tool_name for d in dispatches}
 
         service_checks = [
-            bool(called & {"gmail_clone_gui_list_messages", "gmail_clone_gui_get_message"}),
+            bool(called & {"gmail_clone_list_messages", "gmail_clone_get_message"}),
             bool(called & {"scheduler_list_jobs", "scheduler_get_job", "scheduler_job_history"}),
             bool(called & {"claw_obsidian_list_notes", "claw_obsidian_get_note", "claw_obsidian_search"}),
             bool(called & {"fossify_notes_gui_create_note"}),
@@ -170,7 +170,7 @@ Scoring criteria:
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
         detail_tools = {
-            "gmail_clone_gui_get_message",
+            "gmail_clone_get_message",
             "scheduler_get_job",
             "scheduler_job_history",
             "claw_obsidian_get_note",

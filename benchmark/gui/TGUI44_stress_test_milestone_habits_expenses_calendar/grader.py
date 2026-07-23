@@ -183,8 +183,8 @@ Scoring criteria:
         service_checks = [
             bool(called & {"loop_habit_gui_list_habits", "loop_habit_gui_get_habit"}),
             bool(called & {"finance_list_transactions", "finance_get_transaction"}),
-            bool(called & {"fossify_calendar_gui_create_event"}),
-            bool(called & {"fossify_messages_gui_send_message"}),
+            bool(called & {"fossify_calendar_create_event"}),
+            bool(called & {"fossify_messages_send_message"}),
         ]
         breadth = sum(service_checks) / len(service_checks) if service_checks else 0
 
@@ -192,8 +192,8 @@ Scoring criteria:
         detail_tools = {
             "loop_habit_gui_get_habit",
             "finance_get_transaction",
-            "fossify_calendar_gui_create_event",
-            "fossify_messages_gui_send_message",
+            "fossify_calendar_create_event",
+            "fossify_messages_send_message",
         }
         detail_count = len([d for d in dispatches if d.tool_name in detail_tools])
         depth = min(detail_count / 4, 1.0)
@@ -228,7 +228,7 @@ Scoring criteria:
         
         # Check if agent created calendar event
         calendar_created = any(
-            d.tool_name == "fossify_calendar_gui_create_event"
+            d.tool_name == "fossify_calendar_create_event"
             for d in dispatches
         )
         if calendar_created:
@@ -236,7 +236,7 @@ Scoring criteria:
         
         # Check if agent sent team notification
         message_sent = any(
-            d.tool_name == "fossify_messages_gui_send_message"
+            d.tool_name == "fossify_messages_send_message"
             for d in dispatches
         )
         if message_sent:
