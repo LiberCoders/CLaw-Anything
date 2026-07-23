@@ -624,49 +624,47 @@ def _sqlite3_query(sql: str, device: str | None) -> str:
 
 def _normalize_fossify_message_item(msg: dict) -> dict:
     """Normalise a single message dict to {id, time, text, is_outgoing}."""
+    sender = str(msg.get("sender") or msg.get("from") or "").strip().lower()
     return {
-        "id":          str(msg.get("id", "")),
-        "time":        msg.get("time") or msg.get("timestamp", ""),
-        "text":        msg.get("text") or msg.get("body") or msg.get("message_text", ""),
-        "is_outgoing": msg.get("is_outgoing", msg.get("is_sent", False)),
+        "id":          str(msg.get("id") or msg.get("message_id") or ""),
+        "time":        msg.get("time") or msg.get("timestamp") or msg.get("date") or "",
+        "text":        (
+            msg.get("text")
+            or msg.get("body")
+            or msg.get("message_text")
+            or msg.get("content")
+            or ""
+        ),
+        "is_outgoing": msg.get("is_outgoing", msg.get("is_sent", sender == "me")),
     }
 
 
-def _normalize_fossify_messages(raw: list) -> list:
-    """Convert various fixture formats to the threaded format expected by
-    inject_fossify_messages.
+def _thread_participants(thread: dict) -> list[str]:
+    participants = thread.get("participants")
+    if isinstance(participants, list):
+        return [str(p) for p in participants if p]
+    contact = thread.get("contact") or thread.get("contact_number") or thread.get("address")
+    return [str(contact)] if contact else []
 
-    Three observed variants:
-      1. Correct threaded: items have 'participants' (list) + 'messages' — returned as-is.
-      2. Threaded-wrong: items have 'messages' but use 'contact' (str) instead of
-         'participants', and messages use 'timestamp'/'body' field names.
-      3. Flat: items are individual messages with 'contact_number'/'is_sent', grouped
-         by 'thread_id'.
-    """
-    if not raw:
-        return raw
 
-    first = raw[0]
+def _normalize_fossify_thread(thread: dict) -> dict:
+    norm_msgs = [_normalize_fossify_message_item(m) for m in thread.get("messages", [])]
+    unread = int(thread.get("unread_count", 0) or 0)
+    if unread <= 0:
+        unread = sum(
+            1
+            for msg in thread.get("messages", [])
+            if not _normalize_fossify_message_item(msg).get("is_outgoing")
+            and not msg.get("is_read", True)
+        )
+    return {
+        "participants": _thread_participants(thread),
+        "unread_count": unread,
+        "messages":     norm_msgs,
+    }
 
-    # Format 1: already correct
-    if "participants" in first:
-        return raw
 
-    # Format 2: threaded but with wrong field names
-    if "messages" in first:
-        result = []
-        for thread in raw:
-            contact = thread.get("contact") or thread.get("contact_number", "")
-            norm_msgs = [_normalize_fossify_message_item(m) for m in thread.get("messages", [])]
-            unread = int(thread.get("unread_count", 0))
-            result.append({
-                "participants": [contact] if contact else [],
-                "unread_count": unread,
-                "messages":     norm_msgs,
-            })
-        return result
-
-    # Format 3: flat list — group by thread_id
+def _group_flat_fossify_messages(raw: list[dict]) -> list[dict]:
     thread_order: list[str] = []
     threads: dict[str, dict] = {}
     for msg in raw:
@@ -684,6 +682,34 @@ def _normalize_fossify_messages(raw: list) -> list:
             threads[tid]["unread_count"] += 1
         threads[tid]["messages"].append(_normalize_fossify_message_item(msg))
     return [threads[tid] for tid in thread_order]
+
+
+def _normalize_fossify_messages(raw: list) -> list:
+    """Convert various fixture formats to the threaded format expected by
+    inject_fossify_messages.
+
+    Fixtures may be all-threaded, all-flat, or a mixed list that combines both.
+    Threaded rows carry a ``messages`` list; flat rows are individual SMS rows
+    grouped by ``thread_id``.
+    """
+    if not raw:
+        return raw
+
+    result: list[dict] = []
+    pending_flat: list[dict] = []
+    for item in raw:
+        if not isinstance(item, dict):
+            continue
+        if "messages" in item:
+            if pending_flat:
+                result.extend(_group_flat_fossify_messages(pending_flat))
+                pending_flat = []
+            result.append(_normalize_fossify_thread(item))
+        else:
+            pending_flat.append(item)
+    if pending_flat:
+        result.extend(_group_flat_fossify_messages(pending_flat))
+    return result
 
 
 def inject_fossify_messages(step: dict, task_dir: Path, device: str | None) -> bool:
@@ -2219,6 +2245,24 @@ TESTMALL_STATE_PATH = f"/sdcard/Android/data/{TESTMALL_PACKAGE}/files/state.json
 MATTERMOST_PACKAGE    = "com.mattermost.rnbeta"
 MATTERMOST_STATE_PATH = f"/sdcard/Android/data/{MATTERMOST_PACKAGE}/files/state.json"
 
+SHADOW_STATE_ROOT = "/data/local/tmp/claw_gui_state"
+
+
+def _shadow_state_fallback_path(package: str) -> str:
+    return f"{SHADOW_STATE_ROOT}/{package}/state.json"
+
+
+def _push_json_state(state: dict, remote_path: str, device: str | None) -> bool:
+    remote_dir = remote_path.rsplit("/", 1)[0]
+    adb_shell(f"mkdir -p {remote_dir}", device=device)
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False, encoding="utf-8") as tmp:
+        json.dump(state, tmp, ensure_ascii=False, indent=2)
+        tmp_path = tmp.name
+    try:
+        return adb_push(tmp_path, remote_path, device=device)
+    finally:
+        os.unlink(tmp_path)
+
 
 def _inject_shadow_app_state(
     step: dict,
@@ -2236,6 +2280,10 @@ def _inject_shadow_app_state(
     Wraps ``items`` as ``{state_key: items}`` so the on-device shape stays
     forward-compatible with apps that need top-level metadata later; mirrors
     inject_email for shadow apps without a CLI mock service.
+
+    Always writes a host-readable fallback under ``SHADOW_STATE_ROOT`` so
+    graders/app-direct tools can still consume fixture state when the APK is
+    missing from the recommended image.
     """
     fixture_path = task_dir / step.get("fixture", default_fixture)
     if not fixture_path.exists():
@@ -2248,35 +2296,35 @@ def _inject_shadow_app_state(
         print(f"  [FAIL] {app_label} fixture must be a JSON list", file=sys.stderr)
         return False
 
+    state = {state_key: items}
+    fallback_path = _shadow_state_fallback_path(package)
+    adb_shell(f"rm -f {fallback_path}", device=device)
+    if not _push_json_state(state, fallback_path, device=device):
+        return False
+
     installed, package_msg = _package_installed(package, device=device)
     if not installed:
         print(
-            f"  [FAIL] package not installed: {package}"
+            f"  [WARN] package not installed: {package}; "
+            f"wrote {app_label} shadow state to {fallback_path}"
             + (f" ({package_msg})" if package_msg else ""),
             file=sys.stderr,
         )
-        return False
+        return True
 
     adb_shell(f"am force-stop {package}", device=device)
     adb_shell(f"rm -f {state_path}", device=device)
-    adb_shell(f"mkdir -p $(dirname {state_path})", device=device)
-
-    state = {state_key: items}
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False, encoding="utf-8") as tmp:
-        json.dump(state, tmp, ensure_ascii=False, indent=2)
-        tmp_path = tmp.name
-    try:
-        ok = adb_push(tmp_path, state_path, device=device)
-    finally:
-        os.unlink(tmp_path)
-    if not ok:
+    if not _push_json_state(state, state_path, device=device):
         return False
 
     launch_ok, launch_msg = _start_package_launcher(package, device=device)
     if not launch_ok:
         print(f"  [FAIL] failed to relaunch {app_label}: {launch_msg}", file=sys.stderr)
         return False
-    print(f"  [OK] {app_label} restarted ({len(items)} item(s) injected)")
+    print(
+        f"  [OK] {app_label} restarted ({len(items)} item(s) injected; "
+        f"fallback state also at {fallback_path})"
+    )
     return True
 
 
