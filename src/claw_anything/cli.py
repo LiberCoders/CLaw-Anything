@@ -1004,6 +1004,17 @@ def _strip_grading_results(trace_path: Path) -> None:
     trace_path.write_text("\n".join(lines) + "\n")
 
 
+    # Persist the fresh grading_result back into the trace so `grade` can re-score an
+    # existing trace in place (e.g. adding an LLM judge to a --no-judge run) without
+    # re-running the agent. Without this, grade only printed and the file was untouched.
+    if getattr(args, "write", False):
+        _strip_grading_results(Path(args.trace))
+        _append_grading_to_trace(
+            Path(args.trace), getattr(start, "trace_id", ""), task.task_id,
+            scores, task_score, passed)
+        print(f"[write] grading_result updated in {args.trace}")
+
+
 def _append_grading_to_trace(
     trace_path: Path,
     trace_id: str,
@@ -2174,6 +2185,7 @@ def main(argv: list[str] | None = None) -> None:
     p_grade.add_argument("--judge-model", default=None, help="Override judge model ID")
     p_grade.add_argument("--no-judge", action="store_true", help="Disable LLM judge for communication scoring")
     p_grade.add_argument("--proxy", default=None, help="HTTP proxy URL for judge API traffic")
+    p_grade.add_argument("--write", action="store_true", help="Write the grading_result back into the trace (re-grade in place)")
 
     # batch
     p_batch = sub.add_parser("batch", help="Run all tasks in parallel")
