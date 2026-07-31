@@ -997,6 +997,12 @@ def cmd_grade(args: argparse.Namespace) -> None:
     print(f"task_score:     {task_score:.2f}")
     print(f"passed:         {passed}")
 
+def _strip_grading_results(trace_path: Path) -> None:
+    """Drop any existing grading_result lines so a re-grade replaces, not stacks."""
+    lines = [l for l in trace_path.read_text().splitlines()
+             if l.strip() and '"grading_result"' not in l]
+    trace_path.write_text("\n".join(lines) + "\n")
+
 
 def _append_grading_to_trace(
     trace_path: Path,
@@ -1079,7 +1085,10 @@ def _scan_completed_trials(trace_dir: Path) -> dict[str, int]:
     from collections import defaultdict
 
     completed: dict[str, int] = defaultdict(int)
-    for f in trace_dir.glob("*.jsonl"):
+    # rglob, not glob: --cli-only writes <trace_dir>/<phase>/<task>_<hash>/<task>_<hash>.jsonl,
+    # two levels down. With a non-recursive glob this scan finds nothing, --continue concludes
+    # no trial was ever completed, and silently re-runs the entire suite.
+    for f in trace_dir.rglob("*.jsonl"):
         with open(f) as fh:
             for line in fh:
                 line = line.strip()
@@ -1109,7 +1118,7 @@ def _load_completed_results(trace_dir: Path) -> list[dict]:
     # task_id -> list of trial info dicts
     task_trials: dict[str, list[dict]] = defaultdict(list)
 
-    for f in sorted(trace_dir.glob("*.jsonl")):
+    for f in sorted(trace_dir.rglob("*.jsonl")):
         grading = None
         trace_end = None
         for line_str in open(f):
